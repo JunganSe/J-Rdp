@@ -1,3 +1,13 @@
-{
-	
-}
+[
+  {
+    "name": "MyConfiguration",
+    "watchFolder": "C:/RdpTestFiles",
+    "watchFile": "foo*.rdp",
+    "moveToFolder": "./Old",
+    "delete": false,
+    "settings": [
+      { "desktopwidth:i": "2560" },
+      { "desktopheight:i": "1600" }
+    ]
+  }
+]

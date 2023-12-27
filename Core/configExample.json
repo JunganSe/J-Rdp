@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Config1",
+    "watchFolder": "C:/RdpTestFiles",
+    "watchFile": "foo*.rdp",
+    "moveToFolder": "./Old",
+    "delete": false,
+    "settings": {
+      "desktopwidth:i": "1920",
+      "desktopheight:i": "1080"
+    }
+  },
+  {
+    "name": "Config2",
+    "watchFolder": "C:/RdpTestFiles",
+    "watchFile": "bar*.rdp",
+    "moveToFolder": "./Old",
+    "delete": false,
+    "settings": {
+      "desktopwidth:i": "800",
+      "desktopheight:i": "600"
+    }
+  }
+]

@@ -17,11 +17,4 @@ public class Watcher
     {
         throw new NotImplementedException();
     }
-
-
-
-    private Config GetConfiguration()
-    {
-        throw new NotImplementedException();
-    }
 }
