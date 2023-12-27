@@ -1,11 +1,13 @@
 ﻿using System.Text.Json;
 using Core.Models;
+using NLog;
 
 namespace Core.Components;
 
 public class ConfigManager
 {
     private static readonly Lazy<ConfigManager> _instance = new(() => new ConfigManager());
+    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     private readonly string _path;
     private readonly JsonSerializerOptions _jsonOptions;
@@ -42,7 +44,7 @@ public class ConfigManager
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to parse configurations: {ex.Message}"); // TODO: Use a logger.
+            _logger.Error(ex, "Failed to parse configurations from json string: {json}", json);
             return new List<Config>();
         }
     }
