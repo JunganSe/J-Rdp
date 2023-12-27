@@ -4,6 +4,7 @@
     "watchFolder": "C:/RdpTestFiles",
     "watchFile": "foo*.rdp",
     "moveToFolder": "./Old",
+    "launch": false,
     "delete": false,
     "settings": [
       { "desktopwidth:i": "2560" },

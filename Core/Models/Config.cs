@@ -6,6 +6,7 @@ public class Config
     public string WatchFolder { get; init; }
     public string WatchFile { get; init; }
     public string MoveToFolder { get; init; }
+    public bool Launch { get; set; }
     public bool Delete { get; init; }
     public Dictionary<string, string> Settings { get; init; }
 
@@ -15,6 +16,7 @@ public class Config
         WatchFolder = "";
         WatchFile = "";
         MoveToFolder = "";
+        Launch = false;
         Delete = false;
         Settings = [];
     }
