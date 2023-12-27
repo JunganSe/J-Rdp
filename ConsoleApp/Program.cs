@@ -1,4 +1,4 @@
-﻿namespace RdpRunner;
+﻿namespace ConsoleApp;
 
 internal class Program
 {
