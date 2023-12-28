@@ -6,9 +6,9 @@
     "moveToFolder": "./Old",
     "launch": false,
     "delete": false,
-    "settings": [
-      { "desktopwidth:i": "2560" },
-      { "desktopheight:i": "1600" }
-    ]
+    "settings": {
+      "desktopwidth:i": "1920",
+      "desktopheight:i": "1080"
+    }
   }
 ]
