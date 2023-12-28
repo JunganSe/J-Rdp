@@ -2,11 +2,11 @@
 
 namespace Core.Components;
 
-public class Watcher
+public class Controller
 {
     private readonly IUi _ui;
 
-    public Watcher(IUi ui)
+    public Controller(IUi ui)
     {
         _ui = ui;
     }
