@@ -32,8 +32,18 @@ public class ConfigManager
 
 
 
-    private string ReadFile() => 
-        File.ReadAllText(_path);
+    private string ReadFile()
+    {
+        try
+        {
+            return File.ReadAllText(_path);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to read config file at {path}", _path);
+            return "";
+        }
+    }
 
     private List<Config> Parse(string json)
     {
