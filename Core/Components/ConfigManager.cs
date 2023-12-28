@@ -39,7 +39,7 @@ public class ConfigManager
     {
         try
         {
-            return JsonSerializer.Deserialize<IEnumerable<Config>>(json, _jsonOptions)?.ToList()
+            return JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions)
                 ?? new List<Config>();
         }
         catch (Exception ex)
