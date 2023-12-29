@@ -30,10 +30,9 @@ public class WatcherManager
         string type = e.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {type}: {e.FullPath}");
 
-        if (e.ChangeType.HasFlag(WatcherChangeTypes.Deleted))
-            return;
-
-        fileWatcher.InvokeCallback();
+        bool isFileDeleted = e.ChangeType.HasFlag(WatcherChangeTypes.Deleted);
+        if (!isFileDeleted)
+            fileWatcher.InvokeCallback();
     }
 
     private void OnError(object sender, ErrorEventArgs e)
