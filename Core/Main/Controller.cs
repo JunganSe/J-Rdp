@@ -28,7 +28,7 @@ public class Controller
     public void Start()
     {
         var configWatcher = _watcherManager.GetConfigWatcher(_configDirectory, _configFileName, OnConfigChanged);
-        GetConfigs();
+        UpdateConfigs();
 
         while (true)
             Thread.Sleep(1000);
@@ -36,12 +36,12 @@ public class Controller
 
     public void OnConfigChanged()
     {
-        GetConfigs();
+        UpdateConfigs();
     }
 
 
 
-    private void GetConfigs()
+    private void UpdateConfigs()
     {
         var configs = _configManager.GetConfigs();
         if (configs is null)
