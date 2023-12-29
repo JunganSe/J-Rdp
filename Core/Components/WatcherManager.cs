@@ -12,7 +12,7 @@ public class WatcherManager
         watcher.Path = AppDomain.CurrentDomain.BaseDirectory;
         watcher.Filter = "config.json";
         watcher.EnableRaisingEvents = true;
-        watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.CreationTime;
+        watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
         watcher.Created += OnConfigChanged;
         watcher.Changed += OnConfigChanged;
         watcher.Deleted += OnConfigChanged;
