@@ -6,13 +6,11 @@ namespace Core.Components;
 
 public class ConfigManager
 {
-    private static readonly Lazy<ConfigManager> _instance = new(() => new ConfigManager());
-    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly string _path;
     private readonly JsonSerializerOptions _jsonOptions;
 
-    private ConfigManager()
+    public ConfigManager()
     {
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         string fileName = "config.json";
@@ -21,8 +19,6 @@ public class ConfigManager
     }
 
 
-
-    public static ConfigManager Instance => _instance.Value;
 
     public List<Config> GetConfigs()
     {

@@ -13,7 +13,7 @@ public class Controller
     public Controller(IUi ui)
     {
         _ui = ui;
-        _configManager = ConfigManager.Instance;
+        _configManager = new ConfigManager();
         _watcherManager = new WatcherManager();
     }
 
