@@ -14,7 +14,7 @@ public class ConfigManager
     {
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         string fileName = "config.json";
-        _path = $"{baseDirectory}/{fileName}";
+        _path = baseDirectory + fileName;
         _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, };
     }
 
