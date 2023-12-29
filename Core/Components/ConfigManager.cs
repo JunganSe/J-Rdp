@@ -32,11 +32,13 @@ public class ConfigManager
     {
         try
         {
-            return File.ReadAllText(_path);
+            string json = File.ReadAllText(_path);
+            _logger.Info("Successfully read file: {path}", _path);
+            return json;
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Failed to read config file at {path}", _path);
+            _logger.Error(ex, "Failed to read file: {path}", _path);
             return "";
         }
     }
@@ -45,12 +47,13 @@ public class ConfigManager
     {
         try
         {
-            return JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions)
-                ?? new List<Config>();
+            var configs = JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions);
+            _logger.Info("Successfully parsed configs from json.");
+            return configs ?? new List<Config>();
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Failed to parse configurations from json string: {json}", json);
+            _logger.Error(ex, "Failed to parse configs from json: {json}", json);
             return new List<Config>();
         }
     }

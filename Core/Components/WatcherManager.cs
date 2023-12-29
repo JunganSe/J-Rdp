@@ -28,8 +28,8 @@ public class WatcherManager
         if (sender is not FileWatcher fileWatcher)
             return;
 
-        string type = e.ChangeType.ToString().ToLower();
-        _logger.Info($"Config file {type}: {e.FullPath}");
+        string eventType = e.ChangeType.ToString().ToLower();
+        _logger.Info($"Config file {eventType}: {e.FullPath}");
 
         bool isFileDeleted = e.ChangeType.HasFlag(WatcherChangeTypes.Deleted);
         if (!isFileDeleted)
