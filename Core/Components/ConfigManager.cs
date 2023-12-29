@@ -40,7 +40,7 @@ public class ConfigManager
         try
         {
             string json = File.ReadAllText(_path);
-            _logger.Info("Successfully read file: {path}", _path);
+            _logger.Debug("Successfully read file: {path}", _path);
             return json;
         }
         catch (Exception ex)
@@ -55,7 +55,7 @@ public class ConfigManager
         try
         {
             var configs = JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions);
-            _logger.Info("Successfully parsed configs from json.");
+            _logger.Debug("Successfully parsed configs from json.");
             return configs ?? new List<Config>();
         }
         catch (Exception ex)
