@@ -8,9 +8,10 @@ public class WatcherManager
 
     public FileSystemWatcher GetConfigWatcher(Action callback)
     {
-        var watcher = new FileWatcher(callback);
+        var watcher = new FileWatcher();
         watcher.Path = AppDomain.CurrentDomain.BaseDirectory;
         watcher.Filter = "config.json";
+        watcher.Callback = callback;
         watcher.EnableRaisingEvents = true;
         watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
         watcher.Created += OnConfigChanged;
@@ -32,7 +33,7 @@ public class WatcherManager
 
         bool isFileDeleted = e.ChangeType.HasFlag(WatcherChangeTypes.Deleted);
         if (!isFileDeleted)
-            fileWatcher.InvokeCallback();
+            fileWatcher.Callback?.Invoke();
     }
 
     private void OnError(object sender, ErrorEventArgs e)
