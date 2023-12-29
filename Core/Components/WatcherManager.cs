@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Core.Models;
+using NLog;
 
 namespace Core.Components;
 
@@ -8,7 +9,7 @@ public class WatcherManager
 
     public FileSystemWatcher GetConfigWatcher(Action callback)
     {
-        var watcher = new FileWatcher();
+        var watcher = new ConfigWatcher();
         watcher.Path = AppDomain.CurrentDomain.BaseDirectory;
         watcher.Filter = "config.json";
         watcher.Callback = callback;
@@ -25,7 +26,7 @@ public class WatcherManager
 
     private void OnConfigChanged(object sender, FileSystemEventArgs e)
     {
-        if (sender is not FileWatcher fileWatcher)
+        if (sender is not ConfigWatcher fileWatcher)
             return;
 
         string eventType = e.ChangeType.ToString().ToLower();
