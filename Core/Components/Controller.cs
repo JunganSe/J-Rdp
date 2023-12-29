@@ -26,9 +26,8 @@ public class Controller
 
     public void Start()
     {
-        _configs = _configManager.GetConfigs();
-        _lastConfigChange = DateTime.Now;
         var configWatcher = _watcherManager.GetConfigWatcher(OnConfigChanged);
+        GetConfigs();
 
         while (true)
             Thread.Sleep(1000);
@@ -42,12 +41,17 @@ public class Controller
             return;
         }
 
+        GetConfigs();
+    }
+
+
+
+    private void GetConfigs()
+    {
         _configs = _configManager.GetConfigs();
         _lastConfigChange = DateTime.Now;
         _logger.Info("Configs updated.");
     }
-
-
 
     private bool DebounceConfig() // True if the last config change was within {DEBOUNCE_MS} milliseconds. 
     {
