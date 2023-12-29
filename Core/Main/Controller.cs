@@ -8,6 +8,8 @@ public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly IUi _ui;
+    private readonly string _configDirectory;
+    private readonly string _configFileName;
     private readonly ConfigManager _configManager;
     private readonly WatcherManager _watcherManager;
     private List<Config> _configs = [];
@@ -15,7 +17,9 @@ public class Controller
     public Controller(IUi ui)
     {
         _ui = ui;
-        _configManager = new ConfigManager();
+        _configDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        _configFileName = "config.json";
+        _configManager = new ConfigManager(_configDirectory + _configFileName);
         _watcherManager = new WatcherManager();
     }
 
@@ -23,7 +27,7 @@ public class Controller
 
     public void Start()
     {
-        var configWatcher = _watcherManager.GetConfigWatcher(OnConfigChanged);
+        var configWatcher = _watcherManager.GetConfigWatcher(_configDirectory, _configFileName, OnConfigChanged);
         GetConfigs();
 
         while (true)

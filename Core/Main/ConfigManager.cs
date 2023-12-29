@@ -10,12 +10,10 @@ public class ConfigManager
     private readonly string _path;
     private readonly JsonSerializerOptions _jsonOptions;
 
-    public ConfigManager()
+    public ConfigManager(string fullPath)
     {
-        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        string fileName = "config.json";
-        _path = baseDirectory + fileName;
-        _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, };
+        _path = fullPath;
+        _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
     }
 
 

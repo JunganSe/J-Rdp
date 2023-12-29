@@ -7,11 +7,11 @@ public class WatcherManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    public FileSystemWatcher GetConfigWatcher(Action callback)
+    public ConfigWatcher GetConfigWatcher(string path, string filter, Action callback)
     {
         var watcher = new ConfigWatcher();
-        watcher.Path = AppDomain.CurrentDomain.BaseDirectory;
-        watcher.Filter = "config.json";
+        watcher.Path = path;
+        watcher.Filter = filter;
         watcher.Callback = callback;
         watcher.EnableRaisingEvents = true;
         watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
