@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using NLog;
 
 namespace Core.Components;
 
@@ -7,6 +8,7 @@ public class Controller
 {
     private const int DEBOUNCE_MS = 500;
 
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly IUi _ui;
     private readonly ConfigManager _configManager;
     private readonly WatcherManager _watcherManager;
@@ -35,10 +37,14 @@ public class Controller
     public void OnConfigChanged()
     {
         if (DebounceConfig())
+        {
+            _logger.Trace("Debounced config change.");
             return;
+        }
 
         _configs = _configManager.GetConfigs();
         _lastConfigChange = DateTime.Now;
+        _logger.Info("Configs updated.");
     }
 
 
