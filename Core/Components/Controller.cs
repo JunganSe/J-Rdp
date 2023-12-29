@@ -48,7 +48,14 @@ public class Controller
 
     private void GetConfigs()
     {
-        _configs = _configManager.GetConfigs();
+        var configs = _configManager.GetConfigs();
+        if (configs is null)
+        {
+            _logger.Warn("Failed to retrieve configs");
+            return;
+        }
+
+        _configs = configs;
         _lastConfigChange = DateTime.Now;
         _logger.Info("Configs updated.");
     }
@@ -56,7 +63,7 @@ public class Controller
     private bool DebounceConfig() // True if the last config change was within {DEBOUNCE_MS} milliseconds. 
     {
         var time = DateTime.Now - _lastConfigChange;
-        Console.WriteLine($"{DateTime.Now} - {time}");
+        _logger.Trace($"Time since last config change: {time.TotalSeconds} seconds");
         return (time.TotalMilliseconds < DEBOUNCE_MS);
     }
 }

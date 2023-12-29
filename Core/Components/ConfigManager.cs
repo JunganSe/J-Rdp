@@ -20,10 +20,17 @@ public class ConfigManager
 
 
 
-    public List<Config> GetConfigs()
+    public List<Config>? GetConfigs()
     {
-        string json = ReadFile();
-        return Parse(json);
+        try
+        {
+            string json = ReadFile();
+            return Parse(json);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
 
@@ -39,7 +46,7 @@ public class ConfigManager
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to read file: {path}", _path);
-            return "";
+            throw;
         }
     }
 
@@ -54,7 +61,7 @@ public class ConfigManager
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to parse configs from json: {json}", json);
-            return new List<Config>();
+            throw;
         }
     }
 }
