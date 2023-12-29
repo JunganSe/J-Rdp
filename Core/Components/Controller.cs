@@ -14,7 +14,7 @@ public class Controller
     {
         _ui = ui;
         _configManager = ConfigManager.Instance;
-        _watcherManager = new WatcherManager(this);
+        _watcherManager = new WatcherManager();
     }
 
 
@@ -22,7 +22,7 @@ public class Controller
     public void Start()
     {
         _configs = _configManager.GetConfigs();
-        var configWatcher = _watcherManager.GetConfigWatcher();
+        var configWatcher = _watcherManager.GetConfigWatcher(OnConfigChanged);
 
         while (true)
             Thread.Sleep(1000);

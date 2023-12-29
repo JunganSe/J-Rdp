@@ -5,18 +5,10 @@ namespace Core.Components;
 public class WatcherManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly Controller _controller;
 
-    public WatcherManager(Controller controller)
+    public FileSystemWatcher GetConfigWatcher(Action callback)
     {
-        _controller = controller;
-    }
-
-
-
-    public FileSystemWatcher GetConfigWatcher()
-    {
-        var watcher = new FileSystemWatcher();
+        var watcher = new FileWatcher(callback);
         watcher.Path = AppDomain.CurrentDomain.BaseDirectory;
         watcher.Filter = "config.json";
         watcher.EnableRaisingEvents = true;
@@ -32,9 +24,16 @@ public class WatcherManager
 
     private void OnConfigChanged(object sender, FileSystemEventArgs e)
     {
+        if (sender is not FileWatcher fileWatcher)
+            return;
+
         string type = e.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {type}: {e.FullPath}");
-        _controller.OnConfigChanged();
+
+        if (e.ChangeType.HasFlag(WatcherChangeTypes.Deleted))
+            return;
+
+        fileWatcher.InvokeCallback();
     }
 
     private void OnError(object sender, ErrorEventArgs e)
