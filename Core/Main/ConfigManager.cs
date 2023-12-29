@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
-using Core.Models;
+using Core.Components;
 using NLog;
 
-namespace Core.Components;
+namespace Core.Main;
 
 public class ConfigManager
 {

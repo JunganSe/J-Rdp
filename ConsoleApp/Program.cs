@@ -1,4 +1,4 @@
-﻿using Core.Components;
+﻿using Core.Main;
 
 namespace ConsoleApp;
 
