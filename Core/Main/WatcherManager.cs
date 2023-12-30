@@ -22,6 +22,21 @@ public class WatcherManager
         return watcher;
     }
 
+    public FileWatcher GetFileWatcher(string path, string filter, Action<string> callback)
+    {
+        var watcher = new FileWatcher();
+        watcher.Path = path;
+        watcher.Filter = filter;
+        watcher.Callback = callback;
+        watcher.EnableRaisingEvents = true;
+        watcher.IncludeSubdirectories = false;
+        watcher.NotifyFilter = NotifyFilters.FileName;
+        watcher.Created += OnFileDetected;
+        watcher.Renamed += OnFileDetected;
+        watcher.Error += OnError;
+        return watcher;
+    }
+
 
 
     private void OnConfigChanged(object sender, FileSystemEventArgs e)
@@ -35,6 +50,15 @@ public class WatcherManager
         bool isFileDeleted = e.ChangeType.HasFlag(WatcherChangeTypes.Deleted);
         if (!isFileDeleted)
             fileWatcher.Callback?.Invoke();
+    }
+
+    private void OnFileDetected(object sender, FileSystemEventArgs e)
+    {
+        if (sender is not FileWatcher fileWatcher)
+            return;
+
+        _logger.Info($"New file detected: {e.FullPath}");
+        fileWatcher.Callback?.Invoke(e.FullPath);
     }
 
     private void OnError(object sender, ErrorEventArgs e)

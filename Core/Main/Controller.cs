@@ -13,6 +13,7 @@ public class Controller
     private readonly ConfigManager _configManager;
     private readonly WatcherManager _watcherManager;
     private List<Config> _configs = [];
+    private List<FileWatcher> _fileWatchers = [];
 
     public Controller(IUi ui)
     {
@@ -29,6 +30,7 @@ public class Controller
     {
         var configWatcher = _watcherManager.GetConfigWatcher(_configDirectory, _configFileName, OnConfigChanged);
         UpdateConfigs();
+        SetFileWatchers();
 
         while (true)
             Thread.Sleep(1000);
@@ -37,6 +39,12 @@ public class Controller
     public void OnConfigChanged()
     {
         UpdateConfigs();
+        SetFileWatchers();
+    }
+
+    public void OnFileDetected(string fullPath)
+    {
+        throw new NotImplementedException();
     }
 
 
@@ -52,5 +60,24 @@ public class Controller
 
         _configs = configs;
         _logger.Info("Configs updated.");
+    }
+
+    private void ClearFileWatchers()
+    {
+        // TODO: Avsluta och ta bort befintliga watchers.
+    }
+
+    private void SetFileWatchers()
+    {
+        ClearFileWatchers();
+        foreach (var config in _configs)
+        {
+            // TODO: Skapa mapp config.WatchFolder om den inte finns. Gör det med en annan klass.
+            string folder = config.WatchFolder;
+            string fileName = config.WatchFile;
+            var watcher = _watcherManager.GetFileWatcher(folder, fileName, OnFileDetected);
+            _fileWatchers.Add(watcher);
+            _logger.Info($"Watching for '{fileName}' at {folder}"); // TODO: Gör ToString() i Config och använd den.
+        }
     }
 }
