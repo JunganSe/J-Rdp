@@ -79,21 +79,30 @@ public class Controller
         ClearFileWatchers();
         foreach (var config in _configs)
         {
-            string folder = config.WatchFolder;
-            if (!Directory.Exists(folder))
+            bool success = TryAddFileWatcher(config);
+            if (!success)
             {
-                _logger.Error($"Config '{config.Name}' tried to watch folder that does not exist: {folder}");
                 // TODO: Lägg bevakning på parent-mappen och skapa filewatcher om mappen dyker upp.
-                continue;
-            }
-
-            string filter = config.Filter;
-            var watcher = _watcherManager.GetFileWatcher(folder, filter, OnFileDetected);
-            if (watcher != null)
-            {
-                _fileWatchers.Add(watcher);
-                _logger.Info($"Watching for '{filter}' at {folder}");
             }
         }
+    }
+
+    private bool TryAddFileWatcher(Config config)
+    {
+        string folder = config.WatchFolder;
+        if (!Directory.Exists(folder))
+        {
+            _logger.Warn($"Config '{config.Name}' tried to watch folder that does not exist: {folder}");
+            return false;
+        }
+
+        string filter = config.Filter;
+        var watcher = _watcherManager.GetFileWatcher(folder, filter, OnFileDetected);
+        if (watcher is null)
+            return false;
+
+        _fileWatchers.Add(watcher);
+        _logger.Info($"Watching for '{filter}' at {folder}");
+        return true;
     }
 }
