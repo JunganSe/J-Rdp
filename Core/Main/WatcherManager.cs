@@ -17,7 +17,6 @@ public class WatcherManager
         watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
         watcher.Created += OnConfigChanged;
         watcher.Changed += OnConfigChanged;
-        watcher.Deleted += OnConfigChanged;
         watcher.Error += OnError;
         return watcher;
     }
@@ -47,9 +46,7 @@ public class WatcherManager
         string eventType = e.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {eventType}: {e.FullPath}");
 
-        bool isFileDeleted = e.ChangeType.HasFlag(WatcherChangeTypes.Deleted);
-        if (!isFileDeleted)
-            fileWatcher.Callback?.Invoke();
+        fileWatcher.Callback?.Invoke();
     }
 
     private void OnFileDetected(object sender, FileSystemEventArgs e)
