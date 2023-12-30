@@ -75,10 +75,10 @@ public class Controller
         {
             // TODO: Skapa mapp config.WatchFolder om den inte finns. Gör det med en annan klass.
             string folder = config.WatchFolder;
-            string fileName = config.WatchFile;
-            var watcher = _watcherManager.GetFileWatcher(folder, fileName, OnFileDetected);
+            string fileNameFilter = config.Filter;
+            var watcher = _watcherManager.GetFileWatcher(folder, fileNameFilter, OnFileDetected);
             _fileWatchers.Add(watcher);
-            _logger.Info($"Watching for '{fileName}' at {folder}"); // TODO: Gör ToString() i Config och använd den.
+            _logger.Info($"Watching for '{fileNameFilter}' at {folder}"); // TODO: Gör ToString() i Config och använd den.
         }
     }
 }

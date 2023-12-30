@@ -2,7 +2,7 @@
   {
     "name": "Config1",
     "watchFolder": "C:/RdpTestFiles",
-    "watchFile": "foo*.rdp",
+    "filter": "foo*.txt",
     "moveToFolder": "./Old",
     "launch": false,
     "delete": false,
@@ -14,7 +14,7 @@
   {
     "name": "Config2",
     "watchFolder": "C:/RdpTestFiles",
-    "watchFile": "bar*.rdp",
+    "filter": "bar*.txt",
     "moveToFolder": "./Old",
     "launch": false,
     "delete": false,

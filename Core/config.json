@@ -2,7 +2,7 @@
   {
     "name": "MyConfiguration",
     "watchFolder": "C:/RdpTestFiles",
-    "watchFile": "foo*.rdp",
+    "filter": "foo*.txt",
     "moveToFolder": "./Old",
     "launch": false,
     "delete": false,
