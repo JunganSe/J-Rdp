@@ -65,7 +65,13 @@ public class Controller
 
     private void ClearFileWatchers()
     {
-        // TODO: Avsluta och ta bort befintliga watchers.
+        for (int i = _fileWatchers.Count - 1; i >= 0; i--)
+        {
+            var watcher = _fileWatchers[i];
+            _fileWatchers.Remove(watcher);
+            watcher.EnableRaisingEvents = false;
+            watcher.Dispose();
+        }
     }
 
     private void SetFileWatchers()
