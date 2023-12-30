@@ -14,6 +14,7 @@ public class WatcherManager
         watcher.Filter = filter;
         watcher.Callback = callback;
         watcher.EnableRaisingEvents = true;
+        watcher.IncludeSubdirectories = false;
         watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
         watcher.Created += OnConfigChanged;
         watcher.Changed += OnConfigChanged;
