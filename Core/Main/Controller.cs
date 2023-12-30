@@ -80,7 +80,7 @@ public class Controller
             if (watcher != null)
             {
                 _fileWatchers.Add(watcher);
-                _logger.Info($"Watching for '{fileNameFilter}' at {folder}"); // TODO: Gör ToString() i Config och använd den.
+                _logger.Info($"Watching for '{fileNameFilter}' at {folder}");
             }
         }
     }
