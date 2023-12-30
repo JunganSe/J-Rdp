@@ -4,7 +4,7 @@ using NLog;
 
 namespace Core.Main;
 
-public class ConfigManager
+internal class ConfigManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly string _path;

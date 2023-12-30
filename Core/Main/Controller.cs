@@ -37,13 +37,13 @@ public class Controller
             Thread.Sleep(1000);
     }
 
-    public void OnConfigChanged()
+    internal void OnConfigChanged()
     {
         UpdateConfigs();
         SetFileWatchers();
     }
 
-    public void OnFileDetected(string fullPath)
+    internal void OnFileDetected(string fullPath)
     {
         throw new NotImplementedException();
     }

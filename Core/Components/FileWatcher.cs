@@ -1,6 +1,6 @@
 ﻿namespace Core.Components;
 
-public class FileWatcher : FileSystemWatcher
+internal class FileWatcher : FileSystemWatcher
 {
     public Action<string>? Callback { get; set; }
 }

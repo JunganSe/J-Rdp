@@ -3,7 +3,7 @@ using NLog;
 
 namespace Core.Main;
 
-public class WatcherManager
+internal class WatcherManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

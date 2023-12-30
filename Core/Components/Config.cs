@@ -1,6 +1,6 @@
 ﻿namespace Core.Components;
 
-public class Config
+internal class Config
 {
     public string Name { get; set; }
     public string WatchFolder { get; init; }
