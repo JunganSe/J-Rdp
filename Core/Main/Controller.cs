@@ -55,7 +55,7 @@ public class Controller
         var configs = _configManager.GetConfigs();
         if (configs is null)
         {
-            _logger.Warn("Failed to retrieve configs");
+            _logger.Warn("Failed to update configs.");
             return;
         }
 
