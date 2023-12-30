@@ -77,8 +77,11 @@ public class Controller
             string folder = config.WatchFolder;
             string fileNameFilter = config.Filter;
             var watcher = _watcherManager.GetFileWatcher(folder, fileNameFilter, OnFileDetected);
-            _fileWatchers.Add(watcher);
-            _logger.Info($"Watching for '{fileNameFilter}' at {folder}"); // TODO: Gör ToString() i Config och använd den.
+            if (watcher != null)
+            {
+                _fileWatchers.Add(watcher);
+                _logger.Info($"Watching for '{fileNameFilter}' at {folder}"); // TODO: Gör ToString() i Config och använd den.
+            }
         }
     }
 }
