@@ -18,8 +18,9 @@ internal class WatcherManager
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = false;
             watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
-            watcher.Created += OnConfigChanged;
-            watcher.Changed += OnConfigChanged;
+            watcher.Created += watcher.OnChanged;
+            watcher.Changed += watcher.OnChanged;
+            watcher.Renamed += watcher.OnRenamed;
             watcher.Error += OnError;
             return watcher;
         }
@@ -42,8 +43,8 @@ internal class WatcherManager
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = false;
             watcher.NotifyFilter = NotifyFilters.FileName;
-            watcher.Created += OnFileDetected;
-            watcher.Renamed += OnFileDetected;
+            watcher.Created += watcher.OnDetected;
+            watcher.Renamed += watcher.OnRenamed;
             watcher.Error += OnError;
             return watcher;
         }
@@ -55,26 +56,6 @@ internal class WatcherManager
     }
 
 
-
-    private void OnConfigChanged(object sender, FileSystemEventArgs e)
-    {
-        if (sender is not ConfigWatcher fileWatcher)
-            return;
-
-        string eventType = e.ChangeType.ToString().ToLower();
-        _logger.Info($"Config file {eventType}: {e.FullPath}");
-
-        fileWatcher.Callback?.Invoke();
-    }
-
-    private void OnFileDetected(object sender, FileSystemEventArgs e)
-    {
-        if (sender is not FileWatcher fileWatcher)
-            return;
-
-        _logger.Info($"New file detected: {e.FullPath}");
-        fileWatcher.Callback?.Invoke(e.FullPath);
-    }
 
     private void OnError(object sender, ErrorEventArgs e)
     {
