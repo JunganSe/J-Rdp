@@ -4,11 +4,11 @@ namespace Core.Components;
 
 internal class ConfigWatcher : FileSystemWatcher
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public Action? Callback { get; set; }
 
-    public void OnChanged(object sender, FileSystemEventArgs e)
+    public static void OnChanged(object sender, FileSystemEventArgs e)
     {
         if (sender is not ConfigWatcher watcher)
             return;
@@ -19,7 +19,7 @@ internal class ConfigWatcher : FileSystemWatcher
         watcher.Callback?.Invoke();
     }
 
-    public void OnRenamed(object sender, FileSystemEventArgs e)
+    public static void OnRenamed(object sender, FileSystemEventArgs e)
     {
         // TODO: Kontrollera att filen fortfarande matchar filtret.
 

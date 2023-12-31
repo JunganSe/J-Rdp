@@ -18,9 +18,9 @@ internal class WatcherManager
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = false;
             watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
-            watcher.Created += watcher.OnChanged;
-            watcher.Changed += watcher.OnChanged;
-            watcher.Renamed += watcher.OnRenamed;
+            watcher.Created += ConfigWatcher.OnChanged;
+            watcher.Changed += ConfigWatcher.OnChanged;
+            watcher.Renamed += ConfigWatcher.OnRenamed;
             watcher.Error += OnError;
             return watcher;
         }
@@ -43,8 +43,8 @@ internal class WatcherManager
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = false;
             watcher.NotifyFilter = NotifyFilters.FileName;
-            watcher.Created += watcher.OnDetected;
-            watcher.Renamed += watcher.OnRenamed;
+            watcher.Created += FileWatcher.OnDetected;
+            watcher.Renamed += FileWatcher.OnRenamed;
             watcher.Error += OnError;
             return watcher;
         }
