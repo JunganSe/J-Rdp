@@ -1,5 +1,4 @@
-﻿using Core.Interfaces;
-using Core.Components;
+﻿using Core.Components;
 using NLog;
 
 namespace Core.Main;
@@ -7,7 +6,6 @@ namespace Core.Main;
 public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly IUi _ui;
     private readonly string _configDirectory;
     private readonly string _configFileName;
     private readonly ConfigManager _configManager;
@@ -15,9 +13,8 @@ public class Controller
     private List<Config> _configs = [];
     private List<FileWatcher> _fileWatchers = [];
 
-    public Controller(IUi ui)
+    public Controller()
     {
-        _ui = ui;
         _configDirectory = AppDomain.CurrentDomain.BaseDirectory;
         _configFileName = "config.json";
         _configManager = new ConfigManager(_configDirectory + _configFileName);
