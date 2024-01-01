@@ -46,6 +46,6 @@ internal class FileWatcher : FileSystemWatcher
     {
         var exception = e.GetException();
         if (exception != null)
-            _logger.Warn(exception);
+            _logger.Error(exception);
     }
 }
