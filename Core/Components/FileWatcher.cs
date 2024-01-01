@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Core.Main;
+using NLog;
 
 namespace Core.Components;
 
@@ -19,8 +20,10 @@ internal class FileWatcher : FileSystemWatcher
 
     public static void OnRenamed(object sender, FileSystemEventArgs e)
     {
-        // TODO: Kontrollera att filen fortfarande matchar filtret.
-
-        OnDetected(sender, e);
+        if (sender is not FileWatcher watcher)
+            return;
+        
+        if (FileManager.FileNameMatchesFilter(e.FullPath, watcher.Filter))
+            OnDetected(watcher, e);
     }
 }
