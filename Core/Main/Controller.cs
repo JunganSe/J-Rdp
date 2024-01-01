@@ -10,8 +10,8 @@ public class Controller
     private readonly string _configFileName;
     private readonly ConfigManager _configManager;
     private readonly WatcherManager _watcherManager;
+    private readonly List<FileWatcher> _fileWatchers = [];
     private List<Config> _configs = [];
-    private List<FileWatcher> _fileWatchers = [];
 
     public Controller()
     {
