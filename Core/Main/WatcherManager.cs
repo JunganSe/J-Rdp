@@ -30,7 +30,6 @@ internal class WatcherManager
             _logger.Error(ex, "Failed to create config watcher.");
             return null;
         }
-
     }
 
     public FileWatcher? GetFileWatcher(string path, string filter, Action<string> callback)

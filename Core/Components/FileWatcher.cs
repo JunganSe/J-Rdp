@@ -9,6 +9,8 @@ internal class FileWatcher : FileSystemWatcher
 
     public Action<string>? Callback { get; set; }
 
+
+
     public static void OnDetected(object sender, FileSystemEventArgs e)
     {
         if (sender is not FileWatcher watcher)

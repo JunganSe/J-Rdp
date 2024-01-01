@@ -10,5 +10,4 @@ internal class FileManager
         return (!fileName.IsEmpty
             && FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true));
     }
-
 }

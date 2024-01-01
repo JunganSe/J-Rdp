@@ -9,6 +9,8 @@ internal class ConfigWatcher : FileSystemWatcher
 
     public Action? Callback { get; set; }
 
+
+
     public static void OnChanged(object sender, FileSystemEventArgs e)
     {
         if (sender is not ConfigWatcher watcher)
