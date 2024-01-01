@@ -26,7 +26,7 @@ public class Controller
     public void Start()
     {
         var configWatcher = new ConfigWatcher(_configDirectory, _configFileName, OnConfigChanged);
-        _logger.Debug($"Watching for '{_configFileName}' at {_configDirectory}");
+        _logger.Debug($"Watching for config file '{_configFileName}' in {_configDirectory}");
         UpdateConfigs();
         SetFileWatchers();
         LogWatchers();
