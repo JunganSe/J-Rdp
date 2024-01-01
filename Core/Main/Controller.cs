@@ -42,7 +42,7 @@ public class Controller
 
     internal void OnFileDetected(string fullPath)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(); // TODO: OnFileDetected
     }
 
 
@@ -94,16 +94,14 @@ public class Controller
             return false;
         }
 
-        string filter = config.Filter;
-        var watcher = new FileWatcher(folder, filter, OnFileDetected);
-
+        var watcher = new FileWatcher(folder, config.Filter, OnFileDetected);
         _fileWatchers.Add(watcher);
         return true;
     }
 
     private void LogWatchers()
     {
-        string filterList = (_configs.Any())
+        string filterList = (_configs.Count > 0)
             ? string.Join("", _configs.Select(c => $"\n  '{c.Filter}' in {c.WatchFolder}"))
             : "(nothing)";
         _logger.Info($"Currently watching for: {filterList}");
