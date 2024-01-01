@@ -5,27 +5,47 @@ namespace Core.Components;
 
 internal class FileWatcher : FileSystemWatcher
 {
-    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public Action<string>? Callback { get; set; }
 
-
-
-    public static void OnDetected(object sender, FileSystemEventArgs e)
+    public FileWatcher(string path, string filter, Action<string> callback)
     {
-        if (sender is not FileWatcher watcher)
+        Path = path;
+        Filter = filter;
+        Callback = callback;
+        EnableRaisingEvents = true;
+        IncludeSubdirectories = false;
+        NotifyFilter = NotifyFilters.FileName;
+        Created += OnDetected;
+        Renamed += OnRenamed;
+        Error += OnError;
+    }
+
+
+
+    private void OnDetected(object sender, FileSystemEventArgs e)
+    {
+        if (sender != this)
             return;
 
         _logger.Info($"File detected: {e.FullPath}");
-        watcher.Callback?.Invoke(e.FullPath);
+        Callback?.Invoke(e.FullPath);
     }
 
-    public static void OnRenamed(object sender, FileSystemEventArgs e)
+    private void OnRenamed(object sender, FileSystemEventArgs e)
     {
-        if (sender is not FileWatcher watcher)
+        if (sender != this)
             return;
-        
-        if (FileManager.FileNameMatchesFilter(e.FullPath, watcher.Filter))
-            OnDetected(watcher, e);
+
+        if (FileManager.FileNameMatchesFilter(e.FullPath, Filter))
+            OnDetected(this, e);
+    }
+
+    private void OnError(object sender, ErrorEventArgs e)
+    {
+        var exception = e.GetException();
+        if (exception != null)
+            _logger.Warn(exception);
     }
 }

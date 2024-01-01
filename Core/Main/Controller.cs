@@ -97,10 +97,7 @@ public class Controller
         }
 
         string filter = config.Filter;
-        var watcher = _watcherManager.GetFileWatcher(folder, filter, OnFileDetected);
-
-        if (watcher is null)
-            return false;
+        var watcher = new FileWatcher(folder, filter, OnFileDetected);
 
         _fileWatchers.Add(watcher);
         return true;
