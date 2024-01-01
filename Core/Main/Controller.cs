@@ -56,6 +56,7 @@ public class Controller
         if (configs is null)
         {
             _logger.Warn("Failed to update configs.");
+            _configs.Clear();
             return;
         }
 

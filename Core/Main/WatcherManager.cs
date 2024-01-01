@@ -21,6 +21,7 @@ internal class WatcherManager
             watcher.Created += ConfigWatcher.OnChanged;
             watcher.Changed += ConfigWatcher.OnChanged;
             watcher.Renamed += ConfigWatcher.OnRenamed;
+            watcher.Deleted += ConfigWatcher.OnMissing;
             watcher.Error += OnError;
             return watcher;
         }

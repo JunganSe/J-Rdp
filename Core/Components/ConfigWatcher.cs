@@ -27,5 +27,19 @@ internal class ConfigWatcher : FileSystemWatcher
 
         if (FileManager.FileNameMatchesFilter(e.FullPath, watcher.Filter))
             OnChanged(watcher, e);
+        else
+            OnMissing(watcher, e);
+    }
+
+    public static void OnMissing(object sender, FileSystemEventArgs e)
+    {
+        if (sender is not ConfigWatcher watcher)
+            return;
+
+        var folderPath = System.IO.Path.GetDirectoryName(e.FullPath);
+        var fileName = System.IO.Path.GetFileName(e.FullPath);
+        _logger.Warn($"Config file '{fileName}' not found in: {folderPath}");
+
+        watcher.Callback?.Invoke();
     }
 }
