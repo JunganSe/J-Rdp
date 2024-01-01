@@ -5,13 +5,28 @@ namespace Core.Components;
 
 internal class ConfigWatcher : FileSystemWatcher
 {
-    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public Action? Callback { get; set; }
 
+    public ConfigWatcher(string path, string filter, Action callback)
+    {
+        Path = path;
+        Filter = filter;
+        Callback = callback;
+        EnableRaisingEvents = true;
+        IncludeSubdirectories = false;
+        NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
+        Created += OnChanged;
+        Changed += OnChanged;
+        Renamed += OnRenamed;
+        Deleted += OnMissing;
+        Error += OnError;
+    }
 
 
-    public static void OnChanged(object sender, FileSystemEventArgs e)
+
+    private void OnChanged(object sender, FileSystemEventArgs e)
     {
         if (sender is not ConfigWatcher watcher)
             return;
@@ -22,7 +37,7 @@ internal class ConfigWatcher : FileSystemWatcher
         watcher.Callback?.Invoke();
     }
 
-    public static void OnRenamed(object sender, FileSystemEventArgs e)
+    private void OnRenamed(object sender, FileSystemEventArgs e)
     {
         if (sender is not ConfigWatcher watcher)
             return;
@@ -33,7 +48,7 @@ internal class ConfigWatcher : FileSystemWatcher
             OnMissing(watcher, e);
     }
 
-    public static void OnMissing(object sender, FileSystemEventArgs e)
+    private void OnMissing(object sender, FileSystemEventArgs e)
     {
         if (sender is not ConfigWatcher watcher)
             return;
@@ -43,5 +58,13 @@ internal class ConfigWatcher : FileSystemWatcher
         _logger.Warn($"Config file '{fileName}' not found in: {folderPath}");
 
         watcher.Callback?.Invoke();
+    }
+
+    private void OnError(object sender, ErrorEventArgs e)
+    {
+        var exception = e.GetException();
+        if (exception == null)
+            return;
+        _logger.Warn(exception);
     }
 }
