@@ -28,43 +28,39 @@ internal class ConfigWatcher : FileSystemWatcher
 
     private void OnChanged(object sender, FileSystemEventArgs e)
     {
-        if (sender is not ConfigWatcher watcher)
+        if (sender != this)
             return;
 
         string eventType = e.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {eventType}: {e.FullPath}");
 
-        watcher.Callback?.Invoke();
+        Callback?.Invoke();
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs e)
     {
-        if (sender is not ConfigWatcher watcher)
+        if (sender != this)
             return;
 
-        if (FileManager.FileNameMatchesFilter(e.FullPath, watcher.Filter))
-            OnChanged(watcher, e);
+        if (FileManager.FileNameMatchesFilter(e.FullPath, Filter))
+            OnChanged(this, e);
         else
-            OnMissing(watcher, e);
+            OnMissing(this, e);
     }
 
     private void OnMissing(object sender, FileSystemEventArgs e)
     {
-        if (sender is not ConfigWatcher watcher)
+        if (sender != this)
             return;
 
-        var folderPath = System.IO.Path.GetDirectoryName(e.FullPath);
-        var fileName = System.IO.Path.GetFileName(e.FullPath);
-        _logger.Warn($"Config file '{fileName}' not found in: {folderPath}");
-
-        watcher.Callback?.Invoke();
+        _logger.Warn($"Config file '{Filter}' not found in {Path}");
+        Callback?.Invoke();
     }
 
     private void OnError(object sender, ErrorEventArgs e)
     {
         var exception = e.GetException();
-        if (exception == null)
-            return;
-        _logger.Warn(exception);
+        if (exception != null)
+            _logger.Warn(exception);
     }
 }
