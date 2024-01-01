@@ -9,7 +9,6 @@ public class Controller
     private readonly string _configDirectory;
     private readonly string _configFileName;
     private readonly ConfigManager _configManager;
-    private readonly WatcherManager _watcherManager;
     private readonly List<FileWatcher> _fileWatchers = [];
     private List<Config> _configs = [];
 
@@ -18,7 +17,6 @@ public class Controller
         _configDirectory = AppDomain.CurrentDomain.BaseDirectory;
         _configFileName = "config.json";
         _configManager = new ConfigManager(_configDirectory + _configFileName);
-        _watcherManager = new WatcherManager();
     }
 
 
