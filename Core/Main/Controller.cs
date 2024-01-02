@@ -27,7 +27,7 @@ public class Controller
         _logger.Debug($"Watching for config file '{_configFileName}' in {_configDirectory}");
         UpdateConfigs();
         SetFileWatchers();
-        LogWatchers();
+        LogWatchersSummary();
 
         while (true)
             Thread.Sleep(1000);
@@ -37,7 +37,7 @@ public class Controller
     {
         UpdateConfigs();
         SetFileWatchers();
-        LogWatchers();
+        LogWatchersSummary();
     }
 
     internal void OnFileDetected(string fullPath)
@@ -99,7 +99,7 @@ public class Controller
         return true;
     }
 
-    private void LogWatchers()
+    private void LogWatchersSummary()
     {
         string filterList = (_configs.Count > 0)
             ? string.Join("", _configs.Select(c => $"\n  '{c.Filter}' in {c.WatchFolder}"))
