@@ -7,6 +7,7 @@ internal class FolderWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly string _fullTargetPath;
+    private readonly string _currentTargetPath;
 
     public FolderWatcher(string path, string fileNameFilter)
     {
@@ -21,6 +22,7 @@ internal class FolderWatcher : FileSystemWatcher
         Renamed += OnRenamed;
         Error += OnError;
 
+        _currentTargetPath = System.IO.Path.Combine(Path, Filter);
         _logger.Info($"Watching for folder '{Filter}' in: {Path}");
     }
 
@@ -38,10 +40,12 @@ internal class FolderWatcher : FileSystemWatcher
         }
     }
 
-    private void OnRenamed(object sender, FileSystemEventArgs args)
+    private void OnRenamed(object sender, RenamedEventArgs args)
     {
-        // TODO: Kontrollera att det stämmer.
-        OnDetected(this, args);
+        string found = new DirectoryInfo(args.FullPath).FullName.ToUpper();
+        string target = new DirectoryInfo(_currentTargetPath).FullName.ToUpper();
+        if (found == target)
+            OnDetected(this, args);
     }
 
     private void OnError(object sender, ErrorEventArgs args)
