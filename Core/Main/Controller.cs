@@ -81,6 +81,7 @@ public class Controller
             if (!success)
             {
                 // TODO: Lägg bevakning på parent-mappen och skapa filewatcher om mappen dyker upp.
+                var folderWatcher = new FolderWatcher(config.WatchFolder, config.Filter);
             }
         }
     }
