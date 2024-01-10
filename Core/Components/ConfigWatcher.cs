@@ -26,29 +26,29 @@ internal class ConfigWatcher : FileSystemWatcher
 
 
 
-    private void OnChanged(object sender, FileSystemEventArgs e)
+    private void OnChanged(object sender, FileSystemEventArgs args)
     {
         if (sender != this)
             return;
 
-        string eventType = e.ChangeType.ToString().ToLower();
-        _logger.Info($"Config file {eventType}: {e.FullPath}");
+        string eventType = args.ChangeType.ToString().ToLower();
+        _logger.Info($"Config file {eventType}: {args.FullPath}");
 
         Callback?.Invoke();
     }
 
-    private void OnRenamed(object sender, FileSystemEventArgs e)
+    private void OnRenamed(object sender, FileSystemEventArgs args)
     {
         if (sender != this)
             return;
 
-        if (FileManager.FileNameMatchesFilter(e.FullPath, Filter))
-            OnChanged(this, e);
+        if (FileManager.FileNameMatchesFilter(args.FullPath, Filter))
+            OnChanged(this, args);
         else
-            OnMissing(this, e);
+            OnMissing(this, args);
     }
 
-    private void OnMissing(object sender, FileSystemEventArgs e)
+    private void OnMissing(object sender, FileSystemEventArgs args)
     {
         if (sender != this)
             return;
@@ -57,9 +57,9 @@ internal class ConfigWatcher : FileSystemWatcher
         Callback?.Invoke();
     }
 
-    private void OnError(object sender, ErrorEventArgs e)
+    private void OnError(object sender, ErrorEventArgs args)
     {
-        var exception = e.GetException();
+        var exception = args.GetException();
         if (exception != null)
             _logger.Error(exception);
     }

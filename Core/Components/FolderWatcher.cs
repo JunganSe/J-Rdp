@@ -26,7 +26,7 @@ internal class FolderWatcher : FileSystemWatcher
 
 
 
-    private void OnDetected(object sender, FileSystemEventArgs e)
+    private void OnDetected(object sender, FileSystemEventArgs args)
     {
         if (true) // Om sista mappen finns
         {
@@ -38,15 +38,15 @@ internal class FolderWatcher : FileSystemWatcher
         }
     }
 
-    private void OnRenamed(object sender, FileSystemEventArgs e)
+    private void OnRenamed(object sender, FileSystemEventArgs args)
     {
         // TODO: Kontrollera att det stämmer.
-        OnDetected(this, e);
+        OnDetected(this, args);
     }
 
-    private void OnError(object sender, ErrorEventArgs e)
+    private void OnError(object sender, ErrorEventArgs args)
     {
-        var exception = e.GetException();
+        var exception = args.GetException();
         if (exception != null)
             _logger.Error(exception);
     }
