@@ -21,7 +21,7 @@ internal class FileManager
 
     /// <summary>
     /// Returns the name of the first non-existing directory in the path.
-    /// Will throw ArgumentException if root drive does not exist, or if the full path already exists.
+    /// Throws ArgumentException if root drive does not exist, or if the full path already exists.
     /// </summary>
     public static string GetFirstMissingFolderName(string path)
     {
@@ -32,7 +32,7 @@ internal class FileManager
 
     /// <summary>
     /// Returns the first non-existing directory in the path of targetDirectory.
-    /// Will throw ArgumentException if root drive does not exist, or if targetDirectory already exists.
+    /// Throws ArgumentException if root drive does not exist, or if targetDirectory already exists.
     /// </summary>
     public static DirectoryInfo GetFirstMissingDirectory(DirectoryInfo targetDirectory)
     {
