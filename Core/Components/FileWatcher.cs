@@ -26,18 +26,12 @@ internal class FileWatcher : FileSystemWatcher
 
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
-        if (sender != this)
-            return;
-
         _logger.Info($"File detected: {args.FullPath}");
         Callback?.Invoke(args.FullPath);
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs args)
     {
-        if (sender != this)
-            return;
-
         if (FileSystemHelper.FileNameMatchesFilter(args.FullPath, Filter))
             OnDetected(this, args);
     }
