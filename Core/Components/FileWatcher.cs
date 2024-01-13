@@ -38,7 +38,7 @@ internal class FileWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
-        if (FileManager.FileNameMatchesFilter(args.FullPath, Filter))
+        if (FileSystemHelper.FileNameMatchesFilter(args.FullPath, Filter))
             OnDetected(this, args);
     }
 

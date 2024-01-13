@@ -42,7 +42,7 @@ internal class ConfigWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
-        if (FileManager.FileNameMatchesFilter(args.FullPath, Filter))
+        if (FileSystemHelper.FileNameMatchesFilter(args.FullPath, Filter))
             OnChanged(this, args);
         else
             OnMissing(this, args);

@@ -2,7 +2,7 @@
 
 namespace Core.Main;
 
-internal class FileManager
+internal class FileSystemHelper
 {
     public static bool FileNameMatchesFilter(string path, string filter)
     {
