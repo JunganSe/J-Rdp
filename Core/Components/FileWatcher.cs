@@ -7,7 +7,7 @@ internal class FileWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    public Action<string>? Callback { get; set; }
+    public Action<string> Callback { get; }
 
     public FileWatcher(string path, string filter, Action<string> callback)
     {
