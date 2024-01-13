@@ -31,6 +31,13 @@ internal class FileWatcher : FileSystemWatcher
 
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
+        // TODO: Confirm that the path is still the same.
+        // Detection can occur even when the folder has been renamed.
+        // Problem: args.FullPath still provides the old path from before the folder was renamed, not the new path.
+
+        if (!File.Exists(args.FullPath))
+            return;
+
         _logger.Info($"File detected: {args.FullPath}");
         Status = WatcherStatus.FileFound;
         Callback.Invoke(this, args.FullPath);
