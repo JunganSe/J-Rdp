@@ -48,14 +48,13 @@ internal class FolderWatcher : FileSystemWatcher
 
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
-        if (true) // Om sista mappen finns
+        bool fullPathExists = new DirectoryInfo(_fullPath).Exists;
+        if (fullPathExists)
         {
             // TODO: Bevaka filen.
         }
         else
-        {
-            // TODO: Bevaka nästa mapp och stäng av denna bevakning. eller ändra?
-        }
+            Initialize();
     }
 
     private void OnRenamed(object sender, RenamedEventArgs args)
