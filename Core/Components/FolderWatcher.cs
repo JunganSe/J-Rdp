@@ -6,35 +6,29 @@ namespace Core.Components;
 internal class FolderWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly string _currentTargetPath;
     private readonly string _fullPath;
     private readonly string? _fileNameFilter;
     private readonly FileWatcher? _governingFileWatcher;
+    private string _currentPath = "";
 
     public FolderWatcher(string fullPath, string fileNameFilter)
     {
-        Initialize(fullPath);
-        _currentTargetPath = System.IO.Path.Combine(Path, Filter);
         _fullPath = fullPath;
         _fileNameFilter = fileNameFilter;
-        string fullTargetPath = System.IO.Path.Combine(fullPath, fileNameFilter);
-        _logger.Info($"Watching for '{_currentTargetPath}' in path '{fullTargetPath}'.");
+        Initialize();
     }
 
     public FolderWatcher(string fullPath, FileWatcher fileWatcher)
     {
-        Initialize(fullPath);
-        _currentTargetPath = System.IO.Path.Combine(Path, Filter);
         _fullPath = fullPath;
         _governingFileWatcher = fileWatcher;
-        string fullTargetPath = System.IO.Path.Combine(fileWatcher.Path, fileWatcher.Filter);
-        _logger.Info($"Watching for '{_currentTargetPath}' in path '{fullTargetPath}'.");
+        Initialize();
     }
 
-    private void Initialize(string fullPath)
+    private void Initialize()
     {
-        Path = FileSystemHelper.GetLastExistingFolderPath(fullPath);
-        Filter = FileSystemHelper.GetFirstMissingFolderName(fullPath) ?? "";
+        Path = FileSystemHelper.GetLastExistingFolderPath(_fullPath);
+        Filter = FileSystemHelper.GetFirstMissingFolderName(_fullPath) ?? "";
         EnableRaisingEvents = true;
         IncludeSubdirectories = false;
         NotifyFilter = NotifyFilters.DirectoryName;
@@ -42,6 +36,12 @@ internal class FolderWatcher : FileSystemWatcher
         Renamed += OnRenamed;
         Deleted += OnDeleted;
         Error += OnError;
+        _currentPath = System.IO.Path.Combine(Path, Filter);
+
+        string fullPath = (_governingFileWatcher != null) 
+            ? FileSystemHelper.CombineAndNormalizePaths(_governingFileWatcher.Path, _governingFileWatcher.Filter) 
+            : FileSystemHelper.CombineAndNormalizePaths(_fullPath, _fileNameFilter ?? "");
+        _logger.Info($"Watching for '{_currentPath}' in path '{fullPath}'.");
     }
 
 
@@ -61,7 +61,7 @@ internal class FolderWatcher : FileSystemWatcher
     private void OnRenamed(object sender, RenamedEventArgs args)
     {
         string found = new DirectoryInfo(args.FullPath).FullName.ToUpper();
-        string target = new DirectoryInfo(_currentTargetPath).FullName.ToUpper();
+        string target = new DirectoryInfo(_currentPath).FullName.ToUpper();
         if (found == target)
             OnDetected(this, args);
         else
