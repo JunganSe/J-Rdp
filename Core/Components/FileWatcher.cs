@@ -44,8 +44,7 @@ internal class FileWatcher : FileSystemWatcher
         var status = WatcherStatus.UnknownError;
         string message = $"Error when watching for '{Filter}' in: {Path}";
 
-        bool pathExists = new DirectoryInfo(Path).Exists;
-        if (!pathExists)
+        if (!Directory.Exists(Path))
         {
             status = WatcherStatus.WatchFolderMissing;
             message = $"The watched directory is missing: {Path}";
