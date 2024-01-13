@@ -1,4 +1,5 @@
-﻿using Core.Extensions;
+﻿using Core.Enums;
+using Core.Extensions;
 using Core.Main;
 using NLog;
 using IoPath = System.IO.Path;
@@ -12,10 +13,15 @@ internal class FolderWatcher : FileSystemWatcher
     private readonly string _fileNameFilter;
     private string _currentPath = "";
 
-    public FolderWatcher(string fullPath, string fileNameFilter)
+    public Action<FolderWatcher, string> Callback { get; }
+    public WatcherStatus Status { get; private set; }
+
+    public FolderWatcher(string fullPath, string fileNameFilter, Action<FolderWatcher, string> callback)
     {
+        Status = WatcherStatus.Unknown;
         _fullPath = fullPath;
         _fileNameFilter = fileNameFilter;
+        Callback = callback;
         Initialize();
     }
 

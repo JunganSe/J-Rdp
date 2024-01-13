@@ -60,6 +60,24 @@ public class Controller
         }
     }
 
+    internal void FolderWatcherCallback(FolderWatcher folderWatcher, string fullPath)
+    {
+        switch (folderWatcher.Status)
+        {
+            case WatcherStatus.FolderFound:
+                // TODO: Watch next folder, or the file.
+                break;
+
+            case WatcherStatus.WatchFolderMissing:
+                // TODO: Set up folder watcher.
+                break;
+
+            case WatcherStatus.UnknownError:
+                //RemoveFolderWatcher(folderWatcher);
+                break;
+        }
+    }
+
 
 
     private void UpdateConfigs()
@@ -98,7 +116,7 @@ public class Controller
             if (!success)
             {
                 // TODO: Lägg bevakning på parent-mappen och skapa filewatcher om mappen dyker upp.
-                var folderWatcher = new FolderWatcher(config.WatchFolder, config.Filter);
+                var folderWatcher = new FolderWatcher(config.WatchFolder, config.Filter, FolderWatcherCallback);
             }
         }
     }
