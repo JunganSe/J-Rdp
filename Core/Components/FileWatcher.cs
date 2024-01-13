@@ -39,8 +39,20 @@ internal class FileWatcher : FileSystemWatcher
 
     private void OnError(object sender, ErrorEventArgs args)
     {
-        var exception = args.GetException();
-        if (exception != null)
-            _logger.Error(exception);
+        var status = WatcherStatus.UnknownError;
+        string message = $"Error when watching for '{Filter}' in: {Path}";
+
+        bool pathExists = new DirectoryInfo(Path).Exists;
+        if (!pathExists)
+        {
+            status = WatcherStatus.WatchFolderMissing;
+            message = $"The watched directory is missing: {Path}";
+        }
+
+        var exception = args.GetException() ?? new Exception("Unknown error.");
+        _logger.Warn(exception, message);
+
+        string fullPath = FileSystemHelper.CombineAndNormalizePaths(Path, Filter);
+        Callback.Invoke(status, fullPath);
     }
 }
