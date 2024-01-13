@@ -56,12 +56,11 @@ internal class FolderWatcher : FileSystemWatcher
 
     private void OnRenamed(object sender, RenamedEventArgs args)
     {
-        string found = new DirectoryInfo(args.FullPath).FullName.ToUpper();
-        string target = new DirectoryInfo(_currentPath).FullName.ToUpper();
-        if (found == target)
+        string found = args.FullPath.NormalizePath().ToUpper();
+        string target = _currentPath.NormalizePath().ToUpper();
+        bool targetExists = Directory.Exists(target);
+        if (found == target && targetExists)
             OnDetected(this, args);
-        else
-            Initialize();
     }
 
     private void OnError(object sender, ErrorEventArgs args)
