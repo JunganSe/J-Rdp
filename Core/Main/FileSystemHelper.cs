@@ -11,7 +11,7 @@ internal class FileSystemHelper
             && FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true));
     }
 
-    public static string GetLastExistingFolderName(string path)
+    public static string GetLastExistingFolderPath(string path)
     {
         var dir = new DirectoryInfo(path);
         while (!dir.Exists)

@@ -33,7 +33,7 @@ internal class FolderWatcher : FileSystemWatcher
 
     private void Initialize(string fullPath)
     {
-        Path = FileSystemHelper.GetLastExistingFolderName(fullPath);
+        Path = FileSystemHelper.GetLastExistingFolderPath(fullPath);
         Filter = FileSystemHelper.GetFirstMissingFolderName(fullPath);
         EnableRaisingEvents = true;
         IncludeSubdirectories = false;
