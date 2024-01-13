@@ -1,6 +1,8 @@
 ﻿using Core.Enums;
+using Core.Extensions;
 using Core.Main;
 using NLog;
+using IoPath = System.IO.Path;
 
 namespace Core.Components;
 
@@ -52,7 +54,7 @@ internal class FileWatcher : FileSystemWatcher
         var exception = args.GetException() ?? new Exception("Unknown error.");
         _logger.Warn(exception, message);
 
-        string fullPath = FileSystemHelper.CombineAndNormalizePaths(Path, Filter);
+        string fullPath = IoPath.Combine(Path, Filter).NormalizePath();
         Callback.Invoke(this, status, fullPath);
     }
 }

@@ -1,5 +1,7 @@
-﻿using Core.Main;
+﻿using Core.Extensions;
+using Core.Main;
 using NLog;
+using IoPath = System.IO.Path;
 
 namespace Core.Components;
 
@@ -27,9 +29,9 @@ internal class FolderWatcher : FileSystemWatcher
         Created += OnDetected;
         Renamed += OnRenamed;
         Error += OnError;
-        _currentPath = System.IO.Path.Combine(Path, Filter);
+        _currentPath = IoPath.Combine(Path, Filter);
 
-        string fullPath = FileSystemHelper.CombineAndNormalizePaths(_fullPath, _fileNameFilter);
+        string fullPath = IoPath.Combine(_fullPath, _fileNameFilter).NormalizePath();
         _logger.Info($"Watching for '{_currentPath}' in path '{fullPath}'.");
     }
 

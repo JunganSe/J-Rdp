@@ -62,7 +62,4 @@ internal class FileSystemHelper
         // Program should never reach this part, but it's needed to prevent compiler error CS0161: "not all code paths returns a value".
         throw new Exception($"Unexpected state in {System.Reflection.MethodBase.GetCurrentMethod()?.Name}");
     }
-
-    public static string CombineAndNormalizePaths(string path1, string path2) 
-        => Path.Combine(path1, path2).Replace("/", "\\");
 }
