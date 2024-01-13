@@ -41,10 +41,18 @@ public class Controller
         LogWatchersSummary();
     }
 
-    internal void FileWatcherCallback(FileWatcher sender, string fullPath)
+    internal void FileWatcherCallback(FileWatcher fileWatcher, string fullPath)
     {
-        // TODO: FileWatcherCallback
-        throw new NotImplementedException();
+        switch (fileWatcher.Status)
+        {
+            case WatcherStatus.FileFound:
+                // TODO: Hantera filen.
+                break;
+
+            case WatcherStatus.WatchFolderMissing or WatcherStatus.UnknownError:
+                RemoveFileWatcher(fileWatcher);
+                break;
+        }
     }
 
 
@@ -66,12 +74,14 @@ public class Controller
     private void ClearFileWatchers()
     {
         for (int i = _fileWatchers.Count - 1; i >= 0; i--)
-        {
-            var watcher = _fileWatchers[i];
-            _fileWatchers.Remove(watcher);
-            watcher.EnableRaisingEvents = false;
-            watcher.Dispose();
-        }
+            RemoveFileWatcher(_fileWatchers[i]);
+    }
+
+    private void RemoveFileWatcher(FileWatcher fileWatcher)
+    {
+        _fileWatchers.Remove(fileWatcher);
+        fileWatcher.EnableRaisingEvents = false;
+        fileWatcher.Dispose();
     }
 
     private void SetFileWatchers()
