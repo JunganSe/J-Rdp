@@ -41,7 +41,7 @@ public class Controller
         LogWatchersSummary();
     }
 
-    internal void FileWatcherCallback(FileWatcher sender, WatcherStatus status, string fullPath)
+    internal void FileWatcherCallback(FileWatcher sender, string fullPath)
     {
         // TODO: FileWatcherCallback
         throw new NotImplementedException();

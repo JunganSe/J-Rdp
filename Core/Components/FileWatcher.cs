@@ -10,10 +10,12 @@ internal class FileWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    public Action<FileWatcher, WatcherStatus, string> Callback { get; }
+    public Action<FileWatcher, string> Callback { get; }
+    public WatcherStatus Status { get; private set; }
 
-    public FileWatcher(string path, string filter, Action<FileWatcher, WatcherStatus, string> callback)
+    public FileWatcher(string path, string filter, Action<FileWatcher, string> callback)
     {
+        Status = WatcherStatus.Unknown;
         Path = path;
         Filter = filter;
         Callback = callback;
@@ -30,7 +32,8 @@ internal class FileWatcher : FileSystemWatcher
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
         _logger.Info($"File detected: {args.FullPath}");
-        Callback.Invoke(this, WatcherStatus.FileFound, args.FullPath);
+        Status = WatcherStatus.FileFound;
+        Callback.Invoke(this, args.FullPath);
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs args)
@@ -54,6 +57,7 @@ internal class FileWatcher : FileSystemWatcher
         _logger.Warn(exception, message);
 
         string fullPath = IoPath.Combine(Path, Filter).NormalizePath();
-        Callback.Invoke(this, status, fullPath);
+        Status = status;
+        Callback.Invoke(this, fullPath);
     }
 }

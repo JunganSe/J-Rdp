@@ -2,6 +2,7 @@
 
 internal enum WatcherStatus
 {
+    Unknown,
     FileFound,
     FolderFound,
     WatchFolderMissing,
