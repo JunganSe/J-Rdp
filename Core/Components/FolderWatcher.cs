@@ -9,17 +9,17 @@ namespace Core.Components;
 internal class FolderWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly string _fullPath;
+    private readonly string _fullFolderPath;
     private readonly string _fileNameFilter;
     private string _currentPath = "";
 
     public Action<FolderWatcher, string> Callback { get; }
     public WatcherStatus Status { get; private set; }
 
-    public FolderWatcher(string fullPath, string fileNameFilter, Action<FolderWatcher, string> callback)
+    public FolderWatcher(string fullFolderPath, string fileNameFilter, Action<FolderWatcher, string> callback)
     {
         Status = WatcherStatus.Unknown;
-        _fullPath = fullPath;
+        _fullFolderPath = fullFolderPath;
         _fileNameFilter = fileNameFilter;
         Callback = callback;
         Initialize();
@@ -27,17 +27,17 @@ internal class FolderWatcher : FileSystemWatcher
 
     private void Initialize()
     {
-        Path = FileSystemHelper.GetLastExistingFolderPath(_fullPath);
-        Filter = FileSystemHelper.GetFirstMissingFolderName(_fullPath) ?? "";
+        Path = FileSystemHelper.GetLastExistingFolderPath(_fullFolderPath);
+        Filter = FileSystemHelper.GetFirstMissingFolderName(_fullFolderPath) ?? "";
         EnableRaisingEvents = true;
         IncludeSubdirectories = false;
         NotifyFilter = NotifyFilters.DirectoryName;
         Created += OnDetected;
         Renamed += OnRenamed;
         Error += OnError;
-        _currentPath = IoPath.Combine(Path, Filter);
+        _currentPath = IoPath.Combine(Path, Filter).NormalizePath();
 
-        string fullPath = IoPath.Combine(_fullPath, _fileNameFilter).NormalizePath();
+        string fullPath = IoPath.Combine(_fullFolderPath, _fileNameFilter).NormalizePath();
         _logger.Info($"Watching for '{_currentPath}' in path '{fullPath}'.");
     }
 
@@ -45,8 +45,8 @@ internal class FolderWatcher : FileSystemWatcher
 
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
-        bool fullPathExists = new DirectoryInfo(_fullPath).Exists;
-        if (fullPathExists)
+        bool fullFolderPathExists = Directory.Exists(_fullFolderPath);
+        if (fullFolderPathExists)
         {
             // TODO: Bevaka filen.
         }
