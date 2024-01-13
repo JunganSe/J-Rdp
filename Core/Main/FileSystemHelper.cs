@@ -1,9 +1,12 @@
-﻿using System.IO.Enumeration;
+﻿using NLog;
+using System.IO.Enumeration;
 
 namespace Core.Main;
 
 internal class FileSystemHelper
 {
+    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     public static bool FileNameMatchesFilter(string path, string filter)
     {
         ReadOnlySpan<char> fileName = Path.GetFileName(path);
@@ -20,14 +23,20 @@ internal class FileSystemHelper
     }
 
     /// <summary>
-    /// Returns the name of the first non-existing directory in the path.
-    /// Throws ArgumentException if root drive does not exist, or if the full path already exists.
+    /// Returns the name of the first non-existing directory in the path, or null if such directory could not be found.
     /// </summary>
-    public static string GetFirstMissingFolderName(string path)
+    public static string? GetFirstMissingFolderName(string path)
     {
-        var dir = new DirectoryInfo(path);
-        var firstMissingDirectory = GetFirstMissingDirectory(dir);
-        return firstMissingDirectory.Name;
+        try
+        {
+            var dir = new DirectoryInfo(path);
+            return GetFirstMissingDirectory(dir).Name;
+        }
+        catch (Exception ex)
+        {
+            _logger.Warn(ex, "Failed to get first missing folder from path: {path}", path);
+            return null;
+        }
     }
 
     /// <summary>
