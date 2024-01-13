@@ -49,7 +49,11 @@ public class Controller
                 // TODO: Hantera filen.
                 break;
 
-            case WatcherStatus.WatchFolderMissing or WatcherStatus.UnknownError:
+            case WatcherStatus.WatchFolderMissing:
+                // TODO: Set up folder watcher.
+                break;
+
+            case WatcherStatus.UnknownError:
                 RemoveFileWatcher(fileWatcher);
                 break;
         }
