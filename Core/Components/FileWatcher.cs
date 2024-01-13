@@ -1,4 +1,5 @@
-﻿using Core.Main;
+﻿using Core.Enums;
+using Core.Main;
 using NLog;
 
 namespace Core.Components;
@@ -7,9 +8,9 @@ internal class FileWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    public Action<string> Callback { get; }
+    public Action<WatcherStatus, string> Callback { get; }
 
-    public FileWatcher(string path, string filter, Action<string> callback)
+    public FileWatcher(string path, string filter, Action<WatcherStatus, string> callback)
     {
         Path = path;
         Filter = filter;
@@ -27,7 +28,7 @@ internal class FileWatcher : FileSystemWatcher
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
         _logger.Info($"File detected: {args.FullPath}");
-        Callback?.Invoke(args.FullPath);
+        Callback.Invoke(WatcherStatus.FileFound, args.FullPath);
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs args)

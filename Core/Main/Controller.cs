@@ -1,4 +1,5 @@
 ﻿using Core.Components;
+using Core.Enums;
 using NLog;
 
 namespace Core.Main;
@@ -40,9 +41,10 @@ public class Controller
         LogWatchersSummary();
     }
 
-    internal void OnFileDetected(string fullPath)
+    internal void FileWatcherCallback(WatcherStatus status, string fullPath)
     {
-        throw new NotImplementedException(); // TODO: OnFileDetected
+        // TODO: FileWatcherCallback
+        throw new NotImplementedException();
     }
 
 
@@ -95,7 +97,7 @@ public class Controller
             return false;
         }
 
-        var watcher = new FileWatcher(folder, config.Filter, OnFileDetected);
+        var watcher = new FileWatcher(folder, config.Filter, FileWatcherCallback);
         _fileWatchers.Add(watcher);
         return true;
     }
