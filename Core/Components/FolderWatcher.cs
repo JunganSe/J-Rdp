@@ -6,24 +6,42 @@ namespace Core.Components;
 internal class FolderWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly string _fullTargetPath;
     private readonly string _currentTargetPath;
+    private readonly string _fullPath;
+    private readonly string? _fileNameFilter;
+    private readonly FileWatcher? _governingFileWatcher;
 
-    public FolderWatcher(string path, string fileNameFilter)
+    public FolderWatcher(string fullPath, string fileNameFilter)
     {
-        _fullTargetPath = System.IO.Path.Combine(path, fileNameFilter);
+        Initialize(fullPath);
+        _currentTargetPath = System.IO.Path.Combine(Path, Filter);
+        _fullPath = fullPath;
+        _fileNameFilter = fileNameFilter;
+        string fullTargetPath = System.IO.Path.Combine(fullPath, fileNameFilter);
+        _logger.Info($"Watching for '{_currentTargetPath}' in path '{fullTargetPath}'.");
+    }
 
-        Path = FileManager.GetLastExistingFolderName(path);
-        Filter = FileManager.GetFirstMissingFolderName(path);
+    public FolderWatcher(string fullPath, FileWatcher fileWatcher)
+    {
+        Initialize(fullPath);
+        _currentTargetPath = System.IO.Path.Combine(Path, Filter);
+        _fullPath = fullPath;
+        _governingFileWatcher = fileWatcher;
+        string fullTargetPath = System.IO.Path.Combine(fileWatcher.Path, fileWatcher.Filter);
+        _logger.Info($"Watching for '{_currentTargetPath}' in path '{fullTargetPath}'.");
+    }
+
+    private void Initialize(string fullPath)
+    {
+        Path = FileManager.GetLastExistingFolderName(fullPath);
+        Filter = FileManager.GetFirstMissingFolderName(fullPath);
         EnableRaisingEvents = true;
         IncludeSubdirectories = false;
         NotifyFilter = NotifyFilters.DirectoryName;
         Created += OnDetected;
         Renamed += OnRenamed;
+        Deleted += OnDeleted;
         Error += OnError;
-
-        _currentTargetPath = System.IO.Path.Combine(Path, Filter);
-        _logger.Info($"Watching for folder '{Filter}' in: {Path}");
     }
 
 
@@ -46,6 +64,16 @@ internal class FolderWatcher : FileSystemWatcher
         string target = new DirectoryInfo(_currentTargetPath).FullName.ToUpper();
         if (found == target)
             OnDetected(this, args);
+        else
+        {
+            // TODO: Hantera att mappen inte finns längre.
+        }
+    }
+
+    private void OnDeleted(object sender, FileSystemEventArgs args)
+    {
+        // TODO: Hantera att mappen inte finns längre.
+        throw new NotImplementedException();
     }
 
     private void OnError(object sender, ErrorEventArgs args)
