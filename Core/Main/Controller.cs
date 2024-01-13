@@ -1,5 +1,6 @@
 ﻿using Core.Components;
 using Core.Enums;
+using Core.Extensions;
 using NLog;
 
 namespace Core.Main;
@@ -119,7 +120,7 @@ public class Controller
     private void LogConfigSummary()
     {
         string configsSummary = (_configs.Count > 0)
-            ? string.Join("", _configs.Select(c => $"\n  {c.Name}: '{c.Filter}' in {c.WatchFolder}"))
+            ? string.Join("", _configs.Select(c => $"\n  {c.Name}: '{c.Filter}' in: {c.WatchFolder.NormalizePath()}"))
             : "(nothing)";
         _logger.Info($"Current configs: {configsSummary}");
     }
