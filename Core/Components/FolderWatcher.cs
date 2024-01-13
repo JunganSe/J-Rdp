@@ -9,26 +9,24 @@ namespace Core.Components;
 internal class FolderWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly string _fullFolderPath;
-    private readonly string _fileNameFilter;
+    private readonly string _fullPath;
     private string _currentPath = "";
 
     public Action<FolderWatcher, string> Callback { get; }
     public WatcherStatus Status { get; private set; }
 
-    public FolderWatcher(string fullFolderPath, string fileNameFilter, Action<FolderWatcher, string> callback)
+    public FolderWatcher(string fullPath, Action<FolderWatcher, string> callback)
     {
         Status = WatcherStatus.Unknown;
-        _fullFolderPath = fullFolderPath;
-        _fileNameFilter = fileNameFilter;
+        _fullPath = fullPath.NormalizePath();
         Callback = callback;
         Initialize();
     }
 
     private void Initialize()
     {
-        Path = FileSystemHelper.GetLastExistingFolderPath(_fullFolderPath);
-        Filter = FileSystemHelper.GetFirstMissingFolderName(_fullFolderPath) ?? "";
+        Path = FileSystemHelper.GetLastExistingFolderPath(_fullPath);
+        Filter = FileSystemHelper.GetFirstMissingFolderName(_fullPath) ?? "";
         EnableRaisingEvents = true;
         IncludeSubdirectories = false;
         NotifyFilter = NotifyFilters.DirectoryName;
@@ -36,19 +34,18 @@ internal class FolderWatcher : FileSystemWatcher
         Renamed += OnRenamed;
         Error += OnError;
         _currentPath = IoPath.Combine(Path, Filter).NormalizePath();
-
-        string fullPath = IoPath.Combine(_fullFolderPath, _fileNameFilter).NormalizePath();
-        _logger.Info($"Watching for '{_currentPath}' in path '{fullPath}'.");
+        _logger.Info($"Watching for '{_currentPath}' in path '{_fullPath}'.");
     }
 
 
 
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
-        bool fullFolderPathExists = Directory.Exists(_fullFolderPath);
+        bool fullFolderPathExists = Directory.Exists(_fullPath);
         if (fullFolderPathExists)
         {
-            // TODO: Bevaka filen.
+            Status = WatcherStatus.FolderFound;
+            Callback.Invoke(this, _fullPath);
         }
         else
             Initialize();

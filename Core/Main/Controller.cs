@@ -65,7 +65,7 @@ public class Controller
         switch (folderWatcher.Status)
         {
             case WatcherStatus.FolderFound:
-                // TODO: Watch next folder, or the file.
+                // TODO: Watch for file.
                 break;
 
             case WatcherStatus.WatchFolderMissing:
@@ -116,7 +116,7 @@ public class Controller
             if (!success)
             {
                 // TODO: Lägg bevakning på parent-mappen och skapa filewatcher om mappen dyker upp.
-                var folderWatcher = new FolderWatcher(config.WatchFolder, config.Filter, FolderWatcherCallback);
+                var folderWatcher = new FolderWatcher(config.WatchFolder, FolderWatcherCallback);
             }
         }
     }
