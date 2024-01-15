@@ -9,8 +9,8 @@ namespace Core.Components;
 internal class FolderWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly string _fullPath;
-    private string _currentPath = "";
+    private readonly string _fullPath; // End goal is to find this folder.
+    private string _currentPath = ""; // Folder that is currently being looked for. May be a parent of _fullPath.
 
     public Action<FolderWatcher, string> Callback { get; }
     public WatcherStatus Status { get; private set; }
@@ -41,8 +41,7 @@ internal class FolderWatcher : FileSystemWatcher
 
     private void OnDetected(object sender, FileSystemEventArgs args)
     {
-        bool fullFolderPathExists = Directory.Exists(_fullPath);
-        if (fullFolderPathExists)
+        if (Directory.Exists(_fullPath))
         {
             Status = WatcherStatus.FolderFound;
             Callback.Invoke(this, _fullPath);
