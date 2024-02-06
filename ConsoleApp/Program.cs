@@ -6,6 +6,6 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        new Controller().Start();
+        new PollingController().Start();
     }
 }
