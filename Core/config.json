@@ -1,6 +1,6 @@
 [
   {
-    "name": "MyConfiguration",
+    "name": "Config1",
     "watchFolder": "C:/RdpTestFiles",
     "filter": "foo*.txt",
     "moveToFolder": "./Old",
@@ -9,6 +9,18 @@
     "settings": {
       "desktopwidth:i": "1920",
       "desktopheight:i": "1080"
+    }
+  },
+  {
+    "name": "Config2",
+    "watchFolder": "C:/RdpTestFiles",
+    "filter": "bar*.txt",
+    "moveToFolder": "./Old",
+    "launch": false,
+    "delete": false,
+    "settings": {
+      "desktopwidth:i": "800",
+      "desktopheight:i": "600"
     }
   }
 ]
