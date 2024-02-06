@@ -7,7 +7,7 @@ Primarily intended to auto-insert settings into rdp files before opening the rem
 Configurable through a json file:
 - Watch folders through absolute or relative path.
 - Look for file names using wildcards.
-- Upserts settings/lines as configured.
+- Upserts settings/lines in the file as configured.
 - Optionally move the file to another folder before operations are made.
 - Optionally run the file after editing and/or moving.
 - Optionally delete the file afterwards.
