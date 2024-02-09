@@ -31,10 +31,7 @@ public class PollingController
     private void Initialize()
     {
         _configManager.UpdateConfigs();
-        _configInfos = _configManager.Configs.Select(config => new ConfigInfo(config));
-
-        foreach (var configInfo in _configInfos)
-            configInfo.UpdateFiles();
+        UpdateConfigInfos();
     }
 
     private void MainLoop()
@@ -51,5 +48,14 @@ public class PollingController
         //   - If file matches filter:
         //     - Register the file as handled. (How?)
         //     - Run instructions on the file according to config.
+    }
+
+
+
+    private void UpdateConfigInfos()
+    {
+        _configInfos = _configManager.Configs.Select(config => new ConfigInfo(config));
+        foreach (var configInfo in _configInfos)
+            configInfo.UpdateFiles();
     }
 }
