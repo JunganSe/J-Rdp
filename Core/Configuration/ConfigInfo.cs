@@ -6,6 +6,7 @@ internal class ConfigInfo
     public DirectoryInfo Directory { get; }
     public IEnumerable<FileInfo> Files { get; private set; }
     public IEnumerable<FileInfo> LastFiles { get; private set; }
+    public IEnumerable<FileInfo> NewFiles => Files.Except(LastFiles);
 
     public ConfigInfo(Config config)
     {
