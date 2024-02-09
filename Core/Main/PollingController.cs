@@ -30,19 +30,11 @@ public class PollingController
 
     private void Initialize()
     {
-        try
-        {
-            _configManager.UpdateConfigs();
-            _configInfos = _configManager.Configs.Select(config => new ConfigInfo(config));
+        _configManager.UpdateConfigs();
+        _configInfos = _configManager.Configs.Select(config => new ConfigInfo(config));
 
-            foreach (var configInfo in _configInfos)
-                configInfo.UpdateFiles();
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "");
-            throw;
-        }
+        foreach (var configInfo in _configInfos)
+            configInfo.UpdateFiles();
     }
 
     private void MainLoop()
