@@ -54,7 +54,7 @@ internal class ConfigManager
                 throw new ArgumentException("File does not exist.");
 
             string json = File.ReadAllText(path);
-            _logger.Debug($"Successfully read file: {path}");
+            _logger.Trace($"Successfully read file: {path}");
             return json;
         }
         catch (Exception ex)
@@ -69,7 +69,7 @@ internal class ConfigManager
         try
         {
             var configs = JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions);
-            _logger.Debug("Successfully parsed configs from json.");
+            _logger.Trace("Successfully parsed configs from json.");
             return configs ?? new List<Config>();
         }
         catch (Exception ex)
