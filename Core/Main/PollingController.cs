@@ -7,14 +7,8 @@ public class PollingController
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly int _pollingInterval = 1000;
-    private readonly ConfigManager _configManager;
-    private IEnumerable<ConfigInfo> _configInfos;
-
-    public PollingController()
-    {
-        _configManager = new ConfigManager();
-        _configInfos = [];
-    }
+    private readonly ConfigManager _configManager = new();
+    private IEnumerable<ConfigInfo> _configInfos = [];
 
     public void Start()
     {
