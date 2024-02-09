@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Core.Configuration;
+using NLog;
 
 namespace Core.Main;
 
@@ -6,17 +7,26 @@ public class PollingController
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly int _pollingInterval = 1000;
+    private readonly ConfigManager _configManager;
 
     public PollingController()
     {
+        _configManager = new ConfigManager();
     }
 
     public void Start()
     {
-        while (true)
+        try
         {
-            MainLoop();
-            Thread.Sleep(_pollingInterval);
+            while (true)
+            {
+                MainLoop();
+                Thread.Sleep(_pollingInterval);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex);
         }
     }
 
