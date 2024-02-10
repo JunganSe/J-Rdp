@@ -10,10 +10,11 @@ public class PollingController
     private readonly ConfigManager _configManager = new();
     private List<ConfigInfo> _configInfos = [];
 
-    public void Start()
+    public void Run()
     {
         try
         {
+            _logger.Info("Starting...");
             Initialize();
 
             while (true)
@@ -24,8 +25,9 @@ public class PollingController
         }
         catch (Exception ex)
         {
-            _logger.Error(ex);
+            _logger.Fatal(ex, "Unhandled exception.");
         }
+        _logger.Info("Quitting...");
     }
 
     private void Initialize()
