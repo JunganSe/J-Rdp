@@ -42,12 +42,12 @@ public class PollingController
     {
         UpdateConfigInfosFiles();
 
-        var configInfos = _configInfos.Where(ci => ci.Directory.Exists);
+        var configInfos = _configInfos.Where(ci => ci.DirectoryExists);
         foreach (var configInfo in configInfos)
         {
             var newFiles = configInfo.NewFiles;
             if (newFiles.Any())
-                _logger.Trace($"Found {newFiles.Count()} new files in: {configInfo.Directory.FullName}");
+                _logger.Trace($"Found {newFiles.Count()} new files in: {configInfo.Config.WatchFolder}");
             
             string filter = configInfo.Config.Filter;
             foreach (var newFile in newFiles)
