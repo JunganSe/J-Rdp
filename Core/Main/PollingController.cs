@@ -6,8 +6,9 @@ namespace Core.Main;
 
 public class PollingController
 {
+    private const int POLLING_INTERVAL = 1000;
+
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly int _pollingInterval = 1000;
     private readonly ConfigManager _configManager = new();
     private List<ConfigInfo> _configInfos = [];
 
@@ -21,7 +22,7 @@ public class PollingController
             while (true)
             {
                 MainLoop();
-                Thread.Sleep(_pollingInterval);
+                Thread.Sleep(POLLING_INTERVAL);
             }
         }
         catch (Exception ex)
