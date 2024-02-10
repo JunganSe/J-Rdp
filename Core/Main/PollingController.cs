@@ -9,6 +9,7 @@ public class PollingController
     private const int POLLING_INTERVAL = 1000;
 
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly FileManager _fileManager = new();
     private readonly ConfigManager _configManager = new();
     private List<ConfigInfo> _configInfos = [];
 
@@ -56,7 +57,7 @@ public class PollingController
                 if (newFile.NameMatchesFilter(filter, ignoreCase: true))
                 {
                     _logger.Info($"Filter match on: {newFile.FullName}");
-                    // TODO: Take action on the file.
+                    _fileManager.ProcessFile(newFile, configInfo.Config);
                 }
             }
         }
