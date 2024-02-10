@@ -8,7 +8,7 @@ public class PollingController
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly int _pollingInterval = 1000;
     private readonly ConfigManager _configManager = new();
-    private IEnumerable<ConfigInfo> _configInfos = [];
+    private List<ConfigInfo> _configInfos = [];
 
     public void Start()
     {
@@ -32,6 +32,7 @@ public class PollingController
     {
         _configManager.UpdateConfigs();
         UpdateConfigInfos();
+        UpdateConfigInfosFiles();
     }
 
     private void MainLoop()
@@ -52,10 +53,12 @@ public class PollingController
 
 
 
-    private void UpdateConfigInfos()
-    {
-        _configInfos = _configManager.Configs.Select(config => new ConfigInfo(config));
-        foreach (var configInfo in _configInfos)
-            configInfo.UpdateFiles();
-    }
+
+    private void UpdateConfigInfos() =>
+        _configInfos = _configManager.Configs
+            .Select(config => new ConfigInfo(config))
+            .ToList();
+
+    private void UpdateConfigInfosFiles() =>
+        _configInfos.ForEach(ci => ci.UpdateFiles());
 }
