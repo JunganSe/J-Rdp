@@ -1,6 +1,6 @@
 ﻿namespace Core.Helpers;
 
-internal record FileInfoFullNameEqualityComparer : IEqualityComparer<FileInfo>
+internal record FileInfoEqualityComparer_FullName : IEqualityComparer<FileInfo>
 {
     public bool Equals(FileInfo? a, FileInfo? b) => a?.FullName == b?.FullName;
 
