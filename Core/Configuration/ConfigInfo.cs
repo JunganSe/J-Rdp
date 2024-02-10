@@ -24,10 +24,11 @@ internal class ConfigInfo
     public void UpdateFiles()
     {
         LastFiles = Files;
-
-        if (DirectoryExists)
-            Files = Directory.GetFiles(Config.WatchFolder).Select(s => new FileInfo(s));
-        else
-            Files = [];
+        Files = (DirectoryExists) ? GetFiles() : [];
     }
+
+
+
+    private IEnumerable<FileInfo> GetFiles() =>
+        Directory.GetFiles(Config.WatchFolder).Select(s => new FileInfo(s));
 }
