@@ -1,4 +1,5 @@
 ﻿using Core.Configuration;
+using Core.Extensions;
 using NLog;
 
 namespace Core.Main;
@@ -39,18 +40,25 @@ public class PollingController
 
     private void MainLoop()
     {
-        // TODO: Implement all this:
-        // - Read config file.
-        // - Check if config file has changed (compare with previous version)
-        //   - Update configs if needed.
-        // - Loop through configs.
-        //   - Check if the folder to watch exists.
-        //   - If folder exists, list all files in it.
-        //   - Ignore files that are already handled. (How?)
-        //   - Loop though files and check for filter match.
-        //   - If file matches filter:
-        //     - Register the file as handled. (How?)
-        //     - Run instructions on the file according to config.
+        UpdateConfigInfosFiles();
+
+        var configInfos = _configInfos.Where(ci => ci.Directory.Exists);
+        foreach (var configInfo in configInfos)
+        {
+            var newFiles = configInfo.NewFiles;
+            if (newFiles.Any())
+                _logger.Trace($"Found {newFiles.Count()} new files in: {configInfo.Directory.FullName}");
+            
+            string filter = configInfo.Config.Filter;
+            foreach (var newFile in newFiles)
+            {
+                if (newFile.NameMatchesFilter(filter, ignoreCase: true))
+                {
+                    _logger.Info($"Filter match on: {newFile.FullName}");
+                    // TODO: Take action on the file.
+                }
+            }
+        }
     }
 
 
