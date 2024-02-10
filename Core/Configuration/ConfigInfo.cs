@@ -1,12 +1,16 @@
-﻿namespace Core.Configuration;
+﻿using Core.Helpers;
+
+namespace Core.Configuration;
 
 internal class ConfigInfo
 {
+    private readonly FileInfoFullNameEqualityComparer _fileComparer = new FileInfoFullNameEqualityComparer();
+
     public Config Config { get; }
     public DirectoryInfo Directory { get; }
     public IEnumerable<FileInfo> Files { get; private set; }
     public IEnumerable<FileInfo> LastFiles { get; private set; }
-    public IEnumerable<FileInfo> NewFiles => Files.Except(LastFiles);
+    public IEnumerable<FileInfo> NewFiles => Files.Except(LastFiles, _fileComparer);
 
     public ConfigInfo(Config config)
     {
