@@ -56,7 +56,7 @@ public class PollingController
             {
                 if (newFile.NameMatchesFilter(filter, ignoreCase: true))
                 {
-                    _logger.Info($"Filter match on: {newFile.FullName}");
+                    _logger.Info($"{configInfo.Config.Name} found a match on '{newFile.FullName}' using filter '{configInfo.Config.Filter}'.");
                     _fileManager.ProcessFile(newFile, configInfo.Config);
                 }
             }
