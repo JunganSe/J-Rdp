@@ -10,10 +10,17 @@ internal class FileManager
 
     public void ProcessFile(FileInfo file, Config config)
     {
-        Move(file, config);
-        Edit(file, config.Settings);
-        Launch(file);
-        Delete(file);
+        if (!string.IsNullOrWhiteSpace(config.MoveToFolder))
+            Move(file, config);
+
+        if (config.Settings.Count > 0)
+            Edit(file, config.Settings);
+
+        if (config.Launch)
+            Launch(file);
+
+        if (config.Delete)
+            Delete(file);
     }
 
 
@@ -22,9 +29,6 @@ internal class FileManager
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(config.MoveToFolder))
-                return;
-
             bool isPathAbsolute = Path.IsPathFullyQualified(config.MoveToFolder); // e.g. 'C:\Foo\Bar'
             if (!isPathAbsolute)
             {
