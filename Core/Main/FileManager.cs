@@ -1,5 +1,6 @@
 ﻿using Core.Configuration;
 using NLog;
+using System.Diagnostics;
 
 namespace Core.Main;
 
@@ -10,6 +11,9 @@ internal class FileManager
     public void ProcessFile(FileInfo file, Config config)
     {
         Move(file, config);
+        Edit(file, config.Settings);
+        Launch(file);
+        Delete(file);
     }
 
 
@@ -45,9 +49,18 @@ internal class FileManager
 
     }
 
-    private void Run(FileInfo file)
+    private void Launch(FileInfo file)
     {
-
+        try
+        {
+            file.Refresh();
+            var process = new ProcessStartInfo(file.FullName) { UseShellExecute = true };
+            Process.Start(process);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to launch file.");
+        }
     }
 
     private void Delete(FileInfo file)
