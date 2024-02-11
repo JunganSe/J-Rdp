@@ -30,7 +30,7 @@ internal class FileManager
 
             Directory.CreateDirectory(config.MoveToFolder);
             string fullTargetPath = Path.Combine(config.MoveToFolder, file.Name);
-            File.Move(file.FullName, fullTargetPath, overwrite: true);
+            file.MoveTo(fullTargetPath, overwrite: true);
 
             _logger.Trace($"Moved file '{file.Name}' from '{config.WatchFolder}' to '{config.MoveToFolder}'.");
         }
