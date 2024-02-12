@@ -8,7 +8,7 @@ internal class Config
     public string MoveToFolder { get; init; }
     public bool Launch { get; set; }
     public bool Delete { get; init; }
-    public Dictionary<string, string> Settings { get; init; }
+    public List<string> Settings { get; init; }
 
     public Config()
     {

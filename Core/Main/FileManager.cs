@@ -49,7 +49,7 @@ internal class FileManager
         }
     }
 
-    private void Edit(FileInfo file, Dictionary<string, string> settings)
+    private void Edit(FileInfo file, List<string> settings)
     {
 
     }

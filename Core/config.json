@@ -3,13 +3,13 @@
     "name": "Config1",
     "watchFolder": "C:/RdpTestFiles",
     "filter": "foo*.txt",
-    "moveToFolder": "./Old",
+    "moveToFolder": "C:/RdpTestFiles/Old",
     "launch": false,
     "delete": false,
-    "settings": {
-      "desktopwidth:i": "1920",
-      "desktopheight:i": "1080"
-    }
+    "settings": [
+      "desktopwidth:i:1920",
+      "desktopheight:i:1080"
+    ]
   },
   {
     "name": "Config2",
@@ -18,9 +18,9 @@
     "moveToFolder": "./Old",
     "launch": false,
     "delete": false,
-    "settings": {
-      "desktopwidth:i": "800",
-      "desktopheight:i": "600"
-    }
+    "settings": [
+      "desktopwidth:i:800",
+      "desktopheight:i:600"
+    ]
   }
 ]
