@@ -51,7 +51,23 @@ internal class FileManager
 
     private void Edit(FileInfo file, List<string> settings)
     {
+        try
+        {
+            if (settings.Count == 0)
+                return;
 
+            using var streamWriter = new StreamWriter(file.FullName, append: true);
+
+            streamWriter.WriteLine();
+            foreach (string setting in settings)
+                streamWriter.WriteLine(setting);
+
+            _logger.Trace($"Appended {settings.Count} lines to file '{file.Name}'.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to edit file.");
+        }
     }
 
     private void Launch(FileInfo file)
