@@ -41,11 +41,11 @@ internal class FileManager
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
             file.MoveTo(fullTargetPath, overwrite: true);
 
-            _logger.Trace($"Moved file '{file.Name}' from '{sourceDirectory}' to '{targetDirectory}'.");
+            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{targetDirectory}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Failed to move file.");
+            _logger.Error(ex, $"Failed to move file '{file.Name}'.");
         }
     }
 
@@ -62,11 +62,11 @@ internal class FileManager
             foreach (string setting in settings)
                 streamWriter.WriteLine(setting);
 
-            _logger.Trace($"Appended {settings.Count} lines to file '{file.Name}'.");
+            _logger.Info($"Appended {settings.Count} lines to file '{file.Name}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Failed to edit file.");
+            _logger.Error(ex, $"Failed to edit file '{file.Name}'.");
         }
     }
 
@@ -77,10 +77,11 @@ internal class FileManager
             file.Refresh();
             var process = new ProcessStartInfo(file.FullName) { UseShellExecute = true };
             Process.Start(process);
+            _logger.Info($"Launched file '{file.Name}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to launch file.");
+            _logger.Error(ex, $"Failed to launch file '{file.Name}'.");
         }
     }
 
