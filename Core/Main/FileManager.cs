@@ -11,7 +11,7 @@ internal class FileManager
     public void ProcessFile(FileInfo file, Config config)
     {
         if (!string.IsNullOrWhiteSpace(config.MoveToFolder))
-            Move(file, config);
+            Move(file, config.MoveToFolder);
 
         if (config.Settings.Count > 0)
             Edit(file, config.Settings);
@@ -25,22 +25,23 @@ internal class FileManager
 
 
 
-    private void Move(FileInfo file, Config config)
+    private void Move(FileInfo file, string targetDirectory)
     {
         try
         {
-            bool isPathAbsolute = Path.IsPathFullyQualified(config.MoveToFolder); // e.g. 'C:\Foo\Bar'
+            bool isPathAbsolute = Path.IsPathFullyQualified(targetDirectory); // e.g. 'C:\Foo\Bar'
             if (!isPathAbsolute)
             {
-                _logger.Warn($"Can not move file '{file.Name}', target path is not absolute: {config.MoveToFolder}");
+                _logger.Warn($"Can not move file '{file.Name}', target path is not absolute: {targetDirectory}");
                 return;
             }
 
-            Directory.CreateDirectory(config.MoveToFolder);
-            string fullTargetPath = Path.Combine(config.MoveToFolder, file.Name);
+            string sourceDirectory = file.DirectoryName ?? "(unknown)";
+            Directory.CreateDirectory(targetDirectory);
+            string fullTargetPath = Path.Combine(targetDirectory, file.Name);
             file.MoveTo(fullTargetPath, overwrite: true);
 
-            _logger.Trace($"Moved file '{file.Name}' from '{config.WatchFolder}' to '{config.MoveToFolder}'.");
+            _logger.Trace($"Moved file '{file.Name}' from '{sourceDirectory}' to '{targetDirectory}'.");
         }
         catch (Exception ex)
         {
