@@ -69,11 +69,11 @@ public class PollingController
 
 
 
-    private void UpdateConfigInfos() =>
-        _configInfos = _configManager.Configs
+    private void UpdateConfigInfos()
+        => _configInfos = _configManager.Configs
             .Select(config => new ConfigInfo(config))
             .ToList();
 
-    private void UpdateConfigInfosFiles() =>
-        _configInfos.ForEach(ci => ci.UpdateFiles());
+    private void UpdateConfigInfosFiles()
+        => _configInfos.ForEach(ci => ci.UpdateFiles());
 }
