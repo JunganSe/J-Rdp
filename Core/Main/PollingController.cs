@@ -30,7 +30,10 @@ public class PollingController
         {
             _logger.Fatal(ex, "Unhandled exception.");
         }
-        _logger.Info("Quitting...");
+        finally
+        {
+            _logger.Info("Quitting...");
+        }
     }
 
     private void Initialize()
@@ -50,7 +53,7 @@ public class PollingController
             var newFiles = configInfo.NewFiles;
             if (newFiles.Any())
                 _logger.Trace($"{configInfo.Config.Name} found {newFiles.Count()} new files in: {configInfo.Config.WatchFolder}");
-            
+
             string filter = configInfo.Config.Filter;
             foreach (var newFile in newFiles)
             {

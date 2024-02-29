@@ -4,7 +4,7 @@ namespace Core.Configuration;
 
 internal class ConfigInfo
 {
-    private readonly FileInfoEqualityComparer_FullName _fileComparer = new FileInfoEqualityComparer_FullName();
+    private readonly FileInfoEqualityComparer_FullName _fileComparer = new();
 
     public Config Config { get; }
     public IEnumerable<FileInfo> Files { get; private set; }
