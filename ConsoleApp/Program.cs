@@ -6,6 +6,8 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        new PollingController().Run();
+        var arguments = Arguments.Parse(args);
+
+        new PollingController(arguments.PollingInterval).Run();
     }
 }

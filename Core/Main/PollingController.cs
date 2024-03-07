@@ -6,12 +6,18 @@ namespace Core.Main;
 
 public class PollingController
 {
-    private const int POLLING_INTERVAL = 1000;
+    private const int _defaultPollingInterval = 1000;
 
+    private readonly int _pollingInterval;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly FileManager _fileManager = new();
     private readonly ConfigManager _configManager = new();
     private List<ConfigInfo> _configInfos = [];
+
+    public PollingController(int pollingInterval)
+    {
+        _pollingInterval = GetValidPollingInterval(pollingInterval);
+    }
 
     public void Run()
     {
@@ -23,7 +29,7 @@ public class PollingController
             while (true)
             {
                 MainLoop();
-                Thread.Sleep(POLLING_INTERVAL);
+                Thread.Sleep(_pollingInterval);
             }
         }
         catch (Exception ex)
@@ -68,6 +74,14 @@ public class PollingController
 
 
 
+    private int GetValidPollingInterval(int pollingInterval)
+    {
+        if (pollingInterval > 0)
+            return pollingInterval;
+
+        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {_defaultPollingInterval}");
+        return _defaultPollingInterval;
+    }
 
     private void UpdateConfigInfos()
         => _configInfos = _configManager.Configs
