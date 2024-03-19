@@ -1,6 +1,7 @@
 ﻿using Core.Configuration;
 using Core.Constants;
 using Core.Extensions;
+using Core.Helpers;
 using NLog;
 
 namespace Core.Main;
@@ -23,6 +24,8 @@ public class PollingController
         try
         {
             _logger.Info("Starting...");
+
+            StartConfigWatcher();
             Initialize();
 
             while (true)
@@ -39,6 +42,13 @@ public class PollingController
         {
             _logger.Info("Quitting...");
         }
+    }
+
+    private void StartConfigWatcher()
+    {
+        string directory = FileSystemHelper.GetConfigDirectory();
+        string fileName = ConfigManager.CONFIG_FILE_NAME;
+        _ = new ConfigWatcher(directory, fileName, Initialize);
     }
 
     private void Initialize()
@@ -65,8 +75,6 @@ public class PollingController
                 ProcessFileOnFilterMatch(config, newFile);
         }
     }
-
-
 
     private int GetValidPollingInterval(int pollingInterval)
     {

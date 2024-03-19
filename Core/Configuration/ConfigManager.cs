@@ -6,7 +6,7 @@ namespace Core.Configuration;
 
 internal class ConfigManager
 {
-    private const string CONFIG_FILE_NAME = "config.json";
+    public const string CONFIG_FILE_NAME = "config.json";
 
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
