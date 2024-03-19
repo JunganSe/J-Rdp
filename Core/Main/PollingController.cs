@@ -56,6 +56,7 @@ public class PollingController
         _configManager.UpdateConfigs();
         UpdateConfigInfos();
         UpdateConfigInfosFiles();
+        LogConfigSummary();
     }
 
     private void MainLoop()
@@ -100,5 +101,15 @@ public class PollingController
             _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
             _fileManager.ProcessFile(file, config);
         }
+    }
+
+    private void LogConfigSummary()
+    {
+        string configsSummary = (_configInfos.Count > 0)
+            ? string.Join("", _configInfos
+                .Select(ci => ci.Config)
+                .Select(c => $"\n  {c.Name}: '{c.Filter}' in: {c.WatchFolder}"))
+            : "(nothing)";
+        _logger.Info($"Current configs: {configsSummary}");
     }
 }
