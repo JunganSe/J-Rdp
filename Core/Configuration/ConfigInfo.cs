@@ -28,5 +28,5 @@ internal class ConfigInfo
 
 
     private IEnumerable<FileInfo> GetFiles()
-        => Directory.GetFiles(Config.WatchFolder).Select(s => new FileInfo(s));
+        => Directory.GetFiles(Config.WatchFolder).Select(path => new FileInfo(path));
 }
