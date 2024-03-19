@@ -6,8 +6,7 @@ namespace Core.Configuration;
 internal class ConfigWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
-    public Action? Callback { get; set; }
+    private readonly Action? _callback;
 
     public ConfigWatcher(string path, string filter, Action callback)
     {
@@ -15,7 +14,7 @@ internal class ConfigWatcher : FileSystemWatcher
 
         Path = path;
         Filter = filter;
-        Callback = callback;
+        _callback = callback;
         EnableRaisingEvents = true;
         IncludeSubdirectories = false;
         NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
@@ -38,7 +37,7 @@ internal class ConfigWatcher : FileSystemWatcher
         string eventType = args.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {eventType}: {args.FullPath}");
 
-        Callback?.Invoke();
+        _callback?.Invoke();
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs args)
@@ -58,7 +57,7 @@ internal class ConfigWatcher : FileSystemWatcher
             return;
 
         _logger.Warn($"Config file '{Filter}' not found in {Path}");
-        Callback?.Invoke();
+        _callback?.Invoke();
     }
 
     private void OnError(object sender, ErrorEventArgs args)
