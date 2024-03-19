@@ -56,18 +56,13 @@ public class PollingController
         foreach (var configInfo in configInfos)
         {
             var newFiles = configInfo.NewFiles;
-            if (newFiles.Any())
-                _logger.Trace($"{configInfo.Config.Name} found {newFiles.Count()} new files in: {configInfo.Config.WatchFolder}");
+            var config = configInfo.Config;
 
-            string filter = configInfo.Config.Filter;
+            if (newFiles.Any())
+                _logger.Trace($"{config.Name} found {newFiles.Count()} new files in: {config.WatchFolder}");
+
             foreach (var newFile in newFiles)
-            {
-                if (newFile.NameMatchesFilter(filter, ignoreCase: true))
-                {
-                    _logger.Info($"{configInfo.Config.Name} found a match on '{newFile.FullName}' using filter '{configInfo.Config.Filter}'.");
-                    _fileManager.ProcessFile(newFile, configInfo.Config);
-                }
-            }
+                ProcessFileOnFilterMatch(config, newFile);
         }
     }
 
@@ -89,4 +84,13 @@ public class PollingController
 
     private void UpdateConfigInfosFiles()
         => _configInfos.ForEach(ci => ci.UpdateFiles());
+
+    private void ProcessFileOnFilterMatch(Config config, FileInfo file)
+    {
+        if (file.NameMatchesFilter(config.Filter, ignoreCase: true))
+        {
+            _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
+            _fileManager.ProcessFile(file, config);
+        }
+    }
 }
