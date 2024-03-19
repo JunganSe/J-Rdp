@@ -11,6 +11,8 @@ internal class ConfigWatcher : FileSystemWatcher
 
     public ConfigWatcher(string path, string filter, Action callback)
     {
+        _logger.Trace("Starting...");
+
         Path = path;
         Filter = filter;
         Callback = callback;
@@ -22,6 +24,8 @@ internal class ConfigWatcher : FileSystemWatcher
         Renamed += OnRenamed;
         Deleted += OnMissing;
         Error += OnError;
+
+        _logger.Debug($"Watching for {filter} in {path}");
     }
 
 
