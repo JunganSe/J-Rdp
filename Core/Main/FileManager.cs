@@ -87,6 +87,6 @@ internal class FileManager
 
     private void Delete(FileInfo file)
     {
-
+        // TODO: Implement deletion of file.
     }
 }
