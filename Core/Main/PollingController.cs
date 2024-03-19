@@ -1,4 +1,5 @@
 ﻿using Core.Configuration;
+using Core.Constants;
 using Core.Extensions;
 using NLog;
 
@@ -6,8 +7,6 @@ namespace Core.Main;
 
 public class PollingController
 {
-    private const int _defaultPollingInterval = 1000;
-
     private readonly int _pollingInterval;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly FileManager _fileManager = new();
@@ -76,11 +75,11 @@ public class PollingController
 
     private int GetValidPollingInterval(int pollingInterval)
     {
-        if (pollingInterval > 0)
+        if (pollingInterval is >= PollingInterval.Min and <= PollingInterval.Max)
             return pollingInterval;
 
-        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {_defaultPollingInterval}");
-        return _defaultPollingInterval;
+        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {PollingInterval.Default} ms.");
+        return PollingInterval.Default;
     }
 
     private void UpdateConfigInfos()
