@@ -10,4 +10,7 @@ internal static class FileSystemHelper
         return (!fileName.IsEmpty
             && FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true));
     }
+
+    public static string GetConfigDirectory()
+        => AppDomain.CurrentDomain.BaseDirectory;
 }

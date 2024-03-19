@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Core.Helpers;
+using NLog;
 using System.Text.Json;
 
 namespace Core.Configuration;
@@ -42,7 +43,7 @@ internal class ConfigManager
 
     private string GetConfigPath()
     {
-        string directory = AppDomain.CurrentDomain.BaseDirectory;
+        string directory = FileSystemHelper.GetConfigDirectory();
         return Path.Combine(directory, CONFIG_FILE_NAME);
     }
 
