@@ -1,0 +1,1 @@
+start "RdpRunner" RdpRunner.exe -no-console -no-browser
