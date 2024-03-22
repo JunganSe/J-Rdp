@@ -8,6 +8,6 @@ internal class Program
     {
         var arguments = Arguments.Parse(args);
 
-        new PollingController(arguments.PollingInterval).Run();
+        new Controller(arguments.PollingInterval).Run();
     }
 }

@@ -6,7 +6,7 @@ using NLog;
 
 namespace Core.Main;
 
-public class PollingController
+public class Controller
 {
     private readonly int _pollingInterval;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -14,7 +14,7 @@ public class PollingController
     private readonly ConfigManager _configManager = new();
     private List<ConfigInfo> _configInfos = [];
 
-    public PollingController(int pollingInterval)
+    public Controller(int pollingInterval)
     {
         _pollingInterval = GetValidPollingInterval(pollingInterval);
     }
