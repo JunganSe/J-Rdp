@@ -1,6 +1,5 @@
-﻿using NLog;
+﻿namespace ConsoleApp;
 
-namespace ConsoleApp;
 internal class Arguments
 {
     public int PollingInterval { get; set; }
