@@ -13,13 +13,13 @@ static class ConsoleManager
 
     public static void Hide()
     {
-        _logger.Info("Showing Console.");
-        ShowWindow(_handle, SW_HIDE); // Hide the console.
+        _logger.Info("Hiding Console.");
+        ShowWindow(_handle, SW_HIDE); 
     }
 
     public static void Show()
     {
-        _logger.Info("Hiding Console.");
-        ShowWindow(_handle, SW_SHOW); // Show the console.
+        _logger.Info("Showing Console.");
+        ShowWindow(_handle, SW_SHOW);
     }
 }
