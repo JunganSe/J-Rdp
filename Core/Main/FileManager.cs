@@ -29,6 +29,7 @@ internal class FileManager
 
     private void Move(FileInfo file, string targetDirectory)
     {
+        string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
             bool isPathAbsolute = Path.IsPathFullyQualified(targetDirectory); // e.g. 'C:\Foo\Bar'
@@ -38,7 +39,6 @@ internal class FileManager
                 return;
             }
 
-            string sourceDirectory = file.DirectoryName ?? "(unknown)";
             Directory.CreateDirectory(targetDirectory);
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
             file.MoveTo(fullTargetPath, overwrite: true);
@@ -47,7 +47,7 @@ internal class FileManager
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to move file '{file.Name}' to '{targetDirectory}'.");
+            _logger.Error(ex, $"Failed to move file '{file.Name}' from '{sourceDirectory}' to '{targetDirectory}'.");
         }
     }
 
@@ -64,11 +64,11 @@ internal class FileManager
             foreach (string setting in settings)
                 streamWriter.WriteLine(setting);
 
-            _logger.Info($"Appended {settings.Count} lines to file '{file.Name}'.");
+            _logger.Info($"Appended {settings.Count} lines to file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to edit file '{file.Name}'.");
+            _logger.Error(ex, $"Failed to edit file '{file.Name}' in '{file.DirectoryName}'.");
         }
     }
 
@@ -79,11 +79,11 @@ internal class FileManager
             file.Refresh();
             var process = new ProcessStartInfo(file.FullName) { UseShellExecute = true };
             Process.Start(process);
-            _logger.Info($"Launched file '{file.Name}'.");
+            _logger.Info($"Launched file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to launch file '{file.Name}'.");
+            _logger.Error(ex, $"Failed to launch file '{file.Name}' in '{file.DirectoryName}'.");
         }
     }
 
@@ -97,11 +97,13 @@ internal class FileManager
             var recycleOption = (recycle) ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently;
             FileSystem.DeleteFile(file.FullName, UIOption.OnlyErrorDialogs, recycleOption);
 
-            _logger.Info($"Deleted file '{file.Name}' in '{file.DirectoryName}'.");
+            string verb = (recycle) ? "Recycled" : "Permanently deleted";
+            _logger.Info($"{verb} file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to delete file '{file.Name}' in '{file.DirectoryName}'.");
+            string verb = (recycle) ? "recycle" : "permanently delete";
+            _logger.Error(ex, $"Failed to {verb} file '{file.Name}' in '{file.DirectoryName}'.");
         }
     }
 }
