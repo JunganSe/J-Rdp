@@ -17,6 +17,7 @@ public class Controller
     public Controller(int pollingInterval)
     {
         _pollingInterval = GetValidPollingInterval(pollingInterval);
+        _logger.Info($"Poll rate set to {_pollingInterval} ms.");
     }
 
     public void Run()
@@ -24,9 +25,9 @@ public class Controller
         try
         {
             _logger.Info("Starting...");
-
             StartConfigWatcher();
             Initialize();
+            _logger.Info("Started.");
 
             while (true)
             {
