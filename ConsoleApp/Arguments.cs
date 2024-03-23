@@ -1,13 +1,19 @@
-﻿namespace ConsoleApp;
+﻿using NLog;
+
+namespace ConsoleApp;
 
 internal class Arguments
 {
+    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     public int PollingInterval { get; set; }
     public bool HideConsole { get; set; }
     public int LogLevel { get; set; } // TODO: Implement. 0: No logging, 1: Messages, 2: Messages + stack trace.
 
     public static Arguments Parse(string[] args)
     {
+        _logger.Trace("Parsing arguments...");
+
         var output = new Arguments();
         foreach (var arg in args)
         {
@@ -22,6 +28,8 @@ internal class Arguments
             else if (parts[0] == nameof(LogLevel))
                 output.LogLevel = ParseInt(parts[1]);
         }
+
+        _logger.Debug("Parsed arguments: " + output.ToString());
         return output;
     }
 
@@ -30,4 +38,9 @@ internal class Arguments
 
     private static bool ParseBool(string input) 
         => (bool.TryParse(input, out bool result)) ? result : false;
+
+    public override string ToString()
+        => $"{nameof(PollingInterval)}: {PollingInterval}, " +
+            $"{nameof(HideConsole)}: {HideConsole}, " +
+            $"{nameof(LogLevel)}: {LogLevel}";
 }
