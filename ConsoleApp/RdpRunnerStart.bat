@@ -1,1 +1,1 @@
-start "RdpRunner" RdpRunner.exe -no-console -no-browser
+start "RdpRunner" RdpRunner.exe PollingInterval=1000 HideConsole=true LogLevel=2
