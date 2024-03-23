@@ -1,4 +1,5 @@
 ﻿using Core.Configuration;
+using Microsoft.VisualBasic.FileIO;
 using NLog;
 using System.Diagnostics;
 
@@ -6,6 +7,7 @@ namespace Core.Main;
 
 internal class FileManager
 {
+    private const int _deleteDelay = 1000;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public void ProcessFile(FileInfo file, Config config)
@@ -20,7 +22,7 @@ internal class FileManager
             Launch(file);
 
         if (config.Delete)
-            Delete(file);
+            Delete(file, recycle: true);
     }
 
 
@@ -85,8 +87,21 @@ internal class FileManager
         }
     }
 
-    private void Delete(FileInfo file)
+    private void Delete(FileInfo file, bool recycle = true)
     {
-        // TODO: Implement deletion of file.
+        try
+        {
+            Thread.Sleep(_deleteDelay);
+
+            file.Refresh();
+            var recycleOption = (recycle) ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently;
+            FileSystem.DeleteFile(file.FullName, UIOption.OnlyErrorDialogs, recycleOption);
+
+            _logger.Info($"Deleted file '{file.Name}' in '{file.DirectoryName}'.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to delete file '{file.Name}' in '{file.DirectoryName}'.");
+        }
     }
 }
