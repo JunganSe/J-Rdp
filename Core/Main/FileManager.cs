@@ -22,7 +22,11 @@ internal class FileManager
             Launch(file);
 
         if (config.Delete)
+        {
+            if (config.Launch)
+                Thread.Sleep(_deleteDelay); // To allow the file to be opened before deletion.
             Delete(file, recycle: true);
+        }
     }
 
 
@@ -91,8 +95,6 @@ internal class FileManager
     {
         try
         {
-            Thread.Sleep(_deleteDelay);
-
             file.Refresh();
             var recycleOption = (recycle) ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently;
             FileSystem.DeleteFile(file.FullName, UIOption.OnlyErrorDialogs, recycleOption);
