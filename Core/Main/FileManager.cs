@@ -45,7 +45,7 @@ internal class FileManager
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to move file '{file.Name}'.");
+            _logger.Error(ex, $"Failed to move file '{file.Name}' to '{targetDirectory}'.");
         }
     }
 
