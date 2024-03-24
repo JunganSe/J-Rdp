@@ -8,11 +8,8 @@ internal class Program
     {
         var arguments = Arguments.Parse(args);
 
-        if (arguments.HideConsole)
-            ConsoleManager.Hide();
-        else
-            ConsoleManager.Show();
-        
+        ConsoleManager.SetVisibility(!arguments.HideConsole);
+
         new Controller(arguments.PollingInterval).Run();
     }
 }

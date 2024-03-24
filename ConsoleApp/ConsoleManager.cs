@@ -19,13 +19,21 @@ internal static class ConsoleManager
     [DllImport("user32.dll")]
     private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-    public static void Show()
+    public static void SetVisibility(bool show)
+    {
+        if (show)
+            Show();
+        else
+            Hide();
+    }
+
+    private static void Show()
     {
         _logger.Info("Showing Console.");
         ShowWindow(_handle, SW_SHOW);
     }
 
-    public static void Hide()
+    private static void Hide()
     {
         _logger.Info("Hiding Console.");
         ShowWindow(_handle, SW_HIDE); 
