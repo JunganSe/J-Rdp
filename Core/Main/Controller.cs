@@ -124,9 +124,9 @@ public class Controller
 
     private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
     {
-        string pluralS = (newFiles.Count() > 1) ? "s" : "";
+        string s = (newFiles.Count() > 1) ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Trace($"{config.Name} found {newFiles.Count()} new file{pluralS} in '{config.WatchFolder}': {fileNames}");
+        _logger.Trace($"{config.Name} found {newFiles.Count()} new file{s} in '{config.WatchFolder}': {fileNames}");
     }
 
     private void ProcessFileOnFilterMatch(Config config, FileInfo file)
