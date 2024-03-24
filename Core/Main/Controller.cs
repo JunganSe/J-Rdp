@@ -99,11 +99,11 @@ public class Controller
 
     private void ProcessFileOnFilterMatch(Config config, FileInfo file)
     {
-        if (file.NameMatchesFilter(config.Filter, ignoreCase: true))
-        {
-            _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
-            _fileManager.ProcessFile(file, config);
-        }
+        if (!file.NameMatchesFilter(config.Filter, ignoreCase: true))
+            return;
+
+        _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
+        _fileManager.ProcessFile(file, config);
     }
 
     private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
