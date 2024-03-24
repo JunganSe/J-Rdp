@@ -122,7 +122,7 @@ public class Controller
     {
         string s = (newFiles.Count() > 1) ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Trace($"{config.Name} found {newFiles.Count()} new file{s} in '{config.WatchFolder}': {fileNames}");
+        _logger.Debug($"'{config.Name}' found {newFiles.Count()} new file{s} in '{config.WatchFolder}': {fileNames}");
     }
 
     private void ProcessFileOnFilterMatch(Config config, FileInfo file)
