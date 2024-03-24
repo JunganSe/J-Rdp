@@ -40,7 +40,7 @@ internal class FileManager
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
             file.MoveTo(fullTargetPath, overwrite: true);
 
-            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{targetDirectory}'.");
+            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{fullTargetPath}'.");
         }
         catch (Exception ex)
         {
