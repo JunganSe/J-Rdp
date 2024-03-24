@@ -10,6 +10,6 @@ internal class Program
 
         ConsoleManager.SetVisibility(!arguments.HideConsole);
 
-        new Controller(arguments.PollingInterval).Run();
+        new Controller().Run(arguments.PollingInterval);
     }
 }

@@ -8,28 +8,22 @@ namespace Core.Main;
 
 public class Controller
 {
-    private readonly int _pollingInterval;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly FileManager _fileManager = new();
     private readonly ConfigManager _configManager = new();
     private readonly List<string> _processedFilePaths = [];
     private List<ConfigInfo> _configInfos = [];
-
-    public Controller(int pollingInterval)
-    {
-        _pollingInterval = GetValidPollingInterval(pollingInterval);
-        _logger.Info($"Poll rate set to {_pollingInterval} ms.");
-    }
+    private int _pollingInterval;
 
 
 
     #region Main
 
-    public void Run()
+    public void Run(int pollingInterval)
     {
         try
         {
-            Initialize();
+            Initialize(pollingInterval);
 
             while (true)
             {
@@ -47,12 +41,15 @@ public class Controller
         }
     }
 
-    private void Initialize()
+    private void Initialize(int pollingInterval)
     {
         _logger.Info("Starting...");
+
+        _pollingInterval = GetValidPollingInterval(pollingInterval);
         StartConfigWatcher();
         InitializeConfigs();
-        _logger.Info("Started.");
+
+        _logger.Info($"Running at poll rate {_pollingInterval} ms.");
     }
 
     private void MainLoop()
