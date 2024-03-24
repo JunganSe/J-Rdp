@@ -36,13 +36,6 @@ internal class FileManager
         string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
-            bool isPathAbsolute = Path.IsPathFullyQualified(targetDirectory); // e.g. 'C:\Foo\Bar'
-            if (!isPathAbsolute)
-            {
-                _logger.Warn($"Can not move file '{file.Name}', target path is not absolute: {targetDirectory}");
-                return;
-            }
-
             Directory.CreateDirectory(targetDirectory);
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
             file.MoveTo(fullTargetPath, overwrite: true);
