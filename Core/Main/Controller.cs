@@ -120,9 +120,8 @@ public class Controller
     {
         string configsSummary = (_configInfos.Count > 0)
             ? string.Join("", _configInfos
-                .Select(ci => ci.Config)
-                .Select(c => $"\n  {c.Name}: '{c.Filter}' in: {c.WatchFolder}"))
-            : "(nothing)";
+                .Select(ci => $"\n  {ci.Config.Name}: '{ci.Config.Filter}' in: {ci.DirectoryFullPath}"))
+            : "(none)";
         _logger.Info($"Current configs: {configsSummary}");
     }
 

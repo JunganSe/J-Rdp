@@ -35,7 +35,7 @@ internal class ConfigWatcher : FileSystemWatcher
             return;
 
         string eventType = args.ChangeType.ToString().ToLower();
-        _logger.Info($"Config file {eventType}: {args.FullPath}");
+        _logger.Info($"Config file {eventType}.");
 
         _callback?.Invoke();
     }

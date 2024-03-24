@@ -11,6 +11,7 @@ internal class ConfigInfo
     public IEnumerable<FileInfo> LastFiles { get; private set; }
     public IEnumerable<FileInfo> NewFiles => Files.Except(LastFiles, _fileComparer);
     public bool DirectoryExists => Directory.Exists(Config.WatchFolder);
+    public string DirectoryFullPath => Path.GetFullPath(Config.WatchFolder);
 
     public ConfigInfo(Config config)
     {
