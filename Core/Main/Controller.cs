@@ -35,10 +35,6 @@ public class Controller
         {
             _logger.Fatal(ex, "Unhandled exception.");
         }
-        finally
-        {
-            _logger.Info("Quitting...");
-        }
     }
 
     private void Initialize(int pollingInterval)
