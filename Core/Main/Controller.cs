@@ -71,12 +71,14 @@ public class Controller
             var config = configInfo.Config;
 
             if (newFiles.Any())
-                _logger.Trace($"{config.Name} found {newFiles.Count()} new files in: {config.WatchFolder}");
+                LogNewFiles(config, newFiles);
 
             foreach (var newFile in newFiles)
                 ProcessFileOnFilterMatch(config, newFile);
         }
     }
+
+
 
     private int GetValidPollingInterval(int pollingInterval)
     {
@@ -102,6 +104,13 @@ public class Controller
             _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
             _fileManager.ProcessFile(file, config);
         }
+    }
+
+    private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
+    {
+        string pluralS = (newFiles.Count() > 1) ? "s" : "";
+        string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
+        _logger.Trace($"{config.Name} found {newFiles.Count()} new file{pluralS} in '{config.WatchFolder}': {fileNames}");
     }
 
     private void LogConfigSummary()
