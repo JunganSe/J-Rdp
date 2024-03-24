@@ -43,7 +43,7 @@ public class Controller
 
     private void Initialize(int pollingInterval)
     {
-        _logger.Info("Starting...");
+        _logger.Trace("Starting...");
 
         _pollingInterval = GetValidPollingInterval(pollingInterval);
         StartConfigWatcher();
