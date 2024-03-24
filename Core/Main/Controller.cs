@@ -12,6 +12,7 @@ public class Controller
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly FileManager _fileManager = new();
     private readonly ConfigManager _configManager = new();
+    private readonly List<string> _processedFilePaths = [];
     private List<ConfigInfo> _configInfos = [];
 
     public Controller(int pollingInterval)
@@ -67,7 +68,7 @@ public class Controller
         var configInfos = _configInfos.Where(ci => ci.DirectoryExists);
         foreach (var configInfo in configInfos)
         {
-            var newFiles = configInfo.NewFiles;
+            var newFiles = configInfo.NewFiles.Where(f => !_processedFilePaths.Contains(f.FullName));
             var config = configInfo.Config;
 
             if (newFiles.Any())
@@ -76,6 +77,8 @@ public class Controller
             foreach (var newFile in newFiles)
                 ProcessFileOnFilterMatch(config, newFile);
         }
+
+        _processedFilePaths.Clear();
     }
 
 
@@ -103,6 +106,7 @@ public class Controller
             return;
 
         _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
+        _processedFilePaths.Add(file.FullName);
         _fileManager.ProcessFile(file, config);
     }
 
