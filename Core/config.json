@@ -1,9 +1,9 @@
 [
   {
-    "name": "Config1",
-    "watchFolder": "C:/RdpTestFiles",
+    "name": "Example config 1",
+    "watchFolder": "C:/Foo/Bar",
     "filter": "foo*.txt",
-    "moveToFolder": "C:/RdpTestFiles/Old",
+    "moveToFolder": "C:/Foo/Bar/Baz",
     "launch": false,
     "delete": false,
     "settings": [
@@ -12,12 +12,12 @@
     ]
   },
   {
-    "name": "Config2",
-    "watchFolder": "C:/RdpTestFiles",
-    "filter": "bar*.txt",
-    "moveToFolder": "./Old",
-    "launch": false,
-    "delete": false,
+    "name": "Example config 2",
+    "watchFolder": "Foo/Bar",
+    "filter": "bar?.txt",
+    "moveToFolder": "Foo/Bar/Baz",
+    "launch": true,
+    "delete": true,
     "settings": [
       "desktopwidth:i:800",
       "desktopheight:i:600"
