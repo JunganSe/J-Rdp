@@ -21,6 +21,10 @@ public class Controller
         _logger.Info($"Poll rate set to {_pollingInterval} ms.");
     }
 
+
+
+    #region Main
+
     public void Run()
     {
         try
@@ -51,21 +55,6 @@ public class Controller
         _logger.Info("Started.");
     }
 
-    private void StartConfigWatcher()
-    {
-        string directory = FileSystemHelper.GetConfigDirectory();
-        string fileName = ConfigManager.CONFIG_FILE_NAME;
-        _ = new ConfigWatcher(directory, fileName, InitializeConfigs);
-    }
-
-    private void InitializeConfigs()
-    {
-        _configManager.UpdateConfigs();
-        UpdateConfigInfos();
-        UpdateConfigInfosFiles();
-        LogConfigSummary();
-    }
-
     private void MainLoop()
     {
         UpdateConfigInfosFiles();
@@ -77,6 +66,24 @@ public class Controller
         _processedFilePaths.Clear();
     }
 
+    private void ProcessNewFiles(ConfigInfo configInfo)
+    {
+        var newFiles = configInfo.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
+
+        if (!newFiles.Any())
+            return;
+
+        LogNewFiles(configInfo.Config, newFiles);
+
+        foreach (var newFile in newFiles)
+            ProcessFileOnFilterMatch(configInfo.Config, newFile);
+    }
+
+    #endregion
+
+
+    #region Other
+
     private int GetValidPollingInterval(int pollingInterval)
     {
         if (pollingInterval is >= PollingInterval.Min and <= PollingInterval.Max)
@@ -86,6 +93,21 @@ public class Controller
         return PollingInterval.Default;
     }
 
+    private void StartConfigWatcher()
+    {
+        string directory = FileSystemHelper.GetConfigDirectory();
+        string fileName = ConfigManager.CONFIG_FILE_NAME;
+        _ = new ConfigWatcher(directory, fileName, callback: InitializeConfigs);
+    }
+
+    private void InitializeConfigs()
+    {
+        _configManager.UpdateConfigs();
+        UpdateConfigInfos();
+        UpdateConfigInfosFiles();
+        LogConfigSummary();
+    }
+
     private void UpdateConfigInfos()
         => _configInfos = _configManager.Configs
             .Select(config => new ConfigInfo(config))
@@ -93,13 +115,6 @@ public class Controller
 
     private void UpdateConfigInfosFiles()
         => _configInfos.ForEach(ci => ci.UpdateFiles());
-
-    private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
-    {
-        string pluralS = (newFiles.Count() > 1) ? "s" : "";
-        string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Trace($"{config.Name} found {newFiles.Count()} new file{pluralS} in '{config.WatchFolder}': {fileNames}");
-    }
 
     private void LogConfigSummary()
     {
@@ -111,18 +126,11 @@ public class Controller
         _logger.Info($"Current configs: {configsSummary}");
     }
 
-    private void ProcessNewFiles(ConfigInfo configInfo)
+    private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
     {
-        var newFiles = configInfo.NewFiles
-            .Where(file => !_processedFilePaths.Contains(file.FullName));
-
-        if (!newFiles.Any())
-            return;
-
-        LogNewFiles(configInfo.Config, newFiles);
-
-        foreach (var newFile in newFiles)
-            ProcessFileOnFilterMatch(configInfo.Config, newFile);
+        string pluralS = (newFiles.Count() > 1) ? "s" : "";
+        string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
+        _logger.Trace($"{config.Name} found {newFiles.Count()} new file{pluralS} in '{config.WatchFolder}': {fileNames}");
     }
 
     private void ProcessFileOnFilterMatch(Config config, FileInfo file)
@@ -135,4 +143,6 @@ public class Controller
         _processedFilePaths.Add(file.FullName);
         _fileManager.ProcessFile(file, config);
     }
+
+    #endregion
 }
