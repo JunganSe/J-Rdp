@@ -67,21 +67,10 @@ public class Controller
 
         var configInfos = _configInfos.Where(ci => ci.DirectoryExists);
         foreach (var configInfo in configInfos)
-        {
-            var newFiles = configInfo.NewFiles.Where(f => !_processedFilePaths.Contains(f.FullName));
-            var config = configInfo.Config;
-
-            if (newFiles.Any())
-                LogNewFiles(config, newFiles);
-
-            foreach (var newFile in newFiles)
-                ProcessFileOnFilterMatch(config, newFile);
-        }
+            ProcessNewFiles(configInfo);
 
         _processedFilePaths.Clear();
     }
-
-
 
     private int GetValidPollingInterval(int pollingInterval)
     {
@@ -100,16 +89,6 @@ public class Controller
     private void UpdateConfigInfosFiles()
         => _configInfos.ForEach(ci => ci.UpdateFiles());
 
-    private void ProcessFileOnFilterMatch(Config config, FileInfo file)
-    {
-        if (!file.NameMatchesFilter(config.Filter, ignoreCase: true))
-            return;
-
-        _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
-        _processedFilePaths.Add(file.FullName);
-        _fileManager.ProcessFile(file, config);
-    }
-
     private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
     {
         string pluralS = (newFiles.Count() > 1) ? "s" : "";
@@ -125,5 +104,30 @@ public class Controller
                 .Select(c => $"\n  {c.Name}: '{c.Filter}' in: {c.WatchFolder}"))
             : "(nothing)";
         _logger.Info($"Current configs: {configsSummary}");
+    }
+
+    private void ProcessNewFiles(ConfigInfo configInfo)
+    {
+        var newFiles = configInfo.NewFiles
+            .Where(file => !_processedFilePaths.Contains(file.FullName));
+
+        if (!newFiles.Any())
+            return;
+
+        LogNewFiles(configInfo.Config, newFiles);
+
+        foreach (var newFile in newFiles)
+            ProcessFileOnFilterMatch(configInfo.Config, newFile);
+    }
+
+    private void ProcessFileOnFilterMatch(Config config, FileInfo file)
+    {
+        if (!file.NameMatchesFilter(config.Filter, ignoreCase: true))
+            return;
+
+        _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
+
+        _processedFilePaths.Add(file.FullName);
+        _fileManager.ProcessFile(file, config);
     }
 }
