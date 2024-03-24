@@ -4,7 +4,7 @@
 using NLog;
 using System.Runtime.InteropServices;
 
-static class ConsoleManager
+internal static class ConsoleManager
 {
     // https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
 
@@ -13,8 +13,11 @@ static class ConsoleManager
     private static readonly IntPtr _handle = GetConsoleWindow();
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    [DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
-    [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr GetConsoleWindow();
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
     public static void Show()
     {
