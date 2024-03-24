@@ -8,7 +8,6 @@ internal class Arguments
 
     public int PollingInterval { get; set; }
     public bool HideConsole { get; set; }
-    public int LogLevel { get; set; } // TODO: Implement. 0: No logging, 1: Messages, 2: Messages + stack trace.
 
     public static Arguments Parse(string[] args)
     {
@@ -25,8 +24,6 @@ internal class Arguments
                 output.PollingInterval = ParseInt(parts[1]);
             else if (parts[0] == nameof(HideConsole))
                 output.HideConsole = ParseBool(parts[1]);
-            else if (parts[0] == nameof(LogLevel))
-                output.LogLevel = ParseInt(parts[1]);
         }
 
         _logger.Debug("Parsed arguments: " + output.ToString());
@@ -41,6 +38,5 @@ internal class Arguments
 
     public override string ToString()
         => $"{nameof(PollingInterval)}: {PollingInterval}, " +
-            $"{nameof(HideConsole)}: {HideConsole}, " +
-            $"{nameof(LogLevel)}: {LogLevel}";
+            $"{nameof(HideConsole)}: {HideConsole}";
 }
