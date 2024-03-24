@@ -86,7 +86,7 @@ public class Controller
         if (pollingInterval is >= PollingInterval.Min and <= PollingInterval.Max)
             return pollingInterval;
 
-        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {PollingInterval.Default} ms.");
+        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {PollingInterval.Default} ms. (Must be {PollingInterval.Min}-{PollingInterval.Max} ms.)");
         return PollingInterval.Default;
     }
 
