@@ -25,10 +25,7 @@ public class Controller
     {
         try
         {
-            _logger.Info("Starting...");
-            StartConfigWatcher();
             Initialize();
-            _logger.Info("Started.");
 
             while (true)
             {
@@ -46,14 +43,22 @@ public class Controller
         }
     }
 
+    private void Initialize()
+    {
+        _logger.Info("Starting...");
+        StartConfigWatcher();
+        InitializeConfigs();
+        _logger.Info("Started.");
+    }
+
     private void StartConfigWatcher()
     {
         string directory = FileSystemHelper.GetConfigDirectory();
         string fileName = ConfigManager.CONFIG_FILE_NAME;
-        _ = new ConfigWatcher(directory, fileName, Initialize);
+        _ = new ConfigWatcher(directory, fileName, InitializeConfigs);
     }
 
-    private void Initialize()
+    private void InitializeConfigs()
     {
         _configManager.UpdateConfigs();
         UpdateConfigInfos();
