@@ -1,6 +1,6 @@
 ﻿namespace Core.Constants;
 
-public static class PollingInterval
+internal static class PollingInterval
 {
     public const int Min = 100;
     public const int Max = 10_000;
