@@ -22,7 +22,12 @@ internal class ConfigManager
 
     public void UpdateConfigs()
     {
-        Configs = GetConfigsFromFile();
+        var configs = GetConfigsFromFile();
+        var invalidConfigs = configs.Where(c => !IsConfigValid(c));
+        foreach (var invalidConfig in invalidConfigs)
+            _logger.Warn($"Config '{invalidConfig.Name}' is invalid and will be ignored.");
+
+        Configs = configs.Except(invalidConfigs).ToList();
     }
 
     public List<Config> GetConfigsFromFile()
@@ -79,4 +84,7 @@ internal class ConfigManager
             throw;
         }
     }
+
+    private bool IsConfigValid(Config config)
+        => !string.IsNullOrWhiteSpace(config.WatchFolder);
 }
