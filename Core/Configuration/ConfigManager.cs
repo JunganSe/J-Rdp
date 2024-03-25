@@ -30,7 +30,9 @@ internal class ConfigManager
         Configs = configs.Except(invalidConfigs).ToList();
     }
 
-    public List<Config> GetConfigsFromFile()
+
+
+    private List<Config> GetConfigsFromFile()
     {
         try
         {
@@ -43,8 +45,6 @@ internal class ConfigManager
             return [];
         }
     }
-
-
 
     private string GetConfigPath()
     {
