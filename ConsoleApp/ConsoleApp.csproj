@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Auxiliary\Auxiliary.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
