@@ -7,7 +7,7 @@ namespace Core.Main;
 
 internal class FileManager
 {
-    private const int _deleteDelay = 1000;
+    private const int _deleteDelay = 3000;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public void ProcessFile(FileInfo file, Config config)
