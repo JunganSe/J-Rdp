@@ -1,9 +1,9 @@
 [
   {
     "name": "Example config 1",
-    "watchFolder": "C:/Foo/Bar",
+    "watchFolder": "C:/Foo",
     "filter": "*foo.rdp",
-    "moveToFolder": "C:/Foo/Bar/Baz",
+    "moveToFolder": "C:/Foo/Bar",
     "launch": false,
     "delete": false,
     "settings": [
@@ -20,7 +20,7 @@
     "delete": true,
     "settings": [
       "screen mode id:i:2",
-      "smart sizing:i:0"
+      "smart sizing:i:1"
     ]
   }
 ]
