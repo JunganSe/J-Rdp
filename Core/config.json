@@ -2,25 +2,25 @@
   {
     "name": "Example config 1",
     "watchFolder": "C:/Foo/Bar",
-    "filter": "foo*.txt",
+    "filter": "*foo.rdp",
     "moveToFolder": "C:/Foo/Bar/Baz",
     "launch": false,
     "delete": false,
     "settings": [
-      "desktopwidth:i:1920",
-      "desktopheight:i:1080"
+      "desktopwidth:i:800",
+      "desktopheight:i:600"
     ]
   },
   {
     "name": "Example config 2",
     "watchFolder": "Foo/Bar",
-    "filter": "bar?.txt",
-    "moveToFolder": "Foo/Bar/Baz",
+    "filter": "bar?.rdp",
+    "moveToFolder": "",
     "launch": true,
     "delete": true,
     "settings": [
-      "desktopwidth:i:800",
-      "desktopheight:i:600"
+      "screen mode id:i:2",
+      "smart sizing:i:0"
     ]
   }
 ]
