@@ -38,7 +38,8 @@ Filename wildcards:
 - '?':    exactly 1 character.
 
 ## Launching
-The application can be run directly as a console app, or silently in the background.
+The application can be run directly as a console app, or silently in the background.\
+No installation is needed.
 
 Command line arguments on startup:
 - PollingInterval: Time in milliseconds between each check for new files. Default: 1000.
