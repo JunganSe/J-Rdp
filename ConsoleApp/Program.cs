@@ -7,6 +7,8 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        Console.Title = "J-Rdp 0.1.0";
+
         LogManager.Initialize();
         var logger = NLog.LogManager.GetCurrentClassLogger();
         logger.Info("Starting...");
