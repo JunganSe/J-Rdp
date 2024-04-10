@@ -1,11 +1,11 @@
-﻿RdpRunner
+﻿J-Rdp
 Prerelease 0.1.0
 
 
 
 Summary
 
-RdpRunner is a tool to automate the editing and launching of rdp files.
+J-Rdp is a tool to automate the editing and launching of rdp files.
 
 It will watch one or more folders for new files.
 When a new file is found, several actions can be taken:
@@ -53,7 +53,7 @@ Command line arguments on startup:
 - PollingInterval: Time in milliseconds between each check for new files. Default: 1000.
 - HideConsole: Whether to hide the console window. Default: false.
 
-Example command: `RdpRunner.exe PollingInterval=3000 HideConsole=true`
+Example command: `J-Rdp.exe PollingInterval=3000 HideConsole=true`
 
 Use the provided bat files to conveniently start and stop the application without the console window, 
 and to launch the application on startup. (Create a shortcut in your startup folder, or use the task scheduler.)
