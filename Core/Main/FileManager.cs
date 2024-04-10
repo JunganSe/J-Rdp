@@ -61,7 +61,8 @@ internal class FileManager
             foreach (string setting in settings)
                 streamWriter.WriteLine(setting);
 
-            _logger.Info($"Appended {settings.Count} lines to file '{file.Name}' in '{file.DirectoryName}'.");
+            string linesWord = (settings.Count == 1) ? "line" : "lines";
+            _logger.Info($"Appended {settings.Count} {linesWord} to file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {

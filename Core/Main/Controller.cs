@@ -130,7 +130,7 @@ public class Controller
         if (!file.NameMatchesFilter(config.Filter, ignoreCase: true))
             return;
 
-        _logger.Info($"{config.Name} found a match on '{file.FullName}' using filter '{config.Filter}'.");
+        _logger.Info($"'{config.Name}' found a match on '{file.FullName}' using filter '{config.Filter}'.");
 
         _processedFilePaths.Add(file.FullName);
         _fileManager.ProcessFile(file, config);

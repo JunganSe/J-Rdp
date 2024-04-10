@@ -24,7 +24,7 @@ internal class ConfigWatcher : FileSystemWatcher
         Deleted += OnMissing;
         Error += OnError;
 
-        _logger.Debug($"Watching for {filter} in {path}");
+        _logger.Debug($"Watching for '{filter}' in '{path}'.");
     }
 
 
@@ -56,7 +56,7 @@ internal class ConfigWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
-        _logger.Warn($"Config file '{Filter}' not found in {Path}");
+        _logger.Warn($"Config file '{Filter}' not found in '{Path}'.");
         _callback?.Invoke();
     }
 
