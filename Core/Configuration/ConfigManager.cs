@@ -37,7 +37,7 @@ internal class ConfigManager
         {
             string path = GetConfigPath();
             string json = FileSystemHelper.ReadFile(path);
-            return Parse(json);
+            return ParseProfiles(json);
         }
         catch
         {
@@ -52,7 +52,7 @@ internal class ConfigManager
         return Path.Combine(directory, fileName);
     }
 
-    private List<Profile> Parse(string json)
+    private List<Profile> ParseProfiles(string json)
     {
         try
         {
