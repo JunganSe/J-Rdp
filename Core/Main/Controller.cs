@@ -89,7 +89,7 @@ public class Controller
     private void StartConfigWatcher()
     {
         string directory = FileSystemHelper.GetConfigDirectory();
-        string fileName = ConfigManager.CONFIG_FILE_NAME;
+        string fileName = ConfigConstants.FileName;
         _ = new ConfigWatcher(directory, fileName, callback: InitializeProfiles);
     }
 

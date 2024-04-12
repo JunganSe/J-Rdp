@@ -1,4 +1,5 @@
-﻿using Core.Helpers;
+﻿using Core.Constants;
+using Core.Helpers;
 using NLog;
 using System.Text.Json;
 
@@ -6,8 +7,6 @@ namespace Core.Configuration;
 
 internal class ConfigManager
 {
-    public const string CONFIG_FILE_NAME = "config.json";
-
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
 
@@ -49,7 +48,7 @@ internal class ConfigManager
     private string GetConfigPath()
     {
         string directory = FileSystemHelper.GetConfigDirectory();
-        return Path.Combine(directory, CONFIG_FILE_NAME);
+        return Path.Combine(directory, ConfigConstants.FileName);
     }
 
     private string ReadFile(string path)
