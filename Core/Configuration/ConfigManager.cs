@@ -36,7 +36,7 @@ internal class ConfigManager
         try
         {
             string path = GetConfigPath();
-            string json = ReadFile(path);
+            string json = FileSystemHelper.ReadFile(path);
             return Parse(json);
         }
         catch
@@ -50,24 +50,6 @@ internal class ConfigManager
         string directory = FileSystemHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
         return Path.Combine(directory, fileName);
-    }
-
-    private string ReadFile(string path)
-    {
-        try
-        {
-            if (!File.Exists(path))
-                throw new ArgumentException("File does not exist.");
-
-            string json = File.ReadAllText(path);
-            _logger.Trace($"Successfully read file: {path}");
-            return json;
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, $"Failed to read file: {path}");
-            throw;
-        }
     }
 
     private List<Profile> Parse(string json)
