@@ -10,20 +10,20 @@ internal class FileManager
     private const int _deleteDelay = 3000;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    public void ProcessFile(FileInfo file, Config config)
+    public void ProcessFile(FileInfo file, Profile profile)
     {
-        if (!string.IsNullOrWhiteSpace(config.MoveToFolder))
-            Move(file, config.MoveToFolder);
+        if (!string.IsNullOrWhiteSpace(profile.MoveToFolder))
+            Move(file, profile.MoveToFolder);
 
-        if (config.Settings.Count > 0)
-            Edit(file, config.Settings);
+        if (profile.Settings.Count > 0)
+            Edit(file, profile.Settings);
 
-        if (config.Launch)
+        if (profile.Launch)
             Launch(file);
 
-        if (config.Delete)
+        if (profile.Delete)
         {
-            if (config.Launch)
+            if (profile.Launch)
                 Thread.Sleep(_deleteDelay); // To allow the file to be opened before deletion.
             Delete(file, recycle: true);
         }

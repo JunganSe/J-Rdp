@@ -1,6 +1,6 @@
 ﻿namespace Core.Configuration;
 
-internal class Config
+internal class Profile
 {
     public string Name { get; init; }           = "";
     public string WatchFolder { get; init; }    = "";

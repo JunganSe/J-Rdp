@@ -2,20 +2,20 @@
 
 namespace Core.Configuration;
 
-internal class ConfigInfo
+internal class ProfileInfo
 {
     private readonly FileInfoEqualityComparer_FullName _fileComparer = new();
 
-    public Config Config { get; }
+    public Profile Profile { get; }
     public IEnumerable<FileInfo> Files { get; private set; }
     public IEnumerable<FileInfo> LastFiles { get; private set; }
     public IEnumerable<FileInfo> NewFiles => Files.Except(LastFiles, _fileComparer);
-    public bool DirectoryExists => Directory.Exists(Config.WatchFolder);
-    public string DirectoryFullPath => Path.GetFullPath(Config.WatchFolder);
+    public bool DirectoryExists => Directory.Exists(Profile.WatchFolder);
+    public string DirectoryFullPath => Path.GetFullPath(Profile.WatchFolder);
 
-    public ConfigInfo(Config config)
+    public ProfileInfo(Profile profile)
     {
-        Config = config;
+        Profile = profile;
         Files = [];
         LastFiles = [];
     }
@@ -29,5 +29,5 @@ internal class ConfigInfo
 
 
     private IEnumerable<FileInfo> GetFiles()
-        => Directory.GetFiles(Config.WatchFolder).Select(path => new FileInfo(path));
+        => Directory.GetFiles(Profile.WatchFolder).Select(path => new FileInfo(path));
 }

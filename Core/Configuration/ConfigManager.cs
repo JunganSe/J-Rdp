@@ -11,7 +11,7 @@ internal class ConfigManager
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
 
-    public List<Config> Configs { get; private set; } = [];
+    public List<Profile> Profiles { get; private set; } = [];
 
     public ConfigManager()
     {
@@ -20,19 +20,19 @@ internal class ConfigManager
 
 
 
-    public void UpdateConfigs()
+    public void UpdateProfiles()
     {
-        var configs = GetConfigsFromFile();
-        var invalidConfigs = configs.Where(c => !IsConfigValid(c));
-        foreach (var invalidConfig in invalidConfigs)
-            _logger.Warn($"Config '{invalidConfig.Name}' is invalid and will be ignored.");
+        var profiles = GetProfilesFromFile();
+        var invalidProfiles = profiles.Where(c => !IsProfileValid(c));
+        foreach (var invalidProfile in invalidProfiles)
+            _logger.Warn($"Profile '{invalidProfile.Name}' is invalid and will be ignored.");
 
-        Configs = configs.Except(invalidConfigs).ToList();
+        Profiles = profiles.Except(invalidProfiles).ToList();
     }
 
 
 
-    private List<Config> GetConfigsFromFile()
+    private List<Profile> GetProfilesFromFile()
     {
         try
         {
@@ -70,21 +70,21 @@ internal class ConfigManager
         }
     }
 
-    private List<Config> Parse(string json)
+    private List<Profile> Parse(string json)
     {
         try
         {
-            var configs = JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions);
-            _logger.Trace("Successfully parsed configs from json.");
-            return configs ?? new List<Config>();
+            var profiles = JsonSerializer.Deserialize<List<Profile>>(json, _jsonOptions);
+            _logger.Trace("Successfully parsed profiles from json.");
+            return profiles ?? new List<Profile>();
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to parse configs from json: {json}");
+            _logger.Error(ex, $"Failed to parse profiles from json: {json}");
             throw;
         }
     }
 
-    private bool IsConfigValid(Config config)
-        => !string.IsNullOrWhiteSpace(config.WatchFolder);
+    private bool IsProfileValid(Profile profile)
+        => !string.IsNullOrWhiteSpace(profile.WatchFolder);
 }

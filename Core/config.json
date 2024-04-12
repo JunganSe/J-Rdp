@@ -1,6 +1,6 @@
 [
   {
-    "name": "Example config 1",
+    "name": "Example profile 1",
     "watchFolder": "C:/Foo",
     "filter": "*foo.rdp",
     "moveToFolder": "C:/Foo/Bar",
@@ -12,7 +12,7 @@
     ]
   },
   {
-    "name": "Example config 2",
+    "name": "Example profile 2",
     "watchFolder": "Foo/Bar",
     "filter": "bar?.rdp",
     "moveToFolder": "",
