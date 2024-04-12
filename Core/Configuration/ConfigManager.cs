@@ -48,7 +48,8 @@ internal class ConfigManager
     private string GetConfigPath()
     {
         string directory = FileSystemHelper.GetConfigDirectory();
-        return Path.Combine(directory, ConfigConstants.FileName);
+        string fileName = ConfigConstants.FileName;
+        return Path.Combine(directory, fileName);
     }
 
     private string ReadFile(string path)
