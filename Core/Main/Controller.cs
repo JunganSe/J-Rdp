@@ -88,7 +88,7 @@ public class Controller
 
     private void StartConfigWatcher()
     {
-        string directory = FileSystemHelper.GetConfigDirectory();
+        string directory = FileHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
         _ = new ConfigWatcher(directory, fileName, callback: InitializeProfiles);
     }

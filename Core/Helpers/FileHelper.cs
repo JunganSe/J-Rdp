@@ -3,7 +3,7 @@ using System.IO.Enumeration;
 
 namespace Core.Helpers;
 
-internal static class FileSystemHelper
+internal static class FileHelper
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
