@@ -1,10 +1,10 @@
-﻿using Core.Helpers;
+﻿using Core.Comparers;
 
 namespace Core.Configuration;
 
 internal class ProfileInfo
 {
-    private readonly FileInfoEqualityComparer_FullName _fileComparer = new();
+    private readonly EqualityComparer_FileInfo_FullName _fileComparer = new();
 
     public Profile Profile { get; }
     public IEnumerable<FileInfo> Files { get; private set; }
