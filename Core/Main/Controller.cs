@@ -9,7 +9,7 @@ namespace Core.Main;
 public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly FileManager _fileManager = new();
+    private readonly RdpManager _rdpManager = new();
     private readonly ConfigManager _configManager = new();
     private readonly List<string> _processedFilePaths = [];
     private List<ProfileInfo> _profileInfos = [];
@@ -133,7 +133,7 @@ public class Controller
         _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
 
         _processedFilePaths.Add(file.FullName);
-        _fileManager.ProcessFile(file, profile);
+        _rdpManager.ProcessFile(file, profile);
     }
 
     #endregion

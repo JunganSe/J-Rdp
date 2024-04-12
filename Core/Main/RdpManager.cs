@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Core.Main;
 
-internal class FileManager
+internal class RdpManager
 {
     private const int _deleteDelay = 3000;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
