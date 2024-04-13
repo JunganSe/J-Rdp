@@ -100,9 +100,14 @@ public class Controller
     private void InitializeConfig()
     {
         _configManager.UpdateConfig();
+        InitializeProfiles();
+    }
+
+    private void InitializeProfiles()
+    {
         UpdateProfileInfos();
         UpdateProfileInfosFiles();
-        LogProfileSummary();
+        LogProfileInfosSummary();
     }
 
     private void UpdateProfileInfos()
@@ -113,7 +118,7 @@ public class Controller
     private void UpdateProfileInfosFiles()
         => _profileInfos.ForEach(ci => ci.UpdateFiles());
 
-    private void LogProfileSummary()
+    private void LogProfileInfosSummary()
     {
         string profilesSummary = (_profileInfos.Count > 0)
             ? string.Join("", _profileInfos
