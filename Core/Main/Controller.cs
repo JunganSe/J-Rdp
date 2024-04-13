@@ -75,6 +75,17 @@ public class Controller
             ProcessFileOnFilterMatch(profileInfo.Profile, newFile);
     }
 
+    private void ProcessFileOnFilterMatch(Profile profile, FileInfo file)
+    {
+        if (!file.NameMatchesFilter(profile.Filter, ignoreCase: true))
+            return;
+
+        _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
+
+        _processedFilePaths.Add(file.FullName);
+        _rdpManager.ProcessFile(file, profile);
+    }
+
     #endregion
 
 
@@ -135,17 +146,6 @@ public class Controller
         string s = (newFiles.Count() > 1) ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
         _logger.Debug($"'{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
-    }
-
-    private void ProcessFileOnFilterMatch(Profile profile, FileInfo file)
-    {
-        if (!file.NameMatchesFilter(profile.Filter, ignoreCase: true))
-            return;
-
-        _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
-
-        _processedFilePaths.Add(file.FullName);
-        _rdpManager.ProcessFile(file, profile);
     }
 
     #endregion
