@@ -72,10 +72,10 @@ public class Controller
         LogNewFiles(profileInfo.Profile, newFiles);
 
         foreach (var newFile in newFiles)
-            ProcessFileOnFilterMatch(profileInfo.Profile, newFile);
+            ProcessFileOnFilterMatch(newFile, profileInfo.Profile);
     }
 
-    private void ProcessFileOnFilterMatch(Profile profile, FileInfo file)
+    private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)
     {
         if (!file.NameMatchesFilter(profile.Filter, ignoreCase: true))
             return;
@@ -87,6 +87,7 @@ public class Controller
     }
 
     #endregion
+
 
 
     #region Other
