@@ -19,11 +19,11 @@ public class Controller
 
     #region Main
 
-    public void Run(int pollingInterval)
+    public void Run()
     {
         try
         {
-            Initialize(pollingInterval);
+            Initialize();
 
             while (true)
             {
@@ -37,11 +37,11 @@ public class Controller
         }
     }
 
-    private void Initialize(int pollingInterval)
+    private void Initialize()
     {
         _logger.Trace("Starting...");
 
-        _pollingInterval = GetValidPollingInterval(pollingInterval);
+        SetDefaultPollingInterval();
         StartConfigWatcher();
         InitializeConfig();
 
@@ -92,6 +92,18 @@ public class Controller
 
     #region Other
 
+    private void SetDefaultPollingInterval()
+    {
+        _pollingInterval = ConfigConstants.PollingInterval_Default;
+        _logger.Info($"Polling interval set to {_pollingInterval} ms. (default)");
+    }
+
+    private void SetPollingInterval(int pollingInterval)
+    {
+        _pollingInterval = GetValidPollingInterval(pollingInterval);
+        _logger.Info($"Polling interval set to {pollingInterval} ms.");
+    }
+
     private int GetValidPollingInterval(int pollingInterval)
     {
         int min = ConfigConstants.PollingInterval_Min;
@@ -115,6 +127,9 @@ public class Controller
     private void InitializeConfig()
     {
         _configManager.UpdateConfig();
+        int newPollingInterval = _configManager.Config.PollingInterval;
+        if (newPollingInterval != _pollingInterval)
+            SetPollingInterval(newPollingInterval);
         InitializeProfiles();
     }
 

@@ -16,7 +16,8 @@ internal class Program
         var arguments = Arguments.Parse(args);
         ConsoleManager.SetVisibility(!arguments.HideConsole);
 
-        new Controller().Run(arguments.PollingInterval);
+        new Controller().Run();
+
         logger.Info("Exiting...");
     }
 }
