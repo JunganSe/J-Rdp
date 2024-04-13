@@ -37,7 +37,8 @@ internal class ConfigManager
         {
             string path = GetConfigPath();
             string json = FileHelper.ReadFile(path);
-            return ParseProfiles(json);
+            var config = ParseConfig(json);
+            return config.Profiles.ToList();
         }
         catch
         {
@@ -52,17 +53,18 @@ internal class ConfigManager
         return Path.Combine(directory, fileName);
     }
 
-    private List<Profile> ParseProfiles(string json)
+    private Config ParseConfig(string json)
     {
         try
         {
-            var profiles = JsonSerializer.Deserialize<List<Profile>>(json, _jsonOptions);
-            _logger.Trace("Successfully parsed profiles from json.");
-            return profiles ?? new List<Profile>();
+            var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions)
+                ?? throw new Exception();
+            _logger.Trace("Successfully parsed config from json.");
+            return config;
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to parse profiles from json: {json}");
+            _logger.Error(ex, $"Failed to parse config from json: {json}");
             throw;
         }
     }
