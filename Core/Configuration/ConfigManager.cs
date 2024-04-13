@@ -21,9 +21,17 @@ internal class ConfigManager
 
     public void UpdateConfig()
     {
-        var config = GetConfigFromFile();
-        config.Profiles = GetValidProfiles(config.Profiles).ToList();
-        Config = config;
+        try
+        {
+            var config = GetConfigFromFile();
+            config.Profiles = GetValidProfiles(config.Profiles).ToList();
+            Config = config;
+        }
+        catch
+        {
+            Config = new();
+            _logger.Warn("Failed to update config. Reverting to default configuration.");
+        }
     }
 
 
@@ -32,7 +40,9 @@ internal class ConfigManager
     {
         string path = GetConfigPath();
         string json = FileHelper.ReadFile(path);
-        return ParseConfig(json);
+        var config = ParseConfig(json);
+        _logger.Info("Successfully parsed config from file.");
+        return config;
     }
 
     private string GetConfigPath()
@@ -46,10 +56,8 @@ internal class ConfigManager
     {
         try
         {
-            var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions)
-                ?? throw new Exception();
-            _logger.Trace("Successfully parsed config from json.");
-            return config;
+            return JsonSerializer.Deserialize<Config>(json, _jsonOptions)
+                ?? throw new Exception("Config is null.");
         }
         catch (Exception ex)
         {
