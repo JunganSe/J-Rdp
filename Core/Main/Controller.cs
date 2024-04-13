@@ -51,12 +51,15 @@ public class Controller
     private void MainLoop()
     {
         UpdateProfileInfosFiles();
+        ProcessProfileInfos();
+    }
 
+    private void ProcessProfileInfos()
+    {
+        _processedFilePaths.Clear();
         var profileInfos = _profileInfos.Where(ci => ci.DirectoryExists);
         foreach (var profileInfo in profileInfos)
             ProcessNewFiles(profileInfo);
-
-        _processedFilePaths.Clear();
     }
 
     private void ProcessNewFiles(ProfileInfo profileInfo)
