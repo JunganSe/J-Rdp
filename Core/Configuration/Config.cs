@@ -6,5 +6,5 @@ internal class Config
 {
     public int PollingInterval { get; set; } = ConfigConstants.PollingInterval_Default;
     public int DeleteDelay { get; set; } = ConfigConstants.DeleteDelay_Default;
-    public IEnumerable<Profile> Profiles { get; set; } = [];
+    public List<Profile> Profiles { get; set; } = [];
 }

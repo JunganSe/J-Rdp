@@ -43,7 +43,7 @@ public class Controller
 
         _pollingInterval = GetValidPollingInterval(pollingInterval);
         StartConfigWatcher();
-        InitializeProfiles();
+        InitializeConfig();
 
         _logger.Info($"Running at poll rate {_pollingInterval} ms.");
     }
@@ -94,19 +94,19 @@ public class Controller
     {
         string directory = FileHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
-        _ = new ConfigWatcher(directory, fileName, callback: InitializeProfiles);
+        _ = new ConfigWatcher(directory, fileName, callback: InitializeConfig);
     }
 
-    private void InitializeProfiles()
+    private void InitializeConfig()
     {
-        _configManager.UpdateProfiles();
+        _configManager.UpdateConfig();
         UpdateProfileInfos();
         UpdateProfileInfosFiles();
         LogProfileSummary();
     }
 
     private void UpdateProfileInfos()
-        => _profileInfos = _configManager.Profiles
+        => _profileInfos = _configManager.Config.Profiles
             .Select(profile => new ProfileInfo(profile))
             .ToList();
 

@@ -10,7 +10,7 @@ internal class ConfigManager
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
 
-    public List<Profile> Profiles { get; private set; } = [];
+    public Config Config { get; private set; } = new();
 
     public ConfigManager()
     {
@@ -19,31 +19,20 @@ internal class ConfigManager
 
 
 
-    public void UpdateProfiles()
+    public void UpdateConfig()
     {
-        var profiles = GetProfilesFromFile();
-        var invalidProfiles = profiles.Where(c => !IsProfileValid(c));
-        foreach (var invalidProfile in invalidProfiles)
-            _logger.Warn($"Profile '{invalidProfile.Name}' is invalid and will be ignored.");
-
-        Profiles = profiles.Except(invalidProfiles).ToList();
+        var config = GetConfigFromFile();
+        config.Profiles = GetValidProfiles(config.Profiles).ToList();
+        Config = config;
     }
 
 
 
-    private List<Profile> GetProfilesFromFile()
+    private Config GetConfigFromFile()
     {
-        try
-        {
-            string path = GetConfigPath();
-            string json = FileHelper.ReadFile(path);
-            var config = ParseConfig(json);
-            return config.Profiles.ToList();
-        }
-        catch
-        {
-            return [];
-        }
+        string path = GetConfigPath();
+        string json = FileHelper.ReadFile(path);
+        return ParseConfig(json);
     }
 
     private string GetConfigPath()
@@ -67,6 +56,14 @@ internal class ConfigManager
             _logger.Error(ex, $"Failed to parse config from json: {json}");
             throw;
         }
+    }
+
+    private IEnumerable<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
+    {
+        var invalidProfiles = profiles.Where(c => !IsProfileValid(c));
+        foreach (var invalidProfile in invalidProfiles)
+            _logger.Warn($"Profile '{invalidProfile.Name}' is invalid and will be ignored.");
+        return profiles.Except(invalidProfiles);
     }
 
     private bool IsProfileValid(Profile profile)
