@@ -152,11 +152,11 @@ public class Controller
 
     private void LogProfileInfosSummary()
     {
-        string profilesSummary = (_profileInfos.Count > 0)
-            ? string.Join("", _profileInfos
-                .Select(ci => $"\n  {ci.Profile.Name}: '{ci.Profile.Filter}' in: {ci.DirectoryFullPath}"))
+        var profileSummaries = _profileInfos.Select(pi => $"\n  {pi.Profile.Name}: '{pi.Profile.Filter}' in: {pi.DirectoryFullPath}");
+        string joinedSummaries = (_profileInfos.Count > 0)
+            ? string.Join("", profileSummaries)
             : "(none)";
-        _logger.Info($"Current profiles: {profilesSummary}");
+        _logger.Info($"Current profiles: {joinedSummaries}");
     }
 
     private void LogNewFiles(Profile profile, IEnumerable<FileInfo> newFiles)
