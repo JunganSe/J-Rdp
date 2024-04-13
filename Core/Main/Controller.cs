@@ -127,9 +127,11 @@ public class Controller
     private void InitializeConfig()
     {
         _configManager.UpdateConfig();
+
         int newPollingInterval = _configManager.Config.PollingInterval;
         if (newPollingInterval != _pollingInterval)
             SetPollingInterval(newPollingInterval);
+
         InitializeProfiles();
     }
 
