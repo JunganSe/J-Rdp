@@ -79,11 +79,15 @@ public class Controller
 
     private int GetValidPollingInterval(int pollingInterval)
     {
-        if (pollingInterval is >= PollingInterval.Min and <= PollingInterval.Max)
+        int min = ConfigConstants.PollingInterval_Min;
+        int max = ConfigConstants.PollingInterval_Max;
+        int defaultInterval = ConfigConstants.PollingInterval_Default;
+
+        if (pollingInterval >= min && pollingInterval <= max)
             return pollingInterval;
 
-        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {PollingInterval.Default} ms. (Must be {PollingInterval.Min}-{PollingInterval.Max} ms.)");
-        return PollingInterval.Default;
+        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {defaultInterval} ms. (Must be {min}-{max}.)");
+        return defaultInterval;
     }
 
     private void StartConfigWatcher()
