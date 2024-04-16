@@ -101,7 +101,7 @@ public class Controller
     private void SetPollingInterval(int pollingInterval)
     {
         _pollingInterval = GetValidPollingInterval(pollingInterval);
-        _logger.Info($"Polling interval set to {pollingInterval} ms.");
+        _logger.Info($"Polling interval set to {_pollingInterval} ms.");
     }
 
     private int GetValidPollingInterval(int pollingInterval)
