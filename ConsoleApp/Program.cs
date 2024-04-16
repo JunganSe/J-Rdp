@@ -11,12 +11,13 @@ internal class Program
 
         LogManager.Initialize();
         var logger = NLog.LogManager.GetCurrentClassLogger();
-        logger.Info("Starting...");
+        logger.Info("Starting application...");
 
         var arguments = Arguments.Parse(args);
         ConsoleManager.SetVisibility(!arguments.HideConsole);
 
-        new Controller().Run(arguments.PollingInterval);
-        logger.Info("Exiting...");
+        new Controller().Run();
+
+        logger.Info("Quitting application...");
     }
 }

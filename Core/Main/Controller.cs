@@ -9,21 +9,21 @@ namespace Core.Main;
 public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly FileManager _fileManager = new();
+    private readonly RdpManager _rdpManager = new();
     private readonly ConfigManager _configManager = new();
     private readonly List<string> _processedFilePaths = [];
-    private List<ConfigInfo> _configInfos = [];
+    private List<ProfileInfo> _profileInfos = [];
     private int _pollingInterval;
 
 
 
     #region Main
 
-    public void Run(int pollingInterval)
+    public void Run()
     {
         try
         {
-            Initialize(pollingInterval);
+            Initialize();
 
             while (true)
             {
@@ -37,103 +37,133 @@ public class Controller
         }
     }
 
-    private void Initialize(int pollingInterval)
+    private void Initialize()
     {
         _logger.Trace("Starting...");
 
-        _pollingInterval = GetValidPollingInterval(pollingInterval);
+        SetDefaultPollingInterval();
         StartConfigWatcher();
-        InitializeConfigs();
+        InitializeConfig();
 
         _logger.Info($"Running at poll rate {_pollingInterval} ms.");
     }
 
     private void MainLoop()
     {
-        UpdateConfigInfosFiles();
-
-        var configInfos = _configInfos.Where(ci => ci.DirectoryExists);
-        foreach (var configInfo in configInfos)
-            ProcessNewFiles(configInfo);
-
-        _processedFilePaths.Clear();
+        UpdateProfileInfosFiles();
+        ProcessProfileInfos();
     }
 
-    private void ProcessNewFiles(ConfigInfo configInfo)
+    private void ProcessProfileInfos()
     {
-        var newFiles = configInfo.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
+        _processedFilePaths.Clear();
+        var profileInfos = _profileInfos.Where(ci => ci.DirectoryExists);
+        foreach (var profileInfo in profileInfos)
+            ProcessNewFiles(profileInfo);
+    }
+
+    private void ProcessNewFiles(ProfileInfo profileInfo)
+    {
+        var newFiles = profileInfo.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
 
         if (!newFiles.Any())
             return;
 
-        LogNewFiles(configInfo.Config, newFiles);
+        LogNewFiles(profileInfo.Profile, newFiles);
 
         foreach (var newFile in newFiles)
-            ProcessFileOnFilterMatch(configInfo.Config, newFile);
+            ProcessFileOnFilterMatch(newFile, profileInfo.Profile);
+    }
+
+    private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)
+    {
+        if (!file.NameMatchesFilter(profile.Filter, ignoreCase: true))
+            return;
+
+        _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
+
+        _processedFilePaths.Add(file.FullName);
+        _rdpManager.ProcessFile(file, profile);
     }
 
     #endregion
 
 
+
     #region Other
+
+    private void SetDefaultPollingInterval()
+    {
+        _pollingInterval = ConfigConstants.PollingInterval_Default;
+        _logger.Info($"Polling interval set to {_pollingInterval} ms. (default)");
+    }
+
+    private void SetPollingInterval(int pollingInterval)
+    {
+        _pollingInterval = GetValidPollingInterval(pollingInterval);
+        _logger.Info($"Polling interval set to {_pollingInterval} ms.");
+    }
 
     private int GetValidPollingInterval(int pollingInterval)
     {
-        if (pollingInterval is >= PollingInterval.Min and <= PollingInterval.Max)
+        int min = ConfigConstants.PollingInterval_Min;
+        int max = ConfigConstants.PollingInterval_Max;
+        int defaultInterval = ConfigConstants.PollingInterval_Default;
+
+        if (pollingInterval >= min && pollingInterval <= max)
             return pollingInterval;
 
-        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {PollingInterval.Default} ms. (Must be {PollingInterval.Min}-{PollingInterval.Max} ms.)");
-        return PollingInterval.Default;
+        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {defaultInterval} ms. (Must be {min}-{max}.)");
+        return defaultInterval;
     }
 
     private void StartConfigWatcher()
     {
-        string directory = FileSystemHelper.GetConfigDirectory();
-        string fileName = ConfigManager.CONFIG_FILE_NAME;
-        _ = new ConfigWatcher(directory, fileName, callback: InitializeConfigs);
+        string directory = FileHelper.GetConfigDirectory();
+        string fileName = ConfigConstants.FileName;
+        _ = new ConfigWatcher(directory, fileName, callback: InitializeConfig);
     }
 
-    private void InitializeConfigs()
+    private void InitializeConfig()
     {
-        _configManager.UpdateConfigs();
-        UpdateConfigInfos();
-        UpdateConfigInfosFiles();
-        LogConfigSummary();
+        _configManager.UpdateConfig();
+
+        int newPollingInterval = _configManager.Config.PollingInterval;
+        if (newPollingInterval != _pollingInterval)
+            SetPollingInterval(newPollingInterval);
+
+        InitializeProfiles();
     }
 
-    private void UpdateConfigInfos()
-        => _configInfos = _configManager.Configs
-            .Select(config => new ConfigInfo(config))
+    private void InitializeProfiles()
+    {
+        UpdateProfileInfos();
+        UpdateProfileInfosFiles();
+        LogProfileInfosSummary();
+    }
+
+    private void UpdateProfileInfos()
+        => _profileInfos = _configManager.Config.Profiles
+            .Select(profile => new ProfileInfo(profile))
             .ToList();
 
-    private void UpdateConfigInfosFiles()
-        => _configInfos.ForEach(ci => ci.UpdateFiles());
+    private void UpdateProfileInfosFiles()
+        => _profileInfos.ForEach(ci => ci.UpdateFiles());
 
-    private void LogConfigSummary()
+    private void LogProfileInfosSummary()
     {
-        string configsSummary = (_configInfos.Count > 0)
-            ? string.Join("", _configInfos
-                .Select(ci => $"\n  {ci.Config.Name}: '{ci.Config.Filter}' in: {ci.DirectoryFullPath}"))
+        var profileSummaries = _profileInfos.Select(pi => $"\n  {pi.Profile.Name}: '{pi.Profile.Filter}' in: {pi.DirectoryFullPath}");
+        string joinedSummaries = (_profileInfos.Count > 0)
+            ? string.Join("", profileSummaries)
             : "(none)";
-        _logger.Info($"Current configs: {configsSummary}");
+        _logger.Info($"Current profiles: {joinedSummaries}");
     }
 
-    private void LogNewFiles(Config config, IEnumerable<FileInfo> newFiles)
+    private void LogNewFiles(Profile profile, IEnumerable<FileInfo> newFiles)
     {
         string s = (newFiles.Count() > 1) ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Debug($"'{config.Name}' found {newFiles.Count()} new file{s} in '{config.WatchFolder}': {fileNames}");
-    }
-
-    private void ProcessFileOnFilterMatch(Config config, FileInfo file)
-    {
-        if (!file.NameMatchesFilter(config.Filter, ignoreCase: true))
-            return;
-
-        _logger.Info($"'{config.Name}' found a match on '{file.FullName}' using filter '{config.Filter}'.");
-
-        _processedFilePaths.Add(file.FullName);
-        _fileManager.ProcessFile(file, config);
+        _logger.Debug($"'{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
     }
 
     #endregion

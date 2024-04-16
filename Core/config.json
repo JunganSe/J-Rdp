@@ -1,26 +1,30 @@
-[
-  {
-    "name": "Example config 1",
-    "watchFolder": "C:/Foo",
-    "filter": "*foo.rdp",
-    "moveToFolder": "C:/Foo/Bar",
-    "launch": false,
-    "delete": false,
-    "settings": [
-      "desktopwidth:i:800",
-      "desktopheight:i:600"
-    ]
-  },
-  {
-    "name": "Example config 2",
-    "watchFolder": "Foo/Bar",
-    "filter": "bar?.rdp",
-    "moveToFolder": "",
-    "launch": true,
-    "delete": true,
-    "settings": [
-      "screen mode id:i:2",
-      "smart sizing:i:1"
-    ]
-  }
-]
+{
+  "pollingInterval": 2000,
+  "deleteDelay": 4000,
+  "profiles": [
+    {
+      "name": "Example profile 1",
+      "watchFolder": "C:/Foo",
+      "filter": "*foo.rdp",
+      "moveToFolder": "C:/Foo/Bar",
+      "launch": false,
+      "delete": false,
+      "settings": [
+        "desktopwidth:i:800",
+        "desktopheight:i:600"
+      ]
+    },
+    {
+      "name": "Example profile 2",
+      "watchFolder": "Foo/Bar",
+      "filter": "bar?.rdp",
+      "moveToFolder": "",
+      "launch": true,
+      "delete": true,
+      "settings": [
+        "screen mode id:i:2",
+        "smart sizing:i:1"
+      ]
+    }
+  ]
+}

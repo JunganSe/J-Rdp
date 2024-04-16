@@ -2,7 +2,7 @@
   "profiles": {
     "ConsoleApp": {
       "commandName": "Project",
-      "commandLineArgs": "PollingInterval=1000 HideConsole=false LogLevel=2"
+      "commandLineArgs": "x-HideConsole -LogToFile"
     }
   }
 }

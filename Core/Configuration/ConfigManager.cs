@@ -1,4 +1,5 @@
-﻿using Core.Helpers;
+﻿using Core.Constants;
+using Core.Helpers;
 using NLog;
 using System.Text.Json;
 
@@ -6,12 +7,10 @@ namespace Core.Configuration;
 
 internal class ConfigManager
 {
-    public const string CONFIG_FILE_NAME = "config.json";
-
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
 
-    public List<Config> Configs { get; private set; } = [];
+    public Config Config { get; private set; } = new();
 
     public ConfigManager()
     {
@@ -20,71 +19,61 @@ internal class ConfigManager
 
 
 
-    public void UpdateConfigs()
+    public void UpdateConfig()
     {
-        var configs = GetConfigsFromFile();
-        var invalidConfigs = configs.Where(c => !IsConfigValid(c));
-        foreach (var invalidConfig in invalidConfigs)
-            _logger.Warn($"Config '{invalidConfig.Name}' is invalid and will be ignored.");
-
-        Configs = configs.Except(invalidConfigs).ToList();
+        try
+        {
+            var config = GetConfigFromFile();
+            config.Profiles = GetValidProfiles(config.Profiles).ToList();
+            Config = config;
+        }
+        catch
+        {
+            Config = new();
+            _logger.Warn("Failed to update config. Reverting to default configuration.");
+        }
     }
 
 
 
-    private List<Config> GetConfigsFromFile()
+    private Config GetConfigFromFile()
     {
-        try
-        {
-            string path = GetConfigPath();
-            string json = ReadFile(path);
-            return Parse(json);
-        }
-        catch
-        {
-            return [];
-        }
+        string path = GetConfigPath();
+        string json = FileHelper.ReadFile(path);
+        var config = ParseConfig(json);
+        _logger.Info("Successfully parsed config from file.");
+        return config;
     }
 
     private string GetConfigPath()
     {
-        string directory = FileSystemHelper.GetConfigDirectory();
-        return Path.Combine(directory, CONFIG_FILE_NAME);
+        string directory = FileHelper.GetConfigDirectory();
+        string fileName = ConfigConstants.FileName;
+        return Path.Combine(directory, fileName);
     }
 
-    private string ReadFile(string path)
+    private Config ParseConfig(string json)
     {
         try
         {
-            if (!File.Exists(path))
-                throw new ArgumentException("File does not exist.");
-
-            string json = File.ReadAllText(path);
-            _logger.Trace($"Successfully read file: {path}");
-            return json;
+            return JsonSerializer.Deserialize<Config>(json, _jsonOptions)
+                ?? throw new Exception("Config is null.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to read file: {path}");
+            _logger.Error(ex, $"Failed to parse config from json: {json}");
             throw;
         }
     }
 
-    private List<Config> Parse(string json)
+    private IEnumerable<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
     {
-        try
-        {
-            var configs = JsonSerializer.Deserialize<List<Config>>(json, _jsonOptions);
-            _logger.Trace("Successfully parsed configs from json.");
-            return configs ?? new List<Config>();
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, $"Failed to parse configs from json: {json}");
-            throw;
-        }
+        var invalidProfiles = profiles.Where(c => !IsProfileValid(c));
+        foreach (var invalidProfile in invalidProfiles)
+            _logger.Warn($"Profile '{invalidProfile.Name}' is invalid and will be ignored.");
+        return profiles.Except(invalidProfiles);
     }
 
-    private bool IsConfigValid(Config config)
-        => !string.IsNullOrWhiteSpace(config.WatchFolder);
+    private bool IsProfileValid(Profile profile)
+        => !string.IsNullOrWhiteSpace(profile.WatchFolder);
 }
