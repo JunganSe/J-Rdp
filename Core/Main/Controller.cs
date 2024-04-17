@@ -14,7 +14,7 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly List<string> _processedFilePaths = [];
     private List<ProfileInfo> _profileInfos = [];
-    private int _pollingInterval;
+    private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 
 
 
@@ -42,7 +42,6 @@ public class Controller
     {
         _logger.Trace("Starting...");
 
-        SetDefaultPollingInterval();
         StartConfigWatcher();
         InitializeConfig();
 
@@ -93,29 +92,14 @@ public class Controller
 
     #region Other
 
-    private void SetDefaultPollingInterval()
+    private void SetPollingInterval()
     {
-        _pollingInterval = ConfigConstants.PollingInterval_Default;
-        _logger.Info($"Polling interval set to {_pollingInterval} ms. (default)");
-    }
+        int newPollingInterval = MathExt.Median(_configManager.Config.PollingInterval, ConfigConstants.PollingInterval_Min, ConfigConstants.PollingInterval_Max);
+        if (newPollingInterval == _pollingInterval)
+            return;
 
-    private void SetPollingInterval(int pollingInterval)
-    {
-        _pollingInterval = GetValidPollingInterval(pollingInterval);
+        _pollingInterval = newPollingInterval;
         _logger.Info($"Polling interval set to {_pollingInterval} ms.");
-    }
-
-    private int GetValidPollingInterval(int pollingInterval)
-    {
-        int min = ConfigConstants.PollingInterval_Min;
-        int max = ConfigConstants.PollingInterval_Max;
-        int defaultInterval = ConfigConstants.PollingInterval_Default;
-
-        if (pollingInterval >= min && pollingInterval <= max)
-            return pollingInterval;
-
-        _logger.Warn($"Invalid polling interval ({pollingInterval}), defaulting to {defaultInterval} ms. (Must be {min}-{max}.)");
-        return defaultInterval;
     }
 
     private void SetDeleteDelayFromConfig()
@@ -138,13 +122,8 @@ public class Controller
     private void InitializeConfig()
     {
         _configManager.UpdateConfig();
-
-        int newPollingInterval = _configManager.Config.PollingInterval;
-        if (newPollingInterval != _pollingInterval)
-            SetPollingInterval(newPollingInterval);
-
+        SetPollingInterval();
         SetDeleteDelayFromConfig();
-
         InitializeProfiles();
     }
 
