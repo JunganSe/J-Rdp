@@ -92,26 +92,6 @@ public class Controller
 
     #region Other
 
-    private void SetPollingInterval()
-    {
-        int newPollingInterval = MathExt.Median(_configManager.Config.PollingInterval, ConfigConstants.PollingInterval_Min, ConfigConstants.PollingInterval_Max);
-        if (newPollingInterval == _pollingInterval)
-            return;
-
-        _pollingInterval = newPollingInterval;
-        _logger.Info($"Polling interval set to {_pollingInterval} ms.");
-    }
-
-    private void SetDeleteDelayFromConfig()
-    {
-        int newDeleteDelay = MathExt.Median(_configManager.Config.DeleteDelay, ConfigConstants.DeleteDelay_Min, ConfigConstants.DeleteDelay_Max);
-        if (newDeleteDelay == _rdpManager.DeleteDelay)
-            return;
-
-        _rdpManager.DeleteDelay = newDeleteDelay;
-        _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
-    }
-
     private void StartConfigWatcher()
     {
         string directory = FileHelper.GetConfigDirectory();
@@ -123,8 +103,28 @@ public class Controller
     {
         _configManager.UpdateConfig();
         SetPollingInterval();
-        SetDeleteDelayFromConfig();
+        SetDeleteDelay();
         InitializeProfiles();
+    }
+
+    private void SetPollingInterval()
+    {
+        int newPollingInterval = MathExt.Median(_configManager.Config.PollingInterval, ConfigConstants.PollingInterval_Min, ConfigConstants.PollingInterval_Max);
+        if (newPollingInterval == _pollingInterval)
+            return;
+
+        _pollingInterval = newPollingInterval;
+        _logger.Info($"Polling interval set to {_pollingInterval} ms.");
+    }
+
+    private void SetDeleteDelay()
+    {
+        int newDeleteDelay = MathExt.Median(_configManager.Config.DeleteDelay, ConfigConstants.DeleteDelay_Min, ConfigConstants.DeleteDelay_Max);
+        if (newDeleteDelay == _rdpManager.DeleteDelay)
+            return;
+
+        _rdpManager.DeleteDelay = newDeleteDelay;
+        _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
     }
 
     private void InitializeProfiles()
