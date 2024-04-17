@@ -1,4 +1,5 @@
-﻿using Core.Configuration;
+﻿using Auxiliary;
+using Core.Configuration;
 using Core.Constants;
 using Core.Extensions;
 using Core.Helpers;
@@ -8,7 +9,7 @@ namespace Core.Main;
 
 public class Controller
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly RdpManager _rdpManager = new();
     private readonly ConfigManager _configManager = new();
     private readonly List<string> _processedFilePaths = [];
@@ -117,6 +118,16 @@ public class Controller
         return defaultInterval;
     }
 
+    private void SetDeleteDelayFromConfig()
+    {
+        int newDeleteDelay = MathExt.Median(_configManager.Config.DeleteDelay, ConfigConstants.DeleteDelay_Min, ConfigConstants.DeleteDelay_Max);
+        if (newDeleteDelay == _rdpManager.DeleteDelay)
+            return;
+
+        _rdpManager.DeleteDelay = newDeleteDelay;
+        _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
+    }
+
     private void StartConfigWatcher()
     {
         string directory = FileHelper.GetConfigDirectory();
@@ -131,6 +142,8 @@ public class Controller
         int newPollingInterval = _configManager.Config.PollingInterval;
         if (newPollingInterval != _pollingInterval)
             SetPollingInterval(newPollingInterval);
+
+        SetDeleteDelayFromConfig();
 
         InitializeProfiles();
     }
