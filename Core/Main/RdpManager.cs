@@ -1,4 +1,5 @@
 ﻿using Core.Configuration;
+using Core.Constants;
 using Microsoft.VisualBasic.FileIO;
 using NLog;
 using System.Diagnostics;
@@ -7,8 +8,9 @@ namespace Core.Main;
 
 internal class RdpManager
 {
-    private const int _deleteDelay = 3000;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    public int DeleteDelay { get; set; } = ConfigConstants.DeleteDelay_Default;
 
     public void ProcessFile(FileInfo file, Profile profile)
     {
@@ -24,7 +26,7 @@ internal class RdpManager
         if (profile.Delete)
         {
             if (profile.Launch)
-                Thread.Sleep(_deleteDelay); // To allow the file to be opened before deletion.
+                Thread.Sleep(DeleteDelay); // To allow the file time to be opened/released before deletion.
             Delete(file, recycle: true);
         }
     }
