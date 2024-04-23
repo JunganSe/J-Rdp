@@ -1,5 +1,6 @@
 ﻿using Core.Configuration;
 using Core.Constants;
+using Core.Helpers;
 using Microsoft.VisualBasic.FileIO;
 using NLog;
 using System.Diagnostics;
@@ -33,20 +34,24 @@ internal class RdpManager
 
 
 
-    private void Move(FileInfo file, string targetDirectory)
+    private void Move(FileInfo file, string moveToFolder)
     {
         string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
-            Directory.CreateDirectory(targetDirectory);
+            if (!FileHelper.IsPathAbsolute(sourceDirectory))
+                throw new ArgumentException($"Bad file path: '{sourceDirectory}'");
+
+            string targetDirectory = Path.GetFullPath(Path.Combine(sourceDirectory, moveToFolder));
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
+            Directory.CreateDirectory(targetDirectory);
             file.MoveTo(fullTargetPath, overwrite: true);
 
-            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{fullTargetPath}'.");
+            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{moveToFolder}'.");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to move file '{file.Name}' from '{sourceDirectory}' to '{targetDirectory}'.");
+            _logger.Error(ex, $"Failed to move file '{file.Name}' from '{sourceDirectory}' to '{moveToFolder}'.");
         }
     }
 
