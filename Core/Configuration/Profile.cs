@@ -3,7 +3,7 @@
 internal class Profile
 {
     public bool Enabled { get; set; }           = true;
-    public string Name { get; init; }           = "";
+    public string Name { get; init; }           = "(Unnamed profile)";
     public string WatchFolder { get; init; }    = "";
     public string Filter { get; init; }         = "";
     public string MoveToFolder { get; init; }   = "";
