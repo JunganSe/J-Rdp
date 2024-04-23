@@ -3,6 +3,7 @@
   "deleteDelay": 4000,
   "profiles": [
     {
+      "enabled": true,
       "name": "Example profile 1",
       "watchFolder": "C:/Foo",
       "filter": "*foo.rdp",
@@ -15,6 +16,7 @@
       ]
     },
     {
+      "enabled": false,
       "name": "Example profile 2",
       "watchFolder": "Foo/Bar",
       "filter": "bar?.rdp",

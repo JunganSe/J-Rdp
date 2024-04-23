@@ -2,6 +2,7 @@
 
 internal class Profile
 {
+    public bool Enabled { get; set; }           = true;
     public string Name { get; init; }           = "";
     public string WatchFolder { get; init; }    = "";
     public string Filter { get; init; }         = "";
