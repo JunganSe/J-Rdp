@@ -43,7 +43,7 @@ internal class RdpManager
             Directory.CreateDirectory(targetDirectory);
             file.MoveTo(fullTargetPath, overwrite: true);
 
-            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{fullTargetPath}'.");
+            _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{moveToFolder}'.");
         }
         catch (Exception ex)
         {
