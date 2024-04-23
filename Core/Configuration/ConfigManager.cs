@@ -24,7 +24,7 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            config.Profiles = GetValidProfiles(config.Profiles).ToList();
+            config.Profiles = GetValidProfiles(config.Profiles);
             Config = config;
         }
         catch
@@ -66,7 +66,7 @@ internal class ConfigManager
         }
     }
 
-    private IEnumerable<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
+    private List<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
     {
         var validProfiles = new List<Profile>();
         foreach (var profile in profiles)
