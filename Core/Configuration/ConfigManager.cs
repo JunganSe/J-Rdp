@@ -81,19 +81,14 @@ internal class ConfigManager
 
     private bool IsProfileValid(Profile profile, out string reason)
     {
+        var reasons = new List<string>();
+
         if (string.IsNullOrWhiteSpace(profile.WatchFolder))
-        {
-            reason = "WatchFolder is empty.";
-            return false;
-        }
+            reasons.Add("'WatchFolder' is empty.");
+        else if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
+            reasons.Add("'WatchFolder' is not absolute.");
 
-        if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
-        {
-            reason = "WatchFolder is not absolute.";
-            return false;
-        }
-
-        reason = "";
-        return true;
+        reason = string.Join(" ", reasons);
+        return reasons.Count == 0;
     }
 }
