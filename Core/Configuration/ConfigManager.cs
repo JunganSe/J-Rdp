@@ -68,13 +68,32 @@ internal class ConfigManager
 
     private IEnumerable<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
     {
-        var invalidProfiles = profiles.Where(c => !IsProfileValid(c));
-        foreach (var invalidProfile in invalidProfiles)
-            _logger.Warn($"Profile '{invalidProfile.Name}' is invalid and will be ignored.");
-        return profiles.Except(invalidProfiles);
+        var validProfiles = new List<Profile>();
+        foreach (var profile in profiles)
+        {
+            if (IsProfileValid(profile, out string reason))
+                validProfiles.Add(profile);
+            else
+                _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
+        }
+        return validProfiles;
     }
 
-    private bool IsProfileValid(Profile profile)
-        => !string.IsNullOrWhiteSpace(profile.WatchFolder)
-        && FileHelper.IsPathAbsolute(profile.WatchFolder);
+    private bool IsProfileValid(Profile profile, out string reason)
+    {
+        if (string.IsNullOrWhiteSpace(profile.WatchFolder))
+        {
+            reason = "WatchFolder is empty.";
+            return false;
+        }
+
+        if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
+        {
+            reason = "WatchFolder is not absolute.";
+            return false;
+        }
+
+        reason = "";
+        return true;
+    }
 }
