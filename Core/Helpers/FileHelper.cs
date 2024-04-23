@@ -14,6 +14,9 @@ internal static class FileHelper
             && FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true));
     }
 
+    public static bool IsPathAbsolute(string path)
+        => Path.IsPathFullyQualified(path); // e.g. 'C:\Foo\Bar'
+
     public static string GetConfigDirectory()
         => AppDomain.CurrentDomain.BaseDirectory;
 

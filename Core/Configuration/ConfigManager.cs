@@ -24,7 +24,7 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            config.Profiles = GetValidProfiles(config.Profiles).ToList();
+            config.Profiles = GetValidProfiles(config.Profiles);
             Config = config;
         }
         catch
@@ -66,14 +66,29 @@ internal class ConfigManager
         }
     }
 
-    private IEnumerable<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
+    private List<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
     {
-        var invalidProfiles = profiles.Where(c => !IsProfileValid(c));
-        foreach (var invalidProfile in invalidProfiles)
-            _logger.Warn($"Profile '{invalidProfile.Name}' is invalid and will be ignored.");
-        return profiles.Except(invalidProfiles);
+        var validProfiles = new List<Profile>();
+        foreach (var profile in profiles)
+        {
+            if (IsProfileValid(profile, out string reason))
+                validProfiles.Add(profile);
+            else
+                _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
+        }
+        return validProfiles;
     }
 
-    private bool IsProfileValid(Profile profile)
-        => !string.IsNullOrWhiteSpace(profile.WatchFolder);
+    private bool IsProfileValid(Profile profile, out string reason)
+    {
+        var reasons = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(profile.WatchFolder))
+            reasons.Add("'WatchFolder' is empty.");
+        else if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
+            reasons.Add("'WatchFolder' is not absolute.");
+
+        reason = string.Join(" ", reasons);
+        return reasons.Count == 0;
+    }
 }
