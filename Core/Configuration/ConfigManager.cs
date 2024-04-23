@@ -24,7 +24,8 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            config.Profiles = GetValidProfiles(config.Profiles);
+            var enabledProfiles = config.Profiles.Where(p => p.Enabled);
+            config.Profiles = GetValidProfiles(enabledProfiles);
             Config = config;
         }
         catch
