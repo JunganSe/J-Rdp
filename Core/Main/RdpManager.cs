@@ -1,5 +1,6 @@
 ﻿using Core.Configuration;
 using Core.Constants;
+using Core.Helpers;
 using Microsoft.VisualBasic.FileIO;
 using NLog;
 using System.Diagnostics;
@@ -38,6 +39,9 @@ internal class RdpManager
         string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
+            if (!FileHelper.IsPathAbsolute(sourceDirectory))
+                throw new ArgumentException($"Bad file path: '{sourceDirectory}'");
+
             string targetDirectory = Path.GetFullPath(Path.Combine(sourceDirectory, moveToFolder));
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
             Directory.CreateDirectory(targetDirectory);
