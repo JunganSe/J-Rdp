@@ -75,5 +75,6 @@ internal class ConfigManager
     }
 
     private bool IsProfileValid(Profile profile)
-        => !string.IsNullOrWhiteSpace(profile.WatchFolder);
+        => !string.IsNullOrWhiteSpace(profile.WatchFolder)
+        && FileHelper.IsPathAbsolute(profile.WatchFolder);
 }
