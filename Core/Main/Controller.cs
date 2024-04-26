@@ -43,6 +43,7 @@ public class Controller
     {
         _logger.Trace("Starting...");
 
+        StopAndDisposeConfigWatcher();
         StartConfigWatcher();
         InitializeConfig();
 
@@ -98,6 +99,22 @@ public class Controller
         string directory = FileHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
         _configWatcher = new ConfigWatcher(directory, fileName, callback: InitializeConfig);
+    }
+
+    private void StopAndDisposeConfigWatcher()
+    {
+        try
+        {
+            if (_configWatcher == null)
+                return;
+
+            _configWatcher.EnableRaisingEvents = false;
+            _configWatcher.Dispose();
+        }
+        catch (ObjectDisposedException)
+        {
+            // Swallow exception if it's already disposed.
+        }
     }
 
     private void InitializeConfig()
