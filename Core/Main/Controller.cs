@@ -12,6 +12,7 @@ public class Controller
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly RdpManager _rdpManager = new();
     private readonly ConfigManager _configManager = new();
+    private ConfigWatcher? _configWatcher;
     private readonly List<string> _processedFilePaths = [];
     private List<ProfileInfo> _profileInfos = [];
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
@@ -42,6 +43,7 @@ public class Controller
     {
         _logger.Trace("Starting...");
 
+        StopAndDisposeConfigWatcher();
         StartConfigWatcher();
         InitializeConfig();
 
@@ -96,7 +98,23 @@ public class Controller
     {
         string directory = FileHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
-        _ = new ConfigWatcher(directory, fileName, callback: InitializeConfig);
+        _configWatcher = new ConfigWatcher(directory, fileName, callback: InitializeConfig);
+    }
+
+    private void StopAndDisposeConfigWatcher()
+    {
+        try
+        {
+            if (_configWatcher == null)
+                return;
+
+            _configWatcher.EnableRaisingEvents = false;
+            _configWatcher.Dispose();
+        }
+        catch (ObjectDisposedException)
+        {
+            // Swallow exception if it's already disposed.
+        }
     }
 
     private void InitializeConfig()
