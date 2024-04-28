@@ -36,6 +36,7 @@ public class Controller
         catch (Exception ex)
         {
             _logger.Fatal(ex, "Unhandled exception.");
+            return;
         }
     }
 
