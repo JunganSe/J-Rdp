@@ -26,7 +26,7 @@ public class LogManager
     public void EnableFileLogging()
     {
         var fileRule = GetLoggingRule(_fileRuleName);
-        fileRule?.EnableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
+        fileRule?.EnableLoggingForLevels(LogLevel.Debug, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
     }
 
