@@ -6,12 +6,13 @@ namespace Auxiliary;
 
 public static class LogManager
 {
+    private const string _configFileName = "nlog.config";
     private const string _fileRuleName = "file";
 
     public static void Initialize()
     {
         var assembly = typeof(LogManager).Assembly;
-        NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly);
+        NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
     }
 
     public static void SetFileLogging(bool enabled)
