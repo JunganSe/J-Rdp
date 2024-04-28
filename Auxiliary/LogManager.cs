@@ -4,18 +4,18 @@ using NLog.Targets;
 
 namespace Auxiliary;
 
-public static class LogManager
+public class LogManager
 {
     private const string _configFileName = "nlog.config";
     private const string _fileRuleName = "file";
 
-    public static void Initialize()
+    public void Initialize()
     {
         var assembly = typeof(LogManager).Assembly;
         NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
     }
 
-    public static void SetFileLogging(bool enabled)
+    public void SetFileLogging(bool enabled)
     {
         if (enabled)
             EnableFileLogging();
@@ -23,21 +23,21 @@ public static class LogManager
             DisableFileLogging();
     }
 
-    public static void EnableFileLogging()
+    public void EnableFileLogging()
     {
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.EnableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
     }
 
-    public static void DisableFileLogging()
+    public void DisableFileLogging()
     {
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.DisableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
     }
 
-    private static LoggingRule? GetLoggingRule(string ruleName)
+    private LoggingRule? GetLoggingRule(string ruleName)
     {
         var config = NLog.LogManager.Configuration;
         var fileTarget = config.FindTargetByName(ruleName) as FileTarget;
