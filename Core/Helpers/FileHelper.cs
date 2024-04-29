@@ -37,6 +37,7 @@ internal static class FileHelper
     private static string ReadFileWithRetries(string path)
     {
         _logger.Trace($"Attempting to read file: {path}");
+
         if (!File.Exists(path))
             throw new ArgumentException("File does not exist.");
 
@@ -60,6 +61,6 @@ internal static class FileHelper
             }
         }
 
-        throw new InvalidOperationException("Unexpected control flow reached."); // This line should never be reached. 
+        throw new InvalidOperationException("Unexpected control flow reached."); // This line should never be reached.
     }
 }
