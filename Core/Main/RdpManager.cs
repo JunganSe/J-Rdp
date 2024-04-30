@@ -19,7 +19,7 @@ internal class RdpManager
             Move(file, profile.MoveToFolder);
 
         if (profile.Settings.Count > 0)
-            Edit(file, profile.Settings);
+            Edit2(file, profile.Settings);
 
         if (profile.Launch)
             Launch(file);
@@ -70,6 +70,36 @@ internal class RdpManager
 
             string linesWord = (settings.Count == 1) ? "line" : "lines";
             _logger.Info($"Appended {settings.Count} {linesWord} to file '{file.Name}' in '{file.DirectoryName}'.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to edit file '{file.Name}' in '{file.DirectoryName}'.");
+        }
+    }
+
+    private void Edit2(FileInfo file, List<string> settings)
+    {
+        try
+        {
+            if (settings.Count == 0)
+                return;
+
+            var fileLines = File.ReadAllLines(file.FullName).ToList();
+
+            foreach (string setting in settings)
+            {
+                int lastColonIndex = setting.LastIndexOf(':');
+                var key = setting[..lastColonIndex];
+                fileLines.RemoveAll(l => l.Contains(key));
+            }
+
+            fileLines.Add("");
+            fileLines.AddRange(settings);
+
+            File.WriteAllLines(file.FullName, fileLines);
+                        
+            string s = (settings.Count > 1) ? "s" : "";
+            _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
