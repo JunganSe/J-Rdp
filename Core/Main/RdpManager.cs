@@ -39,11 +39,9 @@ internal class RdpManager
         string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
-            if (!FileHelper.IsPathAbsolute(sourceDirectory))
-                throw new ArgumentException($"Bad file path: '{sourceDirectory}'");
-
             string targetDirectory = Path.GetFullPath(Path.Combine(sourceDirectory, moveToFolder));
             string fullTargetPath = Path.Combine(targetDirectory, file.Name);
+
             Directory.CreateDirectory(targetDirectory);
             file.MoveTo(fullTargetPath, overwrite: true);
 
@@ -59,17 +57,22 @@ internal class RdpManager
     {
         try
         {
-            if (settings.Count == 0)
-                return;
+            var fileLines = File.ReadAllLines(file.FullName).ToList();
 
-            using var streamWriter = new StreamWriter(file.FullName, append: true);
-
-            streamWriter.WriteLine();
             foreach (string setting in settings)
-                streamWriter.WriteLine(setting);
+            {
+                int lastColonIndex = setting.LastIndexOf(':');
+                var key = setting[..lastColonIndex];
+                fileLines.RemoveAll(l => l.Contains(key));
+            }
 
-            string linesWord = (settings.Count == 1) ? "line" : "lines";
-            _logger.Info($"Appended {settings.Count} {linesWord} to file '{file.Name}' in '{file.DirectoryName}'.");
+            fileLines.Add("");
+            fileLines.AddRange(settings);
+
+            File.WriteAllLines(file.FullName, fileLines);
+                        
+            string s = (settings.Count > 1) ? "s" : "";
+            _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
