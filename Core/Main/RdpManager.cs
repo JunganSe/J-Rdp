@@ -19,7 +19,7 @@ internal class RdpManager
             Move(file, profile.MoveToFolder);
 
         if (profile.Settings.Count > 0)
-            Edit2(file, profile.Settings);
+            Edit(file, profile.Settings);
 
         if (profile.Launch)
             Launch(file);
@@ -59,31 +59,6 @@ internal class RdpManager
     {
         try
         {
-            if (settings.Count == 0)
-                return;
-
-            using var streamWriter = new StreamWriter(file.FullName, append: true);
-
-            streamWriter.WriteLine();
-            foreach (string setting in settings)
-                streamWriter.WriteLine(setting);
-
-            string linesWord = (settings.Count == 1) ? "line" : "lines";
-            _logger.Info($"Appended {settings.Count} {linesWord} to file '{file.Name}' in '{file.DirectoryName}'.");
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, $"Failed to edit file '{file.Name}' in '{file.DirectoryName}'.");
-        }
-    }
-
-    private void Edit2(FileInfo file, List<string> settings)
-    {
-        try
-        {
-            if (settings.Count == 0)
-                return;
-
             var fileLines = File.ReadAllLines(file.FullName).ToList();
 
             foreach (string setting in settings)
