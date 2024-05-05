@@ -26,9 +26,9 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            config.Profiles.RemoveDisabledProfiles();
+            config.Profiles.RemoveDisabled();
             LogInvalidProfiles(config.Profiles);
-            config.Profiles.RemoveInvalidProfiles();
+            config.Profiles.RemoveInvalid();
             Config = config;
         }
         catch

@@ -5,10 +5,10 @@ namespace Core.Extensions;
 
 internal static class ProfileExtensions
 {
-    public static void RemoveDisabledProfiles(this List<Profile> profiles) 
+    public static void RemoveDisabled(this List<Profile> profiles) 
         => profiles.RemoveAll(p => !p.Enabled);
 
-    public static void RemoveInvalidProfiles(this List<Profile> profiles) 
+    public static void RemoveInvalid(this List<Profile> profiles) 
         => profiles.RemoveAll(p => !p.IsValid(out _));
 
     public static bool IsValid(this Profile profile, out string reason) 
