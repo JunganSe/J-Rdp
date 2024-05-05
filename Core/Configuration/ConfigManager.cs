@@ -74,7 +74,7 @@ internal class ConfigManager
     {
         foreach (var profile in profiles)
         {
-            if (!ProfileHelper.IsProfileValid(profile, out string reason))
+            if (!profile.IsValid(out string reason))
                 _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
         }
     }
