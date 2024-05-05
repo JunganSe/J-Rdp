@@ -14,6 +14,6 @@ internal static class ProfileHelper
             reasons.Add($"'{nameof(profile.WatchFolder)}' path is not absolute.");
 
         reason = string.Join(" ", reasons);
-        return reasons.Count == 0;
+        return (reasons.Count == 0);
     }
 }
