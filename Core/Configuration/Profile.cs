@@ -1,9 +1,11 @@
-﻿namespace Core.Configuration;
+﻿using Core.Constants;
+
+namespace Core.Configuration;
 
 internal class Profile
 {
     public bool Enabled { get; set; }           = true;
-    public string Name { get; init; }           = "(Unnamed profile)";
+    public string Name { get; init; }           = ConfigConstants.Profile_DefaultName;
     public string WatchFolder { get; init; }    = "";
     public string Filter { get; init; }         = "";
     public string MoveToFolder { get; init; }   = "";
