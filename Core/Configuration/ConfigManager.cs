@@ -1,6 +1,7 @@
 ﻿using Core.Constants;
 using Core.Helpers;
 using NLog;
+using System.Linq;
 using System.Text.Json;
 
 namespace Core.Configuration;
@@ -24,8 +25,9 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            var enabledProfiles = config.Profiles.Where(p => p.Enabled);
-            config.Profiles = GetValidProfiles(enabledProfiles);
+            var profiles = GetEnabledProfiles(config.Profiles);
+            profiles = GetValidProfiles(profiles);
+            config.Profiles = profiles.ToList();
             Config = config;
         }
         catch
@@ -66,6 +68,9 @@ internal class ConfigManager
             throw;
         }
     }
+
+    private IEnumerable<Profile> GetEnabledProfiles(IEnumerable<Profile> profiles)
+        => profiles.Where(p => p.Enabled);
 
     private List<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
     {
