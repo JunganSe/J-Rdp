@@ -1,6 +1,8 @@
 ﻿using Core.Constants;
+using Core.Extensions;
 using Core.Helpers;
 using NLog;
+using System.Linq;
 using System.Text.Json;
 
 namespace Core.Configuration;
@@ -24,8 +26,9 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            var enabledProfiles = config.Profiles.Where(p => p.Enabled);
-            config.Profiles = GetValidProfiles(enabledProfiles);
+            config.Profiles.RemoveDisabled();
+            LogInvalidProfiles(config.Profiles);
+            config.Profiles.RemoveInvalid();
             Config = config;
         }
         catch
@@ -67,29 +70,12 @@ internal class ConfigManager
         }
     }
 
-    private List<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
+    private void LogInvalidProfiles(IEnumerable<Profile> profiles)
     {
-        var validProfiles = new List<Profile>();
         foreach (var profile in profiles)
         {
-            if (IsProfileValid(profile, out string reason))
-                validProfiles.Add(profile);
-            else
+            if (!profile.IsValid(out string reason))
                 _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
         }
-        return validProfiles;
-    }
-
-    private bool IsProfileValid(Profile profile, out string reason)
-    {
-        var reasons = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(profile.WatchFolder))
-            reasons.Add("'WatchFolder' is empty.");
-        else if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
-            reasons.Add("'WatchFolder' is not absolute.");
-
-        reason = string.Join(" ", reasons);
-        return reasons.Count == 0;
     }
 }
