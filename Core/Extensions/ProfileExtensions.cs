@@ -1,4 +1,5 @@
 ﻿using Core.Configuration;
+using Core.Constants;
 using Core.Helpers;
 
 namespace Core.Extensions;
@@ -13,4 +14,14 @@ internal static class ProfileExtensions
 
     public static bool IsValid(this Profile profile, out string reason) 
         => ProfileHelper.IsProfileValid(profile, out reason);
+
+    public static void AddDefaultFilterFileEndings(this List<Profile> profiles)
+        => profiles.ForEach(p => p.AddDefaultFilterFileEnding());
+
+    public static void AddDefaultFilterFileEnding(this Profile profile)
+    {
+        string defaultFileEnding = ConfigConstants.Profile_DefaultFilterFileEnding;
+        if (!profile.Filter.ToLower().EndsWith(defaultFileEnding.ToLower()))
+            profile.Filter += defaultFileEnding;
+    }
 }

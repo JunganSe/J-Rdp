@@ -29,6 +29,7 @@ internal class ConfigManager
             config.Profiles.RemoveDisabled();
             LogInvalidProfiles(config.Profiles);
             config.Profiles.RemoveInvalid();
+            config.Profiles.AddDefaultFilterFileEndings();
             Config = config;
         }
         catch
