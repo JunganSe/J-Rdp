@@ -21,7 +21,8 @@ internal static class ProfileExtensions
     public static void AddDefaultFilterFileEnding(this Profile profile)
     {
         string defaultFileEnding = ConfigConstants.Profile_DefaultFilterFileEnding;
-        if (!profile.Filter.ToLower().EndsWith(defaultFileEnding.ToLower()))
+        bool hasFileEnding = profile.Filter.EndsWith(defaultFileEnding, StringComparison.OrdinalIgnoreCase);
+        if (!hasFileEnding)
             profile.Filter += defaultFileEnding;
     }
 }
