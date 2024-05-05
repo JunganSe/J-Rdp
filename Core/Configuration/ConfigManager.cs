@@ -1,4 +1,5 @@
 ﻿using Core.Constants;
+using Core.Extensions;
 using Core.Helpers;
 using NLog;
 using System.Linq;
@@ -25,9 +26,9 @@ internal class ConfigManager
         try
         {
             var config = GetConfigFromFile();
-            var profiles = GetEnabledProfiles(config.Profiles);
-            profiles = GetValidProfiles(profiles);
-            config.Profiles = profiles.ToList();
+            config.Profiles.RemoveDisabledProfiles();
+            LogInvalidProfiles(config.Profiles);
+            config.Profiles.RemoveInvalidProfiles();
             Config = config;
         }
         catch
@@ -69,32 +70,12 @@ internal class ConfigManager
         }
     }
 
-    private IEnumerable<Profile> GetEnabledProfiles(IEnumerable<Profile> profiles)
-        => profiles.Where(p => p.Enabled);
-
-    private List<Profile> GetValidProfiles(IEnumerable<Profile> profiles)
+    private void LogInvalidProfiles(IEnumerable<Profile> profiles)
     {
-        var validProfiles = new List<Profile>();
         foreach (var profile in profiles)
         {
-            if (IsProfileValid(profile, out string reason))
-                validProfiles.Add(profile);
-            else
+            if (!ProfileHelper.IsProfileValid(profile, out string reason))
                 _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
         }
-        return validProfiles;
-    }
-
-    private bool IsProfileValid(Profile profile, out string reason)
-    {
-        var reasons = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(profile.WatchFolder))
-            reasons.Add("'WatchFolder' is empty.");
-        else if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
-            reasons.Add("'WatchFolder' is not absolute.");
-
-        reason = string.Join(" ", reasons);
-        return reasons.Count == 0;
     }
 }
