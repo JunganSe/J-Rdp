@@ -9,9 +9,9 @@ internal static class ProfileHelper
         var reasons = new List<string>();
 
         if (string.IsNullOrWhiteSpace(profile.WatchFolder))
-            reasons.Add("'WatchFolder' is empty.");
+            reasons.Add($"'{nameof(profile.WatchFolder)}' is empty.");
         else if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
-            reasons.Add("'WatchFolder' is not absolute.");
+            reasons.Add($"'{nameof(profile.WatchFolder)}' path is not absolute.");
 
         reason = string.Join(" ", reasons);
         return reasons.Count == 0;
