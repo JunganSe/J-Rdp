@@ -11,6 +11,22 @@ public class LogManager
 
     public void Initialize()
     {
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string externalConfigPath = Path.Combine(baseDirectory, _configFileName);
+
+        if (File.Exists(externalConfigPath))
+            LoadExternalConfig();
+        else
+            LoadEmbeddedConfig();
+    }
+
+    private void LoadExternalConfig()
+    {
+        NLog.LogManager.Setup().LoadConfigurationFromFile(_configFileName);
+    }
+
+    private void LoadEmbeddedConfig()
+    {
         var assembly = typeof(LogManager).Assembly;
         NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
     }
