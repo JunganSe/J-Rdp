@@ -7,29 +7,56 @@ namespace Core.Tests;
 public class ProfileHelperTests
 {
     [TestMethod]
-    [DataRow(0, true)]
-    [DataRow(1, false)]
-    [DataRow(2, false)]
-    [DataRow(3, false)]
-    public void IsProfileValid(int index, bool expected)
+    [DataRow(0)]
+    [DataRow(1)]
+    public void IsProfileValid_ReturnsTrue(int index)
     {
         // Arrange
-        var profiles = GetMockProfiles();
+        var profiles = GetValidMockProfiles();
 
         // Act
         var actual = ProfileHelper.IsProfileValid(profiles[index], out _);
 
         // Assert
-        Assert.AreEqual(expected, actual);
+        Assert.IsTrue(actual);
     }
 
-    private List<Profile> GetMockProfiles()
+    [TestMethod]
+    [DataRow(0)]
+    [DataRow(1)]
+    [DataRow(2)]
+    public void IsProfileValid_ReturnsFalse(int index)
+    {
+        // Arrange
+        var profiles = GetInValidMockProfiles();
+
+        // Act
+        var actual = ProfileHelper.IsProfileValid(profiles[index], out _);
+
+        // Assert
+        Assert.IsFalse(actual);
+    }
+
+
+
+    #region Mocks
+
+    private List<Profile> GetValidMockProfiles()
         => [
             new()
             {
-                WatchFolder = @"C:\Foo", // Good
-                Filter = "Bar", // Good
+                WatchFolder = @"C:\Foo",
+                Filter = "Bar",
             },
+            new()
+            {
+                WatchFolder = @"C:\Foo",
+                Filter = "*",
+            },
+        ];
+
+    private List<Profile> GetInValidMockProfiles()
+        => [
             new()
             {
                 WatchFolder = @"Foo", // Bad
@@ -46,4 +73,6 @@ public class ProfileHelperTests
                 Filter = "", // Bad
             },
         ];
+
+    #endregion
 }
