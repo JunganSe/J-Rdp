@@ -15,7 +15,7 @@ internal class ProfileWorker
             .ToList();
 
     public void UpdateProfileInfosFiles()
-        => ProfileInfos.ForEach(ci => ci.UpdateFiles());
+        => ProfileInfos.ForEach(pi => pi.UpdateFiles());
 
     public void LogProfileInfosSummary()
     {
