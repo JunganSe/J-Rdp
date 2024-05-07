@@ -35,6 +35,9 @@ public class FileHelperTests
     [DataRow(@"C:\Folder\example.txt", "???.txt")]
     [DataRow(@"C:\Folder\example.txt", "p??.txt")]
     [DataRow(@"C:\Folder\example.txt", "*p.txt")]
+    [DataRow(@"C:\Folder\example.txt", "example?.txt")]
+    [DataRow(@"C:\Folder\example1.txt", "example.txt")]
+    [DataRow(@"C:\Folder\example1.txt", "example??.txt")]
     public void FileNameMatchesFilter_ReturnsFalse(string path, string filter)
     {
         // Arrange
