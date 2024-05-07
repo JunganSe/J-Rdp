@@ -34,13 +34,12 @@ internal class Worker
                           ConfigConstants.DeleteDelay_Min,
                           ConfigConstants.DeleteDelay_Max);
 
-    public void SetDeleteDelay()
+    public void SetDeleteDelay(int deleteDelay)
     {
-        int newDeleteDelay = GetDeleteDelay();
-        if (newDeleteDelay == _rdpManager.DeleteDelay)
+        if (deleteDelay == _rdpManager.DeleteDelay)
             return;
 
-        _rdpManager.DeleteDelay = newDeleteDelay;
+        _rdpManager.DeleteDelay = deleteDelay;
         _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
     }
 

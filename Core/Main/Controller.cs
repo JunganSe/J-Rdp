@@ -41,7 +41,7 @@ public class Controller
     {
         _worker.UpdateConfig();
         SetPollingInterval();
-        _worker.SetDeleteDelay();
+        _worker.SetDeleteDelay(_worker.GetDeleteDelay());
         InitializeProfiles();
     }
 
