@@ -12,6 +12,7 @@ public class Controller
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
     private readonly FileWorker _fileWorker = new();
     private readonly ConfigWorker _configWorker = new();
+    private readonly ProfileWorker _profileWorker = new();
 
     public void Run()
     {
@@ -59,14 +60,14 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _worker.UpdateProfileInfos(_configWorker.Profiles);
-        _worker.UpdateProfileInfosFiles();
-        _worker.LogProfileInfosSummary();
+        _profileWorker.UpdateProfileInfos(_configWorker.Profiles);
+        _profileWorker.UpdateProfileInfosFiles();
+        _profileWorker.LogProfileInfosSummary();
     }
 
     private void MainLoop()
     {
-        _worker.UpdateProfileInfosFiles();
-        _fileWorker.ProcessProfileInfos(_worker.GetProfileInfos());
+        _profileWorker.UpdateProfileInfosFiles();
+        _fileWorker.ProcessProfileInfos(_profileWorker.GetProfileInfos());
     }
 }
