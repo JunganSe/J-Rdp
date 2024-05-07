@@ -11,6 +11,7 @@ public class Controller
     private readonly Worker _worker = new();
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
     private readonly FileWorker _fileWorker = new();
+    private readonly ConfigWorker _configWorker = new();
 
     public void Run()
     {
@@ -40,15 +41,15 @@ public class Controller
 
     private void InitializeConfig()
     {
-        _worker.UpdateConfig();
+        _configWorker.UpdateConfig();
         SetPollingInterval();
-        _fileWorker.SetDeleteDelay(_worker.GetDeleteDelay());
+        _fileWorker.SetDeleteDelay(_configWorker.GetDeleteDelay());
         InitializeProfiles();
     }
 
     private void SetPollingInterval()
     {
-        int newPollingInterval = _worker.GetPollingInterval();
+        int newPollingInterval = _configWorker.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)
             return;
 
@@ -58,7 +59,7 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _worker.UpdateProfileInfos();
+        _worker.UpdateProfileInfos(_configWorker.Profiles);
         _worker.UpdateProfileInfosFiles();
         _worker.LogProfileInfosSummary();
     }

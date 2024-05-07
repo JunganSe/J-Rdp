@@ -10,7 +10,6 @@ namespace Core.Main;
 internal class Worker
 {
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private readonly ConfigManager _configManager = new();
     private List<ProfileInfo> _profileInfos = [];
 
     #region ConfigWatcher
@@ -19,18 +18,7 @@ internal class Worker
 
     #region Config
 
-    public void UpdateConfig()
-        => _configManager.UpdateConfig();
-
-    public int GetPollingInterval()
-        => MathExt.Median(_configManager.Config.PollingInterval,
-                          ConfigConstants.PollingInterval_Min,
-                          ConfigConstants.PollingInterval_Max);
-
-    public int GetDeleteDelay()
-        => MathExt.Median(_configManager.Config.DeleteDelay,
-                          ConfigConstants.DeleteDelay_Min,
-                          ConfigConstants.DeleteDelay_Max);
+    
 
     #endregion
 
@@ -39,8 +27,8 @@ internal class Worker
     public List<ProfileInfo> GetProfileInfos() 
         => _profileInfos;
 
-    public void UpdateProfileInfos()
-        => _profileInfos = _configManager.Config.Profiles
+    public void UpdateProfileInfos(List<Profile> profiles)
+        => _profileInfos = profiles
             .Select(profile => new ProfileInfo(profile))
             .ToList();
 
