@@ -24,11 +24,15 @@ internal class Worker
     public void UpdateConfig()
         => _configManager.UpdateConfig();
 
-    public int GetPollingInterval() 
-        => MathExt.Median(_configManager.Config.PollingInterval, ConfigConstants.PollingInterval_Min, ConfigConstants.PollingInterval_Max);
+    public int GetPollingInterval()
+        => MathExt.Median(_configManager.Config.PollingInterval,
+                          ConfigConstants.PollingInterval_Min,
+                          ConfigConstants.PollingInterval_Max);
 
     public int GetDeleteDelay()
-        => MathExt.Median(_configManager.Config.DeleteDelay, ConfigConstants.DeleteDelay_Min, ConfigConstants.DeleteDelay_Max);
+        => MathExt.Median(_configManager.Config.DeleteDelay,
+                          ConfigConstants.DeleteDelay_Min,
+                          ConfigConstants.DeleteDelay_Max);
 
     public void SetDeleteDelay()
     {
