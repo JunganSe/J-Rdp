@@ -10,9 +10,7 @@ namespace Core.Main;
 internal class Worker
 {
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private readonly RdpManager _rdpManager = new();
     private readonly ConfigManager _configManager = new();
-    private readonly List<string> _processedFilePaths = [];
     private List<ProfileInfo> _profileInfos = [];
 
     #region ConfigWatcher
@@ -34,18 +32,12 @@ internal class Worker
                           ConfigConstants.DeleteDelay_Min,
                           ConfigConstants.DeleteDelay_Max);
 
-    public void SetDeleteDelay(int deleteDelay)
-    {
-        if (deleteDelay == _rdpManager.DeleteDelay)
-            return;
-
-        _rdpManager.DeleteDelay = deleteDelay;
-        _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
-    }
-
     #endregion
 
     #region Profile
+
+    public List<ProfileInfo> GetProfileInfos() 
+        => _profileInfos;
 
     public void UpdateProfileInfos()
         => _profileInfos = _configManager.Config.Profiles
@@ -64,48 +56,9 @@ internal class Worker
         _logger.Info($"Current profiles: {joinedSummaries}");
     }
 
-    public void ProcessProfileInfos()
-    {
-        _processedFilePaths.Clear();
-        var profileInfos = _profileInfos.Where(ci => ci.DirectoryExists);
-        foreach (var profileInfo in profileInfos)
-            ProcessNewFiles(profileInfo);
-    }
-
     #endregion
 
     #region File
-
-    private void ProcessNewFiles(ProfileInfo profileInfo)
-    {
-        var newFiles = profileInfo.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
-
-        if (!newFiles.Any())
-            return;
-
-        LogNewFiles(profileInfo.Profile, newFiles);
-
-        foreach (var newFile in newFiles)
-            ProcessFileOnFilterMatch(newFile, profileInfo.Profile);
-    }
-
-    private void LogNewFiles(Profile profile, IEnumerable<FileInfo> newFiles)
-    {
-        string s = (newFiles.Count() > 1) ? "s" : "";
-        string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Debug($"'{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
-    }
-
-    private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)
-    {
-        if (!file.NameMatchesFilter(profile.Filter, ignoreCase: true))
-            return;
-
-        _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
-
-        _processedFilePaths.Add(file.FullName);
-        _rdpManager.ProcessFile(file, profile);
-    }
 
     #endregion
 }
