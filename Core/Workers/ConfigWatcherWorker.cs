@@ -4,7 +4,7 @@ using Core.Helpers;
 
 namespace Core.Workers;
 
-public class ConfigWatcherWorker
+internal class ConfigWatcherWorker
 {
     private ConfigWatcher? _configWatcher;
 
