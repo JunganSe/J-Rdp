@@ -16,6 +16,8 @@ internal class Worker
     private ConfigWatcher? _configWatcher;
     private List<ProfileInfo> _profileInfos = [];
 
+    #region ConfigWatcher
+
     public void StopAndDisposeConfigWatcher()
     {
         try
@@ -39,6 +41,10 @@ internal class Worker
         _configWatcher = new ConfigWatcher(directory, fileName, callback: callback);
     }
 
+    #endregion
+
+    #region Config
+
     public void UpdateConfig()
         => _configManager.UpdateConfig();
 
@@ -54,6 +60,10 @@ internal class Worker
         _rdpManager.DeleteDelay = newDeleteDelay;
         _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
     }
+
+    #endregion
+
+    #region Profile
 
     public void UpdateProfileInfos()
         => _profileInfos = _configManager.Config.Profiles
@@ -79,6 +89,10 @@ internal class Worker
         foreach (var profileInfo in profileInfos)
             ProcessNewFiles(profileInfo);
     }
+
+    #endregion
+
+    #region File
 
     private void ProcessNewFiles(ProfileInfo profileInfo)
     {
@@ -110,4 +124,6 @@ internal class Worker
         _processedFilePaths.Add(file.FullName);
         _rdpManager.ProcessFile(file, profile);
     }
+
+    #endregion
 }
