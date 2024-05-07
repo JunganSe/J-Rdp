@@ -7,7 +7,7 @@ namespace Core.Workers;
 
 internal class FileWorker
 {
-    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly List<string> _processedFilePaths = [];
     private readonly RdpManager _rdpManager = new();
 

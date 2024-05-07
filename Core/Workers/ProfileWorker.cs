@@ -5,7 +5,7 @@ namespace Core.Workers;
 
 internal class ProfileWorker
 {
-    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public List<ProfileInfo> ProfileInfos { get; private set; } = [];
 

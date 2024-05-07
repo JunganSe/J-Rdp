@@ -6,7 +6,7 @@ namespace Core.Main;
 
 public class Controller
 {
-    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
     private readonly ConfigWorker _configWorker = new();
     private readonly ProfileWorker _profileWorker = new();

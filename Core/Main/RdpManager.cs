@@ -1,6 +1,5 @@
 ﻿using Core.Configuration;
 using Core.Constants;
-using Core.Helpers;
 using Microsoft.VisualBasic.FileIO;
 using NLog;
 using System.Diagnostics;
@@ -70,7 +69,7 @@ internal class RdpManager
             fileLines.AddRange(settings);
 
             File.WriteAllLines(file.FullName, fileLines);
-                        
+
             string s = (settings.Count > 1) ? "s" : "";
             _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}'.");
         }
