@@ -42,13 +42,9 @@ public class Controller
 
     private void Initialize()
     {
-        _logger.Trace("Starting...");
-
         StopAndDisposeConfigWatcher();
         StartConfigWatcher();
         InitializeConfig();
-
-        _logger.Info($"Running at poll rate {_pollingInterval} ms.");
     }
 
     private void MainLoop()
