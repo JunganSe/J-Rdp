@@ -1,4 +1,5 @@
 ﻿using Core.Constants;
+using Core.Workers;
 using NLog;
 
 namespace Core.Main;
@@ -8,6 +9,7 @@ public class Controller
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private readonly Worker _worker = new();
+    private readonly ConfigWatcherWorker _configWatcherWorker = new();
 
     public void Run()
     {
@@ -30,8 +32,8 @@ public class Controller
 
     private void Initialize()
     {
-        _worker.StopAndDisposeConfigWatcher();
-        _worker.StartConfigWatcher(callback: InitializeConfig);
+        _configWatcherWorker.StopAndDisposeConfigWatcher();
+        _configWatcherWorker.StartConfigWatcher(callback: InitializeConfig);
         InitializeConfig();
     }
 
