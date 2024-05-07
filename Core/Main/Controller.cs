@@ -7,11 +7,11 @@ namespace Core.Main;
 public class Controller
 {
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
-    private readonly FileWorker _fileWorker = new();
     private readonly ConfigWorker _configWorker = new();
     private readonly ProfileWorker _profileWorker = new();
+    private readonly FileWorker _fileWorker = new();
+    private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 
     public void Run()
     {
