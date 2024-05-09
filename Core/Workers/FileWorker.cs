@@ -1,5 +1,5 @@
 ﻿using Core.Configuration;
-using Core.Extensions;
+using Core.Helpers;
 using Core.Main;
 using NLog;
 
@@ -50,7 +50,7 @@ internal class FileWorker
 
     private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)
     {
-        if (!file.NameMatchesFilter(profile.Filter, ignoreCase: true))
+        if (!FileHelper.FileNameMatchesFilter(file.Name, profile.Filter))
             return;
 
         _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
