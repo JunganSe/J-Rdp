@@ -28,7 +28,7 @@ public class ProfileHelperTests
     public void IsProfileValid_ReturnsFalse(int index)
     {
         // Arrange
-        var profiles = GetInValidMockProfiles();
+        var profiles = GetInvalidMockProfiles();
 
         // Act
         var actual = ProfileHelper.IsProfileValid(profiles[index], out _);
@@ -55,7 +55,7 @@ public class ProfileHelperTests
             },
         ];
 
-    private List<Profile> GetInValidMockProfiles()
+    private List<Profile> GetInvalidMockProfiles()
         => [
             new()
             {
