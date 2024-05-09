@@ -6,6 +6,9 @@ namespace Core.Tests;
 public class FileHelperTests
 {
     [TestMethod]
+    [DataRow("example.txt", "example.txt")]
+    [DataRow("/example.txt", "example.txt")]
+    [DataRow(@"\example.txt", "example.txt")]
     [DataRow(@"C:\Folder\example.txt", "example.txt")]
     [DataRow(@"C:\Folder\example.txt", "example.*")]
     [DataRow(@"C:\Folder\example.txt", "*.txt")]
@@ -29,6 +32,11 @@ public class FileHelperTests
     }
 
     [TestMethod]
+    [DataRow("", "*")]
+    [DataRow("example.txt", "")]
+    [DataRow("example.txt", "*.doc")]
+    [DataRow("/example.txt", "foo.txt")]
+    [DataRow(@"\example.txt", "example.doc")]
     [DataRow(@"C:\Folder\example.txt", "*.doc")]
     [DataRow(@"C:\Folder\example.txt", "example.doc")]
     [DataRow(@"C:\Folder\example.txt", "xample.txt")]
