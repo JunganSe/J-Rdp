@@ -48,4 +48,47 @@ public class FileHelperTests
         // Assert
         Assert.IsFalse(result);
     }
+
+    [TestMethod]
+    [DataRow(@"C:\")]
+    [DataRow(@"C:\example.txt")]
+    [DataRow(@"C:\Folder")]
+    [DataRow(@"C:\Folder\")]
+    [DataRow(@"C:\Folder\example.txt")]
+    [DataRow("C:/")]
+    [DataRow("C:/example.txt")]
+    [DataRow("C:/Folder")]
+    [DataRow("C:/Folder/example.txt")]
+    public void IsPathAbsolute_ReturnsTrue(string path)
+    {
+        // Arrange
+
+        // Act
+        bool result = FileHelper.IsPathAbsolute(path);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DataRow(@"Folder")]
+    [DataRow(@"Folder\")]
+    [DataRow(@"\Folder")]
+    [DataRow(@"Folder\example.txt")]
+    [DataRow(@"\Folder\example.txt")]
+    [DataRow("Folder")]
+    [DataRow("Folder/")]
+    [DataRow("/Folder")]
+    [DataRow("Folder/example.txt")]
+    [DataRow("/Folder/example.txt")]
+    public void IsPathAbsolute_ReturnsFalse(string path)
+    {
+        // Arrange
+
+        // Act
+        bool result = FileHelper.IsPathAbsolute(path);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
 }
