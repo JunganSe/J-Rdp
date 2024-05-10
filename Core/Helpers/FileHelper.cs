@@ -10,9 +10,8 @@ internal static class FileHelper
 
     public static bool FileNameMatchesFilter(string path, string filter)
     {
-        ReadOnlySpan<char> fileName = Path.GetFileName(path);
-        return (!fileName.IsEmpty
-            && FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true));
+        string fileName = Path.GetFileName(path);
+        return FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true);
     }
 
     public static bool IsPathAbsolute(string path)
