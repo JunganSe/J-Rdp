@@ -1,6 +1,5 @@
 ﻿using Core.Constants;
 using Core.Managers;
-using Core.Workers;
 using NLog;
 
 namespace Core.Main;
@@ -8,7 +7,7 @@ namespace Core.Main;
 public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly ConfigWatcherWorker _configWatcherWorker = new();
+    private readonly ConfigWatcherManager _configWatcherWorker = new();
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profilemanager = new();
     private readonly FileManager _fileManager = new();
