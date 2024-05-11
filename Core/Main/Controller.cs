@@ -9,7 +9,7 @@ public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
-    private readonly ConfigWorker _configWorker = new();
+    private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profilemanager = new();
     private readonly FileManager _fileManager = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
@@ -42,15 +42,15 @@ public class Controller
 
     private void InitializeConfig()
     {
-        _configWorker.UpdateConfig();
+        _configManager.UpdateConfig();
         SetPollingInterval();
-        _fileManager.SetDeleteDelay(_configWorker.GetDeleteDelay());
+        _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
     private void SetPollingInterval()
     {
-        int newPollingInterval = _configWorker.GetPollingInterval();
+        int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)
             return;
 
@@ -60,7 +60,7 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _profilemanager.UpdateProfileInfos(_configWorker.Profiles);
+        _profilemanager.UpdateProfileInfos(_configManager.Config.Profiles);
         _profilemanager.UpdateProfileInfosFiles();
         _profilemanager.LogProfileInfosSummary();
     }

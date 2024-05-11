@@ -1,4 +1,5 @@
-﻿using Core.Configuration;
+﻿using Auxiliary;
+using Core.Configuration;
 using Core.Constants;
 using Core.Extensions;
 using Core.Helpers;
@@ -9,7 +10,7 @@ namespace Core.Managers;
 
 internal class ConfigManager
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
 
     public Config Config { get; private set; } = new();
@@ -20,6 +21,16 @@ internal class ConfigManager
     }
 
 
+
+    public int GetPollingInterval()
+        => MathExt.Median(Config.PollingInterval,
+                          ConfigConstants.PollingInterval_Min,
+                          ConfigConstants.PollingInterval_Max);
+
+    public int GetDeleteDelay()
+        => MathExt.Median(Config.DeleteDelay,
+                          ConfigConstants.DeleteDelay_Min,
+                          ConfigConstants.DeleteDelay_Max);
 
     public void UpdateConfig()
     {
