@@ -10,7 +10,7 @@ public class Controller
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
     private readonly ConfigWorker _configWorker = new();
-    private readonly ProfileWorker _profileWorker = new();
+    private readonly ProfileManager _profileWorker = new();
     private readonly FileManager _fileWorker = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 

@@ -1,9 +1,9 @@
 ﻿using Core.Configuration;
 using NLog;
 
-namespace Core.Workers;
+namespace Core.Managers;
 
-internal class ProfileWorker
+internal class ProfileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -20,7 +20,7 @@ internal class ProfileWorker
     public void LogProfileInfosSummary()
     {
         var profileSummaries = ProfileInfos.Select(pi => $"\n  {pi.Profile.Name}: '{pi.Profile.Filter}' in: {pi.DirectoryFullPath}");
-        string joinedSummaries = (ProfileInfos.Count > 0)
+        string joinedSummaries = ProfileInfos.Count > 0
             ? string.Join("", profileSummaries)
             : "(none)";
         _logger.Info($"Current profiles: {joinedSummaries}");
