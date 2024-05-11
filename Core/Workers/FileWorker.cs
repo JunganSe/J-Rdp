@@ -1,6 +1,6 @@
 ﻿using Core.Configuration;
 using Core.Helpers;
-using Core.Main;
+using Core.Managers;
 using NLog;
 
 namespace Core.Workers;
