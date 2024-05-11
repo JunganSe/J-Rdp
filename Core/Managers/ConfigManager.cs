@@ -3,6 +3,7 @@ using Core.Configuration;
 using Core.Constants;
 using Core.Extensions;
 using Core.Helpers;
+using Core.Workers;
 using NLog;
 using System.Text.Json;
 
@@ -12,6 +13,7 @@ internal class ConfigManager
 {
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly JsonSerializerOptions _jsonOptions;
+    private readonly FileReader _fileReader = new();
 
     public Config Config { get; private set; } = new();
 
@@ -55,7 +57,7 @@ internal class ConfigManager
     private Config GetConfigFromFile()
     {
         string path = GetConfigPath();
-        string json = FileHelper.ReadFile(path);
+        string json = _fileReader.ReadFile(path);
         var config = ParseConfig(json);
         _logger.Info("Successfully parsed config from file.");
         return config;
