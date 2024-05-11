@@ -1,11 +1,11 @@
-﻿using Core.Constants;
+﻿using Core.Configuration;
+using Core.Constants;
 using Core.Extensions;
 using Core.Helpers;
 using NLog;
-using System.Linq;
 using System.Text.Json;
 
-namespace Core.Configuration;
+namespace Core.Managers;
 
 internal class ConfigManager
 {
