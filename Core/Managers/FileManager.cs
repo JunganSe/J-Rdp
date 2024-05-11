@@ -22,7 +22,7 @@ internal class FileManager
     public void ProcessProfileInfos(IEnumerable<ProfileInfo> profileInfos)
     {
         _processedFilePaths.Clear();
-        var processableProfileInfos = profileInfos.Where(ci => ci.DirectoryExists);
+        var processableProfileInfos = profileInfos.Where(pi => pi.DirectoryExists);
         foreach (var profileInfo in processableProfileInfos)
             ProcessNewFiles(profileInfo);
     }
