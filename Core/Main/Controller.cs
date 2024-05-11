@@ -1,4 +1,5 @@
 ﻿using Core.Constants;
+using Core.Managers;
 using Core.Workers;
 using NLog;
 
@@ -10,7 +11,7 @@ public class Controller
     private readonly ConfigWatcherWorker _configWatcherWorker = new();
     private readonly ConfigWorker _configWorker = new();
     private readonly ProfileWorker _profileWorker = new();
-    private readonly FileWorker _fileWorker = new();
+    private readonly FileManager _fileWorker = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 
     public void Run()
