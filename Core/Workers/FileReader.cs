@@ -11,7 +11,14 @@ internal class FileReader
     {
         try
         {
-            return ReadFileWithRetries(path);
+            _logger.Trace($"Attempting to read file: {path}");
+
+            if (!File.Exists(path))
+                throw new ArgumentException("File does not exist.");
+
+            string fileContent = ReadFileWithRetries(path);
+            _logger.Trace($"Successfully read file: {path}");
+            return fileContent;
         }
         catch (Exception ex)
         {
@@ -22,19 +29,12 @@ internal class FileReader
 
     private string ReadFileWithRetries(string path)
     {
-        _logger.Trace($"Attempting to read file: {path}");
-
-        if (!File.Exists(path))
-            throw new ArgumentException("File does not exist.");
-
-        int tryCountMax = FileConstants.ReadFile_TryCountMax;
+        int tryCountMax = Math.Max(1, FileConstants.ReadFile_TryCountMax);
         for (int tryCount = 1; tryCount <= tryCountMax; tryCount++)
         {
             try
             {
-                string json = File.ReadAllText(path);
-                _logger.Trace($"Successfully read file: {path}");
-                return json;
+                return File.ReadAllText(path);
             }
             catch (IOException ex)
             {
