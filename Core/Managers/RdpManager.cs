@@ -84,8 +84,8 @@ internal class RdpManager
         }
         catch (Exception ex)
         {
-            string deleteOrRecycle = recycle ? "recycle" : "permanently delete";
-            _logger.Error(ex, $"Failed to {deleteOrRecycle} file '{file.Name}' in '{file.DirectoryName}'.");
+            string recycleOrDelete = recycle ? "recycle" : "permanently delete";
+            _logger.Error(ex, $"Failed to {recycleOrDelete} file '{file.Name}' in '{file.DirectoryName}'.");
         }
     }
 }
