@@ -1,14 +1,14 @@
-﻿using Core.Configuration;
-using Core.Constants;
-using Microsoft.VisualBasic.FileIO;
+﻿using Core.Constants;
+using Core.Models;
+using Core.Workers;
 using NLog;
-using System.Diagnostics;
 
-namespace Core.Main;
+namespace Core.Managers;
 
 internal class RdpManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly RdpWorker _rdpWorker = new();
 
     public int DeleteDelay { get; set; } = ConfigConstants.DeleteDelay_Default;
 
@@ -38,12 +38,7 @@ internal class RdpManager
         string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
-            string targetDirectory = Path.GetFullPath(Path.Combine(sourceDirectory, moveToFolder));
-            string fullTargetPath = Path.Combine(targetDirectory, file.Name);
-
-            Directory.CreateDirectory(targetDirectory);
-            file.MoveTo(fullTargetPath, overwrite: true);
-
+            _rdpWorker.Move(file, moveToFolder);
             _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{moveToFolder}'.");
         }
         catch (Exception ex)
@@ -56,21 +51,8 @@ internal class RdpManager
     {
         try
         {
-            var fileLines = File.ReadAllLines(file.FullName).ToList();
-
-            foreach (string setting in settings)
-            {
-                int lastColonIndex = setting.LastIndexOf(':');
-                var key = setting[..lastColonIndex];
-                fileLines.RemoveAll(l => l.Contains(key));
-            }
-
-            fileLines.Add("");
-            fileLines.AddRange(settings);
-
-            File.WriteAllLines(file.FullName, fileLines);
-
-            string s = (settings.Count > 1) ? "s" : "";
+            _rdpWorker.Edit(file, settings);
+            string s = settings.Count > 1 ? "s" : "";
             _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
@@ -83,9 +65,7 @@ internal class RdpManager
     {
         try
         {
-            file.Refresh();
-            var process = new ProcessStartInfo(file.FullName) { UseShellExecute = true };
-            Process.Start(process);
+            _rdpWorker.Launch(file);
             _logger.Info($"Launched file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
@@ -98,17 +78,14 @@ internal class RdpManager
     {
         try
         {
-            file.Refresh();
-            var recycleOption = (recycle) ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently;
-            FileSystem.DeleteFile(file.FullName, UIOption.OnlyErrorDialogs, recycleOption);
-
-            string verb = (recycle) ? "Recycled" : "Permanently deleted";
+            _rdpWorker.Delete(file, recycle);
+            string verb = recycle ? "Recycled" : "Permanently deleted";
             _logger.Info($"{verb} file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
-            string verb = (recycle) ? "recycle" : "permanently delete";
-            _logger.Error(ex, $"Failed to {verb} file '{file.Name}' in '{file.DirectoryName}'.");
+            string recycleOrDelete = recycle ? "recycle" : "permanently delete";
+            _logger.Error(ex, $"Failed to {recycleOrDelete} file '{file.Name}' in '{file.DirectoryName}'.");
         }
     }
 }

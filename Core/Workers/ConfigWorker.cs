@@ -1,25 +1,51 @@
-﻿using Auxiliary;
-using Core.Configuration;
-using Core.Constants;
+﻿using Core.Constants;
+using Core.Helpers;
+using Core.Models;
+using NLog;
+using System.Text.Json;
 
 namespace Core.Workers;
 
 internal class ConfigWorker
 {
-    private readonly ConfigManager _configManager = new();
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly FileReader _fileReader = new();
+    private readonly JsonSerializerOptions _jsonOptions;
 
-    public List<Profile> Profiles => _configManager.Config.Profiles;
+    public ConfigWorker()
+    {
+        _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+    }
 
-    public void UpdateConfig()
-        => _configManager.UpdateConfig();
+    public Config GetConfigFromFile()
+    {
+        string path = GetConfigPath();
+        string fileContent = _fileReader.ReadFile(path);
+        var config = ParseConfig(fileContent);
+        _logger.Info("Successfully parsed config from file.");
+        return config;
+    }
 
-    public int GetPollingInterval()
-        => MathExt.Median(_configManager.Config.PollingInterval,
-                          ConfigConstants.PollingInterval_Min,
-                          ConfigConstants.PollingInterval_Max);
 
-    public int GetDeleteDelay()
-        => MathExt.Median(_configManager.Config.DeleteDelay,
-                          ConfigConstants.DeleteDelay_Min,
-                          ConfigConstants.DeleteDelay_Max);
+
+    private string GetConfigPath()
+    {
+        string directory = FileHelper.GetConfigDirectory();
+        string fileName = ConfigConstants.FileName;
+        return Path.Combine(directory, fileName);
+    }
+
+    private Config ParseConfig(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<Config>(json, _jsonOptions)
+                ?? throw new Exception("Config is null.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to parse config from json: {json}");
+            throw;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using Core.Constants;
-using Core.Workers;
+using Core.Managers;
 using NLog;
 
 namespace Core.Main;
@@ -7,10 +7,10 @@ namespace Core.Main;
 public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly ConfigWatcherWorker _configWatcherWorker = new();
-    private readonly ConfigWorker _configWorker = new();
-    private readonly ProfileWorker _profileWorker = new();
-    private readonly FileWorker _fileWorker = new();
+    private readonly ConfigWatcherManager _configWatcherWorker = new();
+    private readonly ConfigManager _configManager = new();
+    private readonly ProfileManager _profilemanager = new();
+    private readonly FileManager _fileManager = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 
     public void Run()
@@ -41,15 +41,15 @@ public class Controller
 
     private void InitializeConfig()
     {
-        _configWorker.UpdateConfig();
+        _configManager.UpdateConfig();
         SetPollingInterval();
-        _fileWorker.SetDeleteDelay(_configWorker.GetDeleteDelay());
+        _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
     private void SetPollingInterval()
     {
-        int newPollingInterval = _configWorker.GetPollingInterval();
+        int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)
             return;
 
@@ -59,14 +59,14 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _profileWorker.UpdateProfileInfos(_configWorker.Profiles);
-        _profileWorker.UpdateProfileInfosFiles();
-        _profileWorker.LogProfileInfosSummary();
+        _profilemanager.UpdateProfiles(_configManager.Config.Profiles);
+        _profilemanager.UpdateFiles();
+        _profilemanager.LogProfilesSummary();
     }
 
     private void MainLoop()
     {
-        _profileWorker.UpdateProfileInfosFiles();
-        _fileWorker.ProcessProfileInfos(_profileWorker.ProfileInfos);
+        _profilemanager.UpdateFiles();
+        _fileManager.ProcessProfileInfos(_profilemanager.ProfileInfos);
     }
 }

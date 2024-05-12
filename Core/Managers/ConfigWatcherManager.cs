@@ -1,10 +1,10 @@
-﻿using Core.Configuration;
-using Core.Constants;
+﻿using Core.Constants;
 using Core.Helpers;
+using Core.Workers;
 
-namespace Core.Workers;
+namespace Core.Managers;
 
-internal class ConfigWatcherWorker
+internal class ConfigWatcherManager
 {
     private ConfigWatcher? _configWatcher;
 

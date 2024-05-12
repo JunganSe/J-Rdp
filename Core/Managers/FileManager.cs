@@ -1,15 +1,14 @@
-﻿using Core.Configuration;
-using Core.Helpers;
-using Core.Main;
+﻿using Core.Helpers;
+using Core.Models;
 using NLog;
 
-namespace Core.Workers;
+namespace Core.Managers;
 
-internal class FileWorker
+internal class FileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly List<string> _processedFilePaths = [];
     private readonly RdpManager _rdpManager = new();
+    private readonly List<string> _processedFilePaths = [];
 
     public void SetDeleteDelay(int deleteDelay)
     {
@@ -23,7 +22,7 @@ internal class FileWorker
     public void ProcessProfileInfos(IEnumerable<ProfileInfo> profileInfos)
     {
         _processedFilePaths.Clear();
-        var processableProfileInfos = profileInfos.Where(ci => ci.DirectoryExists);
+        var processableProfileInfos = profileInfos.Where(pi => pi.DirectoryExists);
         foreach (var profileInfo in processableProfileInfos)
             ProcessNewFiles(profileInfo);
     }
@@ -43,7 +42,7 @@ internal class FileWorker
 
     private void LogNewFiles(Profile profile, IEnumerable<FileInfo> newFiles)
     {
-        string s = (newFiles.Count() > 1) ? "s" : "";
+        string s = newFiles.Count() > 1 ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
         _logger.Debug($"'{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
     }

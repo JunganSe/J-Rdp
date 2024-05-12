@@ -1,8 +1,8 @@
-﻿using Core.Configuration;
+﻿using Core.Models;
 
 namespace Core.Helpers;
 
-internal static class ProfileHelper
+internal static class ProfileValidator
 {
     public static bool IsProfileValid(Profile profile, out string reason)
     {

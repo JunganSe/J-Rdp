@@ -1,10 +1,10 @@
-﻿using Core.Configuration;
-using Core.Helpers;
+﻿using Core.Helpers;
+using Core.Models;
 
 namespace Core.Tests;
 
 [TestClass]
-public class ProfileHelperTests
+public class ProfileValidatorTests
 {
     [TestMethod]
     [DataRow(0)]
@@ -15,7 +15,7 @@ public class ProfileHelperTests
         var profiles = GetValidMockProfiles();
 
         // Act
-        var actual = ProfileHelper.IsProfileValid(profiles[index], out _);
+        var actual = ProfileValidator.IsProfileValid(profiles[index], out _);
 
         // Assert
         Assert.IsTrue(actual);
@@ -31,7 +31,7 @@ public class ProfileHelperTests
         var profiles = GetInvalidMockProfiles();
 
         // Act
-        var actual = ProfileHelper.IsProfileValid(profiles[index], out _);
+        var actual = ProfileValidator.IsProfileValid(profiles[index], out _);
 
         // Assert
         Assert.IsFalse(actual);

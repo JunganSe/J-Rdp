@@ -1,6 +1,6 @@
-﻿using Core.Configuration;
-using Core.Constants;
+﻿using Core.Constants;
 using Core.Helpers;
+using Core.Models;
 
 namespace Core.Extensions;
 
@@ -13,7 +13,7 @@ internal static class ProfileExtensions
         => profiles.RemoveAll(p => !p.IsValid(out _));
 
     public static bool IsValid(this Profile profile, out string reason) 
-        => ProfileHelper.IsProfileValid(profile, out reason);
+        => ProfileValidator.IsProfileValid(profile, out reason);
 
     public static void AddDefaultFilterFileEndings(this List<Profile> profiles)
         => profiles.ForEach(p => p.AddDefaultFilterFileEnding());
