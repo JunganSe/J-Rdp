@@ -1,5 +1,5 @@
-﻿using Core.Configuration;
-using Core.Helpers;
+﻿using Core.Helpers;
+using Core.Models;
 
 namespace Core.Tests;
 

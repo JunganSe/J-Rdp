@@ -1,5 +1,5 @@
-﻿using Core.Configuration;
-using Core.Constants;
+﻿using Core.Constants;
+using Core.Models;
 using Core.Workers;
 using NLog;
 

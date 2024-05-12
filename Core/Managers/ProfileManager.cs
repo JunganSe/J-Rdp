@@ -1,4 +1,4 @@
-﻿using Core.Configuration;
+﻿using Core.Models;
 using NLog;
 
 namespace Core.Managers;

@@ -1,4 +1,4 @@
-﻿using Core.Configuration;
+﻿using Core.Models;
 
 namespace Core.Helpers;
 
