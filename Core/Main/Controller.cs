@@ -59,14 +59,14 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _profilemanager.UpdateProfileInfos(_configManager.Config.Profiles);
-        _profilemanager.UpdateProfileInfosFiles();
-        _profilemanager.LogProfileInfosSummary();
+        _profilemanager.UpdateProfiles(_configManager.Config.Profiles);
+        _profilemanager.UpdateFiles();
+        _profilemanager.LogProfilesSummary();
     }
 
     private void MainLoop()
     {
-        _profilemanager.UpdateProfileInfosFiles();
+        _profilemanager.UpdateFiles();
         _fileManager.ProcessProfileInfos(_profilemanager.ProfileInfos);
     }
 }
