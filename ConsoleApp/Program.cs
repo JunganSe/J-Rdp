@@ -1,13 +1,14 @@
 ﻿using Auxiliary;
 using Core.Main;
+using System.Reflection;
 
 namespace ConsoleApp;
 
 internal class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        Console.Title = "J-Rdp 0.1.0";
+        Console.Title = GetTitle();
 
         var logManager = new LogManager();
         logManager.Initialize();
@@ -24,5 +25,14 @@ internal class Program
         new Controller().Run();
 
         logger.Info("Quitting application...");
+    }
+
+    private static string GetTitle()
+    {
+        var assemblyName = Assembly.GetExecutingAssembly().GetName();
+        string name = assemblyName.Name ?? "";
+        string longVersion = assemblyName.Version?.ToString() ?? "0.0.0.0";
+        string version = longVersion[..longVersion.LastIndexOf('.')];
+        return $"{name} {version}";
     }
 }
