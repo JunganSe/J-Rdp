@@ -3,8 +3,8 @@
   <PropertyGroup>
     <AssemblyName>J-Rdp</AssemblyName>
     <AssemblyTitle>An automation program for rdp files.</AssemblyTitle>
-    <Version>0.1.0</Version>
-    <FileVersion>0.1.0</FileVersion>
+    <Version>0.2.0</Version>
+    <FileVersion>0.2.0</FileVersion>
     <Company></Company>
     <Copyright></Copyright>
   </PropertyGroup>
