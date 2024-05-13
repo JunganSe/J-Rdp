@@ -1,6 +1,5 @@
 ﻿using Auxiliary;
 using Core.Main;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace ConsoleApp;
