@@ -1,1 +1,1 @@
-start "J-Rdp" J-Rdp.exe PollingInterval=1000 HideConsole=true
+start "J-Rdp" J-Rdp.exe -HideConsole -LogToFile
