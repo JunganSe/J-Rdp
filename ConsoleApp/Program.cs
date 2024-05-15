@@ -1,6 +1,5 @@
 ﻿using Auxiliary;
 using Core.Main;
-using System.Reflection;
 
 namespace ConsoleApp;
 
@@ -29,10 +28,9 @@ internal class Program
 
     private static string GetTitle()
     {
-        var assemblyName = Assembly.GetExecutingAssembly().GetName();
-        string name = assemblyName.Name ?? "";
-        string longVersion = assemblyName.Version?.ToString() ?? "0.0.0.0";
-        string version = longVersion[..longVersion.LastIndexOf('.')];
+        var type = typeof(Program);
+        string name = AssemblyHelper.GetAssemblyName(type);
+        string version = AssemblyHelper.GetAssemblyVersion(type);
         return $"{name} {version}";
     }
 }
