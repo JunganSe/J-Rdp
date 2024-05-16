@@ -1,25 +1,26 @@
 {
   "pollingInterval": 2000,
-  "deleteDelay": 4000,
+  "deleteDelay": 5000,
   "profiles": [
     {
       "enabled": true,
       "name": "Example profile 1",
       "watchFolder": "C:/Foo",
       "filter": "*foo.rdp",
-      "moveToFolder": "C:/Foo/Bar",
+      "moveToFolder": "Bar",
       "launch": false,
       "delete": false,
       "settings": [
+        "screen mode id:i:1",
         "desktopwidth:i:800",
         "desktopheight:i:600"
       ]
     },
     {
-      "enabled": false,
+      "enabled": true,
       "name": "Example profile 2",
-      "watchFolder": "Foo/Bar",
-      "filter": "bar?.rdp",
+      "watchFolder": "C:/Foo/Bar",
+      "filter": "hello??",
       "moveToFolder": "",
       "launch": true,
       "delete": true,
