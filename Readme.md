@@ -20,10 +20,10 @@ When a new file is found, several actions can be taken:
 The application can be run directly as a console app, or silently in the background.\
 No installation is needed.
 
-To run it as a console app, simply open the exe file.
+To run it as a console app, simply open the .exe file.
 
-To run it silently, open the exe file with the argument `-HideConsole`\
-A pair of bat files are provided to start it silently, and to stop it.
+To run it silently, open the .exe file with the argument `-HideConsole`\
+A pair of .bat files are provided to start it silently, and to stop it.
 
 To run the app automatically on boot/login, use either of these methods:\
 \- Create a shortcut and put it in your startup folder.\
@@ -33,7 +33,23 @@ To run the app automatically on boot/login, use either of these methods:\
 
 
 ## Configuration
+### Logging
+To enable logging to file, use the `-LogToFile` argument.\
+To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory, and it will be used instead of the default logging settings.
+
+### General configuration
+The application uses on a configuration file named "config.json" in the .exe directory.\
+An example file is provided, edit it as needed.
+
+Two general settings can be configured:
+- `pollingInterval` decides how often, in milliseconds, the watched folder(s) should be checked for new files.\
+  Default is 1000. The value must be between 100 and 30000.
+- `deleteDelay` decides how long to wait before deleting a file, after launching it.\
+  Default is 3000. The value must be between 100 and 30000.
+
+### Profiles
 (todo)
+
 <br/><br/>
 
 
@@ -45,8 +61,8 @@ To run the app automatically on boot/login, use either of these methods:\
 
 
 ## Change log
-### 0.1.0
+### 0.2.0
 (todo)
 
-### 0.2.0
+### 0.1.0
 (todo)
