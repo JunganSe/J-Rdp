@@ -17,7 +17,17 @@ When a new file is found, several actions can be taken:
 
 
 ## Launching
-(todo)
+The application can be run directly as a console app, or silently in the background.\
+No installation is needed.
+
+To run it as a console app, simply open the exe file.
+
+To run it silently, open the exe file with the argument `-HideConsole`\
+A pair of bat files are provided to start it silently, and to stop it.
+
+To run the app automatically on boot/login, use either of these methods:\
+\- Create a shortcut and put it in your startup folder.\
+\- Use the Windows task scheduler to launch it on login or startup.
 <br/><br/>
 
 
