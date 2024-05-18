@@ -37,6 +37,9 @@ To run the app automatically on boot/login, use either of these methods:\
 To enable logging to file, use the `-LogToFile` argument.\
 To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory, and it will be used instead of the default logging settings.
 
+By default, one .log file will be generated per day in the "Logs" folder.\
+Read them with a text editor such as notepad, or your favourite log reader.
+
 ### General configuration
 The application uses on a configuration file named "config.json" in the .exe directory.\
 An example file is provided, edit it as needed.
@@ -44,11 +47,13 @@ An example file is provided, edit it as needed.
 Two general settings can be configured:
 - `pollingInterval` decides how often, in milliseconds, the watched folder(s) should be checked for new files.\
   Default is 1000. The value must be between 100 and 30000.
-- `deleteDelay` decides how long to wait before deleting a file, after launching it.\
+- `deleteDelay` decides how long to wait before deleting a file after launching it.\
   Default is 3000. The value must be between 100 and 30000.
 
+Omitted settings will use their default values.
+
 ### Profiles
-(todo)
+To configure 
 
 <br/><br/>
 
