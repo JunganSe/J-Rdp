@@ -81,7 +81,7 @@ Provide the settings to be applied as an array of strings in the profile.\
 If a setting is not already present in the file, it will be added at the end.\
 If a setting is already present in the file, the original line will be deleted and a new line will be added at the end.
 
-See the documentation of rdp settings [here](https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/rdp-files).
+See the [Microsoft documentation](https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/rdp-files).
 
 Examples of some useful settings:
 - `screen mode id:i:*value*`: 1 for windowed, 2 for full screen.
@@ -98,7 +98,23 @@ Examples of some useful settings:
 
 ## Change log
 ### 0.2.0
-(todo)
+Changes and improvements:
+- Improved logging.
+- Logging can now be enabled or disabled.
+- The console window title is now the program name instead of the full path.
+- Moved some command line arguments to config file.
+- Users can now provide their own nlog.config to customize logging.
+- Delete delay is now configurable.
+- "watchFolder" path must now be absolute. A relative path would previously be relative to the exe, which makes no sense.
+- If "moveToFolder" path is relative, it is now relative to "watchFolder".
+- Profiles can now be disabled.
+- Existing settings in rdp files will be replaced, instead of duplicates being added at the end.
+- ".rdp" file type is assumed in filter, if not explicitly stated. So the filter "\*.txt" will be interpreted as "\*.txt.rdp", while "\*.rdp" will be used as-is.
+- Missing settings in config and profiles will use their default values.
+- Improved config validation.
+
+Bug fixes:
+- Fixed a bug where changes to the config file was not detected after some time.
 
 ### 0.1.0
-(todo)
+Initial release.
