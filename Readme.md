@@ -20,14 +20,14 @@ When a new file is found, several actions can be taken:
 The application can be run directly as a console app, or silently in the background.\
 No installation is needed.
 
-To run it as a console app, simply open the .exe file.
+To run it as a console app, simply run the .exe file.
 
-To run it silently, open the .exe file with the argument `-HideConsole`\
+To run it silently, run the .exe file with the argument `-HideConsole`\
 A pair of .bat files are provided to start it silently, and to stop it.
 
 To run the app automatically on boot/login, use either of these methods:\
 \- Create a shortcut and put it in your startup folder.\
-\- Use the Windows task scheduler to launch it on login or startup.
+\- Use the Windows task scheduler to run it on login or startup.
 <br/><br/>
 
 
@@ -35,7 +35,7 @@ To run the app automatically on boot/login, use either of these methods:\
 ## Configuration
 
 ### Logging
-To enable logging to file, use the `-LogToFile` argument.\
+To enable logging to file, use the `-LogToFile` argument when running the .exe file.\
 To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory, and it will be used instead of the default logging settings.
 
 By default, one .log file will be generated per day in the "Logs" folder.\
@@ -43,7 +43,7 @@ Read them with a text editor such as notepad, or your favourite log reader.
 
 
 ### General configuration
-The application uses on a configuration file named "config.json" in the .exe directory.\
+The application is using a configuration file named "config.json" in the same directory as the .exe file.\
 An example file is provided, edit it as needed.
 
 Two general settings can be configured:
@@ -70,7 +70,7 @@ The settings are:
   Optional. Default if omitted: false
 - `delete`: Set to true to delete the file after all other operations are made.
   Optional: Default if omitted: false
-- `settings`: An array of strings, each representing a setting line of the .rdp file.\
+- `settings`: An array of strings, each representing a setting to be made in the .rdp file.\
   Optional. See the chapter about rdp settings below.
 <br/><br/>
 
