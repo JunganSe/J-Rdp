@@ -1,5 +1,5 @@
 # J-Rdp
----
+<br/>
 
 
 
@@ -77,7 +77,21 @@ The settings are:
 
 
 ## Rdp settings
-(todo)
+Provide the settings to be applied as an array of strings in the profile.\
+If a setting is not already present in the file, it will be added at the end.\
+If a setting is already present in the file, the original line will be deleted and a new line will be added at the end.
+
+See the documentation of rdp settings [here](https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/rdp-files).
+
+Examples of some useful settings:
+- `screen mode id:i:*value*`: 1 for windowed, 2 for full screen.
+- `desktopwidth:i:*value*`: Resolution width.
+- `desktopheight:i:*value*`: Resolution height.
+- `winposstr:s:0,1,x1,y1,x2,y2`: Set the size and position of the window by defining a rectangle. See [this post](https://superuser.com/a/665413) for an explanation.
+- `smart sizing:i:1`: Scale the contens of the window when it is resized.
+- `use multimon:i:1`: Enable multi monitor support. Will use all monitors unless `selectedmonitors:s` is used.
+- `selectedmonitors:s:*value*`: Select which monitors to use when using multiple monitors. Zero-based, comma-separated list.\
+  Example: A value of "1,2" will use monitor 2 and 3, but not monitor 1.
 <br/><br/>
 
 
