@@ -16,6 +16,31 @@ internal static class ProfileValidator
         if (string.IsNullOrWhiteSpace(profile.Filter))
             reasons.Add($"'{nameof(profile.Filter)}' is empty or missing.");
 
+        foreach (var setting in profile.Settings)
+        {
+            if (!IsProfileSettingValid(setting, out string settingReason))
+                reasons.Add(settingReason);
+        }
+
+        reason = string.Join(" ", reasons);
+        return (reasons.Count == 0);
+    }
+
+    public static bool IsProfileSettingValid(string setting, out string reason)
+    {
+        var reasons = new List<string>();
+        var parts = setting.Trim().Split(':');
+
+        if (parts.Length < 2)
+            reasons.Add($"Setting '{setting}' does not contain a semicolon.");
+        else
+        {
+            if (parts[0].Length == 0)
+                reasons.Add($"Setting '{setting}' has an empty key.");
+            if (parts[^1].Length == 0)
+                reasons.Add($"Setting '{setting}' has an empty value.");
+        }
+
         reason = string.Join(" ", reasons);
         return (reasons.Count == 0);
     }
