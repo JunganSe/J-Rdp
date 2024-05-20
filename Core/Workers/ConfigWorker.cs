@@ -39,8 +39,10 @@ internal class ConfigWorker
     {
         try
         {
-            return JsonSerializer.Deserialize<Config>(json, _jsonOptions)
+            var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions) 
                 ?? throw new Exception("Config is null.");
+            config.Profiles.ForEach(p => p.Filter = p.Filter.Trim());
+            return config;
         }
         catch (Exception ex)
         {
