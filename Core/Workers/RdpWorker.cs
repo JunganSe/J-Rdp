@@ -22,6 +22,8 @@ internal class RdpWorker
         foreach (string setting in settings)
         {
             int lastColonIndex = setting.LastIndexOf(':');
+            if (lastColonIndex == -1)
+                throw new ArgumentException("Invalid setting, no semicolon present.");
             var key = setting[..lastColonIndex];
             fileLines.RemoveAll(l => l.Contains(key));
         }
