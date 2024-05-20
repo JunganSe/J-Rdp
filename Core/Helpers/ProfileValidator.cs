@@ -23,7 +23,8 @@ internal static class ProfileValidator
         }
 
         reason = string.Join(" ", reasons);
-        return (reasons.Count == 0);
+        bool isValid = (reasons.Count == 0);
+        return isValid;
     }
 
     public static bool IsProfileSettingValid(string setting, out string reason)
@@ -42,6 +43,7 @@ internal static class ProfileValidator
         }
 
         reason = string.Join(" ", reasons);
-        return (reasons.Count == 0);
+        bool isValid = (reasons.Count == 0);
+        return isValid;
     }
 }
