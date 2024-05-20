@@ -103,22 +103,22 @@ public class ProfileValidatorTests
             new()
             {
                 WatchFolder = @"Foo", // Bad
-                Filter = "Bar", // Good
+                Filter = "Bar",
             },
             new()
             {
                 WatchFolder = "", // Bad
-                Filter = "Bar", // Good
+                Filter = "Bar",
             },
             new()
             {
-                WatchFolder = @"C:\Foo", // Good
+                WatchFolder = @"C:\Foo",
                 Filter = "", // Bad
             },
             new()
             {
-                WatchFolder = @"C:\Foo", // Good
-                Filter = "Bar", // Good
+                WatchFolder = @"C:\Foo",
+                Filter = "Bar",
                 Settings = ["hello"], // Bad
             },
         ];
