@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\Readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="nlog.config" />
   </ItemGroup>
 
@@ -18,12 +24,6 @@
 
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.2.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

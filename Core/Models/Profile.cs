@@ -1,10 +1,13 @@
-﻿namespace Core.Configuration;
+﻿using Core.Constants;
 
-internal class Config
+namespace Core.Models;
+
+internal class Profile
 {
-    public string Name { get; init; }           = "";
+    public bool Enabled { get; set; }           = true;
+    public string Name { get; init; }           = ConfigConstants.Profile_DefaultName;
     public string WatchFolder { get; init; }    = "";
-    public string Filter { get; init; }         = "";
+    public string Filter { get; set; }         = "";
     public string MoveToFolder { get; init; }   = "";
     public bool Launch { get; init; }           = false;
     public bool Delete { get; init; }           = false;

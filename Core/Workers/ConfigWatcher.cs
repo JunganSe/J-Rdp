@@ -1,12 +1,12 @@
 ﻿using Core.Helpers;
 using NLog;
 
-namespace Core.Configuration;
+namespace Core.Workers;
 
 internal class ConfigWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly Action? _callback;
+    private readonly Action _callback;
 
     public ConfigWatcher(string path, string filter, Action callback)
     {
@@ -24,7 +24,7 @@ internal class ConfigWatcher : FileSystemWatcher
         Deleted += OnMissing;
         Error += OnError;
 
-        _logger.Debug($"Watching for {filter} in {path}");
+        _logger.Debug($"Watching for '{filter}' in '{path}'.");
     }
 
 
@@ -37,7 +37,7 @@ internal class ConfigWatcher : FileSystemWatcher
         string eventType = args.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {eventType}.");
 
-        _callback?.Invoke();
+        _callback.Invoke();
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs args)
@@ -45,7 +45,7 @@ internal class ConfigWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
-        if (FileSystemHelper.FileNameMatchesFilter(args.FullPath, Filter))
+        if (FileHelper.FileNameMatchesFilter(args.FullPath, Filter))
             OnChanged(this, args);
         else
             OnMissing(this, args);
@@ -56,8 +56,8 @@ internal class ConfigWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
-        _logger.Warn($"Config file '{Filter}' not found in {Path}");
-        _callback?.Invoke();
+        _logger.Warn($"Config file '{Filter}' not found in '{Path}'.");
+        _callback.Invoke();
     }
 
     private void OnError(object sender, ErrorEventArgs args)

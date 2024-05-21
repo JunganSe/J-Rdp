@@ -1,1 +1,1 @@
-taskkill /IM RdpRunner.exe
+taskkill /IM J-Rdp.exe
