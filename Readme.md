@@ -1,9 +1,6 @@
 # J-Rdp
-<br/>
+Summary:
 
-
-
-# Summary
 J-Rdp is a tool to automate the editing and launching of rdp files.
 
 It will watch one or more folders for new files, using name criteria filters.\
