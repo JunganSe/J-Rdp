@@ -3,7 +3,7 @@
 
 
 
-## Summary
+# Summary
 J-Rdp is a tool to automate the editing and launching of rdp files.
 
 It will watch one or more folders for new files, using name criteria filters.\
@@ -16,13 +16,13 @@ When a new file is found, several actions can be taken:
 
 
 
-## Launching
+# Launching
 The application can be run directly as a console app, or silently in the background.\
 No installation is needed.
 
 To run it as a console app, simply run the .exe file.
 
-To run it silently, run the .exe file with the argument `-HideConsole`\
+To run it silently, run the .exe file with the `-HideConsole` argument.\
 A pair of .bat files are provided to start it silently, and to stop it.
 
 To run the app automatically on boot/login, use either of these methods:\
@@ -32,9 +32,9 @@ To run the app automatically on boot/login, use either of these methods:\
 
 
 
-## Configuration
+# Configuration
 
-### Logging
+## Logging
 To enable logging to file, use the `-LogToFile` argument when running the .exe file.\
 To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory, and it will be used instead of the default logging settings.
 
@@ -42,18 +42,18 @@ By default, one .log file will be generated per day in the "Logs" folder.\
 Read them with a text editor such as notepad, or your favourite log reader.
 
 
-### General configuration
+## General configuration
 The application is using a configuration file named "config.json" in the same directory as the .exe file.\
 An example file is provided, edit it as needed.
 
 Two general settings can be configured:
-- `pollingInterval` decides how often, in milliseconds, the watched folder(s) should be checked for new files.\
+- `pollingInterval`: Decides how often, in milliseconds, the watched folder(s) should be checked for new files.\
   Default if omitted: 1000. Must be between 100 and 30000.
-- `deleteDelay` decides how long to wait before deleting a file after launching it.\
+- `deleteDelay`: Decides how long to wait before deleting a file after launching it.\
   Default if omitted: 3000. Must be between 100 and 30000.
 
 
-### Profiles
+## Profiles
 To configure which folders to watch and which actions should be taken, provide one or more profiles in the config file.
 
 The settings are:
@@ -76,7 +76,7 @@ The settings are:
 
 
 
-## Rdp settings
+# Rdp settings
 Provide the settings to be applied as an array of strings in the profile.\
 If a setting is not already present in the file, it will be added at the end.\
 If a setting is already present in the file, the original line will be deleted and a new line will be added at the end.
@@ -96,8 +96,10 @@ Examples of some useful settings:
 
 
 
-## Change log
-### 0.2.0
+# Change log
+## 0.2.0
+2024-05-21
+
 Changes and improvements:
 - Improved logging.
 - Logging can now be enabled or disabled.
@@ -116,5 +118,7 @@ Changes and improvements:
 Bug fixes:
 - Fixed a bug where changes to the config file was not detected after some time.
 
-### 0.1.0
+## 0.1.0
+2024-03-27
+
 Initial release.
