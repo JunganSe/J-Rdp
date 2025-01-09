@@ -28,6 +28,6 @@ internal class ProfileInfo
 
 
 
-    private IEnumerable<FileInfo> GetFiles()
-        => Directory.GetFiles(Profile.WatchFolder).Select(path => new FileInfo(path));
+    private IEnumerable<FileInfo> GetFiles() =>
+        Directory.GetFiles(Profile.WatchFolder).Select(path => new FileInfo(path));
 }

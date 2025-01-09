@@ -10,9 +10,9 @@ internal static class FileHelper
         return FileSystemName.MatchesSimpleExpression(filter, fileName, ignoreCase: true);
     }
 
-    public static bool IsPathAbsolute(string path)
-        => Path.IsPathFullyQualified(path); // e.g. 'C:\Foo\Bar'
+    public static bool IsPathAbsolute(string path) =>
+        Path.IsPathFullyQualified(path); // e.g. 'C:\Foo\Bar'
 
-    public static string GetConfigDirectory()
-        => AppDomain.CurrentDomain.BaseDirectory;
+    public static string GetConfigDirectory() =>
+        AppDomain.CurrentDomain.BaseDirectory;
 }

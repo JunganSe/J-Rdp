@@ -9,13 +9,13 @@ internal class ProfileManager
 
     public List<ProfileInfo> ProfileInfos { get; private set; } = [];
 
-    public void UpdateProfiles(List<Profile> profiles)
-        => ProfileInfos = profiles
+    public void UpdateProfiles(List<Profile> profiles) =>
+        ProfileInfos = profiles
             .Select(profile => new ProfileInfo(profile))
             .ToList();
 
-    public void UpdateFiles()
-        => ProfileInfos.ForEach(pi => pi.UpdateFiles());
+    public void UpdateFiles() =>
+        ProfileInfos.ForEach(pi => pi.UpdateFiles());
 
     public void LogProfilesSummary()
     {
