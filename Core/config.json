@@ -5,28 +5,28 @@
     {
       "enabled": true,
       "name": "Example profile 1",
-      "watchFolder": "C:/Foo",
-      "filter": "*foo.rdp",
-      "moveToFolder": "Bar",
-      "launch": false,
-      "delete": false,
+      "watchFolder": "C:/Users/MyUser/Downloads",
+      "filter": "*.rdp",
+      "moveToFolder": "",
+      "launch": true,
+      "delete": true,
       "settings": [
-        "screen mode id:i:1",
-        "desktopwidth:i:800",
-        "desktopheight:i:600"
+        "screen mode id:i:2"
       ]
     },
     {
       "enabled": true,
       "name": "Example profile 2",
       "watchFolder": "C:/Foo/Bar",
-      "filter": "hello??",
-      "moveToFolder": "",
+      "filter": "abc??.rdp",
+      "moveToFolder": "Baz",
       "launch": true,
-      "delete": true,
+      "delete": false,
       "settings": [
-        "screen mode id:i:2",
-        "smart sizing:i:1"
+        "screen mode id:i:1",
+        "smart sizing:i:1",
+        "desktopwidth:i:800",
+        "desktopheight:i:600"
       ]
     }
   ]
