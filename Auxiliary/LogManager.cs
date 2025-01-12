@@ -9,6 +9,8 @@ public class LogManager
     private const string _configFileName = "nlog.config";
     private const string _fileRuleName = "file";
 
+    private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
     public void Initialize()
     {
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -44,6 +46,7 @@ public class LogManager
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.EnableLoggingForLevels(LogLevel.Debug, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
+        _logger.Info("Logging to file enabled.");
     }
 
     public void DisableFileLogging()
@@ -51,6 +54,7 @@ public class LogManager
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.DisableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
+        _logger.Info("Logging to file disabled.");
     }
 
     private LoggingRule? GetLoggingRule(string ruleName)
