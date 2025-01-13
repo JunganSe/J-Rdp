@@ -1,10 +1,13 @@
 ﻿using Auxiliary;
 using Core.Main;
+using System.Threading;
 
 namespace ConsoleApp;
 
 internal class Program
 {
+    private static Mutex? _mutex;
+
     public static void Main(string[] args)
     {
         Console.Title = GetTitle();
@@ -20,6 +23,12 @@ internal class Program
         ConsoleManager.SetVisibility(!arguments.HideConsole);
         logManager.SetFileLogging(arguments.LogToFile);
 
+        if (IsProgramRunning())
+        {
+            logger.Warn("An instance of the program is already running. Quitting application...");
+            Environment.Exit(0);
+        }
+
         logger.Info("Starting application...");
         new Controller().Run();
 
@@ -32,5 +41,12 @@ internal class Program
         string name = AssemblyHelper.GetAssemblyName(type);
         string version = AssemblyHelper.GetAssemblyVersion(type);
         return $"{name} {version}";
+    }
+
+    private static bool IsProgramRunning()
+    {
+        const string mutexName = "J-Rdp.UniqueInstance";
+        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
+        return !isNewInstance;
     }
 }
