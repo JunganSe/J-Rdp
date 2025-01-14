@@ -14,7 +14,6 @@ internal class Program
 
         var logManager = new LogManager();
         logManager.Initialize();
-        logManager.DisableFileLogging();
 
         var logger = NLog.LogManager.GetCurrentClassLogger();
         logger.Trace("Initializing application...");
