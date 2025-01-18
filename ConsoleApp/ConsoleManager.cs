@@ -10,6 +10,10 @@ internal static class ConsoleManager
 
     private const int SW_HIDE = 0;
     private const int SW_SHOW = 5;
+    private const int GWL_EXSTYLE = -20;
+    private const int WS_EX_TOOLWINDOW = 0x00000080;
+    private const int WS_EX_APPWINDOW = 0x00040000;
+
     private static readonly IntPtr _handle = GetConsoleWindow();
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -18,6 +22,12 @@ internal static class ConsoleManager
 
     [DllImport("user32.dll")]
     private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("user32.dll")]
+    private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+    [DllImport("user32.dll")]
+    private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     public static void SetVisibility(bool show)
     {
@@ -30,12 +40,14 @@ internal static class ConsoleManager
     private static void Show()
     {
         _logger.Info("Showing Console.");
+        SetWindowLong(_handle, GWL_EXSTYLE, GetWindowLong(_handle, GWL_EXSTYLE) | WS_EX_APPWINDOW);
         ShowWindow(_handle, SW_SHOW);
     }
 
     private static void Hide()
     {
         _logger.Info("Hiding Console.");
-        ShowWindow(_handle, SW_HIDE); 
+        SetWindowLong(_handle, GWL_EXSTYLE, GetWindowLong(_handle, GWL_EXSTYLE) & ~WS_EX_APPWINDOW | WS_EX_TOOLWINDOW);
+        ShowWindow(_handle, SW_HIDE);
     }
 }
