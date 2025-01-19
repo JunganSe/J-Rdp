@@ -40,7 +40,7 @@ internal static class ConsoleManager
     private static void Show()
     {
         _logger.Info("Showing Console.");
-        SetWindowLong(_handle, GWL_EXSTYLE, GetWindowLong(_handle, GWL_EXSTYLE) | WS_EX_APPWINDOW);
+        SetWindowLong(_handle, GWL_EXSTYLE, GetWindowLong(_handle, GWL_EXSTYLE) & ~WS_EX_TOOLWINDOW | WS_EX_APPWINDOW);
         ShowWindow(_handle, SW_SHOW);
     }
 
