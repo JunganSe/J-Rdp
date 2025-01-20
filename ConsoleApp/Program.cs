@@ -12,6 +12,7 @@ internal class Program
 
     public static void Main(string[] args)
     {
+        RegisterCloseEvents();
         Console.Title = GetTitle();
 
         var logManager = new Auxiliary.LogManager();
@@ -47,5 +48,15 @@ internal class Program
         const string mutexName = "J-Rdp.UniqueInstance";
         _mutex = new Mutex(true, mutexName, out bool isNewInstance);
         return !isNewInstance;
+    }
+
+    private static void RegisterCloseEvents()
+    {
+        AppDomain.CurrentDomain.ProcessExit += OnClose;
+    }
+
+    private static void OnClose(object? sender, EventArgs eventArgs)
+    {
+        _logger.Info("Closing application by request.");
     }
 }
