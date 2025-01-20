@@ -1,11 +1,13 @@
-﻿using Auxiliary;
+﻿#pragma warning disable IDE0052 // Remove unread private members
+
+using Auxiliary;
 using Core.Main;
 
 namespace ConsoleApp;
 
 internal class Program
 {
-    private static Mutex? _mutex;
+    private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     public static void Main(string[] args)
