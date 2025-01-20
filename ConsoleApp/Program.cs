@@ -1,37 +1,35 @@
 ﻿using Auxiliary;
 using Core.Main;
-using System.Threading;
 
 namespace ConsoleApp;
 
 internal class Program
 {
     private static Mutex? _mutex;
+    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     public static void Main(string[] args)
     {
         Console.Title = GetTitle();
 
-        var logManager = new LogManager();
+        var logManager = new Auxiliary.LogManager();
         logManager.Initialize();
 
-        var logger = NLog.LogManager.GetCurrentClassLogger();
-        logger.Trace("Initializing application...");
-
+        _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
         logManager.SetFileLogging(arguments.LogToFile);
         ConsoleManager.SetVisibility(!arguments.HideConsole);
 
         if (IsProgramRunning())
         {
-            logger.Warn("An instance of the program is already running. Quitting application...");
+            _logger.Warn("An instance of the program is already running. Quitting application...");
             Environment.Exit(0);
         }
 
-        logger.Info("Starting application...");
+        _logger.Info("Starting application.");
         new Controller().Run();
 
-        logger.Info("Quitting application...");
+        _logger.Info("Closing application.");
     }
 
     private static string GetTitle()
