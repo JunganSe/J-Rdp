@@ -2,13 +2,14 @@
 
 using Auxiliary;
 using Core.Main;
+using NLog;
 
 namespace ConsoleApp;
 
 internal class Program
 {
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
-    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     public static void Main(string[] args)
     {
