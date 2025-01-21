@@ -40,7 +40,7 @@ internal class ConfigWorker
         try
         {
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions) 
-                ?? throw new Exception("Config is null.");
+                ?? throw new InvalidOperationException("Config is null.");
             config.Profiles.ForEach(p => p.Filter = p.Filter.Trim());
             return config;
         }
