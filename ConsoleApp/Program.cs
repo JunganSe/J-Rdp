@@ -25,7 +25,7 @@ internal class Program
 
         if (IsProgramRunning())
         {
-            _logger.Warn("An instance of the program is already running. Quitting application...");
+            _logger.Warn("An instance of the program is already running. Closing application.");
             Environment.Exit(0);
         }
 

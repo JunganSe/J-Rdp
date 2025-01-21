@@ -22,7 +22,7 @@ internal class ConfigWorker
         string path = GetConfigPath();
         string fileContent = _fileReader.ReadFile(path);
         var config = ParseConfig(fileContent);
-        _logger.Info("Successfully parsed config from file.");
+        _logger.Debug("Successfully parsed config from file.");
         return config;
     }
 
