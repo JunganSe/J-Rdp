@@ -46,7 +46,7 @@ internal class ConfigWorker
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to parse config from json: {json}");
+            _logger.Error(ex, $"Failed to parse config file.");
             throw;
         }
     }
