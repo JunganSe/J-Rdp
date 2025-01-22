@@ -44,7 +44,7 @@ internal class FileManager
     {
         string s = newFiles.Count() > 1 ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Debug($"'{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
+        _logger.Debug($"Profile '{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
     }
 
     private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)
@@ -52,7 +52,7 @@ internal class FileManager
         if (!FileHelper.FileNameMatchesFilter(file.Name, profile.Filter))
             return;
 
-        _logger.Info($"'{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
+        _logger.Info($"Profile '{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
 
         _processedFilePaths.Add(file.FullName);
         _rdpManager.ProcessFile(file, profile);

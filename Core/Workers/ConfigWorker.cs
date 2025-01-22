@@ -22,7 +22,7 @@ internal class ConfigWorker
         string path = GetConfigPath();
         string fileContent = _fileReader.ReadFile(path);
         var config = ParseConfig(fileContent);
-        _logger.Info("Successfully parsed config from file.");
+        _logger.Debug("Successfully parsed config from file.");
         return config;
     }
 
@@ -40,13 +40,13 @@ internal class ConfigWorker
         try
         {
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions) 
-                ?? throw new Exception("Config is null.");
+                ?? throw new InvalidOperationException("Config is null.");
             config.Profiles.ForEach(p => p.Filter = p.Filter.Trim());
             return config;
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to parse config from json: {json}");
+            _logger.Error(ex, $"Failed to parse config file.");
             throw;
         }
     }

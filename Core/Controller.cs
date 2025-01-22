@@ -2,7 +2,7 @@
 using Core.Managers;
 using NLog;
 
-namespace Core.Main;
+namespace Core;
 
 public class Controller
 {
@@ -27,7 +27,7 @@ public class Controller
         }
         catch (Exception ex)
         {
-            _logger.Fatal(ex, "Unhandled exception.");
+            _logger.Fatal(ex, "An unexpected error occured.");
             return;
         }
     }

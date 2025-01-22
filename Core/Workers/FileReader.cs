@@ -11,18 +11,18 @@ internal class FileReader
     {
         try
         {
-            _logger.Trace($"Attempting to read file: {path}");
+            _logger.Trace($"Attempting to read file: '{path}'");
 
             if (!File.Exists(path))
                 throw new ArgumentException("File does not exist.");
 
             string fileContent = ReadFileWithRetries(path);
-            _logger.Trace($"Successfully read file: {path}");
+            _logger.Trace($"Successfully read file: '{path}'");
             return fileContent;
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Failed to read file: {path}");
+            _logger.Error(ex, $"Failed to read file: '{path}'");
             throw;
         }
     }

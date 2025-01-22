@@ -14,15 +14,15 @@ internal class ConfigManager
 
     public Config Config { get; private set; } = new();
 
-    public int GetPollingInterval()
-        => MathExt.Median(Config.PollingInterval,
-                          ConfigConstants.PollingInterval_Min,
-                          ConfigConstants.PollingInterval_Max);
+    public int GetPollingInterval() =>
+        MathExt.Median(Config.PollingInterval,
+                       ConfigConstants.PollingInterval_Min,
+                       ConfigConstants.PollingInterval_Max);
 
-    public int GetDeleteDelay()
-        => MathExt.Median(Config.DeleteDelay,
-                          ConfigConstants.DeleteDelay_Min,
-                          ConfigConstants.DeleteDelay_Max);
+    public int GetDeleteDelay() =>
+        MathExt.Median(Config.DeleteDelay,
+                       ConfigConstants.DeleteDelay_Min,
+                       ConfigConstants.DeleteDelay_Max);
 
     public void UpdateConfig()
     {
@@ -42,7 +42,7 @@ internal class ConfigManager
         }
     }
 
-    
+
 
     private void LogInvalidProfiles(IEnumerable<Profile> profiles)
     {
