@@ -91,7 +91,21 @@ Examples of some useful settings:
 
 
 
-# Change log
+# Changelog
+
+## 0.2.1
+2025-01-22
+
+Changes and improvements:
+- Added protection against multiple instances of the program.
+- Simplified log in the console window. Log file remains detailed.
+- Sample profiles in the config file have been improved.
+- Improved logging.
+
+Bug fixes:
+- Potential fix for the issue where the program minimized instead of going invisible on Windows 11.
+- Fixed missing program name in task manager description.
+
 ## 0.2.0
 2024-05-21
 
