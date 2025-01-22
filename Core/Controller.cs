@@ -2,7 +2,7 @@
 using Core.Managers;
 using NLog;
 
-namespace Core.Main;
+namespace Core;
 
 public class Controller
 {

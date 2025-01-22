@@ -1,7 +1,7 @@
 ﻿#pragma warning disable IDE0052 // Remove unread private members
 
 using Auxiliary;
-using Core.Main;
+using Core;
 using NLog;
 
 namespace ConsoleApp;
