@@ -14,6 +14,9 @@ internal static class Program
     {
         RegisterCloseEvents();
 
+        var logManager = new Auxiliary.LogManager();
+        logManager.Initialize();
+
         if (IsProgramRunning())
         {
             _logger.Warn("An instance of the program is already running. Closing application.");
