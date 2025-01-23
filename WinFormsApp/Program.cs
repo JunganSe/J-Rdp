@@ -19,6 +19,8 @@ internal static class Program
 
         _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
+        logManager.SetFileLogging(arguments.LogToFile);
+        ConsoleManager.SetVisibility(arguments.ShowConsole);
 
         if (IsProgramRunning())
         {
@@ -26,8 +28,11 @@ internal static class Program
             Environment.Exit(0);
         }
 
+        _logger.Info("Starting application.");
         ApplicationConfiguration.Initialize();
         Application.Run(new MainForm());
+
+        _logger.Info("Closing application.");
     }
 
     private static bool IsProgramRunning()
