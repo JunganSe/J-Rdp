@@ -10,12 +10,15 @@ internal static class Program
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
         RegisterCloseEvents();
 
         var logManager = new Auxiliary.LogManager();
         logManager.Initialize();
+
+        _logger.Trace("Initializing application...");
+        var arguments = Arguments.Parse(args);
 
         if (IsProgramRunning())
         {
