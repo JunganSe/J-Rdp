@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp;
+﻿namespace App;
 
 partial class MainForm
 {

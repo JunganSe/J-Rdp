@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp;
+﻿namespace App;
 
 public class ConsoleManager // TODO: Implement console manager
 {

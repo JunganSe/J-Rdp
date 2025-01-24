@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "WinFormsApp": {
+    "App": {
       "commandName": "Project",
       "commandLineArgs": "-ShowConsole -LogToFile"
     }

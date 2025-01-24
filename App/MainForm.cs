@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinFormsApp;
+namespace App;
 public partial class MainForm : Form
 {
     public MainForm()
