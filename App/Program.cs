@@ -1,20 +1,18 @@
-﻿
+#pragma warning disable IDE0052 // Remove unread private members
 
-using Auxiliary;
-using Core;
 using NLog;
 
-namespace ConsoleApp;
+namespace App;
 
-internal class Program
+internal static class Program
 {
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-    public static void Main(string[] args)
+    [STAThread]
+    static void Main(string[] args)
     {
         RegisterCloseEvents();
-        Console.Title = GetTitle();
 
         var logManager = new Auxiliary.LogManager();
         logManager.Initialize();
@@ -22,7 +20,7 @@ internal class Program
         _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
         logManager.SetFileLogging(arguments.LogToFile);
-        ConsoleManager.SetVisibility(!arguments.HideConsole);
+        ConsoleManager.SetVisibility(arguments.ShowConsole);
 
         if (IsProgramRunning())
         {
@@ -31,17 +29,9 @@ internal class Program
         }
 
         _logger.Info("Starting application.");
-        new Controller().Run();
+        Application.Run();
 
         _logger.Info("Closing application.");
-    }
-
-    private static string GetTitle()
-    {
-        var type = typeof(Program);
-        string name = AssemblyHelper.GetAssemblyName(type);
-        string version = AssemblyHelper.GetAssemblyVersion(type);
-        return $"{name} {version}";
     }
 
     private static bool IsProgramRunning()
@@ -53,6 +43,7 @@ internal class Program
 
     private static void RegisterCloseEvents()
     {
+        Application.ApplicationExit += OnClose;
         AppDomain.CurrentDomain.ProcessExit += OnClose;
     }
 
