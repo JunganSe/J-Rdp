@@ -29,8 +29,7 @@ internal static class Program
         }
 
         _logger.Info("Starting application.");
-        ApplicationConfiguration.Initialize();
-        Application.Run(new MainForm());
+        Application.Run();
 
         _logger.Info("Closing application.");
     }
