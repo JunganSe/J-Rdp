@@ -1,6 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>J-Rdp</AssemblyName>
+    <AssemblyTitle>J-Rdp - An automation program for rdp files</AssemblyTitle>
+    <Version>0.2.1</Version>
+    <FileVersion>0.2.1</FileVersion>
+    <Company></Company>
+    <Copyright></Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
