@@ -1,9 +1,38 @@
-﻿namespace App;
+﻿using NLog;
+using System.Runtime.InteropServices;
 
-public class ConsoleManager // TODO: Implement console manager
+namespace App
 {
-    public static void SetVisibility(bool show)
+    public class ConsoleManager
     {
-        //throw new NotImplementedException();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool FreeConsole();
+
+
+
+        public static void SetVisibility(bool show)
+        {
+            if (show)
+                OpenConsole();
+            else
+                CloseConsole();
+        }
+
+        private static void OpenConsole()
+        {
+            AllocConsole();
+            _logger.Info("Opened console.");
+        }
+
+        private static void CloseConsole()
+        {
+            FreeConsole();
+            _logger.Info("Closed console.");
+        }
     }
 }
