@@ -5,6 +5,8 @@ namespace App
 {
     public class ConsoleManager
     {
+        private const string _consoleTitle = "J-Rdp log";
+
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -12,6 +14,9 @@ namespace App
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FreeConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool SetConsoleTitle(string lpConsoleTitle);
 
 
 
@@ -31,6 +36,8 @@ namespace App
                 _logger.Warn("Failed to open console.");
                 return;
             }
+
+            SetConsoleTitle(_consoleTitle);
 
             // Redirect standard output and error streams to the console
             var consoleOut = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
