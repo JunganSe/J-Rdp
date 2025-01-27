@@ -5,18 +5,16 @@ namespace App
 {
     public class ConsoleManager
     {
-        private const string _consoleTitle = "J-Rdp log";
-
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool SetConsoleTitle(string lpConsoleTitle);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool AllocConsole();
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FreeConsole();
-
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern bool SetConsoleTitle(string lpConsoleTitle);
 
 
 
@@ -37,7 +35,7 @@ namespace App
                 return;
             }
 
-            SetConsoleTitle(_consoleTitle);
+            SetConsoleTitle("J-Rdp log");
             RegisterCloseEvents();
 
             // Redirect standard output and error streams to the console
@@ -46,8 +44,6 @@ namespace App
             Console.SetError(consoleOut);
 
             _logger.Info("Opened console.");
-
-            
         }
 
         private static void RegisterCloseEvents()
@@ -57,7 +53,7 @@ namespace App
 
         private static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs eventArgs)
         {
-            eventArgs.Cancel = true; // Prevents the console from closing, and taking the main app with it.
+            eventArgs.Cancel = true; // Prevents the console from closing and taking the main app with it.
             CloseConsole();
         }
 
