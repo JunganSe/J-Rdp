@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace App;
 
+/// <summary> Windows exclusive manager for opening and closing a console log window </summary>
 public class ConsoleManager
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
