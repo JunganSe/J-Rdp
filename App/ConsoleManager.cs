@@ -16,6 +16,15 @@ namespace App
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FreeConsole();
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool DeleteMenu(IntPtr hMenu, uint uPosition, uint uFlags);
+
 
 
         public static void SetVisibility(bool show)
@@ -36,6 +45,7 @@ namespace App
             }
 
             SetConsoleTitle("J-Rdp log");
+            DisableConsoleCloseButton();
             RegisterCloseEvents();
 
             // Redirect standard output and error streams to the console
@@ -43,7 +53,22 @@ namespace App
             Console.SetOut(consoleOut);
             Console.SetError(consoleOut);
 
+            Console.WriteLine("""
+                *****************************************************
+                Press ctrl+C to safely close the log console window.
+                Closing it from Windows will also close the main app.
+                *****************************************************
+
+                """);
             _logger.Info("Opened console.");
+        }
+
+        private static void DisableConsoleCloseButton()
+        {
+            IntPtr consoleWindow = GetConsoleWindow();
+            IntPtr systemMenu = GetSystemMenu(consoleWindow, false);
+            if (systemMenu != IntPtr.Zero)
+                DeleteMenu(systemMenu, 0xF060, 0x00000000);
         }
 
         private static void RegisterCloseEvents()
