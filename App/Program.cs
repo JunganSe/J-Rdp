@@ -28,10 +28,10 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        _logger.Info("Starting application.");
+        _logger.Info("***** Starting application. *****");
         Application.Run();
 
-        _logger.Info("Closing application.");
+        _logger.Info("***** Closing application. *****");
     }
 
     private static bool IsProgramRunning()
