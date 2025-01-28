@@ -47,11 +47,7 @@ namespace App
             SetConsoleTitle("J-Rdp log");
             DisableConsoleCloseButton();
             RegisterCloseEvents();
-
-            // Redirect standard output and error streams to the console
-            var consoleOut = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
-            Console.SetOut(consoleOut);
-            Console.SetError(consoleOut);
+            RedirectConsoleOutput();
 
             Console.WriteLine("""
                 *****************************************************
@@ -80,6 +76,13 @@ namespace App
         {
             eventArgs.Cancel = true; // Prevents the console from closing and taking the main app with it.
             CloseConsole();
+        }
+
+        private static void RedirectConsoleOutput()
+        {
+            var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+            Console.SetOut(consoleOutput);
+            Console.SetError(consoleOutput);
         }
 
         private static void CloseConsole()
