@@ -2,7 +2,7 @@
 
 using NLog;
 
-namespace App;
+namespace WinApp;
 
 internal static class Program
 {
