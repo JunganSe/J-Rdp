@@ -49,6 +49,6 @@ internal static class Program
 
     private static void OnClose(object? sender, EventArgs eventArgs)
     {
-        _logger.Info("Closing application by request.");
+        _logger.Info("***** Closing application. *****");
     }
 }
