@@ -1,14 +1,15 @@
 #pragma warning disable IDE0052 // Remove unread private members
 
 using NLog;
-using System.Threading;
 
 namespace WinApp;
 
 internal static class Program
 {
-    private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
+
+    internal static NotifyIcon NotifyIcon;
 
     [STAThread]
     static void Main(string[] args)
@@ -28,6 +29,8 @@ internal static class Program
             _logger.Warn("An instance of the program is already running. Closing application.");
             Environment.Exit(0);
         }
+
+        NotifyIcon = TrayManager.GetNotifyIcon();
 
         _logger.Info("***** Starting application. *****");
         Application.Run();
@@ -52,5 +55,6 @@ internal static class Program
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
+        NotifyIcon?.Dispose();
     }
 }
