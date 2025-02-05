@@ -55,6 +55,7 @@ internal static class Program
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
+        NotifyIcon?.ContextMenuStrip?.Dispose();
         NotifyIcon?.Dispose();
     }
 
