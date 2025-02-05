@@ -10,7 +10,7 @@ internal static class Program
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
 
-    internal static NotifyIcon NotifyIcon;
+    internal static NotifyIcon? NotifyIcon;
 
     [STAThread]
     static void Main(string[] args)
