@@ -1,6 +1,7 @@
 #pragma warning disable IDE0052 // Remove unread private members
 
 using NLog;
+using System.Threading;
 
 namespace WinApp;
 
@@ -43,12 +44,13 @@ internal static class Program
 
     private static void RegisterCloseEvents()
     {
-        Application.ApplicationExit += OnClose;
-        AppDomain.CurrentDomain.ProcessExit += OnClose;
+        Application.ApplicationExit += OnExit;
+        AppDomain.CurrentDomain.ProcessExit += OnExit;
     }
 
-    private static void OnClose(object? sender, EventArgs eventArgs)
+    private static void OnExit(object? sender, EventArgs eventArgs)
     {
         _logger.Info("***** Closing application. *****");
+        _mutex?.Dispose();
     }
 }
