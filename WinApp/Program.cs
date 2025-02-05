@@ -1,5 +1,6 @@
 #pragma warning disable IDE0052 // Remove unread private members
 
+using Core;
 using NLog;
 
 namespace WinApp;
@@ -33,6 +34,7 @@ internal static class Program
         NotifyIcon = TrayManager.GetNotifyIcon();
 
         _logger.Info("***** Starting application. *****");
+        RunCoreInThread();
         Application.Run();
     }
 
@@ -54,5 +56,15 @@ internal static class Program
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
         NotifyIcon?.Dispose();
+    }
+
+    private static void RunCoreInThread()
+    {
+        var coreThread = new Thread(() =>
+        {
+            new Controller().Run();
+        });
+        coreThread.IsBackground = true;
+        coreThread.Start();
     }
 }
