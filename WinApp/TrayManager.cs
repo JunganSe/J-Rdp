@@ -6,6 +6,7 @@ internal class TrayManager
     {
         return new NotifyIcon
         {
+            Text = "J-Rdp",
             Icon = SystemIcons.Application,
             Visible = true,
         };
