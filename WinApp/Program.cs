@@ -34,8 +34,6 @@ internal static class Program
 
         _logger.Info("***** Starting application. *****");
         Application.Run();
-
-        _logger.Info("***** Closing application. *****");
     }
 
     private static bool IsProgramRunning()
