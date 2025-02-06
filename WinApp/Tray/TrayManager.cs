@@ -42,6 +42,12 @@ internal static class TrayManager
             Text = TrayConstants.ItemTexts.Exit,
         });
 
+        contextMenu.Items.Add(new ToolStripMenuItem(null, null, (s, e) => contextMenu.Close())
+        {
+            Name = TrayConstants.ItemNames.Cancel,
+            Text = TrayConstants.ItemTexts.Cancel,
+        });
+
         return contextMenu;
     }
 

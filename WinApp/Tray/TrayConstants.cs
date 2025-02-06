@@ -7,6 +7,7 @@ internal static class TrayConstants
         public const string ShowConsole = "ShowConsole";
         public const string LogToFile = "LogToFile";
         public const string Exit = "Exit";
+        public const string Cancel = "Cancel";
     }
 
     public static class ItemTexts
@@ -14,5 +15,6 @@ internal static class TrayConstants
         public const string ShowConsole = "Show log console";
         public const string LogToFile = "Log to file";
         public const string Exit = "Exit";
+        public const string Cancel = "Cancel";
     }
 }
