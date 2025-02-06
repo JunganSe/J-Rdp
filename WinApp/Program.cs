@@ -2,6 +2,7 @@
 
 using Core;
 using NLog;
+using WinApp.Tray;
 
 namespace WinApp;
 

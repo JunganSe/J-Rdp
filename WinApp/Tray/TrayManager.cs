@@ -1,4 +1,4 @@
-﻿namespace WinApp;
+﻿namespace WinApp.Tray;
 
 internal static class TrayManager
 {
