@@ -22,9 +22,9 @@ internal static class TrayMenuItems
         Text = TrayConstants.ItemTexts.Exit,
     };
 
-    public static ToolStripMenuItem Cancel = new(null, null, TrayMenuEvents.OnClick_Cancel)
+    public static ToolStripMenuItem Close = new(null, null, TrayMenuEvents.OnClick_Close)
     {
-        Name = TrayConstants.ItemNames.Cancel,
-        Text = TrayConstants.ItemTexts.Cancel,
+        Name = TrayConstants.ItemNames.Close,
+        Text = TrayConstants.ItemTexts.Close,
     };
 }

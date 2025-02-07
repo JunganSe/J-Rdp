@@ -23,7 +23,7 @@ internal static class TrayMenuEvents
         Application.Exit();
     }
 
-    public static void OnClick_Cancel(object? sender, EventArgs e)
+    public static void OnClick_Close(object? sender, EventArgs e)
     {
         if (sender is ToolStripMenuItem menuItem 
             && menuItem.Owner is ContextMenuStrip contextMenu)
