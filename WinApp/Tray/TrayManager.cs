@@ -23,6 +23,8 @@ internal static class TrayManager
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
         contextMenu.Items.Add(new ToolStripSeparator());
+        // TODO: Add profiles here, or an unclickable item if no profiles are available.
+        contextMenu.Items.Add(new ToolStripSeparator());
         contextMenu.Items.Add(TrayMenuItems.Exit);
         contextMenu.Items.Add(TrayMenuItems.Close);
 
