@@ -20,33 +20,11 @@ internal static class TrayManager
             AutoClose = false,
         };
         
-        contextMenu.Items.Add(new ToolStripMenuItem(null, null, OnClick_ShowConsole)
-        {
-            Name = TrayConstants.ItemNames.ShowConsole,
-            Text = TrayConstants.ItemTexts.ShowConsole,
-            CheckOnClick = true,
-        });
-        
-        contextMenu.Items.Add(new ToolStripMenuItem(null, null, OnClick_LogToFile)
-        {
-            Name = TrayConstants.ItemNames.LogToFile,
-            Text = TrayConstants.ItemTexts.LogToFile,
-            CheckOnClick = true,
-        });
-
+        contextMenu.Items.Add(TrayMenuItems.ShowConsole);
+        contextMenu.Items.Add(TrayMenuItems.LogToFile);
         contextMenu.Items.Add(new ToolStripSeparator());
-
-        contextMenu.Items.Add(new ToolStripMenuItem(null, null, OnClick_Exit)
-        {
-            Name = TrayConstants.ItemNames.Exit,
-            Text = TrayConstants.ItemTexts.Exit,
-        });
-
-        contextMenu.Items.Add(new ToolStripMenuItem(null, null, (s, e) => contextMenu.Close())
-        {
-            Name = TrayConstants.ItemNames.Cancel,
-            Text = TrayConstants.ItemTexts.Cancel,
-        });
+        contextMenu.Items.Add(TrayMenuItems.Exit);
+        contextMenu.Items.Add(TrayMenuItems.Cancel);
 
         return contextMenu;
     }
