@@ -50,25 +50,4 @@ internal static class TrayManager
 
         return contextMenu;
     }
-
-    private static void OnClick_ShowConsole(object sender, EventArgs e)
-    {
-        if (sender is ToolStripMenuItem menuItem)
-        {
-            // TODO: Toggle console visibility.
-        }
-    }
-
-    private static void OnClick_LogToFile(object sender, EventArgs e)
-    {
-        if (sender is ToolStripMenuItem menuItem)
-        {
-            // TODO: Toggle logging to file.
-        }
-    }
-
-    private static void OnClick_Exit(object? sender, EventArgs e)
-    {
-        Application.Exit();
-    }
 }
