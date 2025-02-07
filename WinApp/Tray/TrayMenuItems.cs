@@ -2,17 +2,17 @@
 
 internal static class TrayMenuItems
 {
-    public static ToolStripMenuItem ShowConsole = new ToolStripMenuItem(null, null, TrayMenuEvents.OnClick_ShowConsole)
+    public static ToolStripMenuItem ToggleConsole = new ToolStripMenuItem(null, null, TrayMenuEvents.OnClick_ToggleConsole)
     {
-        Name = TrayConstants.ItemNames.ShowConsole,
-        Text = TrayConstants.ItemTexts.ShowConsole,
+        Name = TrayConstants.ItemNames.ToggleConsole,
+        Text = TrayConstants.ItemTexts.ToggleConsole,
         CheckOnClick = true,
     };
 
-    public static ToolStripMenuItem LogToFile = new ToolStripMenuItem(null, null, TrayMenuEvents.OnClick_LogToFile)
+    public static ToolStripMenuItem ToggleLogToFile = new ToolStripMenuItem(null, null, TrayMenuEvents.OnClick_ToggleLogToFile)
     {
-        Name = TrayConstants.ItemNames.LogToFile,
-        Text = TrayConstants.ItemTexts.LogToFile,
+        Name = TrayConstants.ItemNames.ToggleLogToFile,
+        Text = TrayConstants.ItemTexts.ToggleLogToFile,
         CheckOnClick = true,
     };
 

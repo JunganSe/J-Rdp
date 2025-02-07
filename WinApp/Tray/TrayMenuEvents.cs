@@ -2,7 +2,7 @@
 
 internal static class TrayMenuEvents
 {
-    public static void OnClick_ShowConsole(object? sender, EventArgs e)
+    public static void OnClick_ToggleConsole(object? sender, EventArgs e)
     {
         if (sender is ToolStripMenuItem menuItem)
         {
@@ -10,7 +10,7 @@ internal static class TrayMenuEvents
         }
     }
 
-    public static void OnClick_LogToFile(object? sender, EventArgs e)
+    public static void OnClick_ToggleLogToFile(object? sender, EventArgs e)
     {
         if (sender is ToolStripMenuItem menuItem)
         {

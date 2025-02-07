@@ -20,8 +20,8 @@ internal static class TrayManager
             AutoClose = false,
         };
         
-        contextMenu.Items.Add(TrayMenuItems.ShowConsole);
-        contextMenu.Items.Add(TrayMenuItems.LogToFile);
+        contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
+        contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
         contextMenu.Items.Add(new ToolStripSeparator());
         contextMenu.Items.Add(TrayMenuItems.Exit);
         contextMenu.Items.Add(TrayMenuItems.Cancel);
