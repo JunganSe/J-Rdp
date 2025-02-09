@@ -1,5 +1,3 @@
-#pragma warning disable IDE0052 // Remove unread private members
-
 using Core;
 using NLog;
 using WinApp.Tray;
