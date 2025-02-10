@@ -7,6 +7,7 @@ namespace WinApp;
 internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly TrayManager _trayManager = new();
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
 
     internal static NotifyIcon? NotifyIcon;
@@ -29,12 +30,11 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        var trayManager = new TrayManager();
-        NotifyIcon = trayManager.GetNotifyIcon();
+        NotifyIcon = _trayManager.GetNotifyIcon();
         if (NotifyIcon.ContextMenuStrip is not null)
         {
-            trayManager.SetMenuState_ShowConsole(NotifyIcon.ContextMenuStrip, arguments.ShowConsole);
-            trayManager.SetMenuState_LogToFile(NotifyIcon.ContextMenuStrip, arguments.LogToFile);
+            _trayManager.SetMenuState_ShowConsole(NotifyIcon.ContextMenuStrip, arguments.ShowConsole);
+            _trayManager.SetMenuState_LogToFile(NotifyIcon.ContextMenuStrip, arguments.LogToFile);
         }
 
         _logger.Info("***** Starting application. *****");
