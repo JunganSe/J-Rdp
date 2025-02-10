@@ -35,15 +35,11 @@ internal class TrayManager
         return contextMenu;
     }
 
-    public void SetMenuState_ShowConsole(bool isChecked)
-    {
+    public void SetMenuState_ShowConsole(bool isChecked) =>
         SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, isChecked);
-    }
 
-    public void SetMenuState_LogToFile(bool isChecked)
-    {
+    public void SetMenuState_LogToFile(bool isChecked) =>
         SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, isChecked);
-    }
 
     private void SetMenuCheckedState(string itemName, bool isChecked)
     {
