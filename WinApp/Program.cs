@@ -1,12 +1,12 @@
+using Auxiliary;
 using Core;
-using NLog;
 using WinApp.Tray;
 
 namespace WinApp;
 
 internal static class Program
 {
-    private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
 
     internal static NotifyIcon? NotifyIcon;
@@ -16,12 +16,11 @@ internal static class Program
     {
         RegisterCloseEvents();
 
-        var logManager = new Auxiliary.LogManager();
-        logManager.Initialize();
+        LogManager.Initialize();
 
         _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
-        logManager.SetFileLogging(arguments.LogToFile);
+        LogManager.SetFileLogging(arguments.LogToFile);
         ConsoleManager.SetVisibility(arguments.ShowConsole);
 
         if (IsProgramRunning())

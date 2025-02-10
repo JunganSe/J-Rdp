@@ -2,26 +2,24 @@
 
 using Auxiliary;
 using Core;
-using NLog;
 
 namespace ConsoleApp;
 
 internal class Program
 {
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
-    private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     public static void Main(string[] args)
     {
         RegisterCloseEvents();
         Console.Title = GetTitle();
 
-        var logManager = new Auxiliary.LogManager();
-        logManager.Initialize();
+        LogManager.Initialize();
 
         _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
-        logManager.SetFileLogging(arguments.LogToFile);
+        LogManager.SetFileLogging(arguments.LogToFile);
         ConsoleManager.SetVisibility(!arguments.HideConsole);
 
         if (IsProgramRunning())
