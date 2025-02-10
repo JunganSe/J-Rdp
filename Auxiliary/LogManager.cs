@@ -51,10 +51,10 @@ public static class LogManager
 
     public static void DisableFileLogging()
     {
+        _logger.Info("Disabling logging to file.");
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.DisableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
-        _logger.Info("Logging to file disabled.");
     }
 
     private static LoggingRule? GetLoggingRule(string ruleName)
