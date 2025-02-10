@@ -1,4 +1,6 @@
-﻿namespace WinApp.Tray;
+﻿using Auxiliary;
+
+namespace WinApp.Tray;
 
 internal static class TrayMenuEvents
 {
@@ -6,7 +8,7 @@ internal static class TrayMenuEvents
     {
         if (sender is ToolStripMenuItem menuItem)
         {
-            // TODO: Toggle console visibility.
+            ConsoleManager.SetVisibility(menuItem.Checked);
         }
     }
 
@@ -14,7 +16,7 @@ internal static class TrayMenuEvents
     {
         if (sender is ToolStripMenuItem menuItem)
         {
-            // TODO: Toggle logging to file.
+            LogManager.SetFileLogging(menuItem.Checked);
         }
     }
 
