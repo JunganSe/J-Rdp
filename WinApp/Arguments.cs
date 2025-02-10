@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace App;
+namespace WinApp;
 
 internal class Arguments
 {

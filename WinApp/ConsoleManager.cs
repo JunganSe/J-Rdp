@@ -1,10 +1,10 @@
 ﻿using NLog;
 using System.Runtime.InteropServices;
 
-namespace App;
+namespace WinApp;
 
 /// <summary> Windows exclusive manager for opening and closing a console log window </summary>
-internal class ConsoleManager
+internal static class ConsoleManager
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

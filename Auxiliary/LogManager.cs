@@ -4,14 +4,14 @@ using NLog.Targets;
 
 namespace Auxiliary;
 
-public class LogManager
+public static class LogManager
 {
     private const string _configFileName = "nlog.config";
     private const string _fileRuleName = "file";
 
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-    public void Initialize()
+    public static void Initialize()
     {
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         string externalConfigPath = Path.Combine(baseDirectory, _configFileName);
@@ -22,18 +22,18 @@ public class LogManager
             LoadEmbeddedConfig();
     }
 
-    private void LoadExternalConfig()
+    private static void LoadExternalConfig()
     {
         NLog.LogManager.Setup().LoadConfigurationFromFile(_configFileName);
     }
 
-    private void LoadEmbeddedConfig()
+    private static void LoadEmbeddedConfig()
     {
         var assembly = typeof(LogManager).Assembly;
         NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
     }
 
-    public void SetFileLogging(bool enabled)
+    public static void SetFileLogging(bool enabled)
     {
         if (enabled)
             EnableFileLogging();
@@ -41,7 +41,7 @@ public class LogManager
             DisableFileLogging();
     }
 
-    public void EnableFileLogging()
+    public static void EnableFileLogging()
     {
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.EnableLoggingForLevels(LogLevel.Debug, LogLevel.Fatal);
@@ -49,15 +49,15 @@ public class LogManager
         _logger.Info("Logging to file enabled.");
     }
 
-    public void DisableFileLogging()
+    public static void DisableFileLogging()
     {
+        _logger.Info("Disabling logging to file.");
         var fileRule = GetLoggingRule(_fileRuleName);
         fileRule?.DisableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
         NLog.LogManager.ReconfigExistingLoggers();
-        _logger.Info("Logging to file disabled.");
     }
 
-    private LoggingRule? GetLoggingRule(string ruleName)
+    private static LoggingRule? GetLoggingRule(string ruleName)
     {
         var config = NLog.LogManager.Configuration;
         var fileTarget = config.FindTargetByName(ruleName) as FileTarget;

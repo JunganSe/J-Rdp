@@ -1,0 +1,1 @@
+start "J-Rdp" J-Rdp.exe -ShowConsole -LogToFile
