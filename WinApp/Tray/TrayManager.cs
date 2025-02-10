@@ -2,9 +2,11 @@
 
 internal class TrayManager
 {
-    internal NotifyIcon GetNotifyIcon()
+    public NotifyIcon? NotifyIcon { get; private set; }
+
+    internal void InitializeNotifyIconWithContextMenu()
     {
-        return new NotifyIcon
+        NotifyIcon = new NotifyIcon()
         {
             Text = "J-Rdp",
             Icon = SystemIcons.Application,
@@ -33,18 +35,18 @@ internal class TrayManager
         return contextMenu;
     }
 
-    public void SetMenuState_ShowConsole(ContextMenuStrip menu, bool isChecked)
+    public void SetMenuState_ShowConsole(bool isChecked)
     {
-        SetMenuCheckedState(menu, TrayConstants.ItemNames.ToggleConsole, isChecked);
+        SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, isChecked);
     }
 
-    public void SetMenuState_LogToFile(ContextMenuStrip menu, bool isChecked)
+    public void SetMenuState_LogToFile(bool isChecked)
     {
-        SetMenuCheckedState(menu, TrayConstants.ItemNames.ToggleLogToFile, isChecked);
+        SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, isChecked);
     }
 
-    private void SetMenuCheckedState(ContextMenuStrip menu, string itemName, bool isChecked)
+    private void SetMenuCheckedState(string itemName, bool isChecked)
     {
-        menu.Items.Find(itemName, true).OfType<ToolStripMenuItem>().First().Checked = isChecked;
+        NotifyIcon.ContextMenuStrip.Items.Find(itemName, true).OfType<ToolStripMenuItem>().First().Checked = isChecked;
     }
 }

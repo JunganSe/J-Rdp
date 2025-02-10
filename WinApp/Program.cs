@@ -10,8 +10,6 @@ internal static class Program
     private static readonly TrayManager _trayManager = new();
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
 
-    internal static NotifyIcon? NotifyIcon;
-
     [STAThread]
     static void Main(string[] args)
     {
@@ -30,12 +28,9 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        NotifyIcon = _trayManager.GetNotifyIcon();
-        if (NotifyIcon.ContextMenuStrip is not null)
-        {
-            _trayManager.SetMenuState_ShowConsole(NotifyIcon.ContextMenuStrip, arguments.ShowConsole);
-            _trayManager.SetMenuState_LogToFile(NotifyIcon.ContextMenuStrip, arguments.LogToFile);
-        }
+        _trayManager.InitializeNotifyIconWithContextMenu();
+        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
+        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
 
         _logger.Info("***** Starting application. *****");
         RunCoreInThread();
@@ -59,8 +54,9 @@ internal static class Program
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
-        NotifyIcon?.ContextMenuStrip?.Dispose();
-        NotifyIcon?.Dispose();
+        // TODO: Dispose menu in manager.
+        //NotifyIcon?.ContextMenuStrip?.Dispose();
+        //NotifyIcon?.Dispose();
     }
 
     private static void RunCoreInThread()
