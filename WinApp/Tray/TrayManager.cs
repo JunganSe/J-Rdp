@@ -43,6 +43,14 @@ internal class TrayManager
 
     private void SetMenuCheckedState(string itemName, bool isChecked)
     {
-        NotifyIcon.ContextMenuStrip.Items.Find(itemName, true).OfType<ToolStripMenuItem>().First().Checked = isChecked;
+        if (NotifyIcon?.ContextMenuStrip?.Items == null)
+            return;
+
+        var menuItem = NotifyIcon.ContextMenuStrip.Items
+            .Find(itemName, true)
+            .OfType<ToolStripMenuItem>()
+            .FirstOrDefault();
+        if (menuItem != null)
+            menuItem.Checked = isChecked;
     }
 }
