@@ -54,9 +54,7 @@ internal static class Program
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
-        // TODO: Dispose menu in manager.
-        //NotifyIcon?.ContextMenuStrip?.Dispose();
-        //NotifyIcon?.Dispose();
+        _trayManager.DisposeMenu();
     }
 
     private static void RunCoreInThread()

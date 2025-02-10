@@ -21,13 +21,13 @@ internal class TrayManager
         {
             AutoClose = false,
         };
-        
+
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
 
         contextMenu.Items.Add(new ToolStripSeparator());
         // TODO: Add profiles here, or an unclickable item if no profiles are available. Issue #61
-        
+
         contextMenu.Items.Add(new ToolStripSeparator());
         contextMenu.Items.Add(TrayMenuItems.Exit);
         contextMenu.Items.Add(TrayMenuItems.Close);
@@ -52,5 +52,11 @@ internal class TrayManager
             .FirstOrDefault();
         if (menuItem != null)
             menuItem.Checked = isChecked;
+    }
+
+    public void DisposeMenu()
+    {
+        NotifyIcon?.ContextMenuStrip?.Dispose();
+        NotifyIcon?.Dispose();
     }
 }
