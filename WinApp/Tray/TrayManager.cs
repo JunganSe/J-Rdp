@@ -32,4 +32,19 @@ internal static class TrayManager
 
         return contextMenu;
     }
+
+    internal static void SetMenuState_ShowConsole(ContextMenuStrip menu, bool isChecked)
+    {
+        SetMenuCheckedState(menu, TrayConstants.ItemNames.ToggleConsole, isChecked);
+    }
+
+    internal static void SetMenuState_LogToFile(ContextMenuStrip menu, bool isChecked)
+    {
+        SetMenuCheckedState(menu, TrayConstants.ItemNames.ToggleLogToFile, isChecked);
+    }
+
+    private static void SetMenuCheckedState(ContextMenuStrip menu, string itemName, bool isChecked)
+    {
+        menu.Items.Find(itemName, true).OfType<ToolStripMenuItem>().First().Checked = isChecked;
+    }
 }

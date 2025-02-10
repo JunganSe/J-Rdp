@@ -30,6 +30,11 @@ internal static class Program
         }
 
         NotifyIcon = TrayManager.GetNotifyIcon();
+        if (NotifyIcon.ContextMenuStrip is not null)
+        {
+            TrayManager.SetMenuState_ShowConsole(NotifyIcon.ContextMenuStrip, arguments.ShowConsole);
+            TrayManager.SetMenuState_LogToFile(NotifyIcon.ContextMenuStrip, arguments.LogToFile);
+        }
 
         _logger.Info("***** Starting application. *****");
         RunCoreInThread();
