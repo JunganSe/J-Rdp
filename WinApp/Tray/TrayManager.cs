@@ -67,7 +67,6 @@ internal class TrayManager
             Name = $"Profile{index}",
             Text = name,
             Tag = index,
-            CheckOnClick = true,
             Checked = isActive,
         };
 }
