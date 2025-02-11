@@ -27,10 +27,19 @@ internal static class TrayMenuEvents
 
     public static void OnClick_Close(object? sender, EventArgs e)
     {
-        if (sender is ToolStripMenuItem menuItem 
+        if (sender is ToolStripMenuItem menuItem
             && menuItem.Owner is ContextMenuStrip contextMenu)
         {
             contextMenu.Close();
+        }
+    }
+
+    public static void OnClick_Profile(object? sender, EventArgs e)
+    {
+        if (sender is ToolStripMenuItem menuItem)
+        {
+            int profileIndex = (int)(menuItem?.Tag ?? -1);
+            // TODO: Call something in Core to enable/disable profile based on profileIndex and isCtrlHeld.
         }
     }
 }

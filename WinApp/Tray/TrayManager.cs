@@ -59,4 +59,14 @@ internal class TrayManager
         NotifyIcon?.ContextMenuStrip?.Dispose();
         NotifyIcon?.Dispose();
     }
+
+    public ToolStripMenuItem GetMenuItemFromProfile(int index, string name, bool isActive) =>
+        new(null, null, TrayMenuEvents.OnClick_Profile)
+        {
+            Name = $"Profile{index}",
+            Text = name,
+            Tag = index,
+            CheckOnClick = true,
+            Checked = isActive,
+        };
 }
