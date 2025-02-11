@@ -59,10 +59,7 @@ internal static class Program
 
     private static void RunCoreInThread()
     {
-        var coreThread = new Thread(() =>
-        {
-            new Controller().Run();
-        });
+        var coreThread = new Thread(() => new Controller().Run());
         coreThread.IsBackground = true;
         coreThread.Start();
     }
