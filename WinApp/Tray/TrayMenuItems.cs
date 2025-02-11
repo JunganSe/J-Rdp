@@ -27,4 +27,13 @@ internal static class TrayMenuItems
         Name = TrayConstants.ItemNames.Close,
         Text = TrayConstants.ItemTexts.Close,
     };
+
+    public static ToolStripMenuItem Profile(int index, string name, bool isActive) =>
+        new(null, null, TrayMenuEvents.OnClick_Profile)
+        {
+            Name = $"Profile{index}",
+            Text = name,
+            Tag = index,
+            Checked = isActive,
+        };
 }
