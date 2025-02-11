@@ -39,6 +39,7 @@ internal static class TrayMenuEvents
         if (sender is ToolStripMenuItem menuItem)
         {
             int profileIndex = (int)(menuItem?.Tag ?? -1);
+            bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
             // TODO: Call something in Core to enable/disable profile based on profileIndex and isCtrlHeld.
         }
     }

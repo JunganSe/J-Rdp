@@ -27,6 +27,7 @@ internal class TrayManager
 
         contextMenu.Items.Add(new ToolStripSeparator());
         // TODO: Add profiles here, or an unclickable item if no profiles are available. Issue #61
+        contextMenu.Items.Add(GetMenuItemFromProfile(2, "yass", true));
 
         contextMenu.Items.Add(new ToolStripSeparator());
         contextMenu.Items.Add(TrayMenuItems.Exit);
