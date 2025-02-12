@@ -62,6 +62,7 @@ public class Controller
         _profilemanager.UpdateProfiles(_configManager.Config.Profiles);
         _profilemanager.UpdateFiles();
         _profilemanager.LogProfilesSummary();
+        // TODO: Update profile menu items in context menu.
     }
 
     private void MainLoop()
