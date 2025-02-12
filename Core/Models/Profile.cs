@@ -2,7 +2,7 @@
 
 namespace Core.Models;
 
-internal class Profile
+public class Profile
 {
     public int Id { get; init; }                = -1;
     public bool Enabled { get; set; }           = true;
