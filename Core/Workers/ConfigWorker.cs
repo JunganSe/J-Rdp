@@ -39,6 +39,7 @@ internal class ConfigWorker
     {
         try
         {
+            // TODO: Assign id to each profile.
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions) 
                 ?? throw new InvalidOperationException("Config is null.");
             config.Profiles.ForEach(p => p.Filter = p.Filter.Trim());
@@ -50,4 +51,6 @@ internal class ConfigWorker
             throw;
         }
     }
+
+    // TODO: Method to update config file with profiles as input.
 }
