@@ -4,6 +4,7 @@ namespace Core.Models;
 
 internal class Profile
 {
+    public int Id { get; init; }                = -1;
     public bool Enabled { get; set; }           = true;
     public string Name { get; init; }           = ConfigConstants.Profile_DefaultName;
     public string WatchFolder { get; init; }    = "";
