@@ -68,6 +68,6 @@ public class Controller
     private void MainLoop()
     {
         _profilemanager.UpdateFiles();
-        _fileManager.ProcessProfileInfos(_profilemanager.ProfileInfos);
+        _fileManager.ProcessProfileWrappers(_profilemanager.ProfileWrappers);
     }
 }

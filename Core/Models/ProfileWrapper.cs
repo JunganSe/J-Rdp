@@ -2,7 +2,7 @@
 
 namespace Core.Models;
 
-internal class ProfileInfo
+internal class ProfileWrapper
 {
     private readonly EqualityComparer_FileInfo_FullName _fileComparer = new();
 
@@ -13,7 +13,7 @@ internal class ProfileInfo
     public bool DirectoryExists => Directory.Exists(Profile.WatchFolder);
     public string DirectoryFullPath => Path.GetFullPath(Profile.WatchFolder);
 
-    public ProfileInfo(Profile profile)
+    public ProfileWrapper(Profile profile)
     {
         Profile = profile;
         Files = [];
