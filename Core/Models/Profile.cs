@@ -18,7 +18,9 @@ public class Profile
 
     public void SetId(int id)
     {
-        if (Id == _defaultId)
-            Id = id;
+        if (Id != _defaultId)
+            throw new InvalidOperationException("Id is already set.");
+        
+        Id = id;
     }
 }
