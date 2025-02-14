@@ -57,4 +57,6 @@ internal class ConfigWorker
     }
 
     // TODO: Method to update config file with profiles as input.
+    // Then read the config from file again?
+    // Then update the context menu with the new profiles. (Because id assignment on parse.)
 }
