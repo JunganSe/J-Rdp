@@ -4,7 +4,9 @@ namespace Core.Models;
 
 public class Profile
 {
-    public int Id { get; init; }                = -1;
+    private const int _defaultId = -1;
+
+    public int Id { get; private set; }         = _defaultId;
     public bool Enabled { get; set; }           = true;
     public string Name { get; init; }           = ConfigConstants.Profile_DefaultName;
     public string WatchFolder { get; init; }    = "";
@@ -13,4 +15,10 @@ public class Profile
     public bool Launch { get; init; }           = false;
     public bool Delete { get; init; }           = false;
     public List<string> Settings { get; init; } = [];
+
+    public void SetId(int id)
+    {
+        if (Id == _defaultId)
+            Id = id;
+    }
 }
