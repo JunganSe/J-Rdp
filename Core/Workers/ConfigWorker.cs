@@ -39,10 +39,14 @@ internal class ConfigWorker
     {
         try
         {
-            // TODO: Assign id to each profile.
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions) 
                 ?? throw new InvalidOperationException("Config is null.");
-            config.Profiles.ForEach(p => p.Filter = p.Filter.Trim());
+            for (int i = 0; i < config.Profiles.Count; i++)
+            {
+                var profile = config.Profiles[i];
+                profile.SetId(i + 1);
+                profile.Filter = profile.Filter.Trim();
+            }
             return config;
         }
         catch (Exception ex)
