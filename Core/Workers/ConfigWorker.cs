@@ -10,6 +10,7 @@ internal class ConfigWorker
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly FileReader _fileReader = new();
+    private readonly FileWriter _fileWriter = new();
     private readonly JsonSerializerOptions _jsonOptions;
 
     public ConfigWorker()
@@ -58,7 +59,10 @@ internal class ConfigWorker
         }
     }
 
-    // TODO: Method to update config file with profiles as input.
-    // Then read the config from file again?
-    // Then update the context menu with the new profiles. (Because id assignment on parse.)
+    public void UpdateConfigFile(Config config)
+    {
+        string path = GetConfigPath();
+        string json = JsonSerializer.Serialize(config, _jsonOptions);
+        _fileWriter.WriteFile(path, json);
+    }
 }
