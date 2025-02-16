@@ -51,13 +51,16 @@ internal class ConfigManager
         }
     }
 
-    public void UpdateConfigFile()
+    public void UpdateConfigFileProfiles(List<Profile> profiles)
     {
-        // TODO: Implement
-        // Take profiles as argument? Maybe change method name.
-        // Create a new config stored in variable.
-        // Take non-profile values from the existing config.
-        // Write the config to file, using ConfigWorker.
-        // Update the Config property by reading from file. (Call the UpdateConfig() method.)
+        var config = new Config()
+        {
+            PollingInterval = Config.PollingInterval,
+            DeleteDelay = Config.DeleteDelay,
+            Profiles = profiles
+        };
+        _configWorker.UpdateConfigFile(config);
+
+        UpdateConfig();
     }
 }
