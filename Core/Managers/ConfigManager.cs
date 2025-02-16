@@ -51,10 +51,32 @@ internal class ConfigManager
         }
     }
 
+    // TODO: Refactor
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
     {
-        // TODO: Take ProfileInfo instead of Profile.
-        // Use id to retrieve props from the existing profiles.
+        var profiles = new List<Profile>();
+        foreach (var profileInfo in profileInfos)
+        {
+            var existingProfile = Config.Profiles.FirstOrDefault(p => p.Id == profileInfo.Id);
+            if (existingProfile is null)
+            {
+                _logger.Warn($"Profile with id {profileInfo.Id} was not found.");
+                continue;
+            }
+
+            var profile = new Profile()
+            {
+                Enabled = profileInfo.Enabled,
+                Name = profileInfo.Name,
+                WatchFolder = existingProfile.WatchFolder,
+                Filter = existingProfile.Filter,
+                MoveToFolder = existingProfile.MoveToFolder,
+                Launch = existingProfile.Launch,
+                Delete = existingProfile.Delete,
+                Settings = existingProfile.Settings,
+            };
+            profiles.Add(profile);
+        }
 
         UpdateConfigFileProfiles(profiles);
         UpdateConfig();
