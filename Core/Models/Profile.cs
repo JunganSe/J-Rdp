@@ -1,4 +1,5 @@
 ﻿using Core.Constants;
+using System.Text.Json.Serialization;
 
 namespace Core.Models;
 
@@ -6,6 +7,7 @@ internal class Profile
 {
     private const int _defaultId = -1;
 
+    [JsonIgnore]
     public int Id { get; private set; }         = _defaultId;
     public bool Enabled { get; set; }           = true;
     public string Name { get; init; }           = ConfigConstants.Profile_DefaultName;
