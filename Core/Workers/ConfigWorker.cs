@@ -59,10 +59,6 @@ internal class ConfigWorker
         }
     }
 
-    // TODO: Conrol flow for updating config file.
-    // Write to file, then read from file again? (Because id assignment on parse.)
-    // Probably belongs in ConfigManager.
-
     public void UpdateConfigFile(Config config)
     {
         try

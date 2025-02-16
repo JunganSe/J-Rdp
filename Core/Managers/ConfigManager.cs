@@ -42,8 +42,6 @@ internal class ConfigManager
         }
     }
 
-
-
     private void LogInvalidProfiles(IEnumerable<Profile> profiles)
     {
         foreach (var profile in profiles)
@@ -51,5 +49,15 @@ internal class ConfigManager
             if (!profile.IsValid(out string reason))
                 _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
         }
+    }
+
+    public void UpdateConfigFile()
+    {
+        // TODO: Implement
+        // Take profiles as argument? Maybe change method name.
+        // Create a new config stored in variable.
+        // Take non-profile values from the existing config.
+        // Write the config to file, using ConfigWorker.
+        // Update the Config property by reading from file. (Call the UpdateConfig() method.)
     }
 }
