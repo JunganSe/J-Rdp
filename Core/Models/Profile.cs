@@ -2,7 +2,7 @@
 
 namespace Core.Models;
 
-public class Profile
+internal class Profile
 {
     private const int _defaultId = -1;
 
