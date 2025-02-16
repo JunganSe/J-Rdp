@@ -51,6 +51,16 @@ internal class ConfigManager
         }
     }
 
+    public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
+    {
+        // TODO: Take ProfileInfo instead of Profile.
+        // Use id to retrieve props from the existing profiles.
+
+        UpdateConfigFileProfiles(profiles);
+        UpdateConfig();
+    }
+
+
     public void UpdateConfigFileProfiles(List<Profile> profiles)
     {
         var config = new Config()
@@ -60,7 +70,5 @@ internal class ConfigManager
             Profiles = profiles
         };
         _configWorker.UpdateConfigFile(config);
-
-        UpdateConfig();
     }
 }
