@@ -14,7 +14,7 @@ internal class FileReader
             _logger.Trace($"Attempting to read file: '{path}'");
 
             if (!File.Exists(path))
-                throw new ArgumentException("File does not exist.");
+                throw new FileNotFoundException("File does not exist.", path);
 
             string fileContent = ReadFileWithRetries(path);
             _logger.Trace($"Successfully read file: '{path}'");
