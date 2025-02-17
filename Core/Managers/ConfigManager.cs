@@ -1,6 +1,7 @@
 ﻿using Auxiliary;
 using Core.Constants;
 using Core.Extensions;
+using Core.Helpers;
 using Core.Models;
 using Core.Workers;
 using NLog;
@@ -70,17 +71,8 @@ internal class ConfigManager
                 continue;
             }
 
-            var profile = new Profile()
-            {
-                Enabled = profileInfo.Enabled,
-                Name = existingProfile.Name,
-                WatchFolder = existingProfile.WatchFolder,
-                Filter = existingProfile.Filter,
-                MoveToFolder = existingProfile.MoveToFolder,
-                Launch = existingProfile.Launch,
-                Delete = existingProfile.Delete,
-                Settings = existingProfile.Settings,
-            };
+            var profile = ProfileHelper.DeepCopy(existingProfile);
+            profile.Enabled = profileInfo.Enabled;
             profiles.Add(profile);
         }
         return profiles;
