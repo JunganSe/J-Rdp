@@ -51,8 +51,14 @@ internal class ConfigManager
         }
     }
 
-    // TODO: Refactor
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
+    {
+        var profiles = MapProfiles(profileInfos);
+        UpdateConfigFileProfiles(profiles);
+        UpdateConfig();
+    }
+
+    private List<Profile> MapProfiles(List<ProfileInfo> profileInfos)
     {
         var profiles = new List<Profile>();
         foreach (var profileInfo in profileInfos)
@@ -67,7 +73,7 @@ internal class ConfigManager
             var profile = new Profile()
             {
                 Enabled = profileInfo.Enabled,
-                Name = profileInfo.Name,
+                Name = existingProfile.Name,
                 WatchFolder = existingProfile.WatchFolder,
                 Filter = existingProfile.Filter,
                 MoveToFolder = existingProfile.MoveToFolder,
@@ -77,11 +83,8 @@ internal class ConfigManager
             };
             profiles.Add(profile);
         }
-
-        UpdateConfigFileProfiles(profiles);
-        UpdateConfig();
+        return profiles;
     }
-
 
     public void UpdateConfigFileProfiles(List<Profile> profiles)
     {
