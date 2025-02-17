@@ -12,7 +12,6 @@ internal class FileReader
         try
         {
             _logger.Trace($"Attempting to read file: '{path}'");
-
             if (!File.Exists(path))
                 throw new FileNotFoundException("File does not exist.", path);
 

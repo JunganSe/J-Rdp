@@ -11,9 +11,7 @@ internal class FileWriter
         try
         {
             _logger.Trace($"Attempting to write file: '{path}'");
-
             File.WriteAllText(path, content);
-
             _logger.Trace($"Successfully wrote file: '{path}'");
         }
         catch (Exception ex)
