@@ -60,7 +60,7 @@ internal class ConfigManager
             var existingProfile = Config.Profiles.FirstOrDefault(p => p.Id == profileInfo.Id);
             if (existingProfile is null)
             {
-                _logger.Warn($"Profile with id {profileInfo.Id} was not found.");
+                _logger.Error($"Profile with id {profileInfo.Id} was not found.");
                 continue;
             }
 
