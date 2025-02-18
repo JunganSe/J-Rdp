@@ -54,28 +54,19 @@ internal class ConfigManager
 
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
     {
-        var profiles = MapProfiles(profileInfos);
+        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
+        SetEnabledState(profiles, profileInfos);
         UpdateConfigFileProfiles(profiles);
         UpdateConfig();
     }
 
-    private List<Profile> MapProfiles(List<ProfileInfo> profileInfos)
+    private void SetEnabledState(List<Profile> profiles, List<ProfileInfo> profileInfos)
     {
-        var profiles = new List<Profile>();
-        foreach (var profileInfo in profileInfos)
+        foreach (var profile in Config.Profiles)
         {
-            var existingProfile = Config.Profiles.FirstOrDefault(p => p.Id == profileInfo.Id);
-            if (existingProfile is null)
-            {
-                _logger.Error($"Profile with id {profileInfo.Id} was not found.");
-                continue;
-            }
-
-            var profile = ProfileHelper.DeepCopy(existingProfile);
-            profile.Enabled = profileInfo.Enabled;
-            profiles.Add(profile);
+            var profileInfo = profileInfos.FirstOrDefault(pi => pi.Id == profile.Id);
+            profile.Enabled = profileInfo?.Enabled ?? false;
         }
-        return profiles;
     }
 
     public void UpdateConfigFileProfiles(List<Profile> profiles)
