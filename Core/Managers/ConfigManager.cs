@@ -55,18 +55,9 @@ internal class ConfigManager
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
     {
         var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
-        SetEnabledState(profiles, profileInfos);
+        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
         UpdateConfigFileProfiles(profiles);
         UpdateConfig();
-    }
-
-    private void SetEnabledState(List<Profile> profiles, List<ProfileInfo> profileInfos)
-    {
-        foreach (var profile in Config.Profiles)
-        {
-            var profileInfo = profileInfos.FirstOrDefault(pi => pi.Id == profile.Id);
-            profile.Enabled = profileInfo?.Enabled ?? false;
-        }
     }
 
     public void UpdateConfigFileProfiles(List<Profile> profiles)

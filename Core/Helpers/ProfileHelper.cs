@@ -25,4 +25,14 @@ internal static class ProfileHelper
             profileCopy.SetId(profile.Id);
         return profileCopy;
     }
+
+    /// <summary> Sets the enabled states of profiles based on the enabled states of profile infos, where their Id is matching. </summary>
+    public static void SetEnabledStatesFromMatchingProfileInfos(List<Profile> profiles, List<ProfileInfo> profileInfos)
+    {
+        foreach (var profile in profiles)
+        {
+            var profileInfo = profileInfos.FirstOrDefault(pi => pi.Id == profile.Id);
+            profile.Enabled = profileInfo?.Enabled ?? false;
+        }
+    }
 }
