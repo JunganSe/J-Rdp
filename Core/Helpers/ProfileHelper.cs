@@ -4,7 +4,7 @@ namespace Core.Helpers;
 
 internal static class ProfileHelper
 {
-    public static List<Profile> GetDeepCopies(IEnumerable<Profile> profiles) =>
+    public static List<Profile> GetDeepCopies(List<Profile> profiles) =>
         profiles.Select(p => GetDeepCopy(p, copyId: true)).ToList();
 
     /// <summary> Creates a deep copy of a profile. </summary>

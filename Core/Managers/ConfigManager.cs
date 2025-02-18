@@ -43,7 +43,7 @@ internal class ConfigManager
         }
     }
 
-    private void LogInvalidProfiles(IEnumerable<Profile> profiles)
+    private void LogInvalidProfiles(List<Profile> profiles)
     {
         foreach (var profile in profiles)
         {
