@@ -25,7 +25,7 @@ internal class ConfigManager
                        ConfigConstants.DeleteDelay_Min,
                        ConfigConstants.DeleteDelay_Max);
 
-    public void UpdateConfig()
+    public void UpdateConfigFromFile()
     {
         try
         {
@@ -57,7 +57,7 @@ internal class ConfigManager
         var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
         ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
         UpdateConfigFileProfiles(profiles);
-        UpdateConfig();
+        UpdateConfigFromFile();
     }
 
     public void UpdateConfigFileProfiles(List<Profile> profiles)
