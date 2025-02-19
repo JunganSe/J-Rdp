@@ -39,6 +39,7 @@ public class ProfileHelperTests
             AssertProfilesAreEqual(expectedProfiles[i], actualProfiles2[i], compareId: true);
             AssertProfilesAreEqual(expectedProfiles[i], actualProfiles3[i], compareId: false);
             Assert.AreNotEqual(expectedProfiles[i].Id, actualProfiles3[i].Id);
+            Assert.IsTrue(actualProfiles3[i].Id <= 0);
         }
     }
 
@@ -58,6 +59,7 @@ public class ProfileHelperTests
         AssertProfilesAreEqual(expected, actual2, compareId: true);
         AssertProfilesAreEqual(expected, actual3, compareId: false);
         Assert.AreNotEqual(expected.Id, actual3.Id);
+        Assert.IsTrue(actual3.Id <= 0);
     }
 
     private void AssertProfilesAreEqual(Profile expected, Profile actual, bool compareId)
