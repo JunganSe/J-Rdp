@@ -7,6 +7,20 @@ namespace Core.Tests;
 public class ProfileHelperTests
 {
     #region DeepCopies
+
+    [TestMethod()]
+    public void GetDeepCopies_NoProfiles()
+    {
+        // Arrange
+        var expectedProfiles = new List<Profile>();
+
+        // Act
+        var actualProfiles = ProfileHelper.GetDeepCopies(expectedProfiles);
+
+        // Assert
+        Assert.AreEqual(0, actualProfiles.Count);
+    }
+
     [TestMethod()]
     public void GetDeepCopies_Valid()
     {
@@ -60,9 +74,11 @@ public class ProfileHelperTests
         Assert.AreEqual(expected.Delete, actual.Delete);
         CollectionAssert.AreEqual(expected.Settings, actual.Settings);
     }
+
     #endregion
 
     #region EnabledState
+
     [TestMethod()]
     public void SetEnabledStatesFromMatchingProfileInfos_Valid()
     {
@@ -84,9 +100,11 @@ public class ProfileHelperTests
         Assert.IsFalse(profiles[2].Enabled);
         Assert.IsFalse(profiles[3].Enabled);
     }
+
     #endregion
 
     #region Mocks
+
     private List<Profile> GetMockProfiles() =>
     [
         new(id: 1)
@@ -134,5 +152,6 @@ public class ProfileHelperTests
             Settings = ["Setting4a", "Setting4b"],
         },
     ];
+
     #endregion
 }
