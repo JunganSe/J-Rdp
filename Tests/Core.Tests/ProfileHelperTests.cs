@@ -80,15 +80,32 @@ public class ProfileHelperTests
     #region EnabledState
 
     [TestMethod()]
-    public void SetEnabledStatesFromMatchingProfileInfos_Valid()
+    public void SetEnabledStatesFromMatchingProfileInfos_Enabled()
+    {
+        // Arrange
+        var profiles = GetMockProfiles();
+        var profileInfos = new List<ProfileInfo>
+        {
+            new() { Id = 1, Enabled = true },
+        };
+
+        // Act
+        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
+
+        // Assert
+        Assert.IsTrue(profiles[0].Enabled);
+    }
+
+    [TestMethod()]
+    public void SetEnabledStatesFromMatchingProfileInfos_Disabled()
     {
         // Arrange
         var profiles = GetMockProfiles();
         var profileInfos = new List<ProfileInfo>
         {
             new() { Id = 1, Enabled = false },
-            new() { Id = 2, Enabled = true },
-            new() { Id = 3},
+            new() { Id = 2},
+            new() { Id = 99, Enabled = true},
         };
 
         // Act
@@ -96,9 +113,8 @@ public class ProfileHelperTests
 
         // Assert
         Assert.IsFalse(profiles[0].Enabled);
-        Assert.IsTrue(profiles[1].Enabled);
+        Assert.IsFalse(profiles[1].Enabled);
         Assert.IsFalse(profiles[2].Enabled);
-        Assert.IsFalse(profiles[3].Enabled);
     }
 
     #endregion
