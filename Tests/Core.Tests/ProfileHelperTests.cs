@@ -6,6 +6,7 @@ namespace Core.Tests;
 [TestClass()]
 public class ProfileHelperTests
 {
+    #region DeepCopies
     [TestMethod()]
     public void GetDeepCopies_Valid()
     {
@@ -45,6 +46,23 @@ public class ProfileHelperTests
         Assert.AreNotEqual(expected.Id, actual3.Id);
     }
 
+    private void AssertProfilesAreEqual(Profile expected, Profile actual, bool compareId)
+    {
+        if (compareId)
+            Assert.AreEqual(expected.Id, actual.Id);
+
+        Assert.AreEqual(expected.Enabled, actual.Enabled);
+        Assert.AreEqual(expected.Name, actual.Name);
+        Assert.AreEqual(expected.WatchFolder, actual.WatchFolder);
+        Assert.AreEqual(expected.Filter, actual.Filter);
+        Assert.AreEqual(expected.MoveToFolder, actual.MoveToFolder);
+        Assert.AreEqual(expected.Launch, actual.Launch);
+        Assert.AreEqual(expected.Delete, actual.Delete);
+        CollectionAssert.AreEqual(expected.Settings, actual.Settings);
+    }
+    #endregion
+
+    #region EnabledState
     [TestMethod()]
     public void SetEnabledStatesFromMatchingProfileInfos_Valid()
     {
@@ -64,22 +82,9 @@ public class ProfileHelperTests
         Assert.IsFalse(profiles[0].Enabled);
         Assert.IsTrue(profiles[1].Enabled);
         Assert.IsFalse(profiles[2].Enabled);
+        Assert.IsFalse(profiles[3].Enabled);
     }
-
-    private void AssertProfilesAreEqual(Profile expected, Profile actual, bool compareId)
-    {
-        if (compareId)
-            Assert.AreEqual(expected.Id, actual.Id);
-
-        Assert.AreEqual(expected.Enabled, actual.Enabled);
-        Assert.AreEqual(expected.Name, actual.Name);
-        Assert.AreEqual(expected.WatchFolder, actual.WatchFolder);
-        Assert.AreEqual(expected.Filter, actual.Filter);
-        Assert.AreEqual(expected.MoveToFolder, actual.MoveToFolder);
-        Assert.AreEqual(expected.Launch, actual.Launch);
-        Assert.AreEqual(expected.Delete, actual.Delete);
-        CollectionAssert.AreEqual(expected.Settings, actual.Settings);
-    }
+    #endregion
 
     #region Mocks
     private List<Profile> GetMockProfiles() =>
@@ -116,6 +121,17 @@ public class ProfileHelperTests
             Launch = false,
             Delete = false,
             Settings = ["Setting3a", "Setting3b"],
+        },
+        new(id: 4)
+        {
+            Enabled = false,
+            Name = "Profile 4",
+            WatchFolder = "C:\\WatchFolder4",
+            Filter = "Filter4",
+            MoveToFolder = "C:\\MoveToFolder4",
+            Launch = false,
+            Delete = false,
+            Settings = ["Setting4a", "Setting4b"],
         },
     ];
     #endregion
