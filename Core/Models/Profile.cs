@@ -18,6 +18,15 @@ internal class Profile
     public bool Delete { get; init; }           = false;
     public List<string> Settings { get; init; } = [];
 
+    public Profile()
+    {
+    }
+
+    public Profile(int id)
+    {
+        Id = id;
+    }
+
     public void SetId(int id)
     {
         if (Id != _defaultId)
