@@ -7,7 +7,6 @@ internal static class ProfileHelper
     public static List<Profile> GetDeepCopies(List<Profile> profiles, bool copyId = true) =>
         profiles.Select(p => GetDeepCopy(p, copyId)).ToList();
 
-    /// <summary> Creates a deep copy of a profile. </summary>
     public static Profile GetDeepCopy(Profile profile, bool copyId = true)
     {
         var profileCopy = new Profile()
@@ -23,6 +22,7 @@ internal static class ProfileHelper
         };
         if (copyId)
             profileCopy.SetId(profile.Id);
+
         return profileCopy;
     }
 
