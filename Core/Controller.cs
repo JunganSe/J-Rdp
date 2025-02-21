@@ -1,4 +1,5 @@
 ﻿using Core.Constants;
+using Core.Delegates;
 using Core.Managers;
 using Core.Models;
 using NLog;
@@ -33,11 +34,16 @@ public class Controller
         }
     }
 
+    public void SetConfigUpdateCallback(ProfileHandler callback) =>
+        _configManager.ConfigUpdatedCallback = callback;
+
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
         _configManager.UpdateConfigFileProfiles(profileInfos);
         _configManager.UpdateConfigFromFile();
     }
+
+
 
     private void Initialize()
     {
