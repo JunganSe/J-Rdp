@@ -1,5 +1,6 @@
 ﻿using Auxiliary;
 using Core.Constants;
+using Core.Delegates;
 using Core.Extensions;
 using Core.Helpers;
 using Core.Models;
@@ -14,6 +15,7 @@ internal class ConfigManager
     private readonly ConfigWorker _configWorker = new();
 
     public Config Config { get; private set; } = new();
+    public ProfileHandler? ConfigUpdatedCallback { get; set; }
 
     public int GetPollingInterval() =>
         MathExt.Median(Config.PollingInterval,
@@ -35,6 +37,8 @@ internal class ConfigManager
             config.Profiles.RemoveInvalid();
             config.Profiles.AddDefaultFilterFileEndings();
             Config = config;
+
+            InvokeConfigUpdatedCallback();
         }
         catch
         {
@@ -50,6 +54,15 @@ internal class ConfigManager
             if (!profile.IsValid(out string reason))
                 _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
         }
+    }
+
+    private void InvokeConfigUpdatedCallback()
+    {
+        if (ConfigUpdatedCallback == null)
+            return;
+
+        var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
+        ConfigUpdatedCallback.Invoke(profileInfos);
     }
 
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
