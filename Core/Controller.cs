@@ -33,7 +33,7 @@ public class Controller
         }
     }
 
-    public void UpdateProfiles(List<ProfileInfo> profileInfos)
+    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
         _configManager.UpdateConfigFileProfiles(profileInfos);
         _configManager.UpdateConfigFromFile();
