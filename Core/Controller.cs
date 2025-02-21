@@ -1,5 +1,6 @@
 ﻿using Core.Constants;
 using Core.Managers;
+using Core.Models;
 using NLog;
 
 namespace Core;
@@ -30,6 +31,12 @@ public class Controller
             _logger.Fatal(ex, "An unexpected error occured.");
             return;
         }
+    }
+
+    public void UpdateProfiles(List<ProfileInfo> profileInfos)
+    {
+        _configManager.UpdateConfigFileProfiles(profileInfos);
+        _configManager.UpdateConfigFromFile();
     }
 
     private void Initialize()
