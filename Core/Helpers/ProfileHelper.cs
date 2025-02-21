@@ -35,4 +35,12 @@ internal static class ProfileHelper
             profile.Enabled = profileInfo?.Enabled ?? false;
         }
     }
+
+    public static List<ProfileInfo> GetProfileInfos(List<Profile> profiles) =>
+        profiles.Select(profile => new ProfileInfo()
+        {
+            Id = profile.Id,
+            Enabled = profile.Enabled,
+            Name = profile.Name
+        }).ToList();
 }
