@@ -57,7 +57,6 @@ internal class ConfigManager
         var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
         ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
         UpdateConfigFileProfiles(profiles);
-        UpdateConfigFromFile();
     }
 
     public void UpdateConfigFileProfiles(List<Profile> profiles)
