@@ -8,7 +8,7 @@ namespace Core;
 public class Controller
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly ConfigWatcherManager _configWatcherWorker = new();
+    private readonly ConfigWatcherManager _configWatcherManager = new();
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profilemanager = new();
     private readonly FileManager _fileManager = new();
@@ -41,8 +41,8 @@ public class Controller
 
     private void Initialize()
     {
-        _configWatcherWorker.StopAndDisposeConfigWatcher();
-        _configWatcherWorker.StartConfigWatcher(callback: InitializeConfig);
+        _configWatcherManager.StopAndDisposeConfigWatcher();
+        _configWatcherManager.StartConfigWatcher(callback: InitializeConfig);
         InitializeConfig();
     }
 
