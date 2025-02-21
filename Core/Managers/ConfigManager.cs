@@ -59,7 +59,7 @@ internal class ConfigManager
         UpdateConfigFileProfiles(profiles);
     }
 
-    public void UpdateConfigFileProfiles(List<Profile> profiles)
+    private void UpdateConfigFileProfiles(List<Profile> profiles)
     {
         var config = new Config()
         {
