@@ -7,6 +7,7 @@ namespace WinApp;
 internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Controller _controller = new();
     private static readonly TrayManager _trayManager = new();
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
 
@@ -33,8 +34,8 @@ internal static class Program
         _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
 
         _logger.Info("***** Starting application. *****");
-        RunCoreInThread();
-        Application.Run();
+        RunGuiInCurrentThread();
+        RunCoreInSeparateThread();
     }
 
     private static bool IsProgramRunning()
@@ -57,9 +58,14 @@ internal static class Program
         _trayManager.DisposeMenu();
     }
 
-    private static void RunCoreInThread()
+    private static void RunGuiInCurrentThread()
     {
-        var coreThread = new Thread(() => new Core.Controller().Run());
+        Application.Run();
+    }
+
+    private static void RunCoreInSeparateThread()
+    {
+        var coreThread = new Thread(_controller.Run);
         coreThread.IsBackground = true;
         coreThread.Start();
     }

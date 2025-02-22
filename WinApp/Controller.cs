@@ -7,4 +7,9 @@ internal class Controller
 {
     private readonly CoreManager _coreManager = new();
     private readonly TrayManager _trayManager = new();
+
+    public void Run()
+    {
+        new Core.Controller().Run();
+    }
 }
