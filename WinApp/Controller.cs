@@ -12,4 +12,16 @@ internal class Controller
     {
         new Core.Controller().Run();
     }
+
+    public void InitializeTray(Arguments arguments)
+    {
+        _trayManager.InitializeNotifyIconWithContextMenu();
+        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
+        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
+    }
+
+    public void DisposeTray()
+    {
+        _trayManager.DisposeMenu();
+    }
 }

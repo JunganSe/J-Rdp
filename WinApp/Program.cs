@@ -1,6 +1,5 @@
 using Auxiliary;
 using WinApp.Managers;
-using WinApp.Tray;
 
 namespace WinApp;
 
@@ -8,7 +7,6 @@ internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static readonly Controller _controller = new();
-    private static readonly TrayManager _trayManager = new();
     private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
 
     [STAThread]
@@ -29,9 +27,7 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
-        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
+        _controller.InitializeTray(arguments);
 
         _logger.Info("***** Starting application. *****");
         RunGuiInCurrentThread();
@@ -55,7 +51,7 @@ internal static class Program
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
-        _trayManager.DisposeMenu();
+        _controller.DisposeTray();
     }
 
     private static void RunGuiInCurrentThread()
