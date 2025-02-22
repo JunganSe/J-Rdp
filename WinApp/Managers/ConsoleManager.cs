@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System.Runtime.InteropServices;
 
-namespace WinApp;
+namespace WinApp.Managers;
 
 /// <summary> Windows exclusive manager for opening and closing a console log window </summary>
 internal static class ConsoleManager
@@ -18,13 +18,13 @@ internal static class ConsoleManager
     private static extern bool FreeConsole();
 
     [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern IntPtr GetConsoleWindow();
+    private static extern nint GetConsoleWindow();
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+    private static extern nint GetSystemMenu(nint hWnd, bool bRevert);
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool DeleteMenu(IntPtr hMenu, uint uPosition, uint uFlags);
+    private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
 
 
 
@@ -62,9 +62,9 @@ internal static class ConsoleManager
 
     private static void DisableConsoleCloseButton()
     {
-        IntPtr consoleWindow = GetConsoleWindow();
-        IntPtr systemMenu = GetSystemMenu(consoleWindow, false);
-        if (systemMenu != IntPtr.Zero)
+        nint consoleWindow = GetConsoleWindow();
+        nint systemMenu = GetSystemMenu(consoleWindow, false);
+        if (systemMenu != nint.Zero)
             DeleteMenu(systemMenu, 0xF060, 0x00000000);
     }
 

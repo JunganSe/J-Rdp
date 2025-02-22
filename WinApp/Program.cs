@@ -1,5 +1,5 @@
 using Auxiliary;
-using Core;
+using WinApp.Managers;
 using WinApp.Tray;
 
 namespace WinApp;
@@ -59,7 +59,7 @@ internal static class Program
 
     private static void RunCoreInThread()
     {
-        var coreThread = new Thread(() => new Controller().Run());
+        var coreThread = new Thread(() => new Core.Controller().Run());
         coreThread.IsBackground = true;
         coreThread.Start();
     }
