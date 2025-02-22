@@ -29,8 +29,8 @@ internal static class Program
         _controller.InitializeTray(arguments);
 
         _logger.Info("***** Starting application. *****");
-        RunGuiInCurrentThread();
         RunCoreInNewThread();
+        RunGuiInCurrentThread();
     }
 
     private static bool IsProgramRunning()
@@ -53,15 +53,15 @@ internal static class Program
         _controller.DisposeTray();
     }
 
-    private static void RunGuiInCurrentThread()
-    {
-        Application.Run();
-    }
-
     private static void RunCoreInNewThread()
     {
         var coreThread = new Thread(_controller.Run);
         coreThread.IsBackground = true;
         coreThread.Start();
+    }
+
+    private static void RunGuiInCurrentThread()
+    {
+        Application.Run();
     }
 }
