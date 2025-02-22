@@ -13,7 +13,6 @@ internal static class Program
     static void Main(string[] args)
     {
         RegisterCloseEvents();
-
         LogManager.Initialize();
 
         _logger.Trace("Initializing application...");
@@ -31,7 +30,7 @@ internal static class Program
 
         _logger.Info("***** Starting application. *****");
         RunGuiInCurrentThread();
-        RunCoreInSeparateThread();
+        RunCoreInNewThread();
     }
 
     private static bool IsProgramRunning()
@@ -59,7 +58,7 @@ internal static class Program
         Application.Run();
     }
 
-    private static void RunCoreInSeparateThread()
+    private static void RunCoreInNewThread()
     {
         var coreThread = new Thread(_controller.Run);
         coreThread.IsBackground = true;
