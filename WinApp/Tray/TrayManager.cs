@@ -56,7 +56,7 @@ internal class TrayManager
             menuItem.Checked = isChecked;
     }
 
-    public void DisposeMenu()
+    public void DisposeTray()
     {
         NotifyIcon?.ContextMenuStrip?.Dispose();
         NotifyIcon?.Dispose();

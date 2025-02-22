@@ -22,6 +22,6 @@ internal class Controller
 
     public void DisposeTray()
     {
-        _trayManager.DisposeMenu();
+        _trayManager.DisposeTray();
     }
 }
