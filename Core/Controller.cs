@@ -34,8 +34,8 @@ public class Controller
         }
     }
 
-    public void SetConfigUpdateCallback(ProfileHandler callback) =>
-        _configManager.ConfigUpdatedCallback = callback;
+    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+        _configManager.Callback_ConfigUpdated = callback;
 
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {

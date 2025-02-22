@@ -15,7 +15,7 @@ internal class ConfigManager
     private readonly ConfigWorker _configWorker = new();
 
     public Config Config { get; private set; } = new();
-    public ProfileHandler? ConfigUpdatedCallback { get; set; }
+    public ProfileHandler? Callback_ConfigUpdated { get; set; }
 
     public int GetPollingInterval() =>
         MathExt.Median(Config.PollingInterval,
@@ -58,11 +58,11 @@ internal class ConfigManager
 
     private void InvokeConfigUpdatedCallback()
     {
-        if (ConfigUpdatedCallback == null)
+        if (Callback_ConfigUpdated == null)
             return;
 
         var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
-        ConfigUpdatedCallback.Invoke(profileInfos);
+        Callback_ConfigUpdated.Invoke(profileInfos);
     }
 
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
