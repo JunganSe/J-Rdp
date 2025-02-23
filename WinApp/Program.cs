@@ -7,7 +7,7 @@ internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static readonly Controller _controller = new();
-    private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
+    private static Mutex? _mutex;
 
     [STAThread]
     static void Main(string[] args)
