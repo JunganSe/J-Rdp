@@ -27,10 +27,10 @@ internal class TrayManager
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
 
-        contextMenu.Items.Add(new ToolStripSeparator());
-        // TODO: Add profiles here, or an unclickable item if no profiles are available. Issue #61
-        contextMenu.Items.Add(TrayMenuItems.Profile(1, "FakeTestProfile1", true));
-        contextMenu.Items.Add(TrayMenuItems.Profile(2, "FakeTestProfile2", false));
+        contextMenu.Items.Add(new ToolStripSeparator()
+        {
+            Name = "ProfilesInsertPoint",
+        });
 
         contextMenu.Items.Add(new ToolStripSeparator());
         contextMenu.Items.Add(TrayMenuItems.Exit);
