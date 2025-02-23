@@ -1,4 +1,6 @@
-﻿namespace WinApp.Tray;
+﻿using Core.Models;
+
+namespace WinApp.Tray;
 
 internal class TrayManager
 {
@@ -35,6 +37,34 @@ internal class TrayManager
         contextMenu.Items.Add(TrayMenuItems.Close);
 
         return contextMenu;
+    }
+
+    // TODO: Refactor.
+    public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
+    {
+        if (NotifyIcon?.ContextMenuStrip?.Items == null)
+            return;
+
+        // Remove existing profile items
+        var existingProfileItems = NotifyIcon.ContextMenuStrip.Items
+            .OfType<ToolStripMenuItem>()
+            .Where(item => item.Name?.StartsWith("Profile") ?? false)
+            .ToList();
+        foreach (var item in existingProfileItems)
+            NotifyIcon.ContextMenuStrip.Items.Remove(item);
+
+        // Insert new profile items at the specified position
+        int insertIndex = NotifyIcon.ContextMenuStrip.Items.IndexOfKey("ProfilesInsertPoint");
+        if (insertIndex == -1)
+            insertIndex = NotifyIcon.ContextMenuStrip.Items.Count;
+
+        foreach (var profileInfo in profileInfos)
+        {
+            var menuItem = TrayMenuItems.Profile(profileInfo.Id, profileInfo.Name, profileInfo.Enabled);
+            NotifyIcon.ContextMenuStrip.Items.Insert(insertIndex++, menuItem);
+        }
+
+        // TODO: Add an unclickable item if no profiles are available.
     }
 
     public void SetMenuState_ShowConsole(bool isChecked) =>
