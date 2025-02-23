@@ -6,6 +6,7 @@ internal static class TrayConstants
     {
         public const string ToggleConsole = "ShowConsole";
         public const string ToggleLogToFile = "LogToFile";
+        public const string ProfilesInsertPoint = "ProfilesInsertPoint";
         public const string Exit = "Exit";
         public const string Close = "Close";
     }

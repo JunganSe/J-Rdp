@@ -29,7 +29,7 @@ internal class TrayManager
 
         contextMenu.Items.Add(new ToolStripSeparator()
         {
-            Name = "ProfilesInsertPoint",
+            Name = TrayConstants.ItemNames.ProfilesInsertPoint,
         });
 
         contextMenu.Items.Add(new ToolStripSeparator());
@@ -54,7 +54,7 @@ internal class TrayManager
             NotifyIcon.ContextMenuStrip.Items.Remove(item);
 
         // Insert new profile items at the specified position
-        int insertIndex = NotifyIcon.ContextMenuStrip.Items.IndexOfKey("ProfilesInsertPoint");
+        int insertIndex = NotifyIcon.ContextMenuStrip.Items.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
         if (insertIndex == -1)
             insertIndex = NotifyIcon.ContextMenuStrip.Items.Count;
 
