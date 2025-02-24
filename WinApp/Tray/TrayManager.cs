@@ -39,35 +39,40 @@ internal class TrayManager
         return contextMenu;
     }
 
-    // TODO: Refactor.
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         if (NotifyIcon?.ContextMenuStrip?.Items == null)
             return;
 
-        NotifyIcon.ContextMenuStrip.Items
-            .OfType<ToolStripMenuItem>()
+        RemoveAllProfileMenuItems(NotifyIcon.ContextMenuStrip.Items);
+        InsertProfileMenuItems(NotifyIcon.ContextMenuStrip.Items, profileInfos);
+
+        // TODO: Add an unclickable item if no profiles are available.
+    }
+
+    private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
+    {
+        menuItems.OfType<ToolStripMenuItem>()
             .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
             .ToList()
             .ForEach(menuItem =>
             {
-                NotifyIcon.ContextMenuStrip.Items.Remove(menuItem);
+                menuItems.Remove(menuItem);
                 menuItem.Dispose();
             });
+    }
 
-
-        // Insert new profile items at the specified position
-        int insertIndex = NotifyIcon.ContextMenuStrip.Items.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
+    private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
+    {
+        int insertIndex = menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
         if (insertIndex == -1)
-            insertIndex = NotifyIcon.ContextMenuStrip.Items.Count;
+            insertIndex = menuItems.Count;
 
         foreach (var profileInfo in profileInfos)
         {
             var menuItem = TrayMenuItems.Profile(profileInfo.Id, profileInfo.Name, profileInfo.Enabled);
-            NotifyIcon.ContextMenuStrip.Items.Insert(insertIndex++, menuItem);
+            menuItems.Insert(insertIndex++, menuItem);
         }
-
-        // TODO: Add an unclickable item if no profiles are available.
     }
 
     public void SetMenuState_ShowConsole(bool isChecked) =>
