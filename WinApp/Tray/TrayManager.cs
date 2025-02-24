@@ -66,9 +66,7 @@ internal class TrayManager
 
     private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
     {
-        int insertIndex = menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
-        if (insertIndex == -1)
-            insertIndex = menuItems.Count;
+        int insertIndex = GetProfilesInsertIndex(menuItems);
 
         foreach (var profileInfo in profileInfos)
         {
@@ -79,9 +77,7 @@ internal class TrayManager
 
     private void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
     {
-        int insertIndex = menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
-        if (insertIndex == -1)
-            insertIndex = menuItems.Count;
+        int insertIndex = GetProfilesInsertIndex(menuItems);
 
         var menuItem = new ToolStripMenuItem()
         {
@@ -91,6 +87,9 @@ internal class TrayManager
 
         menuItems.Insert(insertIndex, menuItem);
     }
+
+    private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
+        Math.Max(0, menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint));
 
     public void SetMenuState_ShowConsole(bool isChecked) =>
         SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, isChecked);
