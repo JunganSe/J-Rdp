@@ -45,9 +45,11 @@ internal class TrayManager
             return;
 
         RemoveAllProfileMenuItems(NotifyIcon.ContextMenuStrip.Items);
-        InsertProfileMenuItems(NotifyIcon.ContextMenuStrip.Items, profileInfos);
 
-        // TODO: Add an unclickable item if no profiles are available.
+        if (profileInfos.Count > 0)
+            InsertProfileMenuItems(NotifyIcon.ContextMenuStrip.Items, profileInfos);
+        else
+            InsertPlaceholderProfileMenuItem(NotifyIcon.ContextMenuStrip.Items);
     }
 
     private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
@@ -73,6 +75,21 @@ internal class TrayManager
             var menuItem = TrayMenuItems.Profile(profileInfo.Id, profileInfo.Name, profileInfo.Enabled);
             menuItems.Insert(insertIndex++, menuItem);
         }
+    }
+
+    private void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
+    {
+        int insertIndex = menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
+        if (insertIndex == -1)
+            insertIndex = menuItems.Count;
+
+        var menuItem = new ToolStripMenuItem()
+        {
+            Text = "No profiles found",
+            Enabled = false,
+        };
+
+        menuItems.Insert(insertIndex, menuItem);
     }
 
     public void SetMenuState_ShowConsole(bool isChecked) =>
