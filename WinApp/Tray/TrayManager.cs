@@ -112,6 +112,11 @@ internal class TrayManager
 
     public void DisposeTray()
     {
+        if (NotifyIcon?.ContextMenuStrip?.Items != null)
+        {
+            foreach (ToolStripItem item in NotifyIcon.ContextMenuStrip.Items)
+                item.Dispose();
+        }
         NotifyIcon?.ContextMenuStrip?.Dispose();
         NotifyIcon?.Dispose();
     }
