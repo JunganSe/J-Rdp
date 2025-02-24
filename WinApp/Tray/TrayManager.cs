@@ -45,13 +45,11 @@ internal class TrayManager
         if (NotifyIcon?.ContextMenuStrip?.Items == null)
             return;
 
-        // Remove existing profile items
-        var existingProfileItems = NotifyIcon.ContextMenuStrip.Items
+        NotifyIcon.ContextMenuStrip.Items
             .OfType<ToolStripMenuItem>()
             .Where(item => item.Name?.StartsWith("Profile") ?? false)
-            .ToList();
-        foreach (var item in existingProfileItems)
-            NotifyIcon.ContextMenuStrip.Items.Remove(item);
+            .ToList()
+            .ForEach(NotifyIcon.ContextMenuStrip.Items.Remove);
 
         // Insert new profile items at the specified position
         int insertIndex = NotifyIcon.ContextMenuStrip.Items.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
