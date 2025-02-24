@@ -9,6 +9,7 @@ internal static class TrayConstants
         public const string ProfilesInsertPoint = "ProfilesInsertPoint";
         public const string Exit = "Exit";
         public const string Close = "Close";
+        public const string ProfilePrefix = "Profile";
     }
 
     public static class ItemTexts

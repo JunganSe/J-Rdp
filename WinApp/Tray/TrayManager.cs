@@ -47,7 +47,7 @@ internal class TrayManager
 
         NotifyIcon.ContextMenuStrip.Items
             .OfType<ToolStripMenuItem>()
-            .Where(item => item.Name?.StartsWith("Profile") ?? false)
+            .Where(item => item.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
             .ToList()
             .ForEach(NotifyIcon.ContextMenuStrip.Items.Remove);
 

@@ -31,7 +31,7 @@ internal static class TrayMenuItems
     public static ToolStripMenuItem Profile(int index, string name, bool isEnabled) =>
         new(null, null, TrayMenuEvents.OnClick_Profile)
         {
-            Name = $"Profile{index}",
+            Name = $"{TrayConstants.ItemNames.ProfilePrefix}{index}",
             Text = name,
             Tag = index,
             Checked = isEnabled,
