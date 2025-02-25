@@ -29,6 +29,7 @@ internal static class Program
         _controller.InitializeTray(arguments);
 
         _logger.Info("***** Starting application. *****");
+        _controller.InitializeCore();
         RunCoreInNewThread();
         RunGuiInCurrentThread();
     }

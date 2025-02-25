@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Delegates;
+using Core.Models;
 
 namespace WinApp.Managers;
 
@@ -9,12 +10,16 @@ internal class CoreManager
     public void Initialize()
     {
         _controller = new();
-        //_controller.SetCallback_ConfigUpdated(dummy);
     }
 
     public void Run()
     {
         _controller?.Run();
+    }
+
+    public void SetCallback_ConfigUpdated(ProfileHandler callback)
+    {
+        _controller?.SetCallback_ConfigUpdated(callback);
     }
 
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)

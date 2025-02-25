@@ -13,6 +13,12 @@ internal class Controller
         new Core.Controller().Run();
     }
 
+    public void InitializeCore()
+    {
+        _coreManager.Initialize();
+        _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
+    }
+
     public void InitializeTray(Arguments arguments)
     {
         _trayManager.InitializeNotifyIconWithContextMenu();
