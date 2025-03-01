@@ -30,7 +30,7 @@ internal static class Program
 
         _logger.Info("***** Starting application. *****");
         _controller.InitializeCore();
-        RunCoreInNewThread();
+        RunCoreInSeparateThread();
         RunGuiInCurrentThread();
     }
 
@@ -54,11 +54,9 @@ internal static class Program
         _controller.DisposeTray();
     }
 
-    private static void RunCoreInNewThread()
+    private static void RunCoreInSeparateThread()
     {
-        var coreThread = new Thread(_controller.Run);
-        coreThread.IsBackground = true;
-        coreThread.Start();
+        Task.Run(_controller.Run);
     }
 
     private static void RunGuiInCurrentThread()
