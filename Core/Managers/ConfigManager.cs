@@ -40,8 +40,6 @@ internal class ConfigManager
             config.Profiles.RemoveInvalid();
             config.Profiles.AddDefaultFilterFileEndings();
             Config = config;
-
-            InvokeConfigUpdatedCallback(); // TODO: This should probably be called from the controller.
         }
         catch
         {
@@ -59,7 +57,7 @@ internal class ConfigManager
         }
     }
 
-    private void InvokeConfigUpdatedCallback()
+    public void InvokeConfigUpdatedCallback()
     {
         if (_callback_ConfigUpdated == null)
             return;

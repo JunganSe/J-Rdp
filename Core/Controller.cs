@@ -41,6 +41,7 @@ public class Controller
     {
         _configManager.UpdateConfigFileProfiles(profileInfos);
         _configManager.UpdateConfigFromFile();
+        _configManager.InvokeConfigUpdatedCallback();
     }
 
 
@@ -55,6 +56,7 @@ public class Controller
     private void InitializeConfig()
     {
         _configManager.UpdateConfigFromFile();
+        _configManager.InvokeConfigUpdatedCallback();
         SetPollingInterval();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
