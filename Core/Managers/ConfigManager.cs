@@ -41,7 +41,7 @@ internal class ConfigManager
             config.Profiles.AddDefaultFilterFileEndings();
             Config = config;
 
-            InvokeConfigUpdatedCallback();
+            InvokeConfigUpdatedCallback(); // TODO: This should probably be called from the controller.
         }
         catch
         {
