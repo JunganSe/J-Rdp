@@ -17,9 +17,6 @@ internal class ConfigManager
 
     public Config Config { get; private set; } = new();
 
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
-        _callback_ConfigUpdated = callback;
-
     public int GetPollingInterval() =>
         MathExt.Median(Config.PollingInterval,
                        ConfigConstants.PollingInterval_Min,
@@ -29,6 +26,9 @@ internal class ConfigManager
         MathExt.Median(Config.DeleteDelay,
                        ConfigConstants.DeleteDelay_Min,
                        ConfigConstants.DeleteDelay_Max);
+
+    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+        _callback_ConfigUpdated = callback;
 
     public void UpdateConfigFromFile()
     {
