@@ -13,6 +13,7 @@ internal class ConfigManager
 {
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly ConfigWorker _configWorker = new();
+    private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
     private ProfileHandler? _callback_ConfigUpdated;
 
     public Config Config { get; private set; } = new();
@@ -63,7 +64,10 @@ internal class ConfigManager
             return;
 
         var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
-        _callback_ConfigUpdated.Invoke(profileInfos);
+        if (_syncContext != null)
+            _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(profileInfos), null); // Invoke on the UI thread.
+        else
+            _callback_ConfigUpdated.Invoke(profileInfos); // Invoke on current thread.
     }
 
     public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
