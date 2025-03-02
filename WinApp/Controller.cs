@@ -10,7 +10,7 @@ internal class Controller
 
     public void Run()
     {
-        new Core.Controller().Run();
+        _coreManager.Run();
     }
 
     public void InitializeCore()
