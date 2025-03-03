@@ -26,11 +26,7 @@ internal class TrayManager
 
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-
-        contextMenu.Items.Add(new ToolStripSeparator()
-        {
-            Name = TrayConstants.ItemNames.ProfilesInsertPoint,
-        });
+        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint, });
 
         contextMenu.Items.Add(new ToolStripSeparator());
         contextMenu.Items.Add(TrayMenuItems.Exit);
