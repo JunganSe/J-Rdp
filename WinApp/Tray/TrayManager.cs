@@ -89,7 +89,7 @@ internal class TrayManager
     }
 
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
-        Math.Max(0, menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint));
+        1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 
     public void SetMenuState_ShowConsole(bool isChecked) =>
         SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, isChecked);
