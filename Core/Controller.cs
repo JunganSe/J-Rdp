@@ -11,7 +11,7 @@ public class Controller
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly ConfigWatcherManager _configWatcherManager = new();
     private readonly ConfigManager _configManager = new();
-    private readonly ProfileManager _profilemanager = new();
+    private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 
@@ -74,14 +74,14 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _profilemanager.UpdateProfiles(_configManager.Config.Profiles);
-        _profilemanager.UpdateFiles();
-        _profilemanager.LogProfilesSummary();
+        _profileManager.UpdateProfiles(_configManager.Config.Profiles);
+        _profileManager.UpdateFiles();
+        _profileManager.LogProfilesSummary();
     }
 
     private void MainLoop()
     {
-        _profilemanager.UpdateFiles();
-        _fileManager.ProcessProfileWrappers(_profilemanager.ProfileWrappers);
+        _profileManager.UpdateFiles();
+        _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
     }
 }
