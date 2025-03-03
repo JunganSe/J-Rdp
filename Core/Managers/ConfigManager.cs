@@ -36,7 +36,6 @@ internal class ConfigManager
         try
         {
             var config = _configWorker.GetConfigFromFile();
-            config.Profiles.RemoveDisabled();
             LogInvalidProfiles(config.Profiles);
             config.Profiles.RemoveInvalid();
             config.Profiles.AddDefaultFilterFileEndings();

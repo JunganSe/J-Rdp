@@ -74,7 +74,8 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        _profileManager.UpdateProfiles(_configManager.Config.Profiles);
+        var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
+        _profileManager.UpdateProfiles(enabledProfiles);
         _profileManager.UpdateFiles();
         _profileManager.LogProfilesSummary();
     }
