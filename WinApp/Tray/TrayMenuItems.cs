@@ -1,4 +1,6 @@
-﻿namespace WinApp.Tray;
+﻿using Core.Models;
+
+namespace WinApp.Tray;
 
 internal static class TrayMenuItems
 {
@@ -28,12 +30,12 @@ internal static class TrayMenuItems
         Text = TrayConstants.ItemTexts.Close,
     };
 
-    public static ToolStripMenuItem Profile(int index, string name, bool isEnabled) =>
+    public static ToolStripMenuItem Profile(ProfileInfo profileInfo) =>
         new(null, null, TrayMenuEvents.OnClick_Profile)
         {
-            Name = $"{TrayConstants.ItemNames.ProfilePrefix}{index}",
-            Text = name,
-            Tag = index,
-            Checked = isEnabled,
+            Name = $"{TrayConstants.ItemNames.ProfilePrefix}{profileInfo.Id}",
+            Text = profileInfo.Name,
+            Tag = profileInfo,
+            Checked = profileInfo.Enabled,
         };
 }
