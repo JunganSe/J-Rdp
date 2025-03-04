@@ -39,6 +39,10 @@ internal static class TrayMenuEvents
         {
             bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
             // TODO: Call something in Core to enable/disable profile based on profileIndex and isCtrlHeld.
+            // 1. Get profileInfos (tags) from all profile menu items.
+            // 2. Toggle enabled state of this profileInfo.
+            // 3. Set enabled state of other profileInfos based on isCtrlHeld.
+            // 4. Call CoreManager.UpdateProfilesEnabledState(profileInfos). But how to get CoreManager instance?
         }
     }
 }
