@@ -1,4 +1,5 @@
 ﻿using Auxiliary;
+using Core.Models;
 using WinApp.Managers;
 
 namespace WinApp.Tray;
@@ -33,9 +34,9 @@ internal static class TrayMenuEvents
 
     public static void OnClick_Profile(object? sender, EventArgs e)
     {
-        if (sender is ToolStripMenuItem menuItem)
+        if (sender is ToolStripMenuItem menuItem
+            && menuItem.Tag is ProfileInfo profileInfo)
         {
-            int profileIndex = (int)(menuItem?.Tag ?? -1);
             bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
             // TODO: Call something in Core to enable/disable profile based on profileIndex and isCtrlHeld.
         }
