@@ -37,5 +37,6 @@ internal static class TrayMenuItems
             Text = profileInfo.Name,
             Tag = profileInfo,
             Checked = profileInfo.Enabled,
+            CheckOnClick = true,
         };
 }
