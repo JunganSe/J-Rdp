@@ -5,12 +5,12 @@ namespace WinApp.Tray;
 
 internal class TrayManager
 {
-    public NotifyIcon? NotifyIcon { get; private set; }
+    private NotifyIcon? _notifyIcon;
     public ProfileHandler? ProfilesActiveStateChangedCallback { get; set; }
 
     internal void InitializeNotifyIconWithContextMenu()
     {
-        NotifyIcon = new NotifyIcon()
+        _notifyIcon = new NotifyIcon()
         {
             Text = "J-Rdp",
             Icon = SystemIcons.Application,
@@ -39,15 +39,15 @@ internal class TrayManager
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
-        if (NotifyIcon?.ContextMenuStrip?.Items == null)
+        if (_notifyIcon?.ContextMenuStrip?.Items == null)
             return;
 
-        RemoveAllProfileMenuItems(NotifyIcon.ContextMenuStrip.Items);
+        RemoveAllProfileMenuItems(_notifyIcon.ContextMenuStrip.Items);
 
         if (profileInfos.Count > 0)
-            InsertProfileMenuItems(NotifyIcon.ContextMenuStrip.Items, profileInfos);
+            InsertProfileMenuItems(_notifyIcon.ContextMenuStrip.Items, profileInfos);
         else
-            InsertPlaceholderProfileMenuItem(NotifyIcon.ContextMenuStrip.Items);
+            InsertPlaceholderProfileMenuItem(_notifyIcon.ContextMenuStrip.Items);
     }
 
     private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
@@ -98,10 +98,10 @@ internal class TrayManager
 
     private void SetMenuCheckedState(string itemName, bool isChecked)
     {
-        if (NotifyIcon?.ContextMenuStrip?.Items == null)
+        if (_notifyIcon?.ContextMenuStrip?.Items == null)
             return;
 
-        var menuItem = NotifyIcon.ContextMenuStrip.Items
+        var menuItem = _notifyIcon.ContextMenuStrip.Items
             .Find(itemName, true)
             .OfType<ToolStripMenuItem>()
             .FirstOrDefault();
@@ -111,11 +111,11 @@ internal class TrayManager
 
     public void DisposeTray()
     {
-        NotifyIcon?.ContextMenuStrip?.Items?
+        _notifyIcon?.ContextMenuStrip?.Items?
             .OfType<ToolStripItem>()
             .ToList()
             .ForEach(item => item.Dispose());
-        NotifyIcon?.ContextMenuStrip?.Dispose();
-        NotifyIcon?.Dispose();
+        _notifyIcon?.ContextMenuStrip?.Dispose();
+        _notifyIcon?.Dispose();
     }
 }
