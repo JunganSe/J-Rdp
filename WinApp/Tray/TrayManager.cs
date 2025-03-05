@@ -8,7 +8,7 @@ internal class TrayManager
     private NotifyIcon? _notifyIcon;
     public ProfileHandler? ProfilesActiveStateChangedCallback { get; set; }
 
-    internal void InitializeNotifyIconWithContextMenu()
+    public void InitializeNotifyIconWithContextMenu()
     {
         _notifyIcon = new NotifyIcon()
         {
