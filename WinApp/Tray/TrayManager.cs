@@ -67,6 +67,7 @@ internal class TrayManager
         foreach (var profileInfo in profileInfos)
         {
             var menuItem = TrayMenuItems.Profile(profileInfo);
+            menuItem.Click += TrayMenuEvents.OnClick_Profile;
             menuItems.Insert(insertIndex++, menuItem);
         }
     }

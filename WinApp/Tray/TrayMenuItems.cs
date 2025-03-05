@@ -30,13 +30,13 @@ internal static class TrayMenuItems
         Text = TrayConstants.ItemTexts.Close,
     };
 
-    public static ToolStripMenuItem Profile(ProfileInfo profileInfo) =>
-        new(null, null, TrayMenuEvents.OnClick_Profile)
-        {
-            Name = $"{TrayConstants.ItemNames.ProfilePrefix}{profileInfo.Id}",
-            Text = profileInfo.Name,
-            Tag = profileInfo,
-            Checked = profileInfo.Enabled,
-            CheckOnClick = true,
-        };
+    public static ToolStripMenuItem Profile(ProfileInfo profileInfo) => new()
+    {
+        // Note: Click event is set externally.
+        Name = $"{TrayConstants.ItemNames.ProfilePrefix}{profileInfo.Id}",
+        Text = profileInfo.Name,
+        Tag = profileInfo,
+        Checked = profileInfo.Enabled,
+        CheckOnClick = true,
+    };
 }
