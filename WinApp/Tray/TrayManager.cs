@@ -6,7 +6,10 @@ namespace WinApp.Tray;
 internal class TrayManager
 {
     private NotifyIcon? _notifyIcon;
-    public ProfileHandler? ProfilesActiveStateChangedCallback { get; set; }
+    private ProfileHandler? _callback_ProfilesActiveStateChanged;
+
+    public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
+        _callback_ProfilesActiveStateChanged = callback;
 
     public void InitializeNotifyIconWithContextMenu()
     {
@@ -70,7 +73,7 @@ internal class TrayManager
         {
             var menuItem = TrayMenuItems.Profile(profileInfo);
             menuItem.Click += TrayMenuEvents.OnClick_Profile;
-            // TODO: Implement OnClick behavior, calling ProfilesActiveStateChangedCallback
+            // TODO: Implement OnClick behavior, calling _callback_ProfilesActiveStateChanged
             menuItems.Insert(insertIndex++, menuItem);
         }
     }
