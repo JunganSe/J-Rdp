@@ -1,10 +1,12 @@
-﻿using Core.Models;
+﻿using Core.Delegates;
+using Core.Models;
 
 namespace WinApp.Tray;
 
 internal class TrayManager
 {
     public NotifyIcon? NotifyIcon { get; private set; }
+    public ProfileHandler? ProfilesActiveStateChangedCallback { get; set; }
 
     internal void InitializeNotifyIconWithContextMenu()
     {
