@@ -21,6 +21,7 @@ internal class Controller
 
     public void InitializeTray(Arguments arguments)
     {
+        _trayManager.ProfilesActiveStateChangedCallback = _coreManager.UpdateProfilesEnabledState;
         _trayManager.InitializeNotifyIconWithContextMenu();
         _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
         _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
