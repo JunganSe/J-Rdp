@@ -72,8 +72,7 @@ internal class TrayManager
         foreach (var profileInfo in profileInfos)
         {
             var menuItem = TrayMenuItems.Profile(profileInfo);
-            menuItem.Click += TrayMenuEvents.OnClick_Profile;
-            // TODO: Implement OnClick behavior, calling _callback_ProfilesActiveStateChanged
+            menuItem.Click += TrayMenuEvents.OnClick_Profile(_callback_ProfilesActiveStateChanged);
             menuItems.Insert(insertIndex++, menuItem);
         }
     }
