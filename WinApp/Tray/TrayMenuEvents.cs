@@ -37,26 +37,27 @@ internal static class TrayMenuEvents
     {
         return (object? sender, EventArgs e) =>
         {
-            if (sender is ToolStripMenuItem menuItem
-                && menuItem.Tag is ProfileInfo profileInfo)
-            {
-                if (menuItem.Owner is null)
-                    throw new InvalidOperationException($"Menu item '{menuItem.Text}' has no owner.");
+            if (sender is not ToolStripMenuItem menuItem || menuItem.Tag is not ProfileInfo profileInfo)
+                return;
 
-                var profileInfos = menuItem.Owner.Items
-                    .OfType<ToolStripMenuItem>()
-                    .Where(item => item.Tag is ProfileInfo and not null)
-                    .Select(item => (ProfileInfo)item.Tag!)
-                    .ToList();
+            if (menuItem.Owner is null)
+                throw new InvalidOperationException($"Menu item '{menuItem.Text}' has no owner.");
 
-                bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
-                if (!isCtrlHeld && !profileInfo.Enabled)
-                    profileInfos.ForEach(pi => pi.Enabled = false);
+            var profileInfos = GetProfileInfosFromMenuItems(menuItem.Owner.Items);
 
-                profileInfo.Enabled = menuItem.Checked;
+            bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
+            if (!isCtrlHeld && !profileInfo.Enabled)
+                profileInfos.ForEach(pi => pi.Enabled = false);
 
-                callback.Invoke(profileInfos);
-            }
+            profileInfo.Enabled = menuItem.Checked;
+
+            callback.Invoke(profileInfos);
         };
     }
+
+    private static List<ProfileInfo> GetProfileInfosFromMenuItems(ToolStripItemCollection items) =>
+        items.OfType<ToolStripMenuItem>()
+             .Where(item => item.Tag is ProfileInfo)
+             .Select(item => (ProfileInfo)item.Tag!)
+             .ToList();
 }
