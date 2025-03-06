@@ -33,21 +33,6 @@ internal static class TrayMenuEvents
         }
     }
 
-    public static void OnClick_Profile(object? sender, EventArgs e)
-    {
-        if (sender is ToolStripMenuItem menuItem
-            && menuItem.Tag is ProfileInfo profileInfo)
-        {
-            profileInfo.Enabled = menuItem.Checked;
-            bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
-            // TODO: Call something in Core to enable/disable profile based on profileIndex and isCtrlHeld.
-            // 1. Get profileInfos (tags) from all profile menu items.
-            // x. Toggle enabled state of this profileInfo.
-            // 3. Set enabled state of other profileInfos based on isCtrlHeld.
-            // 4. Call CoreManager.UpdateProfilesEnabledState(profileInfos). But how to get CoreManager instance?
-        }
-    }
-
     public static EventHandler OnClick_Profile(ProfileHandler callback)
     {
         return (object? sender, EventArgs e) =>
