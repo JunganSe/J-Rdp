@@ -15,7 +15,11 @@ internal class ConfigWorker
 
     public ConfigWorker()
     {
-        _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+        _jsonOptions = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = true,
+        };
     }
 
     public Config GetConfigFromFile()
