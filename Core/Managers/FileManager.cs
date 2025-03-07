@@ -19,25 +19,25 @@ internal class FileManager
         _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
     }
 
-    public void ProcessProfileInfos(IEnumerable<ProfileInfo> profileInfos)
+    public void ProcessProfileWrappers(IEnumerable<ProfileWrapper> profileWrappers)
     {
         _processedFilePaths.Clear();
-        var processableProfileInfos = profileInfos.Where(pi => pi.DirectoryExists);
-        foreach (var profileInfo in processableProfileInfos)
-            ProcessNewFiles(profileInfo);
+        var processableProfileWrappers = profileWrappers.Where(pi => pi.DirectoryExists);
+        foreach (var profileWrapper in processableProfileWrappers)
+            ProcessNewFiles(profileWrapper);
     }
 
-    private void ProcessNewFiles(ProfileInfo profileInfo)
+    private void ProcessNewFiles(ProfileWrapper profileWrapper)
     {
-        var newFiles = profileInfo.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
+        var newFiles = profileWrapper.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
 
         if (!newFiles.Any())
             return;
 
-        LogNewFiles(profileInfo.Profile, newFiles);
+        LogNewFiles(profileWrapper.Profile, newFiles);
 
         foreach (var newFile in newFiles)
-            ProcessFileOnFilterMatch(newFile, profileInfo.Profile);
+            ProcessFileOnFilterMatch(newFile, profileWrapper.Profile);
     }
 
     private void LogNewFiles(Profile profile, IEnumerable<FileInfo> newFiles)

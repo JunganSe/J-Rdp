@@ -10,11 +10,16 @@ internal class ConfigWorker
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly FileReader _fileReader = new();
+    private readonly FileWriter _fileWriter = new();
     private readonly JsonSerializerOptions _jsonOptions;
 
     public ConfigWorker()
     {
-        _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+        _jsonOptions = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = true,
+        };
     }
 
     public Config GetConfigFromFile()
@@ -39,15 +44,37 @@ internal class ConfigWorker
     {
         try
         {
-            var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions) 
+            var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions)
                 ?? throw new InvalidOperationException("Config is null.");
-            config.Profiles.ForEach(p => p.Filter = p.Filter.Trim());
+
+            for (int i = 0; i < config.Profiles.Count; i++)
+            {
+                var profile = config.Profiles[i];
+                profile.SetId(i + 1);
+                profile.Filter = profile.Filter.Trim();
+            }
+
             return config;
         }
         catch (Exception ex)
         {
             _logger.Error(ex, $"Failed to parse config file.");
             throw;
+        }
+    }
+
+    public void UpdateConfigFile(Config config)
+    {
+        try
+        {
+            string path = GetConfigPath();
+            string json = JsonSerializer.Serialize(config, _jsonOptions);
+            _fileWriter.WriteFile(path, json);
+            _logger.Debug("Successfully updated config file.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to update config file.");
         }
     }
 }

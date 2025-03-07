@@ -1,20 +1,18 @@
 using Auxiliary;
-using Core;
-using WinApp.Tray;
+using WinApp.Managers;
 
 namespace WinApp;
 
 internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private static readonly TrayManager _trayManager = new();
-    private static Mutex? _mutex; // Intentionally stored in field to keep it in memory.
+    private static readonly Controller _controller = new();
+    private static Mutex? _mutex;
 
     [STAThread]
     static void Main(string[] args)
     {
         RegisterCloseEvents();
-
         LogManager.Initialize();
 
         _logger.Trace("Initializing application...");
@@ -28,13 +26,11 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
-        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
-
         _logger.Info("***** Starting application. *****");
-        RunCoreInThread();
-        Application.Run();
+        _controller.InitializeTray(arguments);
+        _controller.InitializeCore();
+        RunCoreInSeparateThread();
+        RunGuiInCurrentThread();
     }
 
     private static bool IsProgramRunning()
@@ -54,13 +50,16 @@ internal static class Program
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
-        _trayManager.DisposeMenu();
+        _controller.DisposeTray();
     }
 
-    private static void RunCoreInThread()
+    private static void RunCoreInSeparateThread()
     {
-        var coreThread = new Thread(() => new Controller().Run());
-        coreThread.IsBackground = true;
-        coreThread.Start();
+        Task.Run(_controller.Run);
+    }
+
+    private static void RunGuiInCurrentThread()
+    {
+        Application.Run();
     }
 }

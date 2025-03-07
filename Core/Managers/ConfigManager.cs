@@ -1,6 +1,8 @@
 ﻿using Auxiliary;
 using Core.Constants;
+using Core.Delegates;
 using Core.Extensions;
+using Core.Helpers;
 using Core.Models;
 using Core.Workers;
 using NLog;
@@ -11,6 +13,8 @@ internal class ConfigManager
 {
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly ConfigWorker _configWorker = new();
+    private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
+    private ProfileHandler? _callback_ConfigUpdated;
 
     public Config Config { get; private set; } = new();
 
@@ -24,12 +28,14 @@ internal class ConfigManager
                        ConfigConstants.DeleteDelay_Min,
                        ConfigConstants.DeleteDelay_Max);
 
-    public void UpdateConfig()
+    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+        _callback_ConfigUpdated = callback;
+
+    public void UpdateConfigFromFile()
     {
         try
         {
             var config = _configWorker.GetConfigFromFile();
-            config.Profiles.RemoveDisabled();
             LogInvalidProfiles(config.Profiles);
             config.Profiles.RemoveInvalid();
             config.Profiles.AddDefaultFilterFileEndings();
@@ -42,14 +48,42 @@ internal class ConfigManager
         }
     }
 
-
-
-    private void LogInvalidProfiles(IEnumerable<Profile> profiles)
+    private void LogInvalidProfiles(List<Profile> profiles)
     {
         foreach (var profile in profiles)
         {
             if (!profile.IsValid(out string reason))
                 _logger.Warn($"Profile '{profile.Name}' is invalid and will be ignored. Reason: {reason}");
         }
+    }
+
+    public void InvokeConfigUpdatedCallback()
+    {
+        if (_callback_ConfigUpdated == null)
+            return;
+
+        var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
+        if (_syncContext != null)
+            _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(profileInfos), null); // Invoke on the UI thread.
+        else
+            _callback_ConfigUpdated.Invoke(profileInfos); // Invoke on current thread.
+    }
+
+    public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
+    {
+        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
+        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
+        UpdateConfigFileProfiles(profiles);
+    }
+
+    private void UpdateConfigFileProfiles(List<Profile> profiles)
+    {
+        var config = new Config()
+        {
+            PollingInterval = Config.PollingInterval,
+            DeleteDelay = Config.DeleteDelay,
+            Profiles = profiles
+        };
+        _configWorker.UpdateConfigFile(config);
     }
 }
