@@ -1,5 +1,4 @@
 ﻿using WinApp.Managers;
-using WinApp.Tray;
 
 namespace WinApp;
 

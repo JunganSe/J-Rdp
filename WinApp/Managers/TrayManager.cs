@@ -1,7 +1,8 @@
 ﻿using Core.Delegates;
 using Core.Models;
+using WinApp.Tray;
 
-namespace WinApp.Tray;
+namespace WinApp.Managers;
 
 internal class TrayManager
 {
