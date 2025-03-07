@@ -68,6 +68,9 @@ internal class TrayManager
 
     private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
     {
+        if (_callback_ProfilesActiveStateChanged is null)
+            throw new InvalidOperationException("Can not insert profile menu items. Callback is missing.");
+
         int insertIndex = GetProfilesInsertIndex(menuItems);
 
         foreach (var profileInfo in profileInfos)
