@@ -26,6 +26,20 @@ internal static class ConsoleManager
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
 
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool add);
+
+    private delegate bool HandlerRoutine(CtrlTypes ctrlType);
+
+    private enum CtrlTypes
+    {
+        CTRL_C_EVENT = 0,       // Event raised when the user presses Ctrl+C.
+        CTRL_BREAK_EVENT = 1,   // Event raised when the user presses Ctrl+Break.
+        CTRL_CLOSE_EVENT = 2,   // Event raised when the user closes the console window.
+        CTRL_LOGOFF_EVENT = 5,  // Event raised when the user logs off (only received by services).
+        CTRL_SHUTDOWN_EVENT = 6 // Event raised when the system is shutting down (only received by services).
+    }
+
 
 
     public static void SetVisibility(bool show)
@@ -71,6 +85,7 @@ internal static class ConsoleManager
     private static void RegisterCloseEvents()
     {
         Console.CancelKeyPress += OnCancelKeyPress;
+        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
     }
 
     private static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs eventArgs)
@@ -84,6 +99,18 @@ internal static class ConsoleManager
         var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
         Console.SetOut(consoleOutput);
         Console.SetError(consoleOutput);
+    }
+
+    private static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
+    {
+        if (ctrlType is CtrlTypes.CTRL_C_EVENT
+                     or CtrlTypes.CTRL_BREAK_EVENT
+                     or CtrlTypes.CTRL_CLOSE_EVENT)
+        {
+            // TODO: Update the menu item.
+            CloseConsole();
+        }
+        return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
     }
 
     private static void CloseConsole()
