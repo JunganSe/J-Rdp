@@ -51,13 +51,13 @@ internal static class ConsoleManager
         RedirectConsoleOutput();
 
         Console.WriteLine("""
-            *****************************************************
-            Press ctrl+C to safely close the log console window.
-            Closing it from Windows will also close the main app.
-            *****************************************************
+            *****************************************************************
+            Use the tray menu or press ctrl+C to safely close the log window.
+            Closing it directly through Windows will also close the main app.
+            *****************************************************************
 
             """);
-        _logger.Info("Opened console.");
+        _logger.Info("Opened log console.");
     }
 
     private static void DisableConsoleCloseButton()
@@ -90,8 +90,8 @@ internal static class ConsoleManager
     {
         bool isSuccess = FreeConsole(); // Close the console without closing the main app.
         if (isSuccess)
-            _logger.Info("Closed console.");
+            _logger.Info("Closed log console.");
         else
-            _logger.Warn("Failed to close console.");
+            _logger.Warn("Failed to close log console.");
     }
 }
