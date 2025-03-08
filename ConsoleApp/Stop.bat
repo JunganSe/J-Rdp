@@ -1,1 +1,0 @@
-taskkill /IM J-Rdp.exe
