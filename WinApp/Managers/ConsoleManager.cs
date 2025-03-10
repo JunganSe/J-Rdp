@@ -8,6 +8,8 @@ internal static class ConsoleManager
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+    #region Windows integration
+
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool AllocConsole();
 
@@ -24,9 +26,9 @@ internal static class ConsoleManager
     private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
 
     [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool add);
+    private static extern bool SetConsoleCtrlHandler(CtrlTypesHandler handler, bool add);
 
-    private delegate bool HandlerRoutine(CtrlTypes ctrlType);
+    private delegate bool CtrlTypesHandler(CtrlTypes ctrlType);
 
     private enum CtrlTypes
     {
@@ -36,6 +38,8 @@ internal static class ConsoleManager
         CTRL_LOGOFF_EVENT = 5,  // Event raised when the user logs off (only received by services).
         CTRL_SHUTDOWN_EVENT = 6 // Event raised when the system is shutting down (only received by services).
     }
+
+    #endregion
 
 
 
@@ -71,6 +75,15 @@ internal static class ConsoleManager
         _logger.Info("Opened log console.");
     }
 
+    private static void CloseConsole()
+    {
+        bool isSuccess = FreeConsole(); // Close the console without closing the main app.
+        if (isSuccess)
+            _logger.Info("Closed log console.");
+        else
+            _logger.Warn("Failed to close log console.");
+    }
+
     private static void DisableConsoleCloseButton()
     {
         nint consoleWindow = GetConsoleWindow();
@@ -96,14 +109,5 @@ internal static class ConsoleManager
             CloseConsole();
         }
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
-    }
-
-    private static void CloseConsole()
-    {
-        bool isSuccess = FreeConsole(); // Close the console without closing the main app.
-        if (isSuccess)
-            _logger.Info("Closed log console.");
-        else
-            _logger.Warn("Failed to close log console.");
     }
 }
