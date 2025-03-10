@@ -8,8 +8,7 @@ internal static class ConsoleManager
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    private static extern bool SetConsoleTitle(string lpConsoleTitle);
+    #region Windows integration
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool AllocConsole();
@@ -25,6 +24,22 @@ internal static class ConsoleManager
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool SetConsoleCtrlHandler(CtrlTypesHandler handler, bool add);
+
+    private delegate bool CtrlTypesHandler(CtrlTypes ctrlType);
+
+    private enum CtrlTypes
+    {
+        CTRL_C_EVENT = 0,       // Event raised when the user presses Ctrl+C.
+        CTRL_BREAK_EVENT = 1,   // Event raised when the user presses Ctrl+Break.
+        CTRL_CLOSE_EVENT = 2,   // Event raised when the user closes the console window.
+        CTRL_LOGOFF_EVENT = 5,  // Event raised when the user logs off (only received by services).
+        CTRL_SHUTDOWN_EVENT = 6 // Event raised when the system is shutting down (only received by services).
+    }
+
+    #endregion
 
 
 
@@ -45,19 +60,28 @@ internal static class ConsoleManager
             return;
         }
 
-        SetConsoleTitle("J-Rdp log");
+        Console.Title = "J-Rdp log";
         DisableConsoleCloseButton();
-        RegisterCloseEvents();
         RedirectConsoleOutput();
+        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
 
         Console.WriteLine("""
-            *****************************************************
-            Press ctrl+C to safely close the log console window.
-            Closing it from Windows will also close the main app.
-            *****************************************************
+            *****************************************************************
+            Use the tray menu or press ctrl+C to safely close the log window.
+            Closing it directly through Windows will also close the main app.
+            *****************************************************************
 
             """);
-        _logger.Info("Opened console.");
+        _logger.Info("Opened log console.");
+    }
+
+    private static void CloseConsole()
+    {
+        bool isSuccess = FreeConsole(); // Close the console without closing the main app.
+        if (isSuccess)
+            _logger.Info("Closed log console.");
+        else
+            _logger.Warn("Failed to close log console.");
     }
 
     private static void DisableConsoleCloseButton()
@@ -68,17 +92,6 @@ internal static class ConsoleManager
             DeleteMenu(systemMenu, 0xF060, 0x00000000);
     }
 
-    private static void RegisterCloseEvents()
-    {
-        Console.CancelKeyPress += OnCancelKeyPress;
-    }
-
-    private static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs eventArgs)
-    {
-        eventArgs.Cancel = true; // Prevents the console from closing and taking the main app with it.
-        CloseConsole();
-    }
-
     private static void RedirectConsoleOutput()
     {
         var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
@@ -86,12 +99,15 @@ internal static class ConsoleManager
         Console.SetError(consoleOutput);
     }
 
-    private static void CloseConsole()
+    private static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
     {
-        bool isSuccess = FreeConsole(); // Close the console without closing the main app.
-        if (isSuccess)
-            _logger.Info("Closed console.");
-        else
-            _logger.Warn("Failed to close console.");
+        if (ctrlType is CtrlTypes.CTRL_C_EVENT
+                     or CtrlTypes.CTRL_BREAK_EVENT
+                     or CtrlTypes.CTRL_CLOSE_EVENT)
+        {
+            // TODO: Update the menu item.
+            CloseConsole();
+        }
+        return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
     }
 }
