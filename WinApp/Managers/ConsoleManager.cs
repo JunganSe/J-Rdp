@@ -8,9 +8,6 @@ internal static class ConsoleManager
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    private static extern bool SetConsoleTitle(string lpConsoleTitle);
-
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool AllocConsole();
 
@@ -59,10 +56,10 @@ internal static class ConsoleManager
             return;
         }
 
-        SetConsoleTitle("J-Rdp log");
+        Console.Title = "J-Rdp log";
         DisableConsoleCloseButton();
-        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
         RedirectConsoleOutput();
+        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
 
         Console.WriteLine("""
             *****************************************************************
