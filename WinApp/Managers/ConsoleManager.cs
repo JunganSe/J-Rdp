@@ -61,7 +61,7 @@ internal static class ConsoleManager
 
         SetConsoleTitle("J-Rdp log");
         DisableConsoleCloseButton();
-        RegisterCloseEvents();
+        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
         RedirectConsoleOutput();
 
         Console.WriteLine("""
@@ -80,18 +80,6 @@ internal static class ConsoleManager
         nint systemMenu = GetSystemMenu(consoleWindow, false);
         if (systemMenu != nint.Zero)
             DeleteMenu(systemMenu, 0xF060, 0x00000000);
-    }
-
-    private static void RegisterCloseEvents()
-    {
-        Console.CancelKeyPress += OnCancelKeyPress;
-        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
-    }
-
-    private static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs eventArgs)
-    {
-        eventArgs.Cancel = true; // Prevents the console from closing and taking the main app with it.
-        CloseConsole();
     }
 
     private static void RedirectConsoleOutput()
