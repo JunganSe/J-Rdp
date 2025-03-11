@@ -86,7 +86,6 @@ internal static class ConsoleManager
 
     private static void SetConsoleTitle()
     {
-
         var type = typeof(WinApp.Program);
         string name = AssemblyHelper.GetAssemblyName(type);
         string version = AssemblyHelper.GetAssemblyVersion(type);
