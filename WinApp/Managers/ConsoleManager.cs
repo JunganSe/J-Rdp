@@ -1,4 +1,4 @@
-﻿using NLog;
+﻿using Auxiliary;
 using System.Runtime.InteropServices;
 
 namespace WinApp.Managers;
@@ -6,7 +6,7 @@ namespace WinApp.Managers;
 /// <summary> Windows exclusive manager for opening and closing a console log window </summary>
 internal static class ConsoleManager
 {
-    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     #region Windows integration
 
@@ -60,7 +60,7 @@ internal static class ConsoleManager
             return;
         }
 
-        Console.Title = "J-Rdp log";
+        SetConsoleTitle();
         DisableConsoleCloseButton();
         RedirectConsoleOutput();
         SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
@@ -82,6 +82,14 @@ internal static class ConsoleManager
             _logger.Info("Closed log console.");
         else
             _logger.Warn("Failed to close log console.");
+    }
+
+    private static void SetConsoleTitle()
+    {
+        var type = typeof(WinApp.Program);
+        string name = AssemblyHelper.GetAssemblyName(type);
+        string version = AssemblyHelper.GetAssemblyVersion(type);
+        Console.Title = $"{name} {version}";
     }
 
     private static void DisableConsoleCloseButton()
