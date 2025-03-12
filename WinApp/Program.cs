@@ -18,7 +18,7 @@ internal static class Program
         _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
         LogManager.SetFileLogging(arguments.LogToFile);
-        ConsoleManager.SetVisibility(arguments.ShowConsole);
+        new ConsoleManager().SetVisibility(arguments.ShowConsole);
 
         if (IsProgramRunning())
         {
