@@ -29,19 +29,20 @@ internal class TrayManager
 
     private ContextMenuStrip GetContextMenu()
     {
+        if (_callback_ToggleConsole is null)
+            throw new InvalidOperationException("Can not create menu item for toggling console. Callback is missing.");
+
         var contextMenu = new ContextMenuStrip()
         {
             AutoClose = false,
         };
 
-        if (_callback_ToggleConsole is null)
-            throw new InvalidOperationException("Can not create menu item for toggling console. Callback is missing.");
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole(_callback_ToggleConsole));
-
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
 
+        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
         contextMenu.Items.Add(new ToolStripSeparator());
+
         contextMenu.Items.Add(TrayMenuItems.Exit);
         contextMenu.Items.Add(TrayMenuItems.Close);
 
