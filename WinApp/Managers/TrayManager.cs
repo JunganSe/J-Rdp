@@ -7,8 +7,12 @@ namespace WinApp.Managers;
 internal class TrayManager
 {
     private NotifyIcon? _notifyIcon;
+    private Action<bool>? _callback_ToggleConsole;
     private ProfileHandler? _callback_ProfilesActiveStateChanged;
 
+    public void SetCallback_ToggleConsole(Action<bool> callback) =>
+        _callback_ToggleConsole = callback;
+    
     public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
         _callback_ProfilesActiveStateChanged = callback;
 
@@ -30,7 +34,12 @@ internal class TrayManager
             AutoClose = false,
         };
 
-        contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
+        if (_callback_ToggleConsole is null)
+            throw new InvalidOperationException("Can not create menu item for togling console. Callback is missing.");
+        var menuItem_ToggleConsole = TrayMenuItems.ToggleConsole;
+        menuItem_ToggleConsole.Click += TrayMenuEvents.OnClick_ToggleConsole(_callback_ToggleConsole);
+        contextMenu.Items.Add(menuItem_ToggleConsole);
+
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
         contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
 

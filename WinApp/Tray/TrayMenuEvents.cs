@@ -7,10 +7,15 @@ namespace WinApp.Tray;
 
 internal static class TrayMenuEvents
 {
-    public static void OnClick_ToggleConsole(object? sender, EventArgs e)
+    public static EventHandler OnClick_ToggleConsole(Action<bool> callback_ToggleConsole)
     {
-        if (sender is ToolStripMenuItem menuItem)
-            ConsoleManager.SetVisibility(menuItem.Checked);
+        return (object? sender, EventArgs e) =>
+        {
+            if (sender is not ToolStripMenuItem menuItem)
+                return;
+
+            callback_ToggleConsole.Invoke(menuItem.Checked);
+        };
     }
 
     public static void OnClick_ToggleLogToFile(object? sender, EventArgs e)

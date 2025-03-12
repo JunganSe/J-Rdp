@@ -4,8 +4,9 @@ namespace WinApp.Tray;
 
 internal static class TrayMenuItems
 {
-    public static ToolStripMenuItem ToggleConsole = new(null, null, TrayMenuEvents.OnClick_ToggleConsole)
+    public static ToolStripMenuItem ToggleConsole = new()
     {
+        // Note: Click event is set externally.
         Name = TrayConstants.ItemNames.ToggleConsole,
         Text = TrayConstants.ItemTexts.ToggleConsole,
         CheckOnClick = true,
