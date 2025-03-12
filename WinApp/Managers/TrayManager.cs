@@ -30,7 +30,7 @@ internal class TrayManager
     private ContextMenuStrip GetContextMenu()
     {
         if (_callback_ToggleConsole is null)
-            throw new InvalidOperationException("Can not create menu item for toggling console. Callback is missing.");
+            throw new InvalidOperationException("Can not create context menu. Callback is missing.");
 
         var contextMenu = new ContextMenuStrip()
         {
@@ -77,7 +77,7 @@ internal class TrayManager
     private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
     {
         if (_callback_ProfilesActiveStateChanged is null)
-            throw new InvalidOperationException("Can not insert profile menu items. Callback is missing.");
+            throw new InvalidOperationException("Can not insert profile menu items into context menu. Callback is missing.");
 
         int insertIndex = GetProfilesInsertIndex(menuItems);
 
