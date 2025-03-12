@@ -4,13 +4,17 @@ namespace WinApp.Tray;
 
 internal static class TrayMenuItems
 {
-    public static ToolStripMenuItem ToggleConsole = new()
+    public static ToolStripMenuItem ToggleConsole(Action<bool> callback)
     {
-        // Note: Click event is set externally.
-        Name = TrayConstants.ItemNames.ToggleConsole,
-        Text = TrayConstants.ItemTexts.ToggleConsole,
-        CheckOnClick = true,
-    };
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.ToggleConsole,
+            Text = TrayConstants.ItemTexts.ToggleConsole,
+            CheckOnClick = true,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_ToggleConsole(callback);
+        return menuItem;
+    }
 
     public static ToolStripMenuItem ToggleLogToFile = new(null, null, TrayMenuEvents.OnClick_ToggleLogToFile)
     {
