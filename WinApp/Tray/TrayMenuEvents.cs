@@ -1,7 +1,6 @@
 ﻿using Auxiliary;
 using Core.Delegates;
 using Core.Models;
-using WinApp.Managers;
 
 namespace WinApp.Tray;
 

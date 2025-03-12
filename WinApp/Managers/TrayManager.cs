@@ -12,7 +12,7 @@ internal class TrayManager
 
     public void SetCallback_ToggleConsole(Action<bool> callback) =>
         _callback_ToggleConsole = callback;
-    
+
     public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
         _callback_ProfilesActiveStateChanged = callback;
 
