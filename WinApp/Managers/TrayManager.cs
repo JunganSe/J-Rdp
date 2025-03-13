@@ -25,11 +25,11 @@ internal class TrayManager
             Text = "J-Rdp",
             Icon = SystemIcons.Application,
             Visible = true,
-            ContextMenuStrip = GetContextMenu(),
+            ContextMenuStrip = CreateContextMenu(),
         };
     }
 
-    private ContextMenuStrip GetContextMenu()
+    private ContextMenuStrip CreateContextMenu()
     {
         if (_callback_ToggleConsole is null)
             throw new InvalidOperationException("Can not create context menu. Callback is missing.");
