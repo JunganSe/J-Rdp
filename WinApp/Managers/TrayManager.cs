@@ -53,18 +53,19 @@ internal class TrayManager
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
-        if (_notifyIcon?.ContextMenuStrip?.Items == null)
+        var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
+        if (menuItems is null)
         {
             _logger.Error("Can not update profiles in context menu. Context menu is missing.");
             return;
         }
 
-        RemoveAllProfileMenuItems(_notifyIcon.ContextMenuStrip.Items);
+        RemoveAllProfileMenuItems(menuItems);
 
         if (profileInfos.Count > 0)
-            InsertProfileMenuItems(_notifyIcon.ContextMenuStrip.Items, profileInfos);
+            InsertProfileMenuItems(menuItems, profileInfos);
         else
-            InsertPlaceholderProfileMenuItem(_notifyIcon.ContextMenuStrip.Items);
+            InsertPlaceholderProfileMenuItem(menuItems);
     }
 
     private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
