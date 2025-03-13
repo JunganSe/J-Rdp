@@ -29,10 +29,13 @@ internal class TrayManager
         };
     }
 
-    private ContextMenuStrip CreateContextMenu()
+    private ContextMenuStrip? CreateContextMenu()
     {
         if (_callback_ToggleConsole is null)
-            throw new InvalidOperationException("Can not create context menu. Callback is missing.");
+        {
+            _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
+            return null;
+        }
 
         var contextMenu = new ContextMenuStrip() { AutoClose = false, };
 
