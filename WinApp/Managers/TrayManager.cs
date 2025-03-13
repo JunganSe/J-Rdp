@@ -34,10 +34,7 @@ internal class TrayManager
         if (_callback_ToggleConsole is null)
             throw new InvalidOperationException("Can not create context menu. Callback is missing.");
 
-        var contextMenu = new ContextMenuStrip()
-        {
-            AutoClose = false,
-        };
+        var contextMenu = new ContextMenuStrip() { AutoClose = false, };
 
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole(_callback_ToggleConsole));
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
