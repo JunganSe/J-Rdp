@@ -1,11 +1,13 @@
 ﻿using Core.Delegates;
 using Core.Models;
+using NLog;
 using WinApp.Tray;
 
 namespace WinApp.Managers;
 
 internal class TrayManager
 {
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private NotifyIcon? _notifyIcon;
     private Action<bool>? _callback_ToggleConsole;
     private ProfileHandler? _callback_ProfilesActiveStateChanged;
@@ -52,7 +54,10 @@ internal class TrayManager
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         if (_notifyIcon?.ContextMenuStrip?.Items == null)
+        {
+            _logger.Error("Can not update profiles in context menu. Context menu is missing.");
             return;
+        }
 
         RemoveAllProfileMenuItems(_notifyIcon.ContextMenuStrip.Items);
 
