@@ -19,12 +19,6 @@ internal class Controller
         _coreManager.Run();
     }
 
-    public void InitializeCore()
-    {
-        _coreManager.Initialize();
-        _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
-    }
-
     public void InitializeTray(Arguments arguments)
     {
         _trayManager.SetCallback_ToggleConsole(_consoleManager.SetVisibility);
@@ -32,6 +26,12 @@ internal class Controller
         _trayManager.InitializeNotifyIconWithContextMenu();
         _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
         _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
+    }
+
+    public void InitializeCore()
+    {
+        _coreManager.Initialize();
+        _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
     }
 
     public void DisposeTray()
