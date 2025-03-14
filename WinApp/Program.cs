@@ -29,17 +29,17 @@ internal static class Program
         RunGuiInCurrentThread();
     }
 
+    private static void RegisterCloseEvents()
+    {
+        Application.ApplicationExit += OnExit;
+        AppDomain.CurrentDomain.ProcessExit += OnExit;
+    }
+
     private static bool IsProgramRunning()
     {
         const string mutexName = "J-Rdp.UniqueInstance";
         _mutex = new Mutex(true, mutexName, out bool isNewInstance);
         return !isNewInstance;
-    }
-
-    private static void RegisterCloseEvents()
-    {
-        Application.ApplicationExit += OnExit;
-        AppDomain.CurrentDomain.ProcessExit += OnExit;
     }
 
     private static void OnExit(object? sender, EventArgs eventArgs)
