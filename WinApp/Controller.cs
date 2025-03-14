@@ -5,9 +5,9 @@ namespace WinApp;
 
 internal class Controller
 {
-    private readonly CoreManager _coreManager = new();
-    private readonly TrayManager _trayManager = new();
     private readonly ConsoleManager _consoleManager = new();
+    private readonly TrayManager _trayManager = new();
+    private readonly CoreManager _coreManager = new();
 
     public void Run(Arguments arguments)
     {
