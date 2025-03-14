@@ -15,8 +15,7 @@ internal static class Program
         RegisterCloseEvents();
         LogManager.Initialize();
 
-        _logger.Trace("Initializing application...");
-        var arguments = Arguments.Parse(args);
+        _logger.Info("***** Starting application. *****");
 
         if (IsProgramRunning())
         {
@@ -24,7 +23,7 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        _logger.Info("***** Starting application. *****");
+        var arguments = Arguments.Parse(args);
         RunCoreInSeparateThread(arguments);
         RunGuiInCurrentThread();
     }
