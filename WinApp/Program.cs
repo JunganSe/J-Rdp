@@ -17,8 +17,6 @@ internal static class Program
 
         _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
-        LogManager.SetFileLogging(arguments.LogToFile);
-        new ConsoleManager().SetVisibility(arguments.ShowConsole);
 
         if (IsProgramRunning())
         {
@@ -27,9 +25,7 @@ internal static class Program
         }
 
         _logger.Info("***** Starting application. *****");
-        _controller.InitializeTray(arguments);
-        _controller.InitializeCore();
-        RunCoreInSeparateThread();
+        RunCoreInSeparateThread(arguments);
         RunGuiInCurrentThread();
     }
 
@@ -53,9 +49,9 @@ internal static class Program
         _controller.DisposeTray();
     }
 
-    private static void RunCoreInSeparateThread()
+    private static void RunCoreInSeparateThread(Arguments arguments)
     {
-        Task.Run(_controller.Run);
+        Task.Run(() => _controller.Run(arguments));
     }
 
     private static void RunGuiInCurrentThread()

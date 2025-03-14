@@ -1,4 +1,5 @@
-﻿using WinApp.Managers;
+﻿using Auxiliary;
+using WinApp.Managers;
 
 namespace WinApp;
 
@@ -8,8 +9,13 @@ internal class Controller
     private readonly TrayManager _trayManager = new();
     private readonly ConsoleManager _consoleManager = new();
 
-    public void Run()
+    public void Run(Arguments arguments)
     {
+        LogManager.SetFileLogging(arguments.LogToFile);
+        _consoleManager.SetVisibility(arguments.ShowConsole);
+        InitializeTray(arguments);
+        InitializeCore();
+
         _coreManager.Run();
     }
 
