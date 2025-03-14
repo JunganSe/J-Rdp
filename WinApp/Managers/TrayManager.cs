@@ -112,11 +112,11 @@ internal class TrayManager
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
         1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 
-    public void SetMenuState_ShowConsole(bool isChecked) =>
-        SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, isChecked);
+    public void SetMenuState_ShowConsole(bool showConsole) =>
+        SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, showConsole);
 
-    public void SetMenuState_LogToFile(bool isChecked) =>
-        SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, isChecked);
+    public void SetMenuState_LogToFile(bool logToFile) =>
+        SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, logToFile);
 
     private void SetMenuCheckedState(string itemName, bool isChecked)
     {
