@@ -17,7 +17,6 @@ internal class Controller
 
     private void Initialize(Arguments arguments)
     {
-        LogManager.SetFileLogging(arguments.LogToFile);
         _consoleManager.SetVisibility(arguments.ShowConsole);
         InitializeTray(arguments);
         InitializeCore();

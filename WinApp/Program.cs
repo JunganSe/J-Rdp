@@ -13,7 +13,9 @@ internal static class Program
     static void Main(string[] args)
     {
         RegisterCloseEvents();
+        var arguments = Arguments.Parse(args);
         LogManager.Initialize();
+        LogManager.SetFileLogging(arguments.LogToFile);
 
         _logger.Info("***** Starting application. *****");
 
@@ -23,7 +25,6 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        var arguments = Arguments.Parse(args);
         RunCoreInSeparateThread(arguments);
         RunGuiInCurrentThread();
     }
