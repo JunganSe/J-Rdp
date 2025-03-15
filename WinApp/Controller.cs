@@ -11,12 +11,16 @@ internal class Controller
 
     public void Run(Arguments arguments)
     {
+        Initialize(arguments);
+        _coreManager.Run();
+    }
+
+    private void Initialize(Arguments arguments)
+    {
         LogManager.SetFileLogging(arguments.LogToFile);
         _consoleManager.SetVisibility(arguments.ShowConsole);
         InitializeTray(arguments);
         InitializeCore();
-
-        _coreManager.Run();
     }
 
     public void InitializeTray(Arguments arguments)
