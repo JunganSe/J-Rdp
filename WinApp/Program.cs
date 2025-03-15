@@ -34,18 +34,18 @@ internal static class Program
         AppDomain.CurrentDomain.ProcessExit += OnExit;
     }
 
-    private static bool IsProgramRunning()
-    {
-        const string mutexName = "J-Rdp.UniqueInstance";
-        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
-        return !isNewInstance;
-    }
-
     private static void OnExit(object? sender, EventArgs eventArgs)
     {
         _logger.Info("***** Closing application. *****");
         _mutex?.Dispose();
         _controller.DisposeTray();
+    }
+
+    private static bool IsProgramRunning()
+    {
+        const string mutexName = "J-Rdp.UniqueInstance";
+        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
+        return !isNewInstance;
     }
 
     private static void RunCoreInSeparateThread(Arguments arguments)
