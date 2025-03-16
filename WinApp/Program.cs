@@ -1,5 +1,4 @@
 using Auxiliary;
-using WinApp.Managers;
 
 namespace WinApp;
 
@@ -25,8 +24,8 @@ internal static class Program
             Environment.Exit(0);
         }
 
-        RunCoreInSeparateThread(arguments);
-        RunGuiInCurrentThread();
+        _controller.Run(arguments);
+        Application.Run();
     }
 
     private static void RegisterCloseEvents()
@@ -47,15 +46,5 @@ internal static class Program
         const string mutexName = "J-Rdp.UniqueInstance";
         _mutex = new Mutex(true, mutexName, out bool isNewInstance);
         return !isNewInstance;
-    }
-
-    private static void RunCoreInSeparateThread(Arguments arguments)
-    {
-        Task.Run(() => _controller.Run(arguments));
-    }
-
-    private static void RunGuiInCurrentThread()
-    {
-        Application.Run();
     }
 }

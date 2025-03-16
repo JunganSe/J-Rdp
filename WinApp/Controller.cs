@@ -12,7 +12,7 @@ internal class Controller
     public void Run(Arguments arguments)
     {
         Initialize(arguments);
-        _coreManager.Run();
+        Task.Run(_coreManager.Run);
     }
 
     private void Initialize(Arguments arguments)
