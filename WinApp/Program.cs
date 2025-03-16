@@ -7,6 +7,7 @@ internal static class Program
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static readonly Controller _controller = new();
     private static Mutex? _mutex;
+    private static bool _isExiting;
 
     [STAThread]
     static void Main(string[] args)
@@ -36,7 +37,11 @@ internal static class Program
 
     private static void OnExit(object? sender, EventArgs eventArgs)
     {
+        if (_isExiting)
+            return;
+
         _logger.Info("***** Closing application. *****");
+        _isExiting = true;
         _mutex?.Dispose();
         _controller.DisposeTray();
     }
