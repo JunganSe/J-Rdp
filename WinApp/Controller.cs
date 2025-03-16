@@ -1,29 +1,40 @@
-﻿using WinApp.Managers;
+﻿using Auxiliary;
+using WinApp.Managers;
 
 namespace WinApp;
 
 internal class Controller
 {
-    private readonly CoreManager _coreManager = new();
+    private readonly ConsoleManager _consoleManager = new();
     private readonly TrayManager _trayManager = new();
+    private readonly CoreManager _coreManager = new();
 
-    public void Run()
+    public void Run(Arguments arguments)
     {
-        _coreManager.Run();
+        Initialize(arguments);
+        Task.Run(_coreManager.Run);
+    }
+
+    private void Initialize(Arguments arguments)
+    {
+        _consoleManager.SetVisibility(arguments.ShowConsole);
+        InitializeTray(arguments);
+        InitializeCore();
+    }
+
+    public void InitializeTray(Arguments arguments)
+    {
+        _trayManager.SetCallback_ToggleConsole(_consoleManager.SetVisibility);
+        _trayManager.SetCallback_ProfilesActiveStateChanged(_coreManager.UpdateProfilesEnabledState);
+        _trayManager.InitializeNotifyIconWithContextMenu();
+        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
+        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
     }
 
     public void InitializeCore()
     {
         _coreManager.Initialize();
         _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
-    }
-
-    public void InitializeTray(Arguments arguments)
-    {
-        _trayManager.SetCallback_ProfilesActiveStateChanged(_coreManager.UpdateProfilesEnabledState);
-        _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
-        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
     }
 
     public void DisposeTray()

@@ -22,6 +22,9 @@ internal class CoreManager
         _controller?.SetCallback_ConfigUpdated(callback);
     }
 
+    /// <summary>
+    /// Tell the core controller to update the profiles enabled state, including in the config file.
+    /// </summary>
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
         _controller?.UpdateProfilesEnabledState(profileInfos);

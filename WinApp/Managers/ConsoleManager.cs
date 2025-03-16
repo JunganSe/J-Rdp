@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 namespace WinApp.Managers;
 
 /// <summary> Windows exclusive manager for opening and closing a console log window </summary>
-internal static class ConsoleManager
+internal class ConsoleManager
 {
-    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     #region Windows integration
 
@@ -43,7 +43,7 @@ internal static class ConsoleManager
 
 
 
-    public static void SetVisibility(bool show)
+    public void SetVisibility(bool show)
     {
         if (show)
             OpenConsole();
@@ -51,7 +51,7 @@ internal static class ConsoleManager
             CloseConsole();
     }
 
-    private static void OpenConsole()
+    private void OpenConsole()
     {
         bool isSuccess = AllocConsole();
         if (!isSuccess)
@@ -75,7 +75,7 @@ internal static class ConsoleManager
         _logger.Info("Opened log console.");
     }
 
-    private static void CloseConsole()
+    private void CloseConsole()
     {
         bool isSuccess = FreeConsole(); // Close the console without closing the main app.
         if (isSuccess)
@@ -84,7 +84,7 @@ internal static class ConsoleManager
             _logger.Warn("Failed to close log console.");
     }
 
-    private static void SetConsoleTitle()
+    private void SetConsoleTitle()
     {
         var type = typeof(WinApp.Program);
         string name = AssemblyHelper.GetAssemblyName(type);
@@ -92,7 +92,7 @@ internal static class ConsoleManager
         Console.Title = $"{name} {version}";
     }
 
-    private static void DisableConsoleCloseButton()
+    private void DisableConsoleCloseButton()
     {
         nint consoleWindow = GetConsoleWindow();
         nint systemMenu = GetSystemMenu(consoleWindow, false);
@@ -100,14 +100,14 @@ internal static class ConsoleManager
             DeleteMenu(systemMenu, 0xF060, 0x00000000);
     }
 
-    private static void RedirectConsoleOutput()
+    private void RedirectConsoleOutput()
     {
         var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
         Console.SetOut(consoleOutput);
         Console.SetError(consoleOutput);
     }
 
-    private static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
+    private bool ConsoleCtrlCheck(CtrlTypes ctrlType)
     {
         if (ctrlType is CtrlTypes.CTRL_C_EVENT
                      or CtrlTypes.CTRL_BREAK_EVENT

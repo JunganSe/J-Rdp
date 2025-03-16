@@ -1,16 +1,21 @@
 ﻿using Auxiliary;
 using Core.Delegates;
 using Core.Models;
-using WinApp.Managers;
 
 namespace WinApp.Tray;
 
 internal static class TrayMenuEvents
 {
-    public static void OnClick_ToggleConsole(object? sender, EventArgs e)
+    public static EventHandler OnClick_ToggleConsole(Action<bool> callback)
     {
-        if (sender is ToolStripMenuItem menuItem)
-            ConsoleManager.SetVisibility(menuItem.Checked);
+        return (object? sender, EventArgs e) =>
+        {
+            if (sender is not ToolStripMenuItem menuItem)
+                return;
+
+            bool showConsole = menuItem.Checked;
+            callback.Invoke(showConsole);
+        };
     }
 
     public static void OnClick_ToggleLogToFile(object? sender, EventArgs e)

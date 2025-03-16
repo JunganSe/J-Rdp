@@ -1,5 +1,4 @@
 using Auxiliary;
-using WinApp.Managers;
 
 namespace WinApp;
 
@@ -8,36 +7,26 @@ internal static class Program
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static readonly Controller _controller = new();
     private static Mutex? _mutex;
+    private static bool _isExiting;
 
     [STAThread]
     static void Main(string[] args)
     {
         RegisterCloseEvents();
-        LogManager.Initialize();
-
-        _logger.Trace("Initializing application...");
         var arguments = Arguments.Parse(args);
+        LogManager.Initialize();
         LogManager.SetFileLogging(arguments.LogToFile);
-        ConsoleManager.SetVisibility(arguments.ShowConsole);
+
+        _logger.Info("***** Starting application. *****");
 
         if (IsProgramRunning())
         {
-            _logger.Warn("An instance of the program is already running. Closing application.");
+            _logger.Warn("An instance is already running. Aborting...");
             Environment.Exit(0);
         }
 
-        _logger.Info("***** Starting application. *****");
-        _controller.InitializeTray(arguments);
-        _controller.InitializeCore();
-        RunCoreInSeparateThread();
-        RunGuiInCurrentThread();
-    }
-
-    private static bool IsProgramRunning()
-    {
-        const string mutexName = "J-Rdp.UniqueInstance";
-        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
-        return !isNewInstance;
+        _controller.Run(arguments);
+        Application.Run();
     }
 
     private static void RegisterCloseEvents()
@@ -48,18 +37,19 @@ internal static class Program
 
     private static void OnExit(object? sender, EventArgs eventArgs)
     {
+        if (_isExiting)
+            return;
+
         _logger.Info("***** Closing application. *****");
+        _isExiting = true;
         _mutex?.Dispose();
         _controller.DisposeTray();
     }
 
-    private static void RunCoreInSeparateThread()
+    private static bool IsProgramRunning()
     {
-        Task.Run(_controller.Run);
-    }
-
-    private static void RunGuiInCurrentThread()
-    {
-        Application.Run();
+        const string mutexName = "J-Rdp.UniqueInstance";
+        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
+        return !isNewInstance;
     }
 }

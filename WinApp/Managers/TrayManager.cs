@@ -1,13 +1,19 @@
 ﻿using Core.Delegates;
 using Core.Models;
+using NLog;
 using WinApp.Tray;
 
 namespace WinApp.Managers;
 
 internal class TrayManager
 {
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private NotifyIcon? _notifyIcon;
+    private Action<bool>? _callback_ToggleConsole;
     private ProfileHandler? _callback_ProfilesActiveStateChanged;
+
+    public void SetCallback_ToggleConsole(Action<bool> callback) =>
+        _callback_ToggleConsole = callback;
 
     public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
         _callback_ProfilesActiveStateChanged = callback;
@@ -19,22 +25,26 @@ internal class TrayManager
             Text = "J-Rdp",
             Icon = SystemIcons.Application,
             Visible = true,
-            ContextMenuStrip = GetContextMenu(),
+            ContextMenuStrip = CreateContextMenu(),
         };
     }
 
-    private ContextMenuStrip GetContextMenu()
+    private ContextMenuStrip? CreateContextMenu()
     {
-        var contextMenu = new ContextMenuStrip()
+        if (_callback_ToggleConsole is null)
         {
-            AutoClose = false,
-        };
+            _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
+            return null;
+        }
 
-        contextMenu.Items.Add(TrayMenuItems.ToggleConsole);
+        var contextMenu = new ContextMenuStrip() { AutoClose = false, };
+
+        contextMenu.Items.Add(TrayMenuItems.ToggleConsole(_callback_ToggleConsole));
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
 
+        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
         contextMenu.Items.Add(new ToolStripSeparator());
+
         contextMenu.Items.Add(TrayMenuItems.Exit);
         contextMenu.Items.Add(TrayMenuItems.Close);
 
@@ -43,15 +53,19 @@ internal class TrayManager
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
-        if (_notifyIcon?.ContextMenuStrip?.Items == null)
+        var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
+        if (menuItems is null)
+        {
+            _logger.Error("Can not update profiles in context menu. Context menu is missing.");
             return;
+        }
 
-        RemoveAllProfileMenuItems(_notifyIcon.ContextMenuStrip.Items);
+        RemoveAllProfileMenuItems(menuItems);
 
         if (profileInfos.Count > 0)
-            InsertProfileMenuItems(_notifyIcon.ContextMenuStrip.Items, profileInfos);
+            InsertProfileMenuItems(menuItems, profileInfos);
         else
-            InsertPlaceholderProfileMenuItem(_notifyIcon.ContextMenuStrip.Items);
+            InsertPlaceholderProfileMenuItem(menuItems);
     }
 
     private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
@@ -69,14 +83,15 @@ internal class TrayManager
     private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
     {
         if (_callback_ProfilesActiveStateChanged is null)
-            throw new InvalidOperationException("Can not insert profile menu items. Callback is missing.");
+        {
+            _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
+            return;
+        }
 
         int insertIndex = GetProfilesInsertIndex(menuItems);
-
         foreach (var profileInfo in profileInfos)
         {
-            var menuItem = TrayMenuItems.Profile(profileInfo);
-            menuItem.Click += TrayMenuEvents.OnClick_Profile(_callback_ProfilesActiveStateChanged);
+            var menuItem = TrayMenuItems.Profile(profileInfo, _callback_ProfilesActiveStateChanged);
             menuItems.Insert(insertIndex++, menuItem);
         }
     }
@@ -97,11 +112,11 @@ internal class TrayManager
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
         1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 
-    public void SetMenuState_ShowConsole(bool isChecked) =>
-        SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, isChecked);
+    public void SetMenuState_ShowConsole(bool showConsole) =>
+        SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, showConsole);
 
-    public void SetMenuState_LogToFile(bool isChecked) =>
-        SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, isChecked);
+    public void SetMenuState_LogToFile(bool logToFile) =>
+        SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, logToFile);
 
     private void SetMenuCheckedState(string itemName, bool isChecked)
     {
