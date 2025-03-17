@@ -69,7 +69,7 @@ internal class ConfigManager
             _callback_ConfigUpdated.Invoke(profileInfos); // Invoke on current thread.
     }
 
-    public void UpdateConfigFileProfiles(List<ProfileInfo> profileInfos)
+    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
         var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
         ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
