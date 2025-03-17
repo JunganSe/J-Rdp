@@ -39,9 +39,7 @@ public class Controller
 
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
-        _configManager.UpdateConfigFileProfiles(profileInfos);
-        _configManager.UpdateConfigFromFile();
-        _configManager.InvokeConfigUpdatedCallback();
+        _configManager.UpdateProfilesEnabledState(profileInfos);
     }
 
 

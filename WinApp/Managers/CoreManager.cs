@@ -17,13 +17,16 @@ internal class CoreManager
         _controller?.Run();
     }
 
+    /// <summary>
+    /// Tell the core controller which method should be called after the config file has been updated.
+    /// </summary>
     public void SetCallback_ConfigUpdated(ProfileHandler callback)
     {
         _controller?.SetCallback_ConfigUpdated(callback);
     }
 
     /// <summary>
-    /// Tell the core controller to update the profiles enabled state, including in the config file.
+    /// Tell the core controller to update the profiles enabled state (in config file and memory).
     /// </summary>
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
