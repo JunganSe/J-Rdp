@@ -36,6 +36,8 @@ internal class ConfigWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
+        // Debounce to prevent multiple events from firing during the same updating of the file.
+        // Only run the handler method if the event hasn't been fired in x ms.
         _debounceTimer?.Dispose();
         _debounceTimer = new Timer(_ => HandleConfigFileChanged(args), null,
             FileConstants.FileChanged_DebounceDelay, Timeout.Infinite);
