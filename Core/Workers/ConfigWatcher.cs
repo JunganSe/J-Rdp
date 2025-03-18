@@ -1,4 +1,5 @@
-﻿using Core.Helpers;
+﻿using Core.Constants;
+using Core.Helpers;
 using NLog;
 
 namespace Core.Workers;
@@ -7,6 +8,7 @@ internal class ConfigWatcher : FileSystemWatcher
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly Action _callback;
+    private Timer? _debounceTimer;
 
     public ConfigWatcher(string path, string filter, Action callback)
     {
@@ -34,10 +36,22 @@ internal class ConfigWatcher : FileSystemWatcher
         if (sender != this)
             return;
 
+        // Debounce to prevent multiple events from firing during the same updating of the file.
+        // Only run the handler method if the event hasn't been fired in x ms.
+        _debounceTimer?.Dispose();
+        _debounceTimer = new Timer(_ => HandleConfigFileChanged(args), null,
+            FileConstants.FileChanged_DebounceDelay, Timeout.Infinite);
+    }
+
+    private void HandleConfigFileChanged(FileSystemEventArgs args)
+    {
         string eventType = args.ChangeType.ToString().ToLower();
         _logger.Info($"Config file {eventType}.");
 
         _callback.Invoke();
+
+        _debounceTimer?.Dispose();
+        _debounceTimer = null;
     }
 
     private void OnRenamed(object sender, FileSystemEventArgs args)
