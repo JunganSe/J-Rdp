@@ -51,10 +51,17 @@ internal static class TrayMenuEvents
             var profileInfos = GetProfileInfosFromMenuItems(menuItem.Owner.Items);
 
             bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
-            if (!isCtrlHeld && !profileInfo.Enabled)
+            if (isCtrlHeld)
+            {
+                menuItem.Checked = !menuItem.Checked;
+                profileInfo.Enabled = menuItem.Checked;
+            }
+            else
+            {
                 profileInfos.ForEach(pi => pi.Enabled = false);
-
-            profileInfo.Enabled = menuItem.Checked;
+                profileInfo.Enabled = true;
+                menuItem.Checked = true;
+            }
 
             callback.Invoke(profileInfos);
         };
