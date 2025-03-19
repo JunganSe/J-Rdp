@@ -53,11 +53,13 @@ internal static class TrayMenuEvents
             bool isCtrlHeld = (Control.ModifierKeys & Keys.Control) == Keys.Control;
             if (isCtrlHeld)
             {
+                // Toggle the clicked profile.
                 menuItem.Checked = !menuItem.Checked;
                 profileInfo.Enabled = menuItem.Checked;
             }
             else
             {
+                // Enable the clicked profile and disable the others.
                 profileInfos.ForEach(pi => pi.Enabled = false);
                 profileInfo.Enabled = true;
                 menuItem.Checked = true;
