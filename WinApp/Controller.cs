@@ -11,8 +11,8 @@ internal class Controller
 
     public void Run(Arguments arguments)
     {
-        Initialize(arguments);
-        Task.Run(_coreManager.Run);
+        Initialize(arguments); // Initialize on the current thread.
+        Task.Run(_coreManager.Run); // Run CoreManager on a new thread.
     }
 
     private void Initialize(Arguments arguments)
