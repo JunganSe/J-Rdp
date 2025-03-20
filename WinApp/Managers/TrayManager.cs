@@ -123,6 +123,13 @@ internal class TrayManager
         if (_notifyIcon?.ContextMenuStrip?.Items == null)
             return;
 
+        if (_notifyIcon.ContextMenuStrip.InvokeRequired)
+        {
+            // Call this method from the UI thread instead.
+            _notifyIcon.ContextMenuStrip.Invoke(() => SetMenuCheckedState(itemName, isChecked));
+            return;
+        }
+
         var menuItem = _notifyIcon.ContextMenuStrip.Items
             .Find(itemName, true)
             .OfType<ToolStripMenuItem>()
