@@ -7,6 +7,7 @@ namespace WinApp.Managers;
 internal class ConsoleManager
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private Action? _callback_ConsoleClosed;
 
     #region Windows integration
 
@@ -42,6 +43,9 @@ internal class ConsoleManager
     #endregion
 
 
+
+    public void SetCallback_ConsoleClosed(Action callback) =>
+        _callback_ConsoleClosed = callback;
 
     public void SetVisibility(bool show)
     {
@@ -79,7 +83,10 @@ internal class ConsoleManager
     {
         bool isSuccess = FreeConsole(); // Close the console without closing the main app.
         if (isSuccess)
+        {
             _logger.Info("Closed log console.");
+            _callback_ConsoleClosed?.Invoke();
+        }
         else
             _logger.Warn("Failed to close log console.");
     }
@@ -113,7 +120,6 @@ internal class ConsoleManager
                      or CtrlTypes.CTRL_BREAK_EVENT
                      or CtrlTypes.CTRL_CLOSE_EVENT)
         {
-            // TODO: Update the menu item.
             CloseConsole();
         }
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).

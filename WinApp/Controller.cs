@@ -17,6 +17,7 @@ internal class Controller
 
     private void Initialize(Arguments arguments)
     {
+        _consoleManager.SetCallback_ConsoleClosed(() => _trayManager.SetMenuState_ShowConsole(false));
         _consoleManager.SetVisibility(arguments.ShowConsole);
         InitializeTray(arguments);
         InitializeCore();
