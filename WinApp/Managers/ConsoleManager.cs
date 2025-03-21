@@ -68,14 +68,8 @@ internal class ConsoleManager
         DisableConsoleCloseButton();
         RedirectConsoleOutput();
         SetControlHandler();
+        PrintInfoMessage();
 
-        Console.WriteLine("""
-            *****************************************************************
-            Use the tray menu or press ctrl+C to safely close the log window.
-            Closing it directly through Windows will also close the main app.
-            *****************************************************************
-
-            """);
         _logger.Info("Opened log console.");
     }
 
@@ -164,5 +158,16 @@ internal class ConsoleManager
             CloseConsole();
         }
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
+    }
+
+    private void PrintInfoMessage()
+    {
+        Console.WriteLine("""
+            *****************************************************************
+            Use the tray menu or press ctrl+C to safely close the log window.
+            Closing it directly through Windows will also close the main app.
+            *****************************************************************
+
+            """);
     }
 }
