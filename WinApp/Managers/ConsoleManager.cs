@@ -57,19 +57,12 @@ internal class ConsoleManager
 
     private void OpenConsole()
     {
-        bool isSuccess = AllocConsole();
-        if (!isSuccess)
-        {
-            _logger.Error("Error opening console. Allocation failed.");
-            return;
-        }
-
+        AllocateConsole();
         SetConsoleTitle();
         DisableConsoleCloseButton();
         RedirectConsoleOutput();
         SetControlHandler();
         PrintInfoMessage();
-
         _logger.Info("Opened log console.");
     }
 
@@ -90,6 +83,22 @@ internal class ConsoleManager
         {
             _logger.Warn(ex, "Error closing console.");
         }
+    }
+
+    private void AllocateConsole()
+    {
+        string errorMessage = "Error opening console. Allocation failed.";
+        try
+        {
+            bool isSuccess = AllocConsole();
+            if (!isSuccess)
+                _logger.Error(errorMessage);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, errorMessage);
+        }
+        
     }
 
     private void SetConsoleTitle()
