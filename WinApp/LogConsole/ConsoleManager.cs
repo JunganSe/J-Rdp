@@ -1,7 +1,7 @@
 ﻿using Auxiliary;
 using System.Runtime.InteropServices;
 
-namespace WinApp.Managers;
+namespace WinApp.LogConsole;
 
 /// <summary> Windows exclusive manager for opening and closing a console log window </summary>
 internal class ConsoleManager
