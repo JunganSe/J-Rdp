@@ -1,10 +1,9 @@
 ﻿using Auxiliary;
 using System.Runtime.InteropServices;
 
-namespace WinApp.Managers;
+namespace WinApp.LogConsole;
 
-/// <summary> Windows exclusive manager for opening and closing a console log window </summary>
-internal class ConsoleManager
+internal class ConsoleWorker
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private Action? _callback_ConsoleClosed;
@@ -47,45 +46,7 @@ internal class ConsoleManager
     public void SetCallback_ConsoleClosed(Action callback) =>
         _callback_ConsoleClosed = callback;
 
-    public void SetVisibility(bool show)
-    {
-        if (show)
-            OpenConsole();
-        else
-            CloseConsole();
-    }
-
-    private void OpenConsole()
-    {
-        AllocateConsole();
-        SetConsoleTitle();
-        DisableConsoleCloseButton();
-        RedirectConsoleOutput();
-        SetControlHandler();
-        PrintInfoMessage();
-        _logger.Info("Opened log console.");
-    }
-
-    private void CloseConsole()
-    {
-        try
-        {
-            bool isSuccess = FreeConsole(); // Close the console without closing the main app.
-            if (isSuccess)
-            {
-                _logger.Info("Closed log console.");
-                _callback_ConsoleClosed?.Invoke();
-            }
-            else
-                _logger.Warn("Failed to close log console.");
-        }
-        catch (Exception ex)
-        {
-            _logger.Warn(ex, "Error closing console.");
-        }
-    }
-
-    private void AllocateConsole()
+    public void AllocateConsole()
     {
         string errorMessage = "Error opening console. Allocation failed.";
         try
@@ -98,10 +59,9 @@ internal class ConsoleManager
         {
             _logger.Error(ex, errorMessage);
         }
-        
     }
 
-    private void SetConsoleTitle()
+    public void SetConsoleTitle()
     {
         try
         {
@@ -116,7 +76,7 @@ internal class ConsoleManager
         }
     }
 
-    private void DisableConsoleCloseButton()
+    public void DisableConsoleCloseButton()
     {
         try
         {
@@ -131,11 +91,12 @@ internal class ConsoleManager
         }
     }
 
-    private void RedirectConsoleOutput()
+    public void RedirectConsoleOutput()
     {
         try
         {
-            var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+            var consoleStream = Console.OpenStandardOutput();
+            var consoleOutput = new StreamWriter(consoleStream) { AutoFlush = true };
             Console.SetOut(consoleOutput);
             Console.SetError(consoleOutput);
         }
@@ -145,7 +106,7 @@ internal class ConsoleManager
         }
     }
 
-    private void SetControlHandler()
+    public void SetControlHandler()
     {
         try
         {
@@ -169,7 +130,7 @@ internal class ConsoleManager
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
     }
 
-    private void PrintInfoMessage()
+    public void PrintInfoMessage()
     {
         Console.WriteLine("""
             *****************************************************************
@@ -178,5 +139,24 @@ internal class ConsoleManager
             *****************************************************************
 
             """);
+    }
+
+    public void CloseConsole()
+    {
+        try
+        {
+            bool isSuccess = FreeConsole(); // Close the console without closing the main app.
+            if (isSuccess)
+            {
+                _logger.Info("Closed log console.");
+                _callback_ConsoleClosed?.Invoke();
+            }
+            else
+                _logger.Warn("Failed to close log console.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Warn(ex, "Error closing console.");
+        }
     }
 }

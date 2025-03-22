@@ -1,4 +1,4 @@
-﻿using Auxiliary;
+﻿using WinApp.LogConsole;
 using WinApp.Managers;
 
 namespace WinApp;
