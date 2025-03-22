@@ -70,43 +70,64 @@ internal class TrayManager
 
     private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
     {
-        menuItems.OfType<ToolStripMenuItem>()
-            .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
-            .ToList()
-            .ForEach(menuItem =>
-            {
-                menuItems.Remove(menuItem);
-                menuItem.Dispose();
-            });
+        try
+        {
+            menuItems.OfType<ToolStripMenuItem>()
+                .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
+                .ToList()
+                .ForEach(menuItem =>
+                {
+                    menuItems.Remove(menuItem);
+                    menuItem.Dispose();
+                });
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to remove profile menu items.");
+        }
     }
 
     private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
     {
-        if (_callback_ProfilesActiveStateChanged is null)
+        try
         {
-            _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
-            return;
-        }
+            if (_callback_ProfilesActiveStateChanged is null)
+            {
+                _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
+                return;
+            }
 
-        int insertIndex = GetProfilesInsertIndex(menuItems);
-        foreach (var profileInfo in profileInfos)
+            int insertIndex = GetProfilesInsertIndex(menuItems);
+            foreach (var profileInfo in profileInfos)
+            {
+                var menuItem = TrayMenuItems.Profile(profileInfo, _callback_ProfilesActiveStateChanged);
+                menuItems.Insert(insertIndex++, menuItem);
+            }
+        }
+        catch (Exception ex)
         {
-            var menuItem = TrayMenuItems.Profile(profileInfo, _callback_ProfilesActiveStateChanged);
-            menuItems.Insert(insertIndex++, menuItem);
+            _logger.Error(ex, "Failed to insert profile menu item.");
         }
     }
 
     private void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
     {
-        int insertIndex = GetProfilesInsertIndex(menuItems);
-
-        var menuItem = new ToolStripMenuItem()
+        try
         {
-            Text = "No profiles found",
-            Enabled = false,
-        };
+            int insertIndex = GetProfilesInsertIndex(menuItems);
 
-        menuItems.Insert(insertIndex, menuItem);
+            var menuItem = new ToolStripMenuItem()
+            {
+                Text = "No profiles found",
+                Enabled = false,
+            };
+
+            menuItems.Insert(insertIndex, menuItem);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to insert placeholder profile menu item.");
+        }
     }
 
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
@@ -120,31 +141,45 @@ internal class TrayManager
 
     private void SetMenuCheckedState(string itemName, bool isChecked)
     {
-        if (_notifyIcon?.ContextMenuStrip?.Items is null)
-            return;
-
-        if (_notifyIcon.ContextMenuStrip.InvokeRequired)
+        try
         {
-            // Call this method from the UI thread instead.
-            _notifyIcon.ContextMenuStrip.Invoke(() => SetMenuCheckedState(itemName, isChecked));
-            return;
-        }
+            if (_notifyIcon?.ContextMenuStrip?.Items is null)
+                return;
 
-        var menuItem = _notifyIcon.ContextMenuStrip.Items
-            .Find(itemName, true)
-            .OfType<ToolStripMenuItem>()
-            .FirstOrDefault();
-        if (menuItem is not null)
-            menuItem.Checked = isChecked;
+            if (_notifyIcon.ContextMenuStrip.InvokeRequired)
+            {
+                // Call this method from the UI thread instead.
+                _notifyIcon.ContextMenuStrip.Invoke(() => SetMenuCheckedState(itemName, isChecked));
+                return;
+            }
+
+            var menuItem = _notifyIcon.ContextMenuStrip.Items
+                .Find(itemName, true)
+                .OfType<ToolStripMenuItem>()
+                .FirstOrDefault();
+            if (menuItem is not null)
+                menuItem.Checked = isChecked;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to set menu item '{itemName}' checked state.");
+        }
     }
 
     public void DisposeTray()
     {
-        _notifyIcon?.ContextMenuStrip?.Items?
-            .OfType<ToolStripItem>()
-            .ToList()
-            .ForEach(item => item.Dispose());
-        _notifyIcon?.ContextMenuStrip?.Dispose();
-        _notifyIcon?.Dispose();
+        try
+        {
+            _notifyIcon?.ContextMenuStrip?.Items?
+                .OfType<ToolStripItem>()
+                .ToList()
+                .ForEach(item => item.Dispose());
+            _notifyIcon?.ContextMenuStrip?.Dispose();
+            _notifyIcon?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to dispose tray icon and/or context menu.");
+        }
     }
 }

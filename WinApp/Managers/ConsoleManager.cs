@@ -57,61 +57,105 @@ internal class ConsoleManager
 
     private void OpenConsole()
     {
-        bool isSuccess = AllocConsole();
-        if (!isSuccess)
-        {
-            _logger.Warn("Failed to open console.");
-            return;
-        }
-
+        AllocateConsole();
         SetConsoleTitle();
         DisableConsoleCloseButton();
         RedirectConsoleOutput();
-        SetConsoleCtrlHandler(ConsoleCtrlCheck, true);
-
-        Console.WriteLine("""
-            *****************************************************************
-            Use the tray menu or press ctrl+C to safely close the log window.
-            Closing it directly through Windows will also close the main app.
-            *****************************************************************
-
-            """);
+        SetControlHandler();
+        PrintInfoMessage();
         _logger.Info("Opened log console.");
     }
 
     private void CloseConsole()
     {
-        bool isSuccess = FreeConsole(); // Close the console without closing the main app.
-        if (isSuccess)
+        try
         {
-            _logger.Info("Closed log console.");
-            _callback_ConsoleClosed?.Invoke();
+            bool isSuccess = FreeConsole(); // Close the console without closing the main app.
+            if (isSuccess)
+            {
+                _logger.Info("Closed log console.");
+                _callback_ConsoleClosed?.Invoke();
+            }
+            else
+                _logger.Warn("Failed to close log console.");
         }
-        else
-            _logger.Warn("Failed to close log console.");
+        catch (Exception ex)
+        {
+            _logger.Warn(ex, "Error closing console.");
+        }
+    }
+
+    private void AllocateConsole()
+    {
+        string errorMessage = "Error opening console. Allocation failed.";
+        try
+        {
+            bool isSuccess = AllocConsole();
+            if (!isSuccess)
+                _logger.Error(errorMessage);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, errorMessage);
+        }
+        
     }
 
     private void SetConsoleTitle()
     {
-        var type = typeof(WinApp.Program);
-        string name = AssemblyHelper.GetAssemblyName(type);
-        string version = AssemblyHelper.GetAssemblyVersion(type);
-        Console.Title = $"{name} {version}";
+        try
+        {
+            var type = typeof(WinApp.Program);
+            string name = AssemblyHelper.GetAssemblyName(type);
+            string version = AssemblyHelper.GetAssemblyVersion(type);
+            Console.Title = $"{name} {version}";
+        }
+        catch (Exception ex)
+        {
+            _logger.Warn(ex, "Error setting console title.");
+        }
     }
 
     private void DisableConsoleCloseButton()
     {
-        nint consoleWindow = GetConsoleWindow();
-        nint systemMenu = GetSystemMenu(consoleWindow, false);
-        if (systemMenu != nint.Zero)
-            DeleteMenu(systemMenu, 0xF060, 0x00000000);
+        try
+        {
+            nint consoleWindow = GetConsoleWindow();
+            nint systemMenu = GetSystemMenu(consoleWindow, false);
+            if (systemMenu != nint.Zero)
+                DeleteMenu(systemMenu, 0xF060, 0x00000000);
+        }
+        catch (Exception ex)
+        {
+            _logger.Warn(ex, "Error disabling console close button.");
+        }
     }
 
     private void RedirectConsoleOutput()
     {
-        var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
-        Console.SetOut(consoleOutput);
-        Console.SetError(consoleOutput);
+        try
+        {
+            var consoleOutput = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+            Console.SetOut(consoleOutput);
+            Console.SetError(consoleOutput);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error redirecting console output.");
+        }
+    }
+
+    private void SetControlHandler()
+    {
+        try
+        {
+            CtrlTypesHandler handler = ConsoleCtrlCheck;
+            SetConsoleCtrlHandler(handler, true);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error setting control handler.");
+        }
     }
 
     private bool ConsoleCtrlCheck(CtrlTypes ctrlType)
@@ -123,5 +167,16 @@ internal class ConsoleManager
             CloseConsole();
         }
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
+    }
+
+    private void PrintInfoMessage()
+    {
+        Console.WriteLine("""
+            *****************************************************************
+            Use the tray menu or press ctrl+C to safely close the log window.
+            Closing it directly through Windows will also close the main app.
+            *****************************************************************
+
+            """);
     }
 }
