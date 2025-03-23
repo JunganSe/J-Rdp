@@ -41,78 +41,19 @@ internal class TrayManager
             return;
         }
 
-        RemoveAllProfileMenuItems(menuItems);
+        if (_callback_ProfilesActiveStateChanged is null)
+        {
+            _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
+            return;
+        }
+
+        _trayWorker.RemoveAllProfileMenuItems(menuItems);
 
         if (profileInfos.Count > 0)
-            InsertProfileMenuItems(menuItems, profileInfos);
+            _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callback_ProfilesActiveStateChanged);
         else
-            InsertPlaceholderProfileMenuItem(menuItems);
+            _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
     }
-
-    private void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
-    {
-        try
-        {
-            menuItems.OfType<ToolStripMenuItem>()
-                .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
-                .ToList()
-                .ForEach(menuItem =>
-                {
-                    menuItems.Remove(menuItem);
-                    menuItem.Dispose();
-                });
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to remove profile menu items.");
-        }
-    }
-
-    private void InsertProfileMenuItems(ToolStripItemCollection menuItems, List<ProfileInfo> profileInfos)
-    {
-        try
-        {
-            if (_callback_ProfilesActiveStateChanged is null)
-            {
-                _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
-                return;
-            }
-
-            int insertIndex = GetProfilesInsertIndex(menuItems);
-            foreach (var profileInfo in profileInfos)
-            {
-                var menuItem = TrayMenuItems.Profile(profileInfo, _callback_ProfilesActiveStateChanged);
-                menuItems.Insert(insertIndex++, menuItem);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to insert profile menu item.");
-        }
-    }
-
-    private void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
-    {
-        try
-        {
-            int insertIndex = GetProfilesInsertIndex(menuItems);
-
-            var menuItem = new ToolStripMenuItem()
-            {
-                Text = "No profiles found",
-                Enabled = false,
-            };
-
-            menuItems.Insert(insertIndex, menuItem);
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to insert placeholder profile menu item.");
-        }
-    }
-
-    private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
-        1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 
     public void SetMenuState_ShowConsole(bool showConsole) =>
         SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, showConsole);

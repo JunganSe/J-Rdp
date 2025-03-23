@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using Core.Delegates;
+using Core.Models;
+using NLog;
 
 namespace WinApp.Tray;
 
@@ -28,4 +30,64 @@ internal class TrayWorker
 
         return contextMenu;
     }
+
+    public void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
+    {
+        try
+        {
+            menuItems.OfType<ToolStripMenuItem>()
+                .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
+                .ToList()
+                .ForEach(menuItem =>
+                {
+                    menuItems.Remove(menuItem);
+                    menuItem.Dispose();
+                });
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to remove profile menu items.");
+        }
+    }
+
+    public void InsertProfileMenuItems(
+        ToolStripItemCollection menuItems,
+        List<ProfileInfo> profileInfos,
+        ProfileHandler callback_ProfilesActiveStateChanged)
+    {
+        try
+        {
+            int insertIndex = GetProfilesInsertIndex(menuItems);
+            foreach (var profileInfo in profileInfos)
+            {
+                var menuItem = TrayMenuItems.Profile(profileInfo, callback_ProfilesActiveStateChanged);
+                menuItems.Insert(insertIndex++, menuItem);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to insert profile menu item.");
+        }
+    }
+
+    public void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
+    {
+        try
+        {
+            int insertIndex = GetProfilesInsertIndex(menuItems);
+            var menuItem = new ToolStripMenuItem()
+            {
+                Text = "No profiles found",
+                Enabled = false,
+            };
+            menuItems.Insert(insertIndex, menuItem);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to insert placeholder profile menu item.");
+        }
+    }
+
+    private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
+        1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 }
