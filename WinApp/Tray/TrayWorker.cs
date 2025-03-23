@@ -17,11 +17,11 @@ internal class TrayWorker
         Visible = true,
     };
 
-    public ContextMenuStrip? CreateContextMenu(Action<bool> _callback_ToggleConsole)
+    public ContextMenuStrip? CreateContextMenu(Action<bool> callback_ToggleConsole)
     {
         var contextMenu = new ContextMenuStrip() { AutoClose = false, };
 
-        contextMenu.Items.Add(TrayMenuItems.ToggleConsole(_callback_ToggleConsole));
+        contextMenu.Items.Add(TrayMenuItems.ToggleConsole(callback_ToggleConsole));
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
 
         contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
