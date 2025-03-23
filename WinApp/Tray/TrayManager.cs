@@ -37,7 +37,7 @@ internal class TrayManager
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
         if (menuItems is null)
         {
-            _logger.Error("Can not update profiles in context menu. Context menu is missing.");
+            _logger.Error("Can not update profile items in context menu. Context menu is missing.");
             return;
         }
 
