@@ -1,13 +1,14 @@
 ﻿using Core.Delegates;
 using Core.Models;
 using NLog;
-using System.Windows.Forms;
 
 namespace WinApp.Tray;
 
 internal class TrayWorker
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    #region Creation
 
     public NotifyIcon? CreateNotifyIcon() => new NotifyIcon()
     {
@@ -31,6 +32,10 @@ internal class TrayWorker
 
         return contextMenu;
     }
+
+    #endregion
+
+    #region Profile menu items
 
     public void RemoveAllProfileMenuItems(ToolStripItemCollection menuItems)
     {
@@ -92,6 +97,10 @@ internal class TrayWorker
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
         1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 
+    #endregion
+
+    #region Cleanup
+
     public void DisposeTray(NotifyIcon? notifyIcon)
     {
         try
@@ -108,4 +117,6 @@ internal class TrayWorker
             _logger.Error(ex, "Failed to dispose tray icon and/or context menu.");
         }
     }
+
+    #endregion
 }
