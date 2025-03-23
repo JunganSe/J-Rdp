@@ -1,6 +1,7 @@
 ﻿using Core.Delegates;
 using Core.Models;
 using NLog;
+using System.Windows.Forms;
 
 namespace WinApp.Tray;
 
@@ -90,4 +91,21 @@ internal class TrayWorker
 
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
         1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
+
+    public void DisposeTray(NotifyIcon? notifyIcon)
+    {
+        try
+        {
+            notifyIcon?.ContextMenuStrip?.Items?
+                .OfType<ToolStripItem>()
+                .ToList()
+                .ForEach(item => item.Dispose());
+            notifyIcon?.ContextMenuStrip?.Dispose();
+            notifyIcon?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to dispose tray icon and/or context menu.");
+        }
+    }
 }

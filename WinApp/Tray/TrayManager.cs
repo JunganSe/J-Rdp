@@ -90,18 +90,6 @@ internal class TrayManager
 
     public void DisposeTray()
     {
-        try
-        {
-            _notifyIcon?.ContextMenuStrip?.Items?
-                .OfType<ToolStripItem>()
-                .ToList()
-                .ForEach(item => item.Dispose());
-            _notifyIcon?.ContextMenuStrip?.Dispose();
-            _notifyIcon?.Dispose();
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to dispose tray icon and/or context menu.");
-        }
+        _trayWorker.DisposeTray(_notifyIcon);
     }
 }
