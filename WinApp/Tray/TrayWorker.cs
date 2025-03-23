@@ -1,8 +1,6 @@
 ﻿using Core.Delegates;
 using Core.Models;
 using NLog;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinApp.Tray;
 
