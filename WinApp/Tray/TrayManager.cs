@@ -20,12 +20,6 @@ internal class TrayManager
 
     public void InitializeNotifyIconWithContextMenu()
     {
-        if (_callback_ToggleConsole is null)
-        {
-            _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
-            return;
-        }
-
         DisposeTray();
         _notifyIcon = _trayWorker.CreateNotifyIcon();
         if (_notifyIcon is not null)

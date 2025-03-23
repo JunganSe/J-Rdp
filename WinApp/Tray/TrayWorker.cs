@@ -17,8 +17,14 @@ internal class TrayWorker
         Visible = true,
     };
 
-    public ContextMenuStrip? CreateContextMenu(Action<bool> callback_ToggleConsole)
+    public ContextMenuStrip? CreateContextMenu(Action<bool>? callback_ToggleConsole)
     {
+        if (callback_ToggleConsole is null)
+        {
+            _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
+            return null;
+        }
+
         var contextMenu = new ContextMenuStrip() { AutoClose = false, };
 
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole(callback_ToggleConsole));
