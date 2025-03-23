@@ -51,7 +51,7 @@ internal class TrayManager
 
     public void SetMenuState_ShowConsole(bool showConsole)
     {
-        if (_notifyIcon?.ContextMenuStrip?.Items is null)
+        if (_notifyIcon?.ContextMenuStrip is null)
         {
             _logger.Error("Can not set menu checked 'show console' state. Context menu is missing.");
             return;
@@ -62,7 +62,7 @@ internal class TrayManager
 
     public void SetMenuState_LogToFile(bool logToFile)
     {
-        if (_notifyIcon?.ContextMenuStrip?.Items is null)
+        if (_notifyIcon?.ContextMenuStrip is null)
         {
             _logger.Error("Can not set menu checked state 'log to file'. Context menu is missing.");
             return;

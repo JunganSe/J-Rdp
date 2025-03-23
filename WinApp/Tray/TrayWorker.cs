@@ -49,9 +49,6 @@ internal class TrayWorker
     {
         try
         {
-            if (menu.Items is null)
-                return;
-
             if (menu.InvokeRequired)
             {
                 // Call this method from the UI thread instead.
