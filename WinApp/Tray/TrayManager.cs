@@ -7,6 +7,7 @@ namespace WinApp.Tray;
 internal class TrayManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly TrayWorker _trayWorker = new();
     private NotifyIcon? _notifyIcon;
     private Action<bool>? _callback_ToggleConsole;
     private ProfileHandler? _callback_ProfilesActiveStateChanged;
@@ -19,35 +20,15 @@ internal class TrayManager
 
     public void InitializeNotifyIconWithContextMenu()
     {
-        _notifyIcon = new NotifyIcon()
-        {
-            Text = "J-Rdp",
-            Icon = SystemIcons.Application,
-            Visible = true,
-            ContextMenuStrip = CreateContextMenu(),
-        };
-    }
-
-    private ContextMenuStrip? CreateContextMenu()
-    {
         if (_callback_ToggleConsole is null)
         {
             _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
-            return null;
+            return;
         }
 
-        var contextMenu = new ContextMenuStrip() { AutoClose = false, };
-
-        contextMenu.Items.Add(TrayMenuItems.ToggleConsole(_callback_ToggleConsole));
-        contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-
-        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
-        contextMenu.Items.Add(new ToolStripSeparator());
-
-        contextMenu.Items.Add(TrayMenuItems.Exit);
-        contextMenu.Items.Add(TrayMenuItems.Close);
-
-        return contextMenu;
+        _notifyIcon = _trayWorker.CreateNotifyIcon();
+        if (_notifyIcon is not null)
+            _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(_callback_ToggleConsole);
     }
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
