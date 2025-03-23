@@ -26,6 +26,7 @@ internal class TrayManager
             return;
         }
 
+        DisposeTray();
         _notifyIcon = _trayWorker.CreateNotifyIcon();
         if (_notifyIcon is not null)
             _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(_callback_ToggleConsole);
