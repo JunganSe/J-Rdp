@@ -39,8 +39,6 @@ internal class Controller
         _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
     }
 
-    public void DisposeTray()
-    {
+    public void DisposeTray() =>
         _trayManager.DisposeTray();
-    }
 }

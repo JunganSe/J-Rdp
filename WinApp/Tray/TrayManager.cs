@@ -88,8 +88,6 @@ internal class TrayManager
         }
     }
 
-    public void DisposeTray()
-    {
+    public void DisposeTray() =>
         _trayWorker.DisposeTray(_notifyIcon);
-    }
 }
