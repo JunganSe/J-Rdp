@@ -1,6 +1,8 @@
 ﻿using Core.Delegates;
 using Core.Models;
 using NLog;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinApp.Tray;
 
@@ -37,6 +39,37 @@ internal class TrayWorker
         contextMenu.Items.Add(TrayMenuItems.Close);
 
         return contextMenu;
+    }
+
+    #endregion
+
+    #region Menu checked state
+
+    public void SetMenuCheckedState(ContextMenuStrip menu, string itemName, bool isChecked)
+    {
+        try
+        {
+            if (menu.Items is null)
+                return;
+
+            if (menu.InvokeRequired)
+            {
+                // Call this method from the UI thread instead.
+                menu.Invoke(() => SetMenuCheckedState(menu, itemName, isChecked));
+                return;
+            }
+
+            var menuItem = menu.Items
+                .Find(itemName, true)
+                .OfType<ToolStripMenuItem>()
+                .FirstOrDefault();
+            if (menuItem is not null)
+                menuItem.Checked = isChecked;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to set menu item '{itemName}' checked state.");
+        }
     }
 
     #endregion

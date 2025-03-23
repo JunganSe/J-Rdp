@@ -49,37 +49,26 @@ internal class TrayManager
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
     }
 
-    public void SetMenuState_ShowConsole(bool showConsole) =>
-        SetMenuCheckedState(TrayConstants.ItemNames.ToggleConsole, showConsole);
-
-    public void SetMenuState_LogToFile(bool logToFile) =>
-        SetMenuCheckedState(TrayConstants.ItemNames.ToggleLogToFile, logToFile);
-
-    private void SetMenuCheckedState(string itemName, bool isChecked)
+    public void SetMenuState_ShowConsole(bool showConsole)
     {
-        try
+        if (_notifyIcon?.ContextMenuStrip?.Items is null)
         {
-            if (_notifyIcon?.ContextMenuStrip?.Items is null)
-                return;
-
-            if (_notifyIcon.ContextMenuStrip.InvokeRequired)
-            {
-                // Call this method from the UI thread instead.
-                _notifyIcon.ContextMenuStrip.Invoke(() => SetMenuCheckedState(itemName, isChecked));
-                return;
-            }
-
-            var menuItem = _notifyIcon.ContextMenuStrip.Items
-                .Find(itemName, true)
-                .OfType<ToolStripMenuItem>()
-                .FirstOrDefault();
-            if (menuItem is not null)
-                menuItem.Checked = isChecked;
+            _logger.Error("Can not set menu checked 'show console' state. Context menu is missing.");
+            return;
         }
-        catch (Exception ex)
+
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
+    }
+
+    public void SetMenuState_LogToFile(bool logToFile)
+    {
+        if (_notifyIcon?.ContextMenuStrip?.Items is null)
         {
-            _logger.Error(ex, $"Failed to set menu item '{itemName}' checked state.");
+            _logger.Error("Can not set menu checked state 'log to file'. Context menu is missing.");
+            return;
         }
+
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
     }
 
     public void DisposeTray() =>
