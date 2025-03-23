@@ -1,5 +1,6 @@
 ﻿using WinApp.LogConsole;
 using WinApp.Managers;
+using WinApp.Tray;
 
 namespace WinApp;
 
