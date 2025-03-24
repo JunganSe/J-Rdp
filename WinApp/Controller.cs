@@ -1,5 +1,6 @@
 ﻿using WinApp.LogConsole;
 using WinApp.Managers;
+using WinApp.Tray;
 
 namespace WinApp;
 
@@ -38,8 +39,6 @@ internal class Controller
         _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
     }
 
-    public void DisposeTray()
-    {
+    public void DisposeTray() =>
         _trayManager.DisposeTray();
-    }
 }
