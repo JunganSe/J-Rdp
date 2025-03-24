@@ -48,9 +48,9 @@ internal class TrayWorker
         try
         {
             if (menu.InvokeRequired)
-                menu.Invoke(() => SetMenuItemCheckedState(menu, itemName, isChecked)); // Call from the UI thread.
+                menu.Invoke(() => SetMenuItemsCheckedState(menu.Items, itemName, isChecked)); // Call from the UI thread.
             else
-                SetMenuItemCheckedState(menu, itemName, isChecked); // Call normally.
+                SetMenuItemsCheckedState(menu.Items, itemName, isChecked); // Call normally.
         }
         catch (Exception ex)
         {
@@ -58,14 +58,13 @@ internal class TrayWorker
         }
     }
 
-    private void SetMenuItemCheckedState(ContextMenuStrip menu, string itemName, bool isChecked)
+    private void SetMenuItemsCheckedState(ToolStripItemCollection menuItems, string itemName, bool isChecked)
     {
-        var menuItem = menu.Items
+        menuItems
             .Find(itemName, true)
             .OfType<ToolStripMenuItem>()
-            .FirstOrDefault();
-        if (menuItem is not null)
-            menuItem.Checked = isChecked;
+            .ToList()
+            .ForEach(menuItem => menuItem.Checked = isChecked);
     }
 
     #endregion
