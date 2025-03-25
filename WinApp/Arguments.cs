@@ -8,6 +8,7 @@ internal class Arguments
 
     public bool ShowConsole { get; private set; }
     public bool LogToFile { get; private set; }
+    public bool NoTray { get; private set; }
 
     private Arguments()
     {
