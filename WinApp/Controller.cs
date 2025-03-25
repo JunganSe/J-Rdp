@@ -24,7 +24,7 @@ internal class Controller
         InitializeCore();
     }
 
-    public void InitializeTray(Arguments arguments)
+    private void InitializeTray(Arguments arguments)
     {
         _trayManager.SetCallback_ToggleConsole(_consoleManager.SetVisibility);
         _trayManager.SetCallback_ProfilesActiveStateChanged(_coreManager.UpdateProfilesEnabledState);
@@ -33,7 +33,7 @@ internal class Controller
         _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
     }
 
-    public void InitializeCore()
+    private void InitializeCore()
     {
         _coreManager.Initialize();
         _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
