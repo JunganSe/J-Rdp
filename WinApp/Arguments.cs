@@ -32,7 +32,9 @@ internal class Arguments
 
     public override string ToString()
     {
-        var propertySummaries = this.GetType().GetProperties().Select(p => $"{p.Name}: {p.GetValue(this)}");
+        var propertySummaries = this.GetType()
+            .GetProperties()
+            .Select(p => $"{p.Name}: {p.GetValue(this)}");
         return string.Join(", ", propertySummaries);
     }
 }
