@@ -1,6 +1,6 @@
 ﻿using Core.ConfigHandling;
 
-namespace Core.ProfileHandling;
+namespace Core.Profiles;
 
 internal static class ProfileExtensions
 {

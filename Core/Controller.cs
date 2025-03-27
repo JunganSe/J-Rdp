@@ -1,6 +1,6 @@
 ﻿using Core.ConfigHandling;
 using Core.FileHandling;
-using Core.ProfileHandling;
+using Core.Profiles;
 using NLog;
 
 namespace Core;

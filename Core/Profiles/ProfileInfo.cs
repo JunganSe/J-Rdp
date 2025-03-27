@@ -1,4 +1,4 @@
-﻿namespace Core.ProfileHandling;
+﻿namespace Core.Profiles;
 
 public class ProfileInfo
 {

@@ -1,6 +1,6 @@
 ﻿using Core.FileHandling;
 
-namespace Core.ProfileHandling;
+namespace Core.Profiles;
 
 internal class ProfileWrapper
 {

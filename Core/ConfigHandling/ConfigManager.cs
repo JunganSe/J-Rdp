@@ -1,5 +1,5 @@
 ﻿using Auxiliary;
-using Core.ProfileHandling;
+using Core.Profiles;
 using NLog;
 
 namespace Core.ConfigHandling;

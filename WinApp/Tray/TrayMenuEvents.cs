@@ -1,5 +1,5 @@
 ﻿using Auxiliary;
-using Core.ProfileHandling;
+using Core.Profiles;
 
 namespace WinApp.Tray;
 

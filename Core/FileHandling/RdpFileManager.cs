@@ -1,5 +1,5 @@
 ﻿using Core.ConfigHandling;
-using Core.ProfileHandling;
+using Core.Profiles;
 using NLog;
 
 namespace Core.FileHandling;

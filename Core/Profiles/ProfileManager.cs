@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace Core.ProfileHandling;
+namespace Core.Profiles;
 
 internal class ProfileManager
 {

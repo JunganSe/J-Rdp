@@ -1,4 +1,4 @@
-﻿namespace Core.ProfileHandling;
+﻿namespace Core.Profiles;
 
 internal static class ProfileHelper
 {

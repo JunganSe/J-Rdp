@@ -1,4 +1,4 @@
-﻿using Core.ProfileHandling;
+﻿using Core.Profiles;
 
 namespace Core.Tests;
 
