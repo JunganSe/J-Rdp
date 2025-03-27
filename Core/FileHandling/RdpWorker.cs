@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System.Diagnostics;
 
-namespace Core.Workers;
+namespace Core.FileHandling;
 
 internal class RdpWorker
 {

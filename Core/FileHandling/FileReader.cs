@@ -1,7 +1,6 @@
-﻿using Core.Constants;
-using NLog;
+﻿using NLog;
 
-namespace Core.Workers;
+namespace Core.FileHandling;
 
 internal class FileReader
 {

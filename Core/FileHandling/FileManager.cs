@@ -1,8 +1,7 @@
-﻿using Core.Helpers;
-using Core.Models;
+﻿using Core.Models;
 using NLog;
 
-namespace Core.Managers;
+namespace Core.FileHandling;
 
 internal class FileManager
 {

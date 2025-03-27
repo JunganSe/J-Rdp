@@ -1,9 +1,8 @@
 ﻿using Core.Constants;
 using Core.Models;
-using Core.Workers;
 using NLog;
 
-namespace Core.Managers;
+namespace Core.FileHandling;
 
 internal class RdpFileManager
 {

@@ -1,4 +1,4 @@
-﻿namespace Core.Constants;
+﻿namespace Core.FileHandling;
 
 internal static class FileConstants
 {
