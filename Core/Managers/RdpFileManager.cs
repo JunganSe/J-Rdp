@@ -5,7 +5,7 @@ using NLog;
 
 namespace Core.Managers;
 
-internal class RdpManager
+internal class RdpFileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly RdpWorker _rdpWorker = new();
