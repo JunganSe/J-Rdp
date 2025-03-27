@@ -1,13 +1,11 @@
 ﻿using Auxiliary;
-using Core.Constants;
 using Core.Delegates;
 using Core.Extensions;
 using Core.Helpers;
 using Core.Models;
-using Core.Workers;
 using NLog;
 
-namespace Core.Managers;
+namespace Core.ConfigHandling;
 
 internal class ConfigManager
 {

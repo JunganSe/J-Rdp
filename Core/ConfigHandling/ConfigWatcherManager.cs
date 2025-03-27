@@ -1,8 +1,6 @@
-﻿using Core.Constants;
-using Core.FileHandling;
-using Core.Workers;
+﻿using Core.FileHandling;
 
-namespace Core.Managers;
+namespace Core.ConfigHandling;
 
 internal class ConfigWatcherManager
 {

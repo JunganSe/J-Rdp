@@ -1,4 +1,4 @@
-﻿using Core.Constants;
+﻿using Core.ConfigHandling;
 using System.Text.Json.Serialization;
 
 namespace Core.Models;

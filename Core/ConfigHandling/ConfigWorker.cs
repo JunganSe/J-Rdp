@@ -1,10 +1,8 @@
-﻿using Core.Constants;
-using Core.FileHandling;
-using Core.Models;
+﻿using Core.FileHandling;
 using NLog;
 using System.Text.Json;
 
-namespace Core.Workers;
+namespace Core.ConfigHandling;
 
 internal class ConfigWorker
 {
