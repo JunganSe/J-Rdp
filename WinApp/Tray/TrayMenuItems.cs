@@ -1,5 +1,4 @@
-﻿using Core.Delegates;
-using Core.Models;
+﻿using Core.ProfileHandling;
 
 namespace WinApp.Tray;
 

@@ -1,6 +1,6 @@
 ﻿using Core.FileHandling;
 
-namespace Core.Models;
+namespace Core.ProfileHandling;
 
 internal class ProfileWrapper
 {
@@ -23,7 +23,7 @@ internal class ProfileWrapper
     public void UpdateFiles()
     {
         LastFiles = Files;
-        Files = (DirectoryExists) ? GetFiles() : [];
+        Files = DirectoryExists ? GetFiles() : [];
     }
 
 

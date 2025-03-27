@@ -1,4 +1,4 @@
-﻿using Core.Models;
+﻿using Core.ProfileHandling;
 
 namespace Core.ConfigHandling;
 

@@ -1,7 +1,6 @@
 ﻿using Core.FileHandling;
-using Core.Models;
 
-namespace Core.Helpers;
+namespace Core.ProfileHandling;
 
 internal static class ProfileValidator
 {
@@ -24,7 +23,7 @@ internal static class ProfileValidator
         }
 
         reason = string.Join(" ", reasons);
-        bool isValid = (reasons.Count == 0);
+        bool isValid = reasons.Count == 0;
         return isValid;
     }
 
@@ -44,7 +43,7 @@ internal static class ProfileValidator
         }
 
         reason = string.Join(" ", reasons);
-        bool isValid = (reasons.Count == 0);
+        bool isValid = reasons.Count == 0;
         return isValid;
     }
 }

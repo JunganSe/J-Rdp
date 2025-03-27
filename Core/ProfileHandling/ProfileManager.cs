@@ -1,7 +1,6 @@
-﻿using Core.Models;
-using NLog;
+﻿using NLog;
 
-namespace Core.Managers;
+namespace Core.ProfileHandling;
 
 internal class ProfileManager
 {

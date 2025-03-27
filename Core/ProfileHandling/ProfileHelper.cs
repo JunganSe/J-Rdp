@@ -1,6 +1,4 @@
-﻿using Core.Models;
-
-namespace Core.Helpers;
+﻿namespace Core.ProfileHandling;
 
 internal static class ProfileHelper
 {

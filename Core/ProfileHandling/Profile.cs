@@ -1,7 +1,7 @@
 ﻿using Core.ConfigHandling;
 using System.Text.Json.Serialization;
 
-namespace Core.Models;
+namespace Core.ProfileHandling;
 
 internal class Profile
 {
