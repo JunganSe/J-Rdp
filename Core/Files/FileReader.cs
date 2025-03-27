@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace Core.FileHandling;
+namespace Core.Files;
 
 internal class FileReader
 {

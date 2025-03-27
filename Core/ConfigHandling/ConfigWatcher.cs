@@ -1,4 +1,4 @@
-﻿using Core.FileHandling;
+﻿using Core.Files;
 using NLog;
 
 namespace Core.ConfigHandling;

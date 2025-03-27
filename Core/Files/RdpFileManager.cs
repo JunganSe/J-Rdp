@@ -2,7 +2,7 @@
 using Core.Profiles;
 using NLog;
 
-namespace Core.FileHandling;
+namespace Core.Files;
 
 internal class RdpFileManager
 {

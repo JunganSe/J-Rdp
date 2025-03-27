@@ -1,4 +1,4 @@
-﻿using Core.FileHandling;
+﻿using Core.Files;
 
 namespace Core.Tests;
 
