@@ -1,4 +1,4 @@
-﻿using Core.ConfigHandling;
+﻿using Core.Configs;
 using Core.Files;
 using Core.Profiles;
 using NLog;

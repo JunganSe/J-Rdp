@@ -1,6 +1,6 @@
 ﻿using Core.Files;
 
-namespace Core.ConfigHandling;
+namespace Core.Configs;
 
 internal class ConfigWatcherManager
 {

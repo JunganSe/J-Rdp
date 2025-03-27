@@ -1,7 +1,7 @@
 ﻿using Core.Files;
 using NLog;
 
-namespace Core.ConfigHandling;
+namespace Core.Configs;
 
 internal class ConfigWatcher : FileSystemWatcher
 {

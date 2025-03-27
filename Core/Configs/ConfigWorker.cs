@@ -2,7 +2,7 @@
 using NLog;
 using System.Text.Json;
 
-namespace Core.ConfigHandling;
+namespace Core.Configs;
 
 internal class ConfigWorker
 {

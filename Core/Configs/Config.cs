@@ -1,6 +1,6 @@
 ﻿using Core.Profiles;
 
-namespace Core.ConfigHandling;
+namespace Core.Configs;
 
 internal class Config
 {

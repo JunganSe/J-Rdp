@@ -2,7 +2,7 @@
 using Core.Profiles;
 using NLog;
 
-namespace Core.ConfigHandling;
+namespace Core.Configs;
 
 internal class ConfigManager
 {

@@ -1,4 +1,4 @@
-﻿using Core.ConfigHandling;
+﻿using Core.Configs;
 using System.Text.Json.Serialization;
 
 namespace Core.Profiles;
