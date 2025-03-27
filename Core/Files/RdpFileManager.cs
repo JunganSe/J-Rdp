@@ -7,7 +7,7 @@ namespace Core.Files;
 internal class RdpFileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly RdpWorker _rdpWorker = new();
+    private readonly RdpFileWorker _rdpWorker = new();
 
     public int DeleteDelay { get; set; } = ConfigConstants.DeleteDelay_Default;
 
