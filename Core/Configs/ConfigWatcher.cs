@@ -1,8 +1,7 @@
-﻿using Core.Constants;
-using Core.Helpers;
+﻿using Core.Files;
 using NLog;
 
-namespace Core.Workers;
+namespace Core.Configs;
 
 internal class ConfigWatcher : FileSystemWatcher
 {

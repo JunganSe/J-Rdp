@@ -1,5 +1,3 @@
-﻿using Core.Models;
-
-namespace Core.Delegates;
+﻿namespace Core.Profiles;
 
 public delegate void ProfileHandler(List<ProfileInfo> profileInfos);

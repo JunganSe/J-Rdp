@@ -1,6 +1,6 @@
 ﻿using System.IO.Enumeration;
 
-namespace Core.Helpers;
+namespace Core.Files;
 
 internal static class FileHelper
 {

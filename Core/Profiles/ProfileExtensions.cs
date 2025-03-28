@@ -1,8 +1,6 @@
-﻿using Core.Constants;
-using Core.Helpers;
-using Core.Models;
+﻿using Core.Configs;
 
-namespace Core.Extensions;
+namespace Core.Profiles;
 
 internal static class ProfileExtensions
 {

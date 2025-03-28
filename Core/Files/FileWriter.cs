@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace Core.Workers;
+namespace Core.Files;
 
 internal class FileWriter
 {

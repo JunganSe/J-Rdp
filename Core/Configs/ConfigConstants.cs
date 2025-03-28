@@ -1,4 +1,4 @@
-﻿namespace Core.Constants;
+﻿namespace Core.Configs;
 
 internal static class ConfigConstants
 {

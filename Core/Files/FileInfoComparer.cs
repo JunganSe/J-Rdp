@@ -1,4 +1,4 @@
-﻿namespace Core.Comparers;
+﻿namespace Core.Files;
 
 internal record EqualityComparer_FileInfo_FullName : IEqualityComparer<FileInfo>
 {

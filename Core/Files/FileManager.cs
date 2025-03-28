@@ -1,13 +1,12 @@
-﻿using Core.Helpers;
-using Core.Models;
+﻿using Core.Profiles;
 using NLog;
 
-namespace Core.Managers;
+namespace Core.Files;
 
 internal class FileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly RdpManager _rdpManager = new();
+    private readonly RdpFileManager _rdpManager = new();
     private readonly List<string> _processedFilePaths = [];
 
     public void SetDeleteDelay(int deleteDelay)

@@ -1,7 +1,7 @@
-﻿using Core.Constants;
+﻿using Core.Configs;
 using System.Text.Json.Serialization;
 
-namespace Core.Models;
+namespace Core.Profiles;
 
 internal class Profile
 {

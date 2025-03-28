@@ -1,6 +1,6 @@
-﻿using Core.Constants;
+﻿using Core.Profiles;
 
-namespace Core.Models;
+namespace Core.Configs;
 
 internal class Config
 {

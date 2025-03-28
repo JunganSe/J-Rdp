@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System.Diagnostics;
 
-namespace Core.Workers;
+namespace Core.Files;
 
-internal class RdpWorker
+internal class RdpFileWorker
 {
     public void Move(FileInfo file, string moveToFolder)
     {

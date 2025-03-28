@@ -1,14 +1,13 @@
-﻿using Core.Constants;
-using Core.Models;
-using Core.Workers;
+﻿using Core.Configs;
+using Core.Profiles;
 using NLog;
 
-namespace Core.Managers;
+namespace Core.Files;
 
-internal class RdpManager
+internal class RdpFileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly RdpWorker _rdpWorker = new();
+    private readonly RdpFileWorker _rdpWorker = new();
 
     public int DeleteDelay { get; set; } = ConfigConstants.DeleteDelay_Default;
 
