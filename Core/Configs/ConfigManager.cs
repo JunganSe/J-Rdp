@@ -54,11 +54,11 @@ internal class ConfigManager
 
     public void InvokeConfigUpdatedCallback()
     {
-        if (_callback_ConfigUpdated == null)
+        if (_callback_ConfigUpdated is null)
             return;
 
         var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
-        if (_syncContext != null)
+        if (_syncContext is not null)
             _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(profileInfos), null); // Invoke on the UI thread.
         else
             _callback_ConfigUpdated.Invoke(profileInfos); // Invoke on current thread.
