@@ -17,7 +17,7 @@ internal class ConfigWatcherManager
     {
         try
         {
-            if (_configWatcher == null)
+            if (_configWatcher is null)
                 return;
 
             _configWatcher.EnableRaisingEvents = false;

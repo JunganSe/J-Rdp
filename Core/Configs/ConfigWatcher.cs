@@ -76,7 +76,7 @@ internal class ConfigWatcher : FileSystemWatcher
     private void OnError(object sender, ErrorEventArgs args)
     {
         var exception = args.GetException();
-        if (exception != null)
+        if (exception is not null)
             _logger.Error(exception);
     }
 }
