@@ -20,7 +20,7 @@ This means:
 - This software is provided "as-is" without any warranty.
 
 By using or distributing this software, you agree to the terms of the **GPLv3 license**.\
-For full details, see the [LICENSE](./LICENSE) file or visit [GNU's official site](https://www.gnu.org/licenses/gpl-3.0.html).
+For full details, see the [License file](./License.txt) or visit [GNU's official site](https://www.gnu.org/licenses/gpl-3.0.html).
 <br/><br/>
 
 
