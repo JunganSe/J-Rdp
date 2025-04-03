@@ -11,6 +11,20 @@ When a new file is found, several actions can be taken:
 
 
 
+# License
+This project is licensed under the **GNU General Public License v3.0 (GPLv3)**, which is a copyleft license.\
+This means:
+- You are free to use, modify, and distribute this software.
+- Any modifications or derivative works must also be released under GPLv3.
+- You cannot relicense this software under a more restrictive or proprietary license.
+- This software is provided "as-is" without any warranty.
+
+By using or distributing this software, you agree to the terms of the **GPLv3 license**.\
+For full details, see the [LICENSE](./LICENSE) file or visit [GNU's official site](https://www.gnu.org/licenses/gpl-3.0.html).
+<br/><br/>
+
+
+
 # Launching
 The application can be run directly as a console app, or silently in the background.\
 No installation is needed.
@@ -131,3 +145,8 @@ Bug fixes:
 2024-03-27
 
 Initial release.
+
+<br/>
+
+---
+© 2025 *Johan Ljungberg*. This project is licensed under GPLv3.
