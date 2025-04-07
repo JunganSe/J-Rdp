@@ -16,7 +16,7 @@ internal class TrayWorker
 
         return new NotifyIcon()
         {
-            Text = "J-Rdp",
+            Text = TrayConstants.General.Title,
             Icon = icon,
             Visible = true,
         };
