@@ -15,7 +15,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>_Resources\J-Rdp.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="_Resources\J-Rdp.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Auxiliary\Auxiliary.csproj" />
