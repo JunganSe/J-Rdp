@@ -11,15 +11,23 @@ internal class TrayWorker
 
     public NotifyIcon? CreateNotifyIcon()
     {
-        using var stream = new MemoryStream(Properties.Resources.J_Rdp_icon);
-        var icon = new Icon(stream);
-
-        return new NotifyIcon()
+        try
         {
-            Text = TrayConstants.General.Title,
-            Icon = icon,
-            Visible = true,
-        };
+            using var stream = new MemoryStream(Properties.Resources.J_Rdp_icon);
+            var icon = new Icon(stream);
+
+            return new NotifyIcon()
+            {
+                Text = TrayConstants.General.Title,
+                Icon = icon,
+                Visible = true,
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to create tray icon.");
+            return null;
+        }
     }
 
     public ContextMenuStrip? CreateContextMenu(Action<bool>? callback_ToggleConsole)
