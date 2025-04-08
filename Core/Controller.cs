@@ -36,10 +36,8 @@ public class Controller
     public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
         _configManager.SetCallback_ConfigUpdated(callback);
 
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
-    {
+    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
         _configManager.UpdateProfilesEnabledState(profileInfos);
-    }
 
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();
