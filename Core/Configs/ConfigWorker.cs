@@ -1,5 +1,6 @@
 ﻿using Core.Files;
 using NLog;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Core.Configs;
@@ -29,7 +30,26 @@ internal class ConfigWorker
         return config;
     }
 
+    public void OpenConfigFile()
+    {
+        string path = GetConfigPath();
+        if (!File.Exists(path))
+        {
+            _logger.Error($"Can not open config file. File not found.");
+            return;
+        }
 
+        try
+        {
+            var process = new ProcessStartInfo(path) { UseShellExecute = true, };
+            Process.Start(process);
+            _logger.Debug("Opened config file in shell.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to open config file.");
+        }
+    }
 
     private string GetConfigPath()
     {
