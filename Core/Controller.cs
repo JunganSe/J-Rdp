@@ -41,6 +41,9 @@ public class Controller
         _configManager.UpdateProfilesEnabledState(profileInfos);
     }
 
+    public void OpenConfigFile() =>
+        _configManager.OpenConfigFile();
+
 
 
     private void Initialize()
