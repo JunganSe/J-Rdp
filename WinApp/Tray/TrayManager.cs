@@ -9,10 +9,14 @@ internal class TrayManager
     private readonly TrayWorker _trayWorker = new();
     private NotifyIcon? _notifyIcon;
     private Action<bool>? _callback_ToggleConsole;
+    private Action? _callback_OpenConfigFile;
     private ProfileHandler? _callback_ProfilesActiveStateChanged;
 
     public void SetCallback_ToggleConsole(Action<bool> callback) =>
         _callback_ToggleConsole = callback;
+
+    public void SetCallback_OpenConfigFile(Action callback) =>
+        _callback_OpenConfigFile = callback;
 
     public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
         _callback_ProfilesActiveStateChanged = callback;
