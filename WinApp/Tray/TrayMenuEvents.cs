@@ -23,9 +23,15 @@ internal static class TrayMenuEvents
             LogManager.SetFileLogging(menuItem.Checked);
     }
 
-    public static void OnClick_OpenConfig(object? sender, EventArgs e)
+    public static EventHandler OnClick_OpenConfig(Action callback)
     {
-        // TODO: Implement event.
+        return (object? sender, EventArgs e) =>
+        {
+            if (sender is not ToolStripMenuItem menuItem)
+                return;
+
+            callback.Invoke();
+        };
     }
 
     public static void OnClick_Exit(object? sender, EventArgs e)

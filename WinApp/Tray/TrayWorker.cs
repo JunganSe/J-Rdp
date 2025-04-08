@@ -30,11 +30,18 @@ internal class TrayWorker
         }
     }
 
-    public ContextMenuStrip? CreateContextMenu(Action<bool>? callback_ToggleConsole)
+    public ContextMenuStrip? CreateContextMenu(
+        Action<bool>? callback_ToggleConsole,
+        Action? callback_OpenConfigFile)
     {
         if (callback_ToggleConsole is null)
         {
             _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
+            return null;
+        }
+        if (callback_OpenConfigFile is null)
+        {
+            _logger.Error("Can not create context menu. Callback 'OpenConfigFile' is missing.");
             return null;
         }
 
@@ -42,7 +49,7 @@ internal class TrayWorker
 
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole(callback_ToggleConsole));
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-        contextMenu.Items.Add(TrayMenuItems.OpenConfig);
+        contextMenu.Items.Add(TrayMenuItems.OpenConfig(callback_OpenConfigFile));
 
         contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
         contextMenu.Items.Add(new ToolStripSeparator());

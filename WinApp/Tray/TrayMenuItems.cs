@@ -23,11 +23,16 @@ internal static class TrayMenuItems
         CheckOnClick = true,
     };
 
-    public static ToolStripMenuItem OpenConfig = new(null, null, TrayMenuEvents.OnClick_OpenConfig)
+    public static ToolStripMenuItem OpenConfig(Action callback)
     {
-        Name = TrayConstants.ItemNames.OpenConfig,
-        Text = TrayConstants.ItemTexts.OpenConfig,
-    };
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.OpenConfig,
+            Text = TrayConstants.ItemTexts.OpenConfig,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_OpenConfig(callback);
+        return menuItem;
+    }
 
     public static ToolStripMenuItem Exit = new(null, null, TrayMenuEvents.OnClick_Exit)
     {
