@@ -23,6 +23,12 @@ internal static class TrayMenuItems
         CheckOnClick = true,
     };
 
+    public static ToolStripMenuItem OpenConfig = new(null, null, TrayMenuEvents.OnClick_OpenConfig)
+    {
+        Name = TrayConstants.ItemNames.OpenConfig,
+        Text = TrayConstants.ItemTexts.OpenConfig,
+    };
+
     public static ToolStripMenuItem Exit = new(null, null, TrayMenuEvents.OnClick_Exit)
     {
         Name = TrayConstants.ItemNames.Exit,

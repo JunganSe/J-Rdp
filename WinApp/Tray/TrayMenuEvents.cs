@@ -23,6 +23,11 @@ internal static class TrayMenuEvents
             LogManager.SetFileLogging(menuItem.Checked);
     }
 
+    public static void OnClick_OpenConfig(object? sender, EventArgs e)
+    {
+        // TODO: Implement event.
+    }
+
     public static void OnClick_Exit(object? sender, EventArgs e)
     {
         Application.Exit();
