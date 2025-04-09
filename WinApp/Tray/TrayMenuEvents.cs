@@ -23,7 +23,7 @@ internal static class TrayMenuEvents
             LogManager.SetFileLogging(menuItem.Checked);
     }
 
-    public static EventHandler OnClick_OpenConfig(Action callback)
+    public static EventHandler OnClick_OpenConfigFile(Action callback)
     {
         return (object? sender, EventArgs e) =>
         {

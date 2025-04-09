@@ -49,7 +49,7 @@ internal class TrayWorker
 
         contextMenu.Items.Add(TrayMenuItems.ToggleConsole(callback_ToggleConsole));
         contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-        contextMenu.Items.Add(TrayMenuItems.OpenConfig(callback_OpenConfigFile));
+        contextMenu.Items.Add(TrayMenuItems.OpenConfigFile(callback_OpenConfigFile));
 
         contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
         contextMenu.Items.Add(new ToolStripSeparator());
