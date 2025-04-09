@@ -23,7 +23,7 @@ internal class ConfigWorker
 
     public Config GetConfigFromFile()
     {
-        string path = GetConfigPath();
+        string path = GetConfigFilePath();
         string fileContent = _fileReader.ReadFile(path);
         var config = ParseConfig(fileContent);
         _logger.Debug("Successfully parsed config from file.");
@@ -32,7 +32,7 @@ internal class ConfigWorker
 
     public void OpenConfigFile()
     {
-        string path = GetConfigPath();
+        string path = GetConfigFilePath();
         if (!File.Exists(path))
         {
             _logger.Error($"Can not open config file. File not found.");
@@ -51,7 +51,7 @@ internal class ConfigWorker
         }
     }
 
-    private string GetConfigPath()
+    private string GetConfigFilePath()
     {
         string directory = FileHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
@@ -85,7 +85,7 @@ internal class ConfigWorker
     {
         try
         {
-            string path = GetConfigPath();
+            string path = GetConfigFilePath();
             string json = JsonSerializer.Serialize(config, _jsonOptions);
             _fileWriter.WriteFile(path, json);
             _logger.Debug("Successfully updated config file.");
