@@ -1,5 +1,6 @@
 ﻿using Core.Files;
 using NLog;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Core.Configs;
@@ -22,16 +23,35 @@ internal class ConfigWorker
 
     public Config GetConfigFromFile()
     {
-        string path = GetConfigPath();
+        string path = GetConfigFilePath();
         string fileContent = _fileReader.ReadFile(path);
         var config = ParseConfig(fileContent);
         _logger.Debug("Successfully parsed config from file.");
         return config;
     }
 
+    public void OpenConfigFile()
+    {
+        try
+        {
+            string path = GetConfigFilePath();
+            if (!File.Exists(path))
+            {
+                _logger.Error($"Failed to open config file. File not found.");
+                return;
+            }
 
+            var process = new ProcessStartInfo(path) { UseShellExecute = true, };
+            Process.Start(process);
+            _logger.Debug("Opened config file in shell.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, $"Failed to open config file.");
+        }
+    }
 
-    private string GetConfigPath()
+    private string GetConfigFilePath()
     {
         string directory = FileHelper.GetConfigDirectory();
         string fileName = ConfigConstants.FileName;
@@ -65,7 +85,7 @@ internal class ConfigWorker
     {
         try
         {
-            string path = GetConfigPath();
+            string path = GetConfigFilePath();
             string json = JsonSerializer.Serialize(config, _jsonOptions);
             _fileWriter.WriteFile(path, json);
             _logger.Debug("Successfully updated config file.");

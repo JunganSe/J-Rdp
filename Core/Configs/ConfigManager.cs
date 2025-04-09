@@ -81,4 +81,7 @@ internal class ConfigManager
         };
         _configWorker.UpdateConfigFile(config);
     }
+
+    public void OpenConfigFile() =>
+        _configWorker.OpenConfigFile();
 }

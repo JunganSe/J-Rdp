@@ -23,6 +23,17 @@ internal static class TrayMenuItems
         CheckOnClick = true,
     };
 
+    public static ToolStripMenuItem OpenConfigFile(Action callback)
+    {
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.OpenConfigFile,
+            Text = TrayConstants.ItemTexts.OpenConfigFile,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_OpenConfigFile(callback);
+        return menuItem;
+    }
+
     public static ToolStripMenuItem Exit = new(null, null, TrayMenuEvents.OnClick_Exit)
     {
         Name = TrayConstants.ItemNames.Exit,

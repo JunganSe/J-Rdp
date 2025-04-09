@@ -28,6 +28,7 @@ internal class Controller
     private void InitializeTray(Arguments arguments)
     {
         _trayManager.SetCallback_ToggleConsole(_consoleManager.SetVisibility);
+        _trayManager.SetCallback_OpenConfigFile(_coreManager.OpenConfigFile);
         _trayManager.SetCallback_ProfilesActiveStateChanged(_coreManager.UpdateProfilesEnabledState);
         _trayManager.InitializeNotifyIconWithContextMenu();
         _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
