@@ -35,7 +35,7 @@ internal class ConfigWorker
         string path = GetConfigFilePath();
         if (!File.Exists(path))
         {
-            _logger.Error($"Can not open config file. File not found.");
+            _logger.Error($"Failed to open config file. File not found.");
             return;
         }
 
