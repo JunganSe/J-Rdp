@@ -32,15 +32,15 @@ internal class ConfigWorker
 
     public void OpenConfigFile()
     {
-        string path = GetConfigFilePath();
-        if (!File.Exists(path))
-        {
-            _logger.Error($"Failed to open config file. File not found.");
-            return;
-        }
-
         try
         {
+            string path = GetConfigFilePath();
+            if (!File.Exists(path))
+            {
+                _logger.Error($"Failed to open config file. File not found.");
+                return;
+            }
+
             var process = new ProcessStartInfo(path) { UseShellExecute = true, };
             Process.Start(process);
             _logger.Debug("Opened config file in shell.");
