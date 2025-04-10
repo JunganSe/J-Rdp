@@ -82,6 +82,13 @@ internal class ConfigManager
         _configWorker.UpdateConfigFile(config);
     }
 
-    public void OpenConfigFile() =>
-        _configWorker.TryOpenConfigFile();
+    public void OpenConfigFile()
+    {
+        bool isFileOpened = _configWorker.TryOpenConfigFile();
+        if (!isFileOpened)
+        {
+            _configWorker.CreateConfigFile();
+            _configWorker.TryOpenConfigFile();
+        }
+    }
 }
