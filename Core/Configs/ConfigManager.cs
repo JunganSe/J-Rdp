@@ -83,5 +83,5 @@ internal class ConfigManager
     }
 
     public void OpenConfigFile() =>
-        _configWorker.OpenConfigFile();
+        _configWorker.TryOpenConfigFile();
 }

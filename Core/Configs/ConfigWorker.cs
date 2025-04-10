@@ -46,7 +46,7 @@ internal class ConfigWorker
         }
     }
 
-    public void OpenConfigFile()
+    public bool TryOpenConfigFile()
     {
         try
         {
@@ -54,16 +54,18 @@ internal class ConfigWorker
             if (!File.Exists(path))
             {
                 _logger.Error($"Failed to open config file. File not found.");
-                return;
+                return false;
             }
 
             var process = new ProcessStartInfo(path) { UseShellExecute = true, };
             Process.Start(process);
-            _logger.Debug("Opened config file in shell.");
+            _logger.Debug("Config file opened in shell.");
+            return true;
         }
         catch (Exception ex)
         {
             _logger.Error(ex, $"Failed to open config file.");
+            return false;
         }
     }
 
