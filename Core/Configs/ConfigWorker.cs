@@ -1,6 +1,7 @@
 ﻿using Core.Files;
 using NLog;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Core.Configs;
@@ -64,6 +65,20 @@ internal class ConfigWorker
         {
             _logger.Error(ex, $"Failed to open config file.");
         }
+    }
+
+    public void CreateConfigFile()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        string resourceName = $"Core.{ConfigConstants.FileName}";
+
+        using var resourceStream = assembly.GetManifestResourceStream(resourceName)
+            ?? throw new FileNotFoundException($"Embedded resource '{resourceName}' not found.");
+
+        using var fileStream = new FileStream(GetConfigFilePath(), FileMode.CreateNew, FileAccess.Write);
+        resourceStream.CopyTo(fileStream);
+
+        _logger.Info($"Created config file.");
     }
 
     private string GetConfigFilePath()
