@@ -59,7 +59,7 @@ internal class ConfigWorker
 
             var process = new ProcessStartInfo(path) { UseShellExecute = true, };
             Process.Start(process);
-            _logger.Debug("Config file opened in shell.");
+            _logger.Info("Config file opened in shell.");
             return true;
         }
         catch (Exception ex)
