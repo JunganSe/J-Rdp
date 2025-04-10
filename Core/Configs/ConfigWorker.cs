@@ -69,16 +69,25 @@ internal class ConfigWorker
 
     public void CreateConfigFile()
     {
-        var assembly = Assembly.GetExecutingAssembly();
-        string resourceName = $"Core.{ConfigConstants.FileName}";
+        try
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName = $"Core.{ConfigConstants.FileName}";
 
-        using var resourceStream = assembly.GetManifestResourceStream(resourceName)
-            ?? throw new FileNotFoundException($"Embedded resource '{resourceName}' not found.");
+            using var resourceStream = assembly.GetManifestResourceStream(resourceName)
+                ?? throw new FileNotFoundException($"Embedded resource '{resourceName}' not found.");
 
-        using var fileStream = new FileStream(GetConfigFilePath(), FileMode.CreateNew, FileAccess.Write);
-        resourceStream.CopyTo(fileStream);
+            using var fileStream = new FileStream(GetConfigFilePath(), FileMode.CreateNew, FileAccess.Write);
+            resourceStream.CopyTo(fileStream);
 
-        _logger.Info($"Created config file.");
+            _logger.Info($"Created config file.");
+        }
+        catch (Exception ex)
+        {
+            string alreadyExistsMessage = (ex is IOException && ex.Message.Contains("already exists"))
+                ? $" File already exists." : "";
+            _logger.Error(ex, $"Failed to create config file.{alreadyExistsMessage}");
+        }
     }
 
     private string GetConfigFilePath()
