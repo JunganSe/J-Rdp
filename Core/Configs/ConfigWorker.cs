@@ -30,6 +30,21 @@ internal class ConfigWorker
         return config;
     }
 
+    public void UpdateConfigFile(Config config)
+    {
+        try
+        {
+            string path = GetConfigFilePath();
+            string json = JsonSerializer.Serialize(config, _jsonOptions);
+            _fileWriter.WriteFile(path, json);
+            _logger.Debug("Successfully updated config file.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to update config file.");
+        }
+    }
+
     public void OpenConfigFile()
     {
         try
@@ -78,21 +93,6 @@ internal class ConfigWorker
         {
             _logger.Error(ex, $"Failed to parse config file.");
             throw;
-        }
-    }
-
-    public void UpdateConfigFile(Config config)
-    {
-        try
-        {
-            string path = GetConfigFilePath();
-            string json = JsonSerializer.Serialize(config, _jsonOptions);
-            _fileWriter.WriteFile(path, json);
-            _logger.Debug("Successfully updated config file.");
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to update config file.");
         }
     }
 }
