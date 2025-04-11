@@ -93,11 +93,12 @@ internal class ConfigManager
 
     public void OpenConfigFile()
     {
-        bool isFileOpened = _configWorker.TryOpenConfigFile();
-        if (!isFileOpened)
+        if (!_configWorker.IsConfigFileFound())
         {
+            _logger.Error($"Failed to open config file. File not found.");
             _configWorker.CreateConfigFile();
-            _configWorker.TryOpenConfigFile();
         }
+
+        _configWorker.OpenConfigFile();
     }
 }

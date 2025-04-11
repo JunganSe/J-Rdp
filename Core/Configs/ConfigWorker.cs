@@ -52,26 +52,18 @@ internal class ConfigWorker
         return File.Exists(path);
     }
 
-    public bool TryOpenConfigFile()
+    public void OpenConfigFile()
     {
         try
         {
             string path = GetConfigFilePath();
-            if (!File.Exists(path))
-            {
-                _logger.Error($"Failed to open config file. File not found.");
-                return false;
-            }
-
             var process = new ProcessStartInfo(path) { UseShellExecute = true, };
             Process.Start(process);
             _logger.Info("Config file opened in shell.");
-            return true;
         }
         catch (Exception ex)
         {
             _logger.Error(ex, $"Failed to open config file.");
-            return false;
         }
     }
 
