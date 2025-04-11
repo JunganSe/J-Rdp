@@ -26,6 +26,15 @@ internal class ConfigManager
     public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
         _callback_ConfigUpdated = callback;
 
+    public void CreateConfigFileIfMissing()
+    {
+        if (_configWorker.IsConfigFileFound())
+            return;
+
+        _logger.Warn("Config file not found.");
+        _configWorker.CreateConfigFile();
+    }
+
     public void UpdateConfigFromFile()
     {
         try
@@ -82,6 +91,14 @@ internal class ConfigManager
         _configWorker.UpdateConfigFile(config);
     }
 
-    public void OpenConfigFile() =>
+    public void OpenConfigFile()
+    {
+        if (!_configWorker.IsConfigFileFound())
+        {
+            _logger.Error($"Failed to open config file. File not found.");
+            _configWorker.CreateConfigFile();
+        }
+
         _configWorker.OpenConfigFile();
+    }
 }

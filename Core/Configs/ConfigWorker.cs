@@ -1,6 +1,7 @@
 ﻿using Core.Files;
 using NLog;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Core.Configs;
@@ -30,24 +31,62 @@ internal class ConfigWorker
         return config;
     }
 
+    public void UpdateConfigFile(Config config)
+    {
+        try
+        {
+            string path = GetConfigFilePath();
+            string json = JsonSerializer.Serialize(config, _jsonOptions);
+            _fileWriter.WriteFile(path, json);
+            _logger.Debug("Successfully updated config file.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to update config file.");
+        }
+    }
+
+    public bool IsConfigFileFound()
+    {
+        string path = GetConfigFilePath();
+        return File.Exists(path);
+    }
+
     public void OpenConfigFile()
     {
         try
         {
             string path = GetConfigFilePath();
-            if (!File.Exists(path))
-            {
-                _logger.Error($"Failed to open config file. File not found.");
-                return;
-            }
-
             var process = new ProcessStartInfo(path) { UseShellExecute = true, };
             Process.Start(process);
-            _logger.Debug("Opened config file in shell.");
+            _logger.Info("Config file opened in shell.");
         }
         catch (Exception ex)
         {
             _logger.Error(ex, $"Failed to open config file.");
+        }
+    }
+
+    public void CreateConfigFile()
+    {
+        try
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName = $"Core.{ConfigConstants.FileName}";
+
+            using var resourceStream = assembly.GetManifestResourceStream(resourceName)
+                ?? throw new FileNotFoundException($"Embedded resource '{resourceName}' not found.");
+
+            using var fileStream = new FileStream(GetConfigFilePath(), FileMode.CreateNew, FileAccess.Write);
+            resourceStream.CopyTo(fileStream);
+
+            _logger.Info($"Created config file.");
+        }
+        catch (Exception ex)
+        {
+            string alreadyExistsMessage = (ex is IOException && ex.Message.Contains("already exists"))
+                ? $" File already exists." : "";
+            _logger.Error(ex, $"Failed to create config file.{alreadyExistsMessage}");
         }
     }
 
@@ -78,21 +117,6 @@ internal class ConfigWorker
         {
             _logger.Error(ex, $"Failed to parse config file.");
             throw;
-        }
-    }
-
-    public void UpdateConfigFile(Config config)
-    {
-        try
-        {
-            string path = GetConfigFilePath();
-            string json = JsonSerializer.Serialize(config, _jsonOptions);
-            _fileWriter.WriteFile(path, json);
-            _logger.Debug("Successfully updated config file.");
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to update config file.");
         }
     }
 }
