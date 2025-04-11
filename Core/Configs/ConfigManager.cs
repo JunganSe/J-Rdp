@@ -26,6 +26,15 @@ internal class ConfigManager
     public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
         _callback_ConfigUpdated = callback;
 
+    public void CreateConfigFileIfMissing()
+    {
+        if (_configWorker.IsConfigFileFound())
+            return;
+
+        _logger.Warn("Config file not found.");
+        _configWorker.CreateConfigFile();
+    }
+
     public void UpdateConfigFromFile()
     {
         try

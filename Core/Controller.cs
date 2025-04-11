@@ -48,6 +48,7 @@ public class Controller
     {
         _configWatcherManager.StopAndDisposeConfigWatcher();
         _configWatcherManager.StartConfigWatcher(callback: InitializeConfig);
+        _configManager.CreateConfigFileIfMissing();
         InitializeConfig();
     }
 

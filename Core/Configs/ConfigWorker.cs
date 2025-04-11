@@ -46,6 +46,12 @@ internal class ConfigWorker
         }
     }
 
+    public bool IsConfigFileFound()
+    {
+        string path = GetConfigFilePath();
+        return File.Exists(path);
+    }
+
     public bool TryOpenConfigFile()
     {
         try
