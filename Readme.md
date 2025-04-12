@@ -1,5 +1,6 @@
 # J-Rdp
-J-Rdp is a tool to automate the editing and launching of rdp files.
+J-Rdp is a tool to automate the editing and launching of rdp files.\
+(Remote Desktop Protocol files, used for remote access to another computer.)
 
 It will watch one or more folders for new files, using name criteria filters.\
 When a new file is found, several actions can be taken:
@@ -7,6 +8,8 @@ When a new file is found, several actions can be taken:
 - Edit settings in the file.
 - Launch the file.
 - Delete the file.
+
+An example use case is when connection to a development server is done with single use ("burner") rdp files, and we want to automatically apply some settings before launching and finally deleting the file.
 <br/><br/>
 
 
