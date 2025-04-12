@@ -10,6 +10,8 @@ When a new file is found, several actions can be taken:
 - Delete the file.
 
 An example use case is when connection to a development server is done with single use ("burner") rdp files, and we want to automatically apply some settings before launching and finally deleting the file.
+
+This program is for Windows, but a Linux version is planned for the future.
 <br/><br/>
 
 
