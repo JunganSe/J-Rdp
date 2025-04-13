@@ -31,17 +31,17 @@ For full details, see the [License file](./License.txt) or visit [GNU's official
 
 
 # Launching
-The application can be run directly as a console app, or silently in the background.\
+The application is normally used with a tray icon and context menu, but can also be run silently in the background.\
 No installation is needed.
 
-To run it as a console app, simply run the .exe file.
+To run it normally with a tray icon, simply run the .exe file.
 
-To run it silently, run the .exe file with the `-HideConsole` argument.\
-A pair of .bat files are provided to start it silently, and to stop it.
+To run it without a gui, run it with the `-NoTray` argument.\
+A pair of .bat files are provided for convenient launching with arguments, and to stop the app.
 
 To run the app automatically on boot/login, use either of these methods:\
 \- Create a shortcut and put it in your startup folder.\
-\- Use the Windows task scheduler to run it on login or startup.
+\- Use the Windows task scheduler to run it on startup or login.
 <br/><br/>
 
 
