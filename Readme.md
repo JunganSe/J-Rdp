@@ -48,20 +48,6 @@ To run the app automatically on boot/login, use either of these methods:\
 
 # Configuration
 
-## Logging
-Logging to file can be enabled via the context menu, and is off by default.\
-To enable logging to file by default, use the `-LogToFile` argument when running the .exe file.
-
-To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory\
-and it will be used instead of the default log settings.
-
-By default, one .log file will be generated per day in the "Logs" folder.\
-Read them with a text editor such as notepad, or your favourite log reader.
-
-A simplified log can also be opened in a console window, available in the tray menu.\
-To open the log console automatically when the app is run, use the `-ShowConsole` argument.
-
-
 ## General configuration
 The application is using a configuration file named "J-Rdp config.json" in the same directory as the .exe file.\
 An example file is provided, edit it as needed.\
@@ -72,6 +58,7 @@ Two general settings can be configured:
   Default if omitted: 1000. Must be between 100 and 30000.
 - `deleteDelay`: Decides how long to wait before deleting a file after launching it.\
   Default if omitted: 3000. Must be between 100 and 30000.
+
 
 
 ## Profiles
@@ -94,6 +81,21 @@ The settings are:
 - `settings`: An array of strings, each representing a setting to be made in the .rdp file.\
   Optional. See the chapter about rdp settings below.
 <br/><br/>
+
+
+
+## Logging
+Logging to file can be enabled via the context menu, and is off by default.\
+To enable logging to file by default, use the `-LogToFile` argument when running the .exe file.
+
+To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory\
+and it will be used instead of the default log settings.
+
+By default, one .log file will be generated per day in the "Logs" folder.\
+Read them with a text editor such as notepad, or your favourite log reader.
+
+A simplified log can also be opened in a console window, available in the tray menu.\
+To open the log console automatically when the app is run, use the `-ShowConsole` argument.
 
 
 
