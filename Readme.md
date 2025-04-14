@@ -66,8 +66,10 @@ To configure which folders to watch and which actions should be taken, provide o
 
 The settings are:
 - `enabled`: Set to false to disable the profile without having to remove it from the config file.\
+  Can be toggled from the tray menu.\
   Optional. Default if omitted: true
-- `name`: The name of the profile. Optional. Only used to differentiate the profiles in the config file, and in log messages.\
+- `name`: The name of the profile. Used in the tray menu and in log messages.\
+  Optional. Default if omitted or empty: "(Unnamed profile)".
 - `watchFolder`: Path to the folder that should be watched. Must be absolute, e.g. "C:/MyFolder".\
   Accepts forward slash `/` or double (escaped) backslash `\\` as directory separators.
 - `filter`: The file name to watch for. The file type ".rdp" will be assumed if not provided.\
