@@ -63,8 +63,9 @@ To open the log console automatically when the app is run, use the `-ShowConsole
 
 
 ## General configuration
-The application is using a configuration file named "config.json" in the same directory as the .exe file.\
-An example file is provided, edit it as needed.
+The application is using a configuration file named "J-Rdp config.json" in the same directory as the .exe file.\
+An example file is provided, edit it as needed.\
+A new example file will be genererated if the config file is missing during app launch or when clicking "Open config file" in the tray menu.
 
 Two general settings can be configured:
 - `pollingInterval`: Decides how often, in milliseconds, the watched folder(s) should be checked for new files.\
