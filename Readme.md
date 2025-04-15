@@ -46,6 +46,20 @@ To run the app automatically on boot/login, use either of these methods:\
 
 
 
+# Tray menu
+Right click the "RDP" tray icon to open the context menu.\
+From here you can toggle log settings, open the config file, and toggle profiles on or off.\
+![image](https://github.com/user-attachments/assets/c2d94e5d-f030-4d08-b3ec-b4f7feb262db)
+
+Note that the log settings are reset when the program starts, use command line arguments to set their default state.\
+See the "Logging" chapter below for details.
+
+Click a profile to enable it and disable all other profiles.\
+Ctrl-click a profile to toggle it. This allows having multiple profiles enabled at the same time, and to disable any enabled profiles.
+<br/><br/>
+
+
+
 # Configuration
 
 ## General configuration
@@ -127,7 +141,7 @@ Examples of some useful settings:
 2025-04-??
 
 Changes and improvements:
-- Introduced a tray icon with a context menu, allowing the following:
+- The program now has a tray icon with a context menu, allowing the following:
   - Profiles can now be toggled on or off. Click to switch to that profile (disabling other profiles), or ctrl-click to toggle its enabled state.
   - Opening the config file.
   - Toggling log settings. (Log console window and logging to file.)
