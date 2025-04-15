@@ -123,6 +123,24 @@ Examples of some useful settings:
 
 # Changelog
 
+## 0.3.0
+2025-04-??
+
+Changes and improvements:
+- Introduced a tray icon with a context menu, allowing the following:
+  - Profiles can now be toggled on or off. Click to switch to that profile (disabling other profiles), or ctrl-click to toggle its enabled state.
+  - Opening the config file.
+  - Toggling log settings. (Log console window and logging to file.)
+- The config file will now be generated if it is missing on startup or when opened from the tray menu.
+- The project is now under the GPLv3 license.
+- Various minor optimizations and stability improvements.
+- Old log files will now be deleted after 30 days. (Configurable)
+- Command line arguments have been changed.
+- Empty profile names will now be treated as missing, meaning that they will be displayed as "(Unnamed profile)" instead of an empty name.
+
+Bug fixes:
+- Fixed that changing the config file could trigger the detection event twice.
+
 ## 0.2.1
 2025-01-22
 
