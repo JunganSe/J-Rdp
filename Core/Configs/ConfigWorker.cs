@@ -107,7 +107,7 @@ internal class ConfigWorker
             for (int i = 0; i < config.Profiles.Count; i++)
             {
                 var profile = config.Profiles[i];
-                profile.SetId(i + 1);
+                profile.Id = i + 1;
                 profile.Filter = profile.Filter.Trim();
             }
 

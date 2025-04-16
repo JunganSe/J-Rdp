@@ -6,10 +6,15 @@ namespace Core.Profiles;
 internal class Profile
 {
     private const int _defaultId = -1;
+
+    private int _id = _defaultId;
     private string _name = ConfigConstants.Profile_DefaultName;
 
-    [JsonIgnore]
-    public int Id { get; private set; }         = _defaultId;
+    public int Id
+    {
+        get => _id;
+        set => _id = (_id == _defaultId) ? value : throw new InvalidOperationException("Id is already set.");
+    }
     public bool Enabled { get; set; }           = true;
     public string Name
     {
@@ -29,14 +34,6 @@ internal class Profile
 
     public Profile(int id)
     {
-        Id = id;
-    }
-
-    public void SetId(int id)
-    {
-        if (Id != _defaultId)
-            throw new InvalidOperationException("Id is already set.");
-        
         Id = id;
     }
 }

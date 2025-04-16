@@ -19,7 +19,7 @@ internal static class ProfileHelper
             Settings = [.. profile.Settings]
         };
         if (copyId)
-            profileCopy.SetId(profile.Id);
+            profileCopy.Id = profile.Id;
 
         return profileCopy;
     }
