@@ -6,11 +6,16 @@ namespace Core.Profiles;
 internal class Profile
 {
     private const int _defaultId = -1;
+    private string _name = ConfigConstants.Profile_DefaultName;
 
     [JsonIgnore]
     public int Id { get; private set; }         = _defaultId;
     public bool Enabled { get; set; }           = true;
-    public string Name { get; init; }           = ConfigConstants.Profile_DefaultName;
+    public string Name
+    {
+        get => _name;
+        init => _name = !string.IsNullOrWhiteSpace(value) ? value : ConfigConstants.Profile_DefaultName;
+    }
     public string WatchFolder { get; init; }    = "";
     public string Filter { get; set; }          = "";
     public string MoveToFolder { get; init; }   = "";
