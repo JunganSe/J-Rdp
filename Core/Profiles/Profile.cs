@@ -10,6 +10,7 @@ internal class Profile
     private int _id = _defaultId;
     private string _name = ConfigConstants.Profile_DefaultName;
 
+    [JsonIgnore]
     public int Id
     {
         get => _id;
