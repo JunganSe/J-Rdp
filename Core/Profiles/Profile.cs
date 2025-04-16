@@ -15,12 +15,12 @@ internal class Profile
         get => _id;
         set => _id = (_id == _defaultId) ? value : throw new InvalidOperationException("Id is already set.");
     }
-    public bool Enabled { get; set; }           = true;
     public string Name
     {
         get => _name;
         init => _name = !string.IsNullOrWhiteSpace(value) ? value : ConfigConstants.Profile_DefaultName;
     }
+    public bool Enabled { get; set; }           = true;
     public string WatchFolder { get; init; }    = "";
     public string Filter { get; set; }          = "";
     public string MoveToFolder { get; init; }   = "";
