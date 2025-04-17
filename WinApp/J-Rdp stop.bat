@@ -1,1 +1,1 @@
-taskkill /IM J-Rdp.exe
+echo "Stahp!" > \\.\pipe\J-Rdp.Stop

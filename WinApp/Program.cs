@@ -1,4 +1,5 @@
 using Auxiliary;
+using System.IO.Pipes;
 
 namespace WinApp;
 
@@ -22,8 +23,10 @@ internal static class Program
         if (IsProgramRunning())
         {
             _logger.Warn("An instance is already running. Aborting...");
-            Environment.Exit(0);
+            return; // Will close gracefully.
         }
+
+        StartStopSignalListener();
 
         _controller.Run(arguments);
         Application.Run();
@@ -51,5 +54,29 @@ internal static class Program
         const string mutexName = "J-Rdp.UniqueInstance";
         _mutex = new Mutex(true, mutexName, out bool isNewInstance);
         return !isNewInstance;
+    }
+
+    private static void StartStopSignalListener()
+    {
+        if (_isExiting)
+            return;
+
+        new Thread(WaitForStopSignal).Start();
+    }
+
+    private static void WaitForStopSignal()
+    {
+        try
+        {
+            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
+            _logger.Debug("Listening for stop signal...");
+            pipeServer.WaitForConnection();
+            _logger.Info("Stop signal received.");
+            Application.Exit();
+        }
+        catch (IOException)
+        {
+            // Swallow IOException, which can happen if a pipe already exists.
+        }
     }
 }
