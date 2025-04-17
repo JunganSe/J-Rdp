@@ -26,7 +26,7 @@ internal static class Program
             return; // Will close gracefully.
         }
 
-        ListenForStopSignal();
+        StartStopSignalListener();
 
         _controller.Run(arguments);
         Application.Run();
@@ -56,22 +56,27 @@ internal static class Program
         return !isNewInstance;
     }
 
-    private static void ListenForStopSignal()
+    private static void StartStopSignalListener()
     {
-        new Thread(() =>
+        if (_isExiting)
+            return;
+
+        new Thread(WaitForStopSignal).Start();
+    }
+
+    private static void WaitForStopSignal()
+    {
+        try
         {
-            try
-            {
-                using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
-                _logger.Debug("Listening for stop signal...");
-                pipeServer.WaitForConnection();
-                _logger.Info("Stop signal received.");
-                Application.Exit();
-            }
-            catch (IOException)
-            {
-                // Swallow IOException, which can happen if a pipe already exists.
-            }
-        }).Start();
+            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
+            _logger.Debug("Listening for stop signal...");
+            pipeServer.WaitForConnection();
+            _logger.Info("Stop signal received.");
+            Application.Exit();
+        }
+        catch (IOException)
+        {
+            // Swallow IOException, which can happen if a pipe already exists.
+        }
     }
 }
