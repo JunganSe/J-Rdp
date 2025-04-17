@@ -60,11 +60,18 @@ internal static class Program
     {
         new Thread(() =>
         {
-            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
-            _logger.Debug("Listening for stop signal...");
-            pipeServer.WaitForConnection();
-            _logger.Info("Stop signal received.");
-            Application.Exit();
+            try
+            {
+                using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
+                _logger.Debug("Listening for stop signal...");
+                pipeServer.WaitForConnection();
+                _logger.Info("Stop signal received.");
+                Application.Exit();
+            }
+            catch (IOException)
+            {
+                // Swallow IOException, which can happen if a pipe already exists.
+            }
         }).Start();
     }
 }
