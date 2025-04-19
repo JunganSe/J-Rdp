@@ -1,5 +1,4 @@
-﻿using Core.Configs;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Core.Profiles;
 
@@ -8,7 +7,7 @@ internal class Profile
     private const int _defaultId = -1;
 
     private int _id = _defaultId;
-    private string _name = ConfigConstants.Profile_DefaultName;
+    private string _name = ProfileConstants.DefaultName;
 
     [JsonIgnore]
     public int Id
@@ -19,7 +18,7 @@ internal class Profile
     public string Name
     {
         get => _name;
-        init => _name = !string.IsNullOrWhiteSpace(value) ? value : ConfigConstants.Profile_DefaultName;
+        init => _name = !string.IsNullOrWhiteSpace(value) ? value : ProfileConstants.DefaultName;
     }
     public bool Enabled { get; set; }           = true;
     public string WatchFolder { get; init; }    = "";

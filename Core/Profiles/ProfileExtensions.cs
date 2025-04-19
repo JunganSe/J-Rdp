@@ -1,6 +1,4 @@
-﻿using Core.Configs;
-
-namespace Core.Profiles;
+﻿namespace Core.Profiles;
 
 internal static class ProfileExtensions
 {
@@ -18,7 +16,7 @@ internal static class ProfileExtensions
 
     public static void AddDefaultFilterFileEnding(this Profile profile)
     {
-        string defaultFileEnding = ConfigConstants.Profile_DefaultFilterFileEnding;
+        string defaultFileEnding = ProfileConstants.DefaultFilterFileEnding;
         bool hasFileEnding = profile.Filter.EndsWith(defaultFileEnding, StringComparison.OrdinalIgnoreCase);
         if (!hasFileEnding)
             profile.Filter += defaultFileEnding;

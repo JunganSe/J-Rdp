@@ -11,8 +11,4 @@ internal static class ConfigConstants
     public const int DeleteDelay_Min = 100;
     public const int DeleteDelay_Max = 30_000;
     public const int DeleteDelay_Default = 3000;
-
-    public const string Profile_DefaultName = "(Unnamed profile)";
-    public const string Profile_DefaultFilterFileEnding = ".rdp";
-    public const int Profile_NameMaxLength = 50;
 }
