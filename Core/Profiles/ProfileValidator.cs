@@ -1,4 +1,5 @@
-﻿using Core.Files;
+﻿using Core.Configs;
+using Core.Files;
 
 namespace Core.Profiles;
 
@@ -7,6 +8,9 @@ internal static class ProfileValidator
     public static bool IsProfileValid(Profile profile, out string reason)
     {
         var reasons = new List<string>();
+
+        if (profile.Name.Length > ConfigConstants.Profile_NameMaxLength)
+            reasons.Add($"'{nameof(profile.Name)}' is too long. ({profile.Name.Length} of {ConfigConstants.Profile_NameMaxLength} characters.)");
 
         if (string.IsNullOrWhiteSpace(profile.WatchFolder))
             reasons.Add($"'{nameof(profile.WatchFolder)}' is empty or missing.");

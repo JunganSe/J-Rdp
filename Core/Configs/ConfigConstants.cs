@@ -14,4 +14,5 @@ internal static class ConfigConstants
 
     public const string Profile_DefaultName = "(Unnamed profile)";
     public const string Profile_DefaultFilterFileEnding = ".rdp";
+    public const int Profile_NameMaxLength = 50;
 }
