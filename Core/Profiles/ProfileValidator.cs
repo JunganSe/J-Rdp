@@ -8,6 +8,9 @@ internal static class ProfileValidator
     {
         var reasons = new List<string>();
 
+        if (profile.Name.Length > ProfileConstants.NameMaxLength)
+            reasons.Add($"'{nameof(profile.Name)}' is too long. ({profile.Name.Length} of {ProfileConstants.NameMaxLength} characters.)");
+
         if (string.IsNullOrWhiteSpace(profile.WatchFolder))
             reasons.Add($"'{nameof(profile.WatchFolder)}' is empty or missing.");
         else if (!FileHelper.IsPathAbsolute(profile.WatchFolder))
