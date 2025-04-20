@@ -96,7 +96,6 @@ The settings are:
   Optional: Default if omitted: false
 - `settings`: An array of strings, each representing a setting to be made in the .rdp file.\
   Optional. See the chapter about rdp settings below.
-<br/><br/>
 
 
 
@@ -104,14 +103,15 @@ The settings are:
 Logging to file can be enabled via the context menu, and is off by default.\
 To enable logging to file by default, use the `-LogToFile` argument when running the .exe file.
 
-To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory\
-and it will be used instead of the default log settings.
-
-By default, one .log file will be generated per day in the "Logs" folder.\
+By default, one .log file will be generated per day in the "Logs" folder. They are kept for 30 days.\
 Read them with a text editor such as notepad, or your favourite log reader.
 
 A simplified log can also be opened in a console window, available in the tray menu.\
 To open the log console automatically when the app is run, use the `-ShowConsole` argument.
+
+To customize the logging, provide an NLog config file named "nlog.config" in the .exe directory\
+and it will be used instead of the default log settings.
+<br/><br/>
 
 
 
