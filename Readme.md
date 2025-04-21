@@ -141,16 +141,17 @@ Examples of some useful settings:
 2025-04-??
 
 Changes and improvements:
+- The project is now under the GPLv3 license.
 - The program now has a tray icon with a context menu, allowing the following:
   - Profiles can now be toggled on or off. Click to switch to that profile (disabling other profiles), or ctrl-click to toggle its enabled state.
   - Opening the config file.
   - Toggling log settings. (Log console window and logging to file.)
 - The config file will now be generated if it is missing on startup or when opened from the tray menu.
-- The project is now under the GPLv3 license.
-- Various minor optimizations and stability improvements.
 - Old log files will now be deleted after 30 days. (Configurable)
 - Command line arguments have been changed.
 - Empty profile names will now be treated as missing, meaning that they will be displayed as "(Unnamed profile)" instead of an empty name.
+- Profile names now have a limit of 50 characters.
+- Various minor optimizations and stability improvements.
 
 Bug fixes:
 - Fixed that changing the config file could trigger the detection event twice.
