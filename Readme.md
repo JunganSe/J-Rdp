@@ -131,6 +131,9 @@ Examples of some useful settings:
 - `use multimon:i:1`: Enable multi monitor support. Will use all monitors unless `selectedmonitors:s` is used.
 - `selectedmonitors:s:*value*`: Select which monitors to use when using multiple monitors. Zero-based, comma-separated list.\
   Example: A value of "1,2" will use monitor 2 and 3, but not monitor 1.
+- `displayconnectionbar:i:*value*`: 1 to show the connection bar, 0 to hide it. If hidden, it can be temporarily brought back with ctrl+alt+home.
+- `redirectprinters:i:*value*`: 1 to make printers on the local computer available in the remote session.
+- `keyboardhook:i:*value*`: Where to apply Windows key combinations. 0: Local computer, 1: Remote, 2: Remote in full screen mode only.
 <br/><br/>
 
 
