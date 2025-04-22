@@ -115,7 +115,7 @@ and it will be used instead of the default log settings.
 
 
 
-# Rdp settings
+# RDP settings
 Provide the settings to be applied as an array of strings in the profile.\
 If a setting is not already present in the file, it will be added at the end.\
 If a setting is already present in the file, the original line will be deleted and a new line will be added at the end.
@@ -123,14 +123,19 @@ If a setting is already present in the file, the original line will be deleted a
 See the [Microsoft documentation](https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/rdp-files).
 
 Examples of some useful settings:
-- `screen mode id:i:*value*`: 1 for windowed, 2 for full screen.
-- `desktopwidth:i:*value*`: Resolution width.
-- `desktopheight:i:*value*`: Resolution height.
+- `screen mode id:i:<value>`: 1 for windowed, 2 for full screen.
+- `desktopwidth:i:<value>`: Resolution width.
+- `desktopheight:i:<value>`: Resolution height.
 - `winposstr:s:0,1,x1,y1,x2,y2`: Set the size and position of the window by defining a rectangle. See [this post](https://superuser.com/a/665413) for an explanation.
 - `smart sizing:i:1`: Scale the contens of the window when it is resized.
 - `use multimon:i:1`: Enable multi monitor support. Will use all monitors unless `selectedmonitors:s` is used.
-- `selectedmonitors:s:*value*`: Select which monitors to use when using multiple monitors. Zero-based, comma-separated list.\
+- `selectedmonitors:s:<value>`: Select which monitors to use when using multiple monitors. Zero-based, comma-separated list.\
   Example: A value of "1,2" will use monitor 2 and 3, but not monitor 1.
+- `displayconnectionbar:i:<value>`: 1 to show the connection bar, 0 to hide it. If hidden, it can be temporarily brought back with ctrl+alt+home.
+- `redirectprinters:i:<value>`: 1 to make printers on the local computer available in the remote session.
+- `keyboardhook:i:<value>`: Where to apply Windows key combinations. 0: Local computer, 1: Remote, 2: Remote in full screen mode only.
+
+Note that some settings may be disabled by the provider. Trying to set these will trigger an error message when trying to run the file: "This RDP File is corrupted. The remote connection cannot be started."
 <br/><br/>
 
 
