@@ -13,8 +13,8 @@ internal class TrayWorker
     {
         try
         {
-            using var stream = new MemoryStream(Properties.Resources.J_Rdp_icon);
-            var icon = new Icon(stream);
+            using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
+            var icon = new Icon(iconStream);
 
             return new NotifyIcon()
             {
