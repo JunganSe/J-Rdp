@@ -58,4 +58,11 @@ internal static class TrayMenuItems
         menuItem.Click += TrayMenuEvents.OnClick_Profile(callback);
         return menuItem;
     }
+
+    public static ToolStripMenuItem PlaceholderProfile = new()
+    {
+        Name = TrayConstants.ItemNames.PlaceholderProfile,
+        Text = TrayConstants.ItemTexts.PlaceholderProfile,
+        Enabled = false,
+    };
 }

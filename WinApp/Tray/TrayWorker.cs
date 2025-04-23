@@ -136,11 +136,7 @@ internal class TrayWorker
         try
         {
             int insertIndex = GetProfilesInsertIndex(menuItems);
-            var menuItem = new ToolStripMenuItem()
-            {
-                Text = TrayConstants.ItemTexts.PlaceholderProfile,
-                Enabled = false,
-            };
+            var menuItem = TrayMenuItems.PlaceholderProfile;
             menuItems.Insert(insertIndex, menuItem);
         }
         catch (Exception ex)

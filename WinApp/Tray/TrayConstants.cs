@@ -13,6 +13,7 @@ internal static class TrayConstants
         public const string OpenConfigFile = "OpenConfigFile";
         public const string ProfilesInsertPoint = "ProfilesInsertPoint";
         public const string ProfilePrefix = "Profile";
+        public const string PlaceholderProfile = "PlaceholderProfile";
         public const string Exit = "Exit";
         public const string Close = "Close";
     }
