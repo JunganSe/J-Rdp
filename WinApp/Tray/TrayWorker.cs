@@ -131,6 +131,14 @@ internal class TrayWorker
         }
     }
 
+    public bool PlaceholderProfileMenuItemExists(ToolStripItemCollection menuItems)
+    {
+        return menuItems
+            .Find(TrayConstants.ItemNames.PlaceholderProfile, true)
+            .OfType<ToolStripMenuItem>()
+            .Any();
+    }
+
     public void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
     {
         try

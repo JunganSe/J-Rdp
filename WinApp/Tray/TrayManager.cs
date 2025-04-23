@@ -56,7 +56,7 @@ internal class TrayManager
             _trayWorker.ClearPlaceholderProfileMenuItems(menuItems);
             _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callback_ProfilesActiveStateChanged);
         }
-        else
+        else if (!_trayWorker.PlaceholderProfileMenuItemExists(menuItems))
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
     }
 
