@@ -52,7 +52,10 @@ internal class TrayManager
         _trayWorker.RemoveAllProfileMenuItems(menuItems);
 
         if (profileInfos.Count > 0)
+        {
+            _trayWorker.ClearPlaceholderProfileMenuItems(menuItems);
             _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callback_ProfilesActiveStateChanged);
+        }
         else
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
     }
