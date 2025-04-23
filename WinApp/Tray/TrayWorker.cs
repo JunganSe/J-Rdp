@@ -138,7 +138,7 @@ internal class TrayWorker
             int insertIndex = GetProfilesInsertIndex(menuItems);
             var menuItem = new ToolStripMenuItem()
             {
-                Text = "No profiles found",
+                Text = TrayConstants.ItemTexts.PlaceholderProfile,
                 Enabled = false,
             };
             menuItems.Insert(insertIndex, menuItem);

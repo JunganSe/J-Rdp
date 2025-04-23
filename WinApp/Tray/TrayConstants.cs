@@ -22,6 +22,7 @@ internal static class TrayConstants
         public const string ToggleConsole = "Show log console";
         public const string ToggleLogToFile = "Log to file";
         public const string OpenConfigFile = "Open config file";
+        public const string PlaceholderProfile = "No profiles found";
         public const string Exit = "Exit";
         public const string Close = "Close";
     }
