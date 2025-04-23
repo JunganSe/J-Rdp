@@ -13,8 +13,8 @@ internal class TrayWorker
     {
         try
         {
-            using var stream = new MemoryStream(Properties.Resources.J_Rdp_icon);
-            var icon = new Icon(stream);
+            using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
+            var icon = new Icon(iconStream);
 
             return new NotifyIcon()
             {
@@ -96,7 +96,8 @@ internal class TrayWorker
     {
         try
         {
-            menuItems.OfType<ToolStripMenuItem>()
+            menuItems
+                .OfType<ToolStripMenuItem>()
                 .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
                 .ToList()
                 .ForEach(menuItem =>
@@ -131,21 +132,45 @@ internal class TrayWorker
         }
     }
 
+    public bool PlaceholderProfileMenuItemExists(ToolStripItemCollection menuItems)
+    {
+        return menuItems
+            .Find(TrayConstants.ItemNames.PlaceholderProfile, true)
+            .OfType<ToolStripMenuItem>()
+            .Any();
+    }
+
     public void InsertPlaceholderProfileMenuItem(ToolStripItemCollection menuItems)
     {
         try
         {
             int insertIndex = GetProfilesInsertIndex(menuItems);
-            var menuItem = new ToolStripMenuItem()
-            {
-                Text = "No profiles found",
-                Enabled = false,
-            };
+            var menuItem = TrayMenuItems.PlaceholderProfile;
             menuItems.Insert(insertIndex, menuItem);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to insert placeholder profile menu item.");
+        }
+    }
+
+    public void ClearPlaceholderProfileMenuItems(ToolStripItemCollection menuItems)
+    {
+        try
+        {
+            menuItems
+                .Find(TrayConstants.ItemNames.PlaceholderProfile, true)
+                .OfType<ToolStripMenuItem>()
+                .ToList()
+                .ForEach(menuItem =>
+                {
+                    menuItems.Remove(menuItem);
+                    menuItem.Dispose();
+                });
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to clear placeholder profile menu items.");
         }
     }
 
