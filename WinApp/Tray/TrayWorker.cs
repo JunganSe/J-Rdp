@@ -145,6 +145,26 @@ internal class TrayWorker
         }
     }
 
+    public void ClearPlaceholderProfileMenuItems(ToolStripItemCollection menuItems)
+    {
+        try
+        {
+            menuItems
+                .Find(TrayConstants.ItemNames.PlaceholderProfile, true)
+                .OfType<ToolStripMenuItem>()
+                .ToList()
+                .ForEach(menuItem =>
+                {
+                    menuItems.Remove(menuItem);
+                    menuItem.Dispose();
+                });
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to clear placeholder profile menu items.");
+        }
+    }
+
     private int GetProfilesInsertIndex(ToolStripItemCollection menuItems) =>
         1 + menuItems.IndexOfKey(TrayConstants.ItemNames.ProfilesInsertPoint);
 
