@@ -96,7 +96,8 @@ internal class TrayWorker
     {
         try
         {
-            menuItems.OfType<ToolStripMenuItem>()
+            menuItems
+                .OfType<ToolStripMenuItem>()
                 .Where(menuItem => menuItem.Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false)
                 .ToList()
                 .ForEach(menuItem =>
