@@ -69,7 +69,7 @@ internal static class Program
     {
         _stopSignalListernerCancellation = new CancellationTokenSource();
         var threadStart = new ThreadStart(async () => await WaitForStopSignal(_stopSignalListernerCancellation.Token));
-        _stopSignalListenerThread = new Thread(threadStart);
+        _stopSignalListenerThread = new Thread(threadStart) { IsBackground = true };
         _stopSignalListenerThread.Start();
     }
 
