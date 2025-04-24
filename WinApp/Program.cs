@@ -53,6 +53,8 @@ internal static class Program
 
         _controller.DisposeTray();
         _mutex?.Dispose();
+
+        Thread.Sleep(100); // To allow any pending log messages to be written.
     }
 
     private static bool IsProgramRunning()
