@@ -9,6 +9,8 @@ internal static class Program
     private static readonly Controller _controller = new();
     private static Mutex? _mutex;
     private static bool _isExiting;
+    private static CancellationTokenSource? _stopSignalListernerCancellation;
+    private static Thread? _stopSignalListenerThread;
 
     [STAThread]
     static void Main(string[] args)
@@ -45,8 +47,12 @@ internal static class Program
 
         _logger.Info("***** Closing application. *****");
         _isExiting = true;
-        _mutex?.Dispose();
+
+        _stopSignalListernerCancellation?.Cancel();
+        _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
+
         _controller.DisposeTray();
+        _mutex?.Dispose();
     }
 
     private static bool IsProgramRunning()
@@ -61,22 +67,36 @@ internal static class Program
         if (_isExiting)
             return;
 
-        new Thread(WaitForStopSignal).Start();
+        _stopSignalListernerCancellation = new CancellationTokenSource();
+        var threadStart = new ThreadStart(async () => await WaitForStopSignal(_stopSignalListernerCancellation.Token));
+        _stopSignalListenerThread = new Thread(threadStart);
+        _stopSignalListenerThread.Start();
     }
 
-    private static void WaitForStopSignal()
+    private static async Task WaitForStopSignal(CancellationToken cancellationToken)
     {
         try
         {
-            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
             _logger.Debug("Listening for stop signal...");
-            pipeServer.WaitForConnection();
+            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
+            await pipeServer.WaitForConnectionAsync(cancellationToken); // Throws if canceled.
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                _logger.Debug("Stopped listening for stop signal.");
+                return;
+            }
+
             _logger.Info("Stop signal received.");
             Application.Exit();
         }
-        catch (IOException)
+        catch (OperationCanceledException)
         {
-            // Swallow IOException, which can happen if a pipe already exists.
+            _logger.Debug("Stopped listening for stop signal.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error in stop signal listener.");
         }
     }
 }
