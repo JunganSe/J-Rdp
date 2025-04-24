@@ -50,6 +50,7 @@ internal static class Program
 
         _stopSignalListernerCancellation?.Cancel();
         _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
+        _stopSignalListernerCancellation?.Dispose();
 
         _controller.DisposeTray();
         _mutex?.Dispose();
