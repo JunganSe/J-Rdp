@@ -44,4 +44,13 @@ internal class StopSignalListener
             _logger.Error(ex, "Error in stop signal listener.");
         }
     }
+
+    public void Stop()
+    {
+        _stopSignalListernerCancellation?.Cancel();
+        _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
+        _stopSignalListernerCancellation?.Dispose();
+
+        Thread.Sleep(100); // To allow any pending log messages to be written.
+    }
 }

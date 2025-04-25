@@ -47,14 +47,10 @@ internal static class Program
         _logger.Info("***** Closing application. *****");
         _isExiting = true;
 
-        _stopSignalListernerCancellation?.Cancel();
-        _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
-        _stopSignalListernerCancellation?.Dispose();
+        _stopSignalListener.Stop();
 
         _controller.DisposeTray();
         _mutex?.Dispose();
-
-        Thread.Sleep(100); // To allow any pending log messages to be written.
     }
 
     private static bool IsProgramRunning()
