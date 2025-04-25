@@ -37,10 +37,7 @@ internal class StopSignalListener
             }
 
             _logger.Info("Stop signal received.");
-            if (_syncContext is not null)
-                _syncContext.Post(_ => callback.Invoke(), null); // Invoke on the calling thread.
-            else
-                callback.Invoke(); // Invoke on the listener thread.
+            InvokeCallback(callback);
         }
         catch (OperationCanceledException)
         {
@@ -50,6 +47,14 @@ internal class StopSignalListener
         {
             _logger.Error(ex, "Error in stop signal listener.");
         }
+    }
+
+    private void InvokeCallback(Action callback)
+    {
+        if (_syncContext is not null)
+            _syncContext.Post(_ => callback.Invoke(), null); // Invoke on the calling thread.
+        else
+            callback.Invoke(); // Invoke on the listener thread.
     }
 
     public void Stop()
