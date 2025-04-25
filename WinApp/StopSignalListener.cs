@@ -10,6 +10,10 @@ internal class StopSignalListener
     private CancellationTokenSource? _stopSignalListernerCancellation;
     private Thread? _stopSignalListenerThread;
 
+    /// <summary>
+    /// Starts the stop signal listener in a new thread. <br/>
+    /// Exits the application when a stop signal is received.
+    /// </summary>
     public void Start()
     {
         _stopSignalListernerCancellation = new CancellationTokenSource();
