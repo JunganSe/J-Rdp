@@ -9,8 +9,7 @@ internal static class Program
     private static readonly Controller _controller = new();
     private static Mutex? _mutex;
     private static bool _isExiting;
-    private static CancellationTokenSource? _stopSignalListernerCancellation;
-    private static Thread? _stopSignalListenerThread;
+    private static StopSignalListener _stopSignalListener = new();
 
     [STAThread]
     static void Main(string[] args)
@@ -28,7 +27,7 @@ internal static class Program
             return; // Will close gracefully.
         }
 
-        StartStopSignalListener();
+        _stopSignalListener.Start();
 
         _controller.Run(arguments);
         Application.Run();
@@ -63,40 +62,5 @@ internal static class Program
         const string mutexName = "J-Rdp.UniqueInstance";
         _mutex = new Mutex(true, mutexName, out bool isNewInstance);
         return !isNewInstance;
-    }
-
-    private static void StartStopSignalListener()
-    {
-        _stopSignalListernerCancellation = new CancellationTokenSource();
-        var threadStart = new ThreadStart(async () => await WaitForStopSignal(_stopSignalListernerCancellation.Token));
-        _stopSignalListenerThread = new Thread(threadStart) { IsBackground = true };
-        _stopSignalListenerThread.Start();
-    }
-
-    private static async Task WaitForStopSignal(CancellationToken cancellationToken)
-    {
-        try
-        {
-            _logger.Debug("Listening for stop signal...");
-            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
-            await pipeServer.WaitForConnectionAsync(cancellationToken); // Throws if canceled.
-
-            if (cancellationToken.IsCancellationRequested)
-            {
-                _logger.Debug("Stopped listening for stop signal.");
-                return;
-            }
-
-            _logger.Info("Stop signal received.");
-            Application.Exit();
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.Debug("Stopped listening for stop signal.");
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Error in stop signal listener.");
-        }
     }
 }
