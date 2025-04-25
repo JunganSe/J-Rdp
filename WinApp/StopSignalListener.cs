@@ -62,7 +62,6 @@ internal class StopSignalListener
         _stopSignalListernerCancellation?.Cancel();
         _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
         _stopSignalListernerCancellation?.Dispose();
-
-        Thread.Sleep(100); // To allow any pending log messages to be written.
+        LogManager.Flush();
     }
 }
