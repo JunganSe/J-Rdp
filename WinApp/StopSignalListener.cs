@@ -6,7 +6,7 @@ namespace WinApp;
 internal class StopSignalListener
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
+    private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
     private CancellationTokenSource? _stopSignalListernerCancellation;
     private Thread? _stopSignalListenerThread;
 
@@ -37,7 +37,10 @@ internal class StopSignalListener
             }
 
             _logger.Info("Stop signal received.");
-            callback.Invoke();
+            if (_syncContext is not null)
+                _syncContext.Post(_ => callback.Invoke(), null); // Invoke on the calling thread.
+            else
+                callback.Invoke(); // Invoke on the listener thread.
         }
         catch (OperationCanceledException)
         {
