@@ -12,17 +12,17 @@ internal class StopSignalListener
 
     /// <summary>
     /// Starts the stop signal listener in a new thread. <br/>
-    /// Exits the application when a stop signal is received.
+    /// Invokes the callback when a stop signal is received.
     /// </summary>
-    public void Start()
+    public void Start(Action callback)
     {
         _stopSignalListernerCancellation = new CancellationTokenSource();
-        var threadStart = new ThreadStart(async () => await WaitForStopSignal(_stopSignalListernerCancellation.Token));
+        var threadStart = new ThreadStart(async () => await WaitForStopSignal(callback, _stopSignalListernerCancellation.Token));
         _stopSignalListenerThread = new Thread(threadStart) { IsBackground = true };
         _stopSignalListenerThread.Start();
     }
 
-    private async Task WaitForStopSignal(CancellationToken cancellationToken)
+    private async Task WaitForStopSignal(Action callback, CancellationToken cancellationToken)
     {
         try
         {
@@ -37,7 +37,7 @@ internal class StopSignalListener
             }
 
             _logger.Info("Stop signal received.");
-            Application.Exit();
+            callback.Invoke();
         }
         catch (OperationCanceledException)
         {

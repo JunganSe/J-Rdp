@@ -27,7 +27,7 @@ internal static class Program
             return; // Will close gracefully.
         }
 
-        _stopSignalListener.Start();
+        _stopSignalListener.Start(Application.Exit);
 
         _controller.Run(arguments);
         Application.Run();
