@@ -20,7 +20,6 @@ internal class StopSignalListener
         Task.Run(async () =>
         {
             await WaitForStopSignal(callback, _stopSignalListernerCancellation.Token);
-            LogManager.Flush();
         });
     }
 
@@ -63,6 +62,7 @@ internal class StopSignalListener
     {
         _stopSignalListernerCancellation?.Cancel();
         _stopSignalListernerCancellation?.Dispose();
+        LogManager.Flush();
         Thread.Sleep(100); // HACK: Give some time for the log to flush.
     }
 }
