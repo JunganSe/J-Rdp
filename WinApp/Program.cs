@@ -51,6 +51,8 @@ internal static class Program
 
         _controller.DisposeTray();
         _mutex?.Dispose();
+
+        NLog.LogManager.Shutdown();
     }
 
     private static bool IsProgramRunning()
