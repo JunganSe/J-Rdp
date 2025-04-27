@@ -17,9 +17,11 @@ internal class StopSignalListener
     public void Start(Action callback)
     {
         _stopSignalListernerCancellation = new CancellationTokenSource();
-        var threadStart = new ThreadStart(async () => await WaitForStopSignal(callback, _stopSignalListernerCancellation.Token));
-        _stopSignalListenerThread = new Thread(threadStart) { IsBackground = true };
-        _stopSignalListenerThread.Start();
+        Task.Run(async () =>
+        {
+            await WaitForStopSignal(callback, _stopSignalListernerCancellation.Token);
+            LogManager.Flush();
+        });
     }
 
     private async Task WaitForStopSignal(Action callback, CancellationToken cancellationToken)
@@ -60,8 +62,7 @@ internal class StopSignalListener
     public void Stop()
     {
         _stopSignalListernerCancellation?.Cancel();
-        _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
         _stopSignalListernerCancellation?.Dispose();
-        LogManager.Flush();
+        Thread.Sleep(100); // HACK: Give some time for the log to flush.
     }
 }
