@@ -8,7 +8,6 @@ internal class StopSignalListener
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
     private CancellationTokenSource? _stopSignalListernerCancellation;
-    private Thread? _stopSignalListenerThread;
 
     /// <summary>
     /// Starts the stop signal listener in a new thread. <br/>
@@ -16,6 +15,7 @@ internal class StopSignalListener
     /// </summary>
     public void Start(Action callback)
     {
+        _stopSignalListernerCancellation?.Dispose();
         _stopSignalListernerCancellation = new CancellationTokenSource();
         Task.Run(async () =>
         {
