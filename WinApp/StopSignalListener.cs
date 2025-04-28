@@ -19,8 +19,6 @@ internal class StopSignalListener
         Task.Run(async () =>
         {
             await WaitForStopSignal(callback, _stopSignalListenerCancellation.Token);
-            LogManager.Flush();
-            Thread.Sleep(100); // HACK: Give some time for the log to flush, because it does not appear to block as it should.
         });
     }
 

@@ -52,6 +52,7 @@ internal static class Program
         _controller.DisposeTray();
         _mutex?.Dispose();
 
+        Thread.Sleep(200); // HACK: Give some time for the log to write, because Flush/Shutdown does not block as expected.
         NLog.LogManager.Shutdown();
     }
 
