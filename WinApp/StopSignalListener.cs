@@ -32,12 +32,6 @@ internal class StopSignalListener
             using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
             await pipeServer.WaitForConnectionAsync(cancellationToken); // Throws if canceled.
 
-            if (cancellationToken.IsCancellationRequested)
-            {
-                _logger.Debug("Stopped listening for stop signal.");
-                return;
-            }
-
             _logger.Info("Stop signal received.");
             InvokeCallback(callback);
         }
