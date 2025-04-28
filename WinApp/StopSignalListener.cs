@@ -15,7 +15,6 @@ internal class StopSignalListener
     /// </summary>
     public void Start(Action callback)
     {
-        _stopSignalListernerCancellation?.Dispose();
         _stopSignalListernerCancellation = new CancellationTokenSource();
         Task.Run(async () =>
         {
@@ -64,5 +63,6 @@ internal class StopSignalListener
     {
         _stopSignalListernerCancellation?.Cancel();
         _stopSignalListernerCancellation?.Dispose();
+        _stopSignalListernerCancellation = null;
     }
 }
