@@ -38,6 +38,16 @@ internal static class Program
         AppDomain.CurrentDomain.ProcessExit += OnExit;
     }
 
+    private static bool IsProgramRunning()
+    {
+        const string mutexName = "J-Rdp.UniqueInstance";
+        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
+        return !isNewInstance;
+    }
+
+    private static void OnStopSignalReceived() => 
+        Application.Exit();
+
     private static void OnExit(object? sender, EventArgs eventArgs)
     {
         if (_isExiting)
@@ -54,17 +64,7 @@ internal static class Program
         _controller.DisposeTray();
         _mutex?.Dispose();
 
-        Thread.Sleep(200); // HACK: Give some time for the log to write, because Flush/Shutdown does not block as expected.
+        Thread.Sleep(200); // HACK: Give some time for the log to write, because LogManager Flush/Shutdown does not block as expected.
         NLog.LogManager.Shutdown();
     }
-
-    private static bool IsProgramRunning()
-    {
-        const string mutexName = "J-Rdp.UniqueInstance";
-        _mutex = new Mutex(true, mutexName, out bool isNewInstance);
-        return !isNewInstance;
-    }
-
-    private static void OnStopSignalReceived() => 
-        Application.Exit();
 }
