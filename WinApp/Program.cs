@@ -1,5 +1,4 @@
 using Auxiliary;
-using System.IO.Pipes;
 
 namespace WinApp;
 
@@ -28,7 +27,6 @@ internal static class Program
         }
 
         _stopSignalListener.Start(OnStopSignalReceived);
-
         _controller.Run(arguments);
         Application.Run();
     }
@@ -46,7 +44,11 @@ internal static class Program
 
         _logger.Info("***** Closing application. *****");
         _isExiting = true;
+        StopAndCleanup();
+    }
 
+    private static void StopAndCleanup()
+    {
         _stopSignalListener.Stop();
         _controller.DisposeTray();
         _mutex?.Dispose();
