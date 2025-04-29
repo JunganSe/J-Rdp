@@ -10,7 +10,7 @@ internal class StopSignalListener
     private CancellationTokenSource? _stopSignalListenerCancellation;
 
     /// <summary>
-    /// Starts the stop signal listener in a new thread. <br/>
+    /// Starts the stop signal listener asynchronously, running in parallell on the same thread. <br/>
     /// Invokes the callback when a stop signal is received.
     /// </summary>
     public void Start(Action callback)
