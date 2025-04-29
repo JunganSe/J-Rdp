@@ -23,7 +23,8 @@ internal static class Program
         if (IsProgramRunning())
         {
             _logger.Warn("An instance is already running. Aborting...");
-            return; // Will close gracefully.
+            StopAndCleanup();
+            return;
         }
 
         _stopSignalListener.Start(OnStopSignalReceived);
