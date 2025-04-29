@@ -48,7 +48,6 @@ internal static class Program
         _isExiting = true;
 
         _stopSignalListener.Stop();
-
         _controller.DisposeTray();
         _mutex?.Dispose();
 
