@@ -27,7 +27,7 @@ internal static class Program
             return; // Will close gracefully.
         }
 
-        _stopSignalListener.Start(Application.Exit);
+        _stopSignalListener.Start(OnStopSignalReceived);
 
         _controller.Run(arguments);
         Application.Run();
@@ -62,4 +62,7 @@ internal static class Program
         _mutex = new Mutex(true, mutexName, out bool isNewInstance);
         return !isNewInstance;
     }
+
+    private static void OnStopSignalReceived() => 
+        Application.Exit();
 }
