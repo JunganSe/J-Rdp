@@ -13,16 +13,24 @@ internal class Controller
     public void Run(Arguments arguments)
     {
         Initialize(arguments); // Initialize on the current thread.
-        Task.Run(_coreManager.Run); // Run CoreManager on a new thread.
+        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread..
     }
 
     private void Initialize(Arguments arguments)
     {
-        _consoleManager.SetCallback_ConsoleClosed(() => _trayManager.SetMenuState_ShowConsole(false));
-        _consoleManager.SetVisibility(arguments.ShowConsole);
+        SetConsoleVisibility(arguments.ShowConsole);
         if (!arguments.NoTray)
             InitializeTray(arguments);
         InitializeCore(arguments);
+    }
+
+    private void SetConsoleVisibility(bool show)
+    {
+        _consoleManager.SetVisibility(show);
+        _consoleManager.SetCallback_ConsoleClosed(() =>
+        {
+            _trayManager.SetMenuState_ShowConsole(false);
+        });
     }
 
     private void InitializeTray(Arguments arguments)

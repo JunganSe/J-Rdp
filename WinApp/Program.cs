@@ -7,10 +7,9 @@ internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static readonly Controller _controller = new();
+    private static readonly StopSignalListener _stopSignalListener = new();
     private static Mutex? _mutex;
     private static bool _isExiting;
-    private static CancellationTokenSource? _stopSignalListernerCancellation;
-    private static Thread? _stopSignalListenerThread;
 
     [STAThread]
     static void Main(string[] args)
@@ -28,7 +27,7 @@ internal static class Program
             return; // Will close gracefully.
         }
 
-        StartStopSignalListener();
+        _stopSignalListener.Start(OnStopSignalReceived);
 
         _controller.Run(arguments);
         Application.Run();
@@ -48,14 +47,12 @@ internal static class Program
         _logger.Info("***** Closing application. *****");
         _isExiting = true;
 
-        _stopSignalListernerCancellation?.Cancel();
-        _stopSignalListenerThread?.Join(1000); // Wait for the thread to finish.
-        _stopSignalListernerCancellation?.Dispose();
-
+        _stopSignalListener.Stop();
         _controller.DisposeTray();
         _mutex?.Dispose();
 
-        Thread.Sleep(100); // To allow any pending log messages to be written.
+        Thread.Sleep(200); // HACK: Give some time for the log to write, because Flush/Shutdown does not block as expected.
+        NLog.LogManager.Shutdown();
     }
 
     private static bool IsProgramRunning()
@@ -65,38 +62,6 @@ internal static class Program
         return !isNewInstance;
     }
 
-    private static void StartStopSignalListener()
-    {
-        _stopSignalListernerCancellation = new CancellationTokenSource();
-        var threadStart = new ThreadStart(async () => await WaitForStopSignal(_stopSignalListernerCancellation.Token));
-        _stopSignalListenerThread = new Thread(threadStart) { IsBackground = true };
-        _stopSignalListenerThread.Start();
-    }
-
-    private static async Task WaitForStopSignal(CancellationToken cancellationToken)
-    {
-        try
-        {
-            _logger.Debug("Listening for stop signal...");
-            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
-            await pipeServer.WaitForConnectionAsync(cancellationToken); // Throws if canceled.
-
-            if (cancellationToken.IsCancellationRequested)
-            {
-                _logger.Debug("Stopped listening for stop signal.");
-                return;
-            }
-
-            _logger.Info("Stop signal received.");
-            Application.Exit();
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.Debug("Stopped listening for stop signal.");
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Error in stop signal listener.");
-        }
-    }
+    private static void OnStopSignalReceived() => 
+        Application.Exit();
 }
