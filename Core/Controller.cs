@@ -12,6 +12,7 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
+
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _cancellation;
     private bool _isStopping = false;
@@ -21,8 +22,8 @@ public class Controller
         try
         {
             Initialize();
-
             _cancellation = new CancellationTokenSource();
+
             while (true)
             {
                 _cancellation.Token.ThrowIfCancellationRequested();
@@ -34,12 +35,12 @@ public class Controller
         catch (OperationCanceledException)
         {
             _logger.Debug("Stopped by request.");
-            Stop();
+            StopAndDisposeAll();
         }
         catch (Exception ex)
         {
             _logger.Fatal(ex, "An unexpected error occured: " + ex.Message);
-            Stop();
+            StopAndDisposeAll();
         }
     }
 
