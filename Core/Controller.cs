@@ -21,9 +21,11 @@ public class Controller
     {
         try
         {
+            _logger.Debug("Initializing...");
             Initialize();
             _cancellation = new CancellationTokenSource();
 
+            _logger.Debug("Running main loop...");
             while (true)
             {
                 _cancellation.Token.ThrowIfCancellationRequested();
@@ -39,7 +41,7 @@ public class Controller
         }
         catch (Exception ex)
         {
-            _logger.Fatal(ex, "An unexpected error occured: " + ex.Message);
+            _logger.Fatal(ex, "An unexpected error occured.");
             StopAndDisposeAll();
         }
     }
