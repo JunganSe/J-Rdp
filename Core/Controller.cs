@@ -37,11 +37,13 @@ public class Controller
         catch (OperationCanceledException)
         {
             _logger.Debug("Stopped by request.");
-            StopAndDisposeAll();
         }
         catch (Exception ex)
         {
             _logger.Fatal(ex, "An unexpected error occured.");
+        }
+        finally
+        {
             StopAndDisposeAll();
         }
     }
@@ -112,6 +114,7 @@ public class Controller
         if (_isStopping)
             return;
 
+        _logger.Debug("Cleaning up...");
         _isStopping = true;
 
         _configWatcherManager.StopAndDisposeConfigWatcher();
@@ -119,5 +122,6 @@ public class Controller
         //_configManager.StopAndDispose();
         //_profileManager.StopAndDispose();
         //_fileManager.StopAndDispose();
+        _logger.Debug("Cleanup complete.");
     }
 }
