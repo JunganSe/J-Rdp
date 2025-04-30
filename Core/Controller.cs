@@ -14,6 +14,7 @@ public class Controller
     private readonly FileManager _fileManager = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _cancellation;
+    private bool _isStopping = false;
 
     public async Task Run()
     {
@@ -33,10 +34,12 @@ public class Controller
         catch (OperationCanceledException)
         {
             _logger.Debug("Stopped by request.");
+            Stop();
         }
         catch (Exception ex)
         {
             _logger.Fatal(ex, "An unexpected error occured: " + ex.Message);
+            Stop();
         }
     }
 
@@ -51,11 +54,11 @@ public class Controller
 
     public void Stop()
     {
-        _configWatcherManager.StopAndDisposeConfigWatcher();
-        // TODO: Implement these.
-        //_configManager.StopAndDispose();
-        //_profileManager.StopAndDispose();
-        //_fileManager.StopAndDispose();
+        _cancellation?.Cancel();
+        _cancellation?.Dispose();
+        _cancellation = null;
+
+        StopAndDisposeAll();
     }
 
 
@@ -99,5 +102,19 @@ public class Controller
     {
         _profileManager.UpdateFiles();
         _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
+    }
+
+    private void StopAndDisposeAll()
+    {
+        if (_isStopping)
+            return;
+
+        _isStopping = true;
+
+        _configWatcherManager.StopAndDisposeConfigWatcher();
+        // TODO: Implement these.
+        //_configManager.StopAndDispose();
+        //_profileManager.StopAndDispose();
+        //_fileManager.StopAndDispose();
     }
 }
