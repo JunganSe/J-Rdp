@@ -17,13 +17,16 @@ internal class CoreManager
     }
 
     /// <summary>
-    /// Tell the core controller which method should be called after the config file has been updated.
+    /// Tell the core controller which method should be called after the config (in memory) has been updated.
     /// </summary>
     public void SetCallback_ConfigUpdated(ProfileHandler callback)
     {
         _controller?.SetCallback_ConfigUpdated(callback);
     }
 
+    /// <summary>
+    /// Tell the core controller to open the config file in the default editor.
+    /// </summary>
     public void OpenConfigFile()
     {
         _controller?.OpenConfigFile();
