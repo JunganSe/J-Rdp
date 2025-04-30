@@ -26,13 +26,7 @@ public class Controller
             _cancellation = new CancellationTokenSource();
 
             _logger.Debug("Running main loop...");
-            while (true)
-            {
-                _cancellation.Token.ThrowIfCancellationRequested();
-                // TODO: Stop MainLoop or wait until the delay?
-                MainLoop();
-                await Task.Delay(_pollingInterval, _cancellation.Token);
-            }
+            await MainLoop(_cancellation.Token); // Loops until canceled.
         }
         catch (OperationCanceledException)
         {
@@ -103,10 +97,15 @@ public class Controller
         _profileManager.LogProfilesSummary();
     }
 
-    private void MainLoop()
+    /// <summary> Loops until canceled, where it will throw OperationCanceledException. </summary>
+    private async Task MainLoop(CancellationToken cancellationToken)
     {
-        _profileManager.UpdateFiles();
-        _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
+        while (true)
+        {
+            _profileManager.UpdateFiles();
+            _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
+            await Task.Delay(_pollingInterval, cancellationToken);
+        }
     }
 
     private void StopAndDisposeAll()
