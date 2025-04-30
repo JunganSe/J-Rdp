@@ -13,24 +13,30 @@ public class Controller
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
+    private CancellationTokenSource? _cancellation;
 
-    public void Run()
+    public async Task Run()
     {
         try
         {
             Initialize();
 
+            _cancellation = new CancellationTokenSource();
             while (true)
             {
-                // TODO: Implement a way to stop.
+                _cancellation.Token.ThrowIfCancellationRequested();
+                // TODO: Stop MainLoop or wait until the delay?
                 MainLoop();
-                Thread.Sleep(_pollingInterval);
+                await Task.Delay(_pollingInterval, _cancellation.Token);
             }
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.Debug("Stopped by request.");
         }
         catch (Exception ex)
         {
             _logger.Fatal(ex, "An unexpected error occured: " + ex.Message);
-            return;
         }
     }
 
