@@ -16,6 +16,11 @@ internal class CoreManager
         _controller?.Run();
     }
 
+    public void Stop()
+    {
+        _controller?.Stop();
+    }
+
     /// <summary>
     /// Tell the core controller which method should be called after the config (in memory) has been updated.
     /// </summary>

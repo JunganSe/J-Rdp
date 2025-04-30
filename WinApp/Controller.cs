@@ -16,6 +16,13 @@ internal class Controller
         Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
     }
 
+    public void StopCore()
+    {
+        _coreManager.Stop();
+    }
+
+
+
     private void Initialize(Arguments arguments)
     {
         SetConsoleVisibility(arguments.ShowConsole);

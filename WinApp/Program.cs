@@ -61,6 +61,7 @@ internal static class Program
     private static void StopAndCleanup()
     {
         _stopSignalListener.Stop();
+        _controller.StopCore();
         _controller.DisposeTray();
         _mutex?.Dispose();
 
