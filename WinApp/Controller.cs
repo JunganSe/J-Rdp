@@ -13,7 +13,7 @@ internal class Controller
     public void Run(Arguments arguments)
     {
         Initialize(arguments); // Initialize on the current thread.
-        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread..
+        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
     }
 
     private void Initialize(Arguments arguments)
