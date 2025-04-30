@@ -22,6 +22,7 @@ public class Controller
 
             while (true)
             {
+                // TODO: Implement a way to stop.
                 MainLoop();
                 Thread.Sleep(_pollingInterval);
             }
@@ -41,6 +42,15 @@ public class Controller
 
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
         _configManager.UpdateProfilesEnabledState(profileInfos);
+
+    public void Stop()
+    {
+        _configWatcherManager.StopAndDisposeConfigWatcher();
+        // TODO: Implement these.
+        //_configManager.StopAndDispose();
+        //_profileManager.StopAndDispose();
+        //_fileManager.StopAndDispose();
+    }
 
 
 
