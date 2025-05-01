@@ -14,11 +14,11 @@ internal class ProfileManager
             .ToList();
 
     public void UpdateFiles() =>
-        ProfileWrappers.ForEach(pi => pi.UpdateFiles());
+        ProfileWrappers.ForEach(pw => pw.UpdateFiles());
 
     public void LogProfilesSummary()
     {
-        var profileSummaries = ProfileWrappers.Select(pi => $"\n  {pi.Profile.Name}: '{pi.Profile.Filter}' in: {pi.DirectoryFullPath}");
+        var profileSummaries = ProfileWrappers.Select(pw => $"\n  {pw.Profile.Name}: '{pw.Profile.Filter}' in: {pw.DirectoryFullPath}");
         string joinedSummaries = ProfileWrappers.Count > 0
             ? string.Join("", profileSummaries)
             : "(none)";
