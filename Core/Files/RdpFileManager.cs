@@ -7,7 +7,7 @@ namespace Core.Files;
 internal class RdpFileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly RdpFileWorker _rdpWorker = new();
+    private readonly RdpFileWorker _rdpFileWorker = new();
 
     public int DeleteDelay { get; set; } = ConfigConstants.DeleteDelay_Default;
 
@@ -37,7 +37,7 @@ internal class RdpFileManager
         string sourceDirectory = file.DirectoryName ?? "(unknown)";
         try
         {
-            _rdpWorker.Move(file, moveToFolder);
+            _rdpFileWorker.Move(file, moveToFolder);
             _logger.Info($"Moved file '{file.Name}' from '{sourceDirectory}' to '{moveToFolder}'.");
         }
         catch (Exception ex)
@@ -50,7 +50,7 @@ internal class RdpFileManager
     {
         try
         {
-            _rdpWorker.Edit(file, settings);
+            _rdpFileWorker.Edit(file, settings);
             string s = settings.Count > 1 ? "s" : "";
             _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}'.");
         }
@@ -64,7 +64,7 @@ internal class RdpFileManager
     {
         try
         {
-            _rdpWorker.Launch(file);
+            _rdpFileWorker.Launch(file);
             _logger.Info($"Launched file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
@@ -77,7 +77,7 @@ internal class RdpFileManager
     {
         try
         {
-            _rdpWorker.Delete(file, recycle);
+            _rdpFileWorker.Delete(file, recycle);
             string verb = recycle ? "Recycled" : "Permanently deleted";
             _logger.Info($"{verb} file '{file.Name}' in '{file.DirectoryName}'.");
         }

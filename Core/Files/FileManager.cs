@@ -6,16 +6,16 @@ namespace Core.Files;
 internal class FileManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly RdpFileManager _rdpManager = new();
+    private readonly RdpFileManager _rdpFileManager = new();
     private readonly List<string> _processedFilePaths = [];
 
     public void SetDeleteDelay(int deleteDelay)
     {
-        if (deleteDelay == _rdpManager.DeleteDelay)
+        if (deleteDelay == _rdpFileManager.DeleteDelay)
             return;
 
-        _rdpManager.DeleteDelay = deleteDelay;
-        _logger.Info($"Delete delay set to {_rdpManager.DeleteDelay} ms.");
+        _rdpFileManager.DeleteDelay = deleteDelay;
+        _logger.Info($"Delete delay set to {_rdpFileManager.DeleteDelay} ms.");
     }
 
     public void ProcessProfileWrappers(IEnumerable<ProfileWrapper> profileWrappers)
@@ -54,6 +54,6 @@ internal class FileManager
         _logger.Info($"Profile '{profile.Name}' found a match on '{file.FullName}' using filter '{profile.Filter}'.");
 
         _processedFilePaths.Add(file.FullName);
-        _rdpManager.ProcessFile(file, profile);
+        _rdpFileManager.ProcessFile(file, profile);
     }
 }
