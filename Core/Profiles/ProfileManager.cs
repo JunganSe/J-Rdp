@@ -13,7 +13,7 @@ internal class ProfileManager
             .Select(profile => new ProfileWrapper(profile))
             .ToList();
 
-    public void UpdateFiles() =>
+    public void UpdateFilesInProfileWrappers() =>
         ProfileWrappers.ForEach(pw => pw.UpdateFiles());
 
     public void LogProfilesSummary()

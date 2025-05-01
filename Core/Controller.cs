@@ -93,7 +93,7 @@ public class Controller
     {
         var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
         _profileManager.UpdateProfiles(enabledProfiles);
-        _profileManager.UpdateFiles();
+        _profileManager.UpdateFilesInProfileWrappers();
         _profileManager.LogProfilesSummary();
     }
 
@@ -102,7 +102,7 @@ public class Controller
     {
         while (true)
         {
-            _profileManager.UpdateFiles();
+            _profileManager.UpdateFilesInProfileWrappers();
             _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
             await Task.Delay(_pollingInterval, cancellationToken);
         }
