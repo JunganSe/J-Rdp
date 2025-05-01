@@ -152,7 +152,7 @@ internal class ConsoleWorker
                 _callback_ConsoleClosed?.Invoke();
             }
             else
-                _logger.Warn("Failed to close log console.");
+                _logger.Warn("Failed to close log console, or it was already closed.");
         }
         catch (Exception ex)
         {

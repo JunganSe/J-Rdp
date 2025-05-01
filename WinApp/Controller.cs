@@ -59,4 +59,7 @@ internal class Controller
 
     public void DisposeTray() =>
         _trayManager.DisposeTray();
+
+    public void CloseAndDisposeConsole() =>
+        _consoleManager.SetVisibility(false);
 }
