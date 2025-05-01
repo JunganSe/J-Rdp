@@ -60,11 +60,13 @@ internal static class Program
 
     private static void StopAndCleanup()
     {
+        _logger.Debug("Stopping and cleaning up...");
         _stopSignalListener.Stop();
         _controller.StopCore();
         _controller.DisposeTray();
         _mutex?.Dispose();
 
+        _logger.Debug("Cleanup complete.");
         Thread.Sleep(200); // HACK: Give some time for the log to write, because LogManager Flush/Shutdown does not block as expected.
         NLog.LogManager.Shutdown();
     }
