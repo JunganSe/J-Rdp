@@ -38,7 +38,7 @@ public class Controller
         }
         finally
         {
-            StopAndDisposeAll();
+            StopAndDispose();
         }
     }
 
@@ -54,7 +54,7 @@ public class Controller
     public void Stop()
     {
         StopMainLoop();
-        StopAndDisposeAll();
+        StopAndDispose();
     }
 
 
@@ -112,7 +112,7 @@ public class Controller
         _mainLoopCancellation = null;
     }
 
-    private void StopAndDisposeAll()
+    private void StopAndDispose()
     {
         if (_isStopping)
             return;
