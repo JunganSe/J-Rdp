@@ -116,11 +116,8 @@ public class Controller
         _logger.Debug("Cleaning up...");
         _isStopping = true;
 
+        // Note: _configManager, _profileManager, and _fileManager have nothing to stop or dispose.
         _configWatcherManager.StopAndDisposeConfigWatcher();
-        // TODO: Implement these.
-        //_configManager.StopAndDispose();
-        //_profileManager.StopAndDispose();
-        // _fileManager has nothing to stop or dispose.
         _logger.Debug("Cleanup complete.");
     }
 }
