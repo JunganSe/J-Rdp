@@ -18,8 +18,9 @@ internal class ProfileManager
 
     public void LogProfilesSummary()
     {
-        var profileSummaries = ProfileWrappers.Select(pw => $"\n  {pw.Profile.Name}: '{pw.Profile.Filter}' in: {pw.DirectoryFullPath}");
-        string joinedSummaries = ProfileWrappers.Count > 0
+        var profileSummaries = ProfileWrappers
+            .Select(pw => $"\n  {pw.Profile.Name}: '{pw.Profile.Filter}' in: {pw.DirectoryFullPath}");
+        string joinedSummaries = (ProfileWrappers.Count > 0)
             ? string.Join("", profileSummaries)
             : "(none)";
         _logger.Info($"Current profiles: {joinedSummaries}");
