@@ -14,7 +14,7 @@ public class Controller
     private readonly FileManager _fileManager = new();
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
-    private CancellationTokenSource? _cancellation;
+    private CancellationTokenSource? _mainLoopCancellation;
     private bool _isStopping = false;
 
     public async Task Run()
@@ -23,10 +23,10 @@ public class Controller
         {
             _logger.Debug("Initializing...");
             Initialize();
-            _cancellation = new CancellationTokenSource();
+            _mainLoopCancellation = new CancellationTokenSource();
 
             _logger.Debug("Running main loop...");
-            await MainLoop(_cancellation.Token); // Loops until canceled.
+            await MainLoop(_mainLoopCancellation.Token); // Loops until canceled.
         }
         catch (OperationCanceledException)
         {
@@ -53,10 +53,7 @@ public class Controller
 
     public void Stop()
     {
-        _cancellation?.Cancel();
-        _cancellation?.Dispose();
-        _cancellation = null;
-
+        CancelMainLoop();
         StopAndDisposeAll();
     }
 
@@ -106,6 +103,13 @@ public class Controller
             _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
             await Task.Delay(_pollingInterval, cancellationToken);
         }
+    }
+
+    private void CancelMainLoop()
+    {
+        _mainLoopCancellation?.Cancel();
+        _mainLoopCancellation?.Dispose();
+        _mainLoopCancellation = null;
     }
 
     private void StopAndDisposeAll()
