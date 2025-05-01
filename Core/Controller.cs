@@ -120,7 +120,7 @@ public class Controller
         // TODO: Implement these.
         //_configManager.StopAndDispose();
         //_profileManager.StopAndDispose();
-        //_fileManager.StopAndDispose();
+        // _fileManager has nothing to stop or dispose.
         _logger.Debug("Cleanup complete.");
     }
 }
