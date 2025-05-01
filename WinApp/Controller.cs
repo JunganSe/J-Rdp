@@ -13,8 +13,15 @@ internal class Controller
     public void Run(Arguments arguments)
     {
         Initialize(arguments); // Initialize on the current thread.
-        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread..
+        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
     }
+
+    public void StopCore()
+    {
+        _coreManager.Stop();
+    }
+
+
 
     private void Initialize(Arguments arguments)
     {
@@ -52,4 +59,7 @@ internal class Controller
 
     public void DisposeTray() =>
         _trayManager.DisposeTray();
+
+    public void CloseAndDisposeConsole() =>
+        _consoleManager.SetVisibility(false);
 }

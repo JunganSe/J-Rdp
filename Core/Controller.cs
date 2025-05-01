@@ -12,24 +12,33 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
-    private int _pollingInterval = ConfigConstants.PollingInterval_Default;
 
-    public void Run()
+    private int _pollingInterval = ConfigConstants.PollingInterval_Default;
+    private CancellationTokenSource? _mainLoopCancellation;
+    private bool _isStopping = false;
+
+    public async Task Run()
     {
         try
         {
+            _logger.Debug("Initializing...");
             Initialize();
+            _mainLoopCancellation = new CancellationTokenSource();
 
-            while (true)
-            {
-                MainLoop();
-                Thread.Sleep(_pollingInterval);
-            }
+            _logger.Debug("Running main loop...");
+            await MainLoop(_mainLoopCancellation.Token); // Loops until canceled.
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.Debug("Stopped by request.");
         }
         catch (Exception ex)
         {
-            _logger.Fatal(ex, "An unexpected error occured: " + ex.Message);
-            return;
+            _logger.Fatal(ex, "An unexpected error occured.");
+        }
+        finally
+        {
+            StopAndDispose();
         }
     }
 
@@ -41,6 +50,12 @@ public class Controller
 
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
         _configManager.UpdateProfilesEnabledState(profileInfos);
+
+    public void Stop()
+    {
+        StopMainLoop();
+        StopAndDispose();
+    }
 
 
 
@@ -75,13 +90,39 @@ public class Controller
     {
         var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
         _profileManager.UpdateProfiles(enabledProfiles);
-        _profileManager.UpdateFiles();
+        _profileManager.UpdateFilesInProfileWrappers();
         _profileManager.LogProfilesSummary();
     }
 
-    private void MainLoop()
+    /// <summary> Loops until canceled, where it will throw OperationCanceledException. </summary>
+    private async Task MainLoop(CancellationToken cancellationToken)
     {
-        _profileManager.UpdateFiles();
-        _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
+        while (true)
+        {
+            _profileManager.UpdateFilesInProfileWrappers();
+            _fileManager.ProcessProfileWrappers(_profileManager.ProfileWrappers);
+            await Task.Delay(_pollingInterval, cancellationToken);
+        }
+    }
+
+    private void StopMainLoop()
+    {
+        _mainLoopCancellation?.Cancel();
+        _mainLoopCancellation?.Dispose();
+        _mainLoopCancellation = null;
+    }
+
+    private void StopAndDispose()
+    {
+        if (_isStopping)
+            return;
+
+        _logger.Debug("Cleaning up...");
+        _isStopping = true;
+
+        // Note: _configManager, _profileManager, and _fileManager have nothing to stop or dispose.
+        _configWatcherManager.StopAndDisposeConfigWatcher();
+        StopMainLoop();
+        _logger.Debug("Cleanup complete.");
     }
 }

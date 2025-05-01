@@ -1,5 +1,4 @@
 using Auxiliary;
-using System.IO.Pipes;
 
 namespace WinApp;
 
@@ -24,11 +23,11 @@ internal static class Program
         if (IsProgramRunning())
         {
             _logger.Warn("An instance is already running. Aborting...");
-            return; // Will close gracefully.
+            StopAndCleanup();
+            return;
         }
 
         _stopSignalListener.Start(OnStopSignalReceived);
-
         _controller.Run(arguments);
         Application.Run();
     }
@@ -37,22 +36,6 @@ internal static class Program
     {
         Application.ApplicationExit += OnExit;
         AppDomain.CurrentDomain.ProcessExit += OnExit;
-    }
-
-    private static void OnExit(object? sender, EventArgs eventArgs)
-    {
-        if (_isExiting)
-            return;
-
-        _logger.Info("***** Closing application. *****");
-        _isExiting = true;
-
-        _stopSignalListener.Stop();
-        _controller.DisposeTray();
-        _mutex?.Dispose();
-
-        Thread.Sleep(200); // HACK: Give some time for the log to write, because Flush/Shutdown does not block as expected.
-        NLog.LogManager.Shutdown();
     }
 
     private static bool IsProgramRunning()
@@ -64,4 +47,28 @@ internal static class Program
 
     private static void OnStopSignalReceived() => 
         Application.Exit();
+
+    private static void OnExit(object? sender, EventArgs eventArgs)
+    {
+        if (_isExiting)
+            return;
+
+        _logger.Info("***** Closing application. *****");
+        _isExiting = true;
+        StopAndCleanup();
+    }
+
+    private static void StopAndCleanup()
+    {
+        _logger.Debug("Stopping and cleaning up...");
+        _stopSignalListener.Stop();
+        _controller.CloseAndDisposeConsole();
+        _controller.StopCore();
+        _controller.DisposeTray();
+        _mutex?.Dispose();
+
+        _logger.Debug("Cleanup complete.");
+        Thread.Sleep(200); // HACK: Give some time for the log to write, because LogManager Flush/Shutdown does not block as expected.
+        NLog.LogManager.Shutdown();
+    }
 }
