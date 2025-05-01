@@ -53,7 +53,7 @@ public class Controller
 
     public void Stop()
     {
-        CancelMainLoop();
+        StopMainLoop();
         StopAndDisposeAll();
     }
 
@@ -105,7 +105,7 @@ public class Controller
         }
     }
 
-    private void CancelMainLoop()
+    private void StopMainLoop()
     {
         _mainLoopCancellation?.Cancel();
         _mainLoopCancellation?.Dispose();
@@ -122,6 +122,7 @@ public class Controller
 
         // Note: _configManager, _profileManager, and _fileManager have nothing to stop or dispose.
         _configWatcherManager.StopAndDisposeConfigWatcher();
+        StopMainLoop();
         _logger.Debug("Cleanup complete.");
     }
 }
