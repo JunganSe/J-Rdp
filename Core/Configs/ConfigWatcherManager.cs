@@ -22,6 +22,7 @@ internal class ConfigWatcherManager
 
             _configWatcher.EnableRaisingEvents = false;
             _configWatcher.Dispose();
+            _configWatcher = null;
         }
         catch (ObjectDisposedException)
         {
