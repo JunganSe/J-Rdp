@@ -1,11 +1,11 @@
-﻿using Core.Profiles;
-using NLog;
+﻿using Auxiliary;
+using Core.Profiles;
 
 namespace WinApp.Tray;
 
 internal class TrayWorker
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     #region Creation
 
@@ -18,7 +18,7 @@ internal class TrayWorker
 
             return new NotifyIcon()
             {
-                Text = TrayConstants.General.Title,
+                Text = GetTrayIconTooltip(),
                 Icon = icon,
                 Visible = true,
             };
@@ -28,6 +28,14 @@ internal class TrayWorker
             _logger.Error(ex, "Failed to create tray icon.");
             return null;
         }
+    }
+
+    private string GetTrayIconTooltip()
+    {
+        var type = typeof(WinApp.Program);
+        string name = AssemblyHelper.GetAssemblyName(type);
+        string version = AssemblyHelper.GetAssemblyVersion(type);
+        return $"{name} {version}";
     }
 
     public ContextMenuStrip? CreateContextMenu(

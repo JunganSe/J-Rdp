@@ -2,10 +2,6 @@
 
 internal static class TrayConstants
 {
-    public static class General
-    {
-        public const string Title = "J-Rdp";
-    }
     public static class ItemNames
     {
         public const string ToggleConsole = "ShowConsole";
