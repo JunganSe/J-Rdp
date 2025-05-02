@@ -1,11 +1,11 @@
-﻿using Core.Profiles;
-using NLog;
+﻿using Auxiliary;
+using Core.Profiles;
 
 namespace WinApp.Tray;
 
 internal class TrayWorker
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     #region Creation
 
@@ -13,13 +13,10 @@ internal class TrayWorker
     {
         try
         {
-            using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
-            var icon = new Icon(iconStream);
-
             return new NotifyIcon()
             {
-                Text = TrayConstants.General.Title,
-                Icon = icon,
+                Text = GetTrayIconTooltip(),
+                Icon = GetTrayIcon(),
                 Visible = true,
             };
         }
@@ -28,6 +25,20 @@ internal class TrayWorker
             _logger.Error(ex, "Failed to create tray icon.");
             return null;
         }
+    }
+
+    private string GetTrayIconTooltip()
+    {
+        var assembly = typeof(WinApp.Program).Assembly;
+        string name = AssemblyHelper.GetAssemblyName(assembly);
+        string version = AssemblyHelper.GetAssemblyVersion(assembly);
+        return $"{name} {version}";
+    }
+
+    private Icon GetTrayIcon()
+    {
+        using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
+        return new Icon(iconStream);
     }
 
     public ContextMenuStrip? CreateContextMenu(
@@ -45,20 +56,26 @@ internal class TrayWorker
             return null;
         }
 
-        var contextMenu = new ContextMenuStrip() { AutoClose = false, };
-
-        contextMenu.Items.Add(TrayMenuItems.ToggleConsole(callback_ToggleConsole));
-        contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-        contextMenu.Items.Add(TrayMenuItems.OpenConfigFile(callback_OpenConfigFile));
-
-        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
-        contextMenu.Items.Add(new ToolStripSeparator());
-
-        contextMenu.Items.Add(TrayMenuItems.Exit);
-        contextMenu.Items.Add(TrayMenuItems.Close);
-
+        var contextMenu = new ContextMenuStrip() { AutoClose = false };
+        var menuItems = CreateContextMenuItems(callback_ToggleConsole, callback_OpenConfigFile);
+        contextMenu.Items.AddRange(menuItems);
         return contextMenu;
     }
+
+    private ToolStripItem[] CreateContextMenuItems(
+        Action<bool> callback_ToggleConsole,
+        Action callback_OpenConfigFile) =>
+    [
+        TrayMenuItems.ToggleConsole(callback_ToggleConsole),
+        TrayMenuItems.ToggleLogToFile,
+        TrayMenuItems.OpenConfigFile(callback_OpenConfigFile),
+
+        new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
+        new ToolStripSeparator(),
+
+        TrayMenuItems.Exit,
+        TrayMenuItems.Close,
+    ];
 
     #endregion
 
