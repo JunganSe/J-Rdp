@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace WinApp;
+namespace WinApp.App;
 
 internal class Arguments
 {
@@ -32,7 +32,7 @@ internal class Arguments
 
     public override string ToString()
     {
-        var propertySummaries = this.GetType()
+        var propertySummaries = GetType()
             .GetProperties()
             .Select(p => $"{p.Name}: {p.GetValue(this)}");
         return string.Join(", ", propertySummaries);
