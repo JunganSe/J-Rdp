@@ -65,9 +65,9 @@ internal class ConsoleWorker
     {
         try
         {
-            var type = typeof(WinApp.Program);
-            string name = AssemblyHelper.GetAssemblyName(type);
-            string version = AssemblyHelper.GetAssemblyVersion(type);
+            var assembly = typeof(WinApp.Program).Assembly;
+            string name = AssemblyHelper.GetAssemblyName(assembly);
+            string version = AssemblyHelper.GetAssemblyVersion(assembly);
             Console.Title = $"{name} {version}";
         }
         catch (Exception ex)
