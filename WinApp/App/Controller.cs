@@ -2,7 +2,7 @@
 using WinApp.Managers;
 using WinApp.Tray;
 
-namespace WinApp;
+namespace WinApp.App;
 
 internal class Controller
 {

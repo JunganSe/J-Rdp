@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System.IO.Pipes;
 
-namespace WinApp;
+namespace WinApp.App;
 
 internal class StopSignalListener
 {
