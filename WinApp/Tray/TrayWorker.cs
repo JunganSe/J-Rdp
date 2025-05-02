@@ -13,13 +13,10 @@ internal class TrayWorker
     {
         try
         {
-            using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
-            var icon = new Icon(iconStream);
-
             return new NotifyIcon()
             {
                 Text = GetTrayIconTooltip(),
-                Icon = icon,
+                Icon = GetTrayIcon(),
                 Visible = true,
             };
         }
@@ -36,6 +33,12 @@ internal class TrayWorker
         string name = AssemblyHelper.GetAssemblyName(type);
         string version = AssemblyHelper.GetAssemblyVersion(type);
         return $"{name} {version}";
+    }
+
+    private Icon GetTrayIcon()
+    {
+        using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
+        return new Icon(iconStream);
     }
 
     public ContextMenuStrip? CreateContextMenu(
