@@ -56,20 +56,26 @@ internal class TrayWorker
             return null;
         }
 
-        var contextMenu = new ContextMenuStrip() { AutoClose = false, };
-
-        contextMenu.Items.Add(TrayMenuItems.ToggleConsole(callback_ToggleConsole));
-        contextMenu.Items.Add(TrayMenuItems.ToggleLogToFile);
-        contextMenu.Items.Add(TrayMenuItems.OpenConfigFile(callback_OpenConfigFile));
-
-        contextMenu.Items.Add(new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint });
-        contextMenu.Items.Add(new ToolStripSeparator());
-
-        contextMenu.Items.Add(TrayMenuItems.Exit);
-        contextMenu.Items.Add(TrayMenuItems.Close);
-
+        var contextMenu = new ContextMenuStrip() { AutoClose = false };
+        var menuItems = CreateMenuItems(callback_ToggleConsole, callback_OpenConfigFile);
+        contextMenu.Items.AddRange(menuItems);
         return contextMenu;
     }
+
+    private ToolStripItem[] CreateMenuItems(
+        Action<bool> callback_ToggleConsole,
+        Action callback_OpenConfigFile) =>
+    [
+        TrayMenuItems.ToggleConsole(callback_ToggleConsole),
+        TrayMenuItems.ToggleLogToFile,
+        TrayMenuItems.OpenConfigFile(callback_OpenConfigFile),
+
+        new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
+        new ToolStripSeparator(),
+
+        TrayMenuItems.Exit,
+        TrayMenuItems.Close,
+    ];
 
     #endregion
 
