@@ -57,12 +57,12 @@ internal class TrayWorker
         }
 
         var contextMenu = new ContextMenuStrip() { AutoClose = false };
-        var menuItems = CreateMenuItems(callback_ToggleConsole, callback_OpenConfigFile);
+        var menuItems = CreateContextMenuItems(callback_ToggleConsole, callback_OpenConfigFile);
         contextMenu.Items.AddRange(menuItems);
         return contextMenu;
     }
 
-    private ToolStripItem[] CreateMenuItems(
+    private ToolStripItem[] CreateContextMenuItems(
         Action<bool> callback_ToggleConsole,
         Action callback_OpenConfigFile) =>
     [
