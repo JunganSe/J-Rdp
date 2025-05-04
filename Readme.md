@@ -141,7 +141,7 @@ Note that some settings may be disabled by the provider. Trying to set these wil
 
 
 # Changelog
-See the [changelog file](./Changelog.md) for release notes.
+See the [changelog file](./Changelog.md) for details on updates and changes.
 
 <br/>
 
