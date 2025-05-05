@@ -1,5 +1,4 @@
-﻿using Core.Helpers;
-using Core.Models;
+﻿using Core.Profiles;
 
 namespace Core.Tests;
 
@@ -77,51 +76,51 @@ public class ProfileValidatorTests
 
     #region Mocks
 
-    private List<Profile> GetValidMockProfiles()
-        => [
-            new()
-            {
-                WatchFolder = "C:/Foo",
-                Filter = "Bar",
-            },
-            new()
-            {
-                WatchFolder = @"C:\Foo",
-                Filter = "Bar",
-                Settings = ["a:b"],
-            },
-            new()
-            {
-                WatchFolder = @"C:\Foo",
-                Filter = "*",
-                Settings = ["a:b:c"],
-            },
-        ];
+    private List<Profile> GetValidMockProfiles() =>
+    [
+        new()
+        {
+            WatchFolder = "C:/Foo",
+            Filter = "Bar",
+        },
+        new()
+        {
+            WatchFolder = @"C:\Foo",
+            Filter = "Bar",
+            Settings = ["a:b"],
+        },
+        new()
+        {
+            WatchFolder = @"C:\Foo",
+            Filter = "*",
+            Settings = ["a:b:c"],
+        },
+    ];
 
-    private List<Profile> GetInvalidMockProfiles()
-        => [
-            new()
-            {
-                WatchFolder = @"Foo", // Bad
-                Filter = "Bar",
-            },
-            new()
-            {
-                WatchFolder = "", // Bad
-                Filter = "Bar",
-            },
-            new()
-            {
-                WatchFolder = @"C:\Foo",
-                Filter = "", // Bad
-            },
-            new()
-            {
-                WatchFolder = @"C:\Foo",
-                Filter = "Bar",
-                Settings = ["hello"], // Bad
-            },
-        ];
+    private List<Profile> GetInvalidMockProfiles() =>
+    [
+        new()
+        {
+            WatchFolder = @"Foo", // Bad
+            Filter = "Bar",
+        },
+        new()
+        {
+            WatchFolder = "", // Bad
+            Filter = "Bar",
+        },
+        new()
+        {
+            WatchFolder = @"C:\Foo",
+            Filter = "", // Bad
+        },
+        new()
+        {
+            WatchFolder = @"C:\Foo",
+            Filter = "Bar",
+            Settings = ["hello"], // Bad
+        },
+    ];
 
     #endregion
 }

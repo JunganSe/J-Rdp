@@ -7,13 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Auxiliary\Auxiliary.csproj" />
+    <None Include="..\Readme.md" Link="Docs\Readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\License.txt" Link="Docs\License.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Changelog.md" Link="Docs\Changelog.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="config.json">
+    <EmbeddedResource Include="J-Rdp config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Auxiliary\Auxiliary.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,1 @@
+echo "Stahp!" > \\.\pipe\J-Rdp.Stop

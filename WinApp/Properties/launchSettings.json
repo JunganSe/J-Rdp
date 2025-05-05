@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WinApp": {
+      "commandName": "Project",
+      "commandLineArgs": "-ShowConsole -LogToFile x-NoTray"
+    }
+  }
+}
