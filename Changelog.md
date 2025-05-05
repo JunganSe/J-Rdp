@@ -1,7 +1,7 @@
 # J-Rdp changelog
 
 ## 0.3.0
-2025-04-??
+2025-05-05
 
 Changes and improvements:
 - The project is now under the GPLv3 license.
