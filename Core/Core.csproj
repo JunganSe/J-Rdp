@@ -11,9 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\Readme.md" Link="Readme.md">
+    <None Include="..\Readme.md" Link="Readme.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="..\License.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
