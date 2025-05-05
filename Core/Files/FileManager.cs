@@ -18,7 +18,7 @@ internal class FileManager
         _logger.Info($"Delete delay set to {_rdpFileManager.DeleteDelay} ms.");
     }
 
-    public void ProcessProfileWrappers(IEnumerable<ProfileWrapper> profileWrappers)
+    public void ProcessProfileWrappers(List<ProfileWrapper> profileWrappers)
     {
         _processedFilePaths.Clear();
         var processableProfileWrappers = profileWrappers.Where(pi => pi.DirectoryExists);
@@ -28,9 +28,9 @@ internal class FileManager
 
     private void ProcessNewFiles(ProfileWrapper profileWrapper)
     {
-        var newFiles = profileWrapper.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName));
+        var newFiles = profileWrapper.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName)).ToList();
 
-        if (!newFiles.Any())
+        if (newFiles.Count == 0)
             return;
 
         LogNewFiles(profileWrapper.Profile, newFiles);
@@ -39,11 +39,11 @@ internal class FileManager
             ProcessFileOnFilterMatch(newFile, profileWrapper.Profile);
     }
 
-    private void LogNewFiles(Profile profile, IEnumerable<FileInfo> newFiles)
+    private void LogNewFiles(Profile profile, List<FileInfo> newFiles)
     {
-        string s = newFiles.Count() > 1 ? "s" : "";
+        string s = (newFiles.Count > 1) ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Debug($"Profile '{profile.Name}' found {newFiles.Count()} new file{s} in '{profile.WatchFolder}': {fileNames}");
+        _logger.Debug($"Profile '{profile.Name}' found {newFiles.Count} new file{s} in '{profile.WatchFolder}': {fileNames}");
     }
 
     private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)
