@@ -43,13 +43,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="J-Rdp start.bat">
+    <None Update="Bats\J-Rdp start.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="J-Rdp force stop.bat">
+    <None Update="Bats\J-Rdp force stop.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="J-Rdp stop.bat">
+    <None Update="Bats\J-Rdp stop.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
