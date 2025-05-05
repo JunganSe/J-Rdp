@@ -14,6 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F06E2CFC-3A75-4C70-9B2F-BF8718E4CD52}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Changelog.md = Changelog.md
+		License.txt = License.txt
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinApp", "WinApp\WinApp.csproj", "{A530681A-2703-4F10-ACAC-276E299E2B28}"
