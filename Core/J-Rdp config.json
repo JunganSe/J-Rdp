@@ -17,7 +17,7 @@
     {
       "enabled": true,
       "name": "Example profile 2",
-      "watchFolder": "C:/Foo/Bar",
+      "watchFolder": "C:\\Foo\\Bar",
       "filter": "abc??.rdp",
       "moveToFolder": "Baz",
       "launch": true,
