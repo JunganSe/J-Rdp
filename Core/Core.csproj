@@ -7,17 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="J-Rdp config.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\Readme.md" Link="Readme.md">
+    <None Include="..\Readme.md" Link="Docs\Readme.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\License.txt">
+    <None Include="..\License.txt" Link="Docs\License.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\Changelog.md">
+    <None Include="..\Changelog.md" Link="Docs\Changelog.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
