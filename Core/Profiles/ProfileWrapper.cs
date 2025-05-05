@@ -29,5 +29,8 @@ internal class ProfileWrapper
 
 
     private List<FileInfo> GetFiles() =>
-        Directory.GetFiles(Profile.WatchFolder).Select(path => new FileInfo(path)).ToList();
+        Directory
+            .GetFiles(Profile.WatchFolder)
+            .Select(path => new FileInfo(path))
+            .ToList();
 }

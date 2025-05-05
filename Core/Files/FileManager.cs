@@ -28,7 +28,9 @@ internal class FileManager
 
     private void ProcessNewFiles(ProfileWrapper profileWrapper)
     {
-        var newFiles = profileWrapper.NewFiles.Where(file => !_processedFilePaths.Contains(file.FullName)).ToList();
+        var newFiles = profileWrapper.NewFiles
+            .Where(file => !_processedFilePaths.Contains(file.FullName))
+            .ToList();
 
         if (newFiles.Count == 0)
             return;
