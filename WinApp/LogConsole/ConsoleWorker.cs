@@ -68,7 +68,7 @@ internal class ConsoleWorker
             var assembly = typeof(WinApp.Program).Assembly;
             string name = AssemblyHelper.GetAssemblyName(assembly);
             string version = AssemblyHelper.GetAssemblyVersion(assembly);
-            Console.Title = $"{name} {version}";
+            Console.Title = $"{name} {version} log";
         }
         catch (Exception ex)
         {
