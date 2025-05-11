@@ -1,13 +1,11 @@
 ﻿using NLog;
-using NLog.Config;
-using NLog.Targets;
 
 namespace Auxiliary;
 
 public static class LogManager
 {
     private const string _configFileName = "nlog.config";
-    private const string _fileRuleName = "file";
+    private const string _fileLoggingEnabledVariable = "fileLoggingEnabled";
 
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -44,26 +42,17 @@ public static class LogManager
             DisableFileLogging();
     }
 
-    public static void EnableFileLogging()
+    private static void EnableFileLogging()
     {
-        var fileRule = GetLoggingRule(_fileRuleName);
-        fileRule?.EnableLoggingForLevels(LogLevel.Debug, LogLevel.Fatal);
+        NLog.LogManager.Configuration.Variables[_fileLoggingEnabledVariable] = "true";
         NLog.LogManager.ReconfigExistingLoggers();
         _logger.Info("Logging to file enabled.");
     }
 
-    public static void DisableFileLogging()
+    private static void DisableFileLogging()
     {
         _logger.Info("Disabling logging to file.");
-        var fileRule = GetLoggingRule(_fileRuleName);
-        fileRule?.DisableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
+        NLog.LogManager.Configuration.Variables[_fileLoggingEnabledVariable] = "false";
         NLog.LogManager.ReconfigExistingLoggers();
-    }
-
-    private static LoggingRule? GetLoggingRule(string ruleName)
-    {
-        var config = NLog.LogManager.Configuration;
-        var fileTarget = config.FindTargetByName(ruleName) as FileTarget;
-        return config.LoggingRules.FirstOrDefault(r => r.Targets.Contains(fileTarget));
     }
 }
