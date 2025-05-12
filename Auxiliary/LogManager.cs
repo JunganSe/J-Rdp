@@ -51,7 +51,7 @@ public static class LogManager
 
     private static void EnableFileLogging()
     {
-
+        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "true";
         NLog.LogManager.ReconfigExistingLoggers();
         _logger.Info("Logging to file enabled.");
     }
@@ -59,13 +59,13 @@ public static class LogManager
     private static void DisableFileLogging()
     {
         _logger.Info("Disabling logging to file.");
-
+        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "false";
         NLog.LogManager.ReconfigExistingLoggers();
     }
 
     private static void AddFileRuleVariable()
     {
-        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "true";
+        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "false";
         NLog.LogManager.ReconfigExistingLoggers();
         _logger.Trace("File logging variable added.");
     }
@@ -82,7 +82,8 @@ public static class LogManager
         fileRule.FilterDefaultAction = FilterResult.Ignore;
         var filter = new ConditionBasedFilter()
         {
-            Condition = "${fileLoggingEnabled} == true", // NOTE: This crashes
+            Condition = "'${fileLoggingEnabled}' == 'true'", // Hittar inte variabeln, det blir {('' == 'true')}
+            //Condition = $"'{_fileLoggingEnabled}' == 'true'", // Kör man på denna vägen måste själva filtret uppdateras när man vill ställa loggning på/av
             Action = FilterResult.Log
         };
         fileRule.Filters.Add(filter);
