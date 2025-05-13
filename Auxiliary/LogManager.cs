@@ -21,6 +21,8 @@ public static class LogManager
             LoadExternalConfig();
         else
             LoadEmbeddedConfig();
+
+        SetFileRuleEnabled(false);
     }
 
     private static void LoadExternalConfig()
