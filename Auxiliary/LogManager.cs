@@ -1,6 +1,6 @@
 ﻿using NLog;
 using NLog.Config;
-using NLog.Targets;
+using NLog.Filters;
 
 namespace Auxiliary;
 
@@ -21,6 +21,8 @@ public static class LogManager
             LoadExternalConfig();
         else
             LoadEmbeddedConfig();
+
+        SetFileRuleEnabled(false);
     }
 
     private static void LoadExternalConfig()
@@ -36,34 +38,46 @@ public static class LogManager
         _logger.Trace("Loaded embedded NLog configuration file.");
     }
 
-    public static void SetFileLogging(bool enabled)
+    public static void SetFileLogging(bool enable)
     {
-        if (enabled)
-            EnableFileLogging();
+        if (enable)
+        {
+            SetFileRuleEnabled(true);
+            _logger.Info("Logging to file enabled.");
+        }
         else
-            DisableFileLogging();
+        {
+            _logger.Info("Disabling logging to file.");
+            SetFileRuleEnabled(false);
+        }
     }
 
-    public static void EnableFileLogging()
+    // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
+    // Using a filter that read a variable was originally intended, but the variable always came in as an empty string...
+    private static void SetFileRuleEnabled(bool enable)
     {
         var fileRule = GetLoggingRule(_fileRuleName);
-        fileRule?.EnableLoggingForLevels(LogLevel.Debug, LogLevel.Fatal);
-        NLog.LogManager.ReconfigExistingLoggers();
-        _logger.Info("Logging to file enabled.");
-    }
+        if (fileRule is null)
+        {
+            _logger.Warn($"Can not add file logging filter. Logging rule '{_fileRuleName}' not found.");
+            return;
+        }
 
-    public static void DisableFileLogging()
-    {
-        _logger.Info("Disabling logging to file.");
-        var fileRule = GetLoggingRule(_fileRuleName);
-        fileRule?.DisableLoggingForLevels(LogLevel.Trace, LogLevel.Fatal);
+        fileRule.FilterDefaultAction = FilterResult.Ignore;
+        var filter = new ConditionBasedFilter()
+        {
+            Condition = (enable) ? "true" : "false",
+            Action = FilterResult.Log
+        };
+        fileRule.Filters.Clear();
+        fileRule.Filters.Add(filter);
         NLog.LogManager.ReconfigExistingLoggers();
     }
 
     private static LoggingRule? GetLoggingRule(string ruleName)
     {
         var config = NLog.LogManager.Configuration;
-        var fileTarget = config.FindTargetByName(ruleName) as FileTarget;
-        return config.LoggingRules.FirstOrDefault(r => r.Targets.Contains(fileTarget));
+        var fileTarget = config.FindTargetByName(ruleName);
+        return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
     }
 }
