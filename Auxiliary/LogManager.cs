@@ -9,7 +9,6 @@ public static class LogManager
 {
     private const string _configFileName = "nlog.config";
     private const string _fileRuleName = "file";
-    private const string _fileLoggingEnabledVariable = "fileLoggingEnabled";
 
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -23,9 +22,6 @@ public static class LogManager
             LoadExternalConfig();
         else
             LoadEmbeddedConfig();
-
-        AddFileRuleVariable();
-        AddFileRuleFilter();
     }
 
     private static void LoadExternalConfig()
@@ -51,26 +47,17 @@ public static class LogManager
 
     private static void EnableFileLogging()
     {
-        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "true";
-        NLog.LogManager.ReconfigExistingLoggers();
+        SetFileRuleEnabled(true);
         _logger.Info("Logging to file enabled.");
     }
 
     private static void DisableFileLogging()
     {
         _logger.Info("Disabling logging to file.");
-        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "false";
-        NLog.LogManager.ReconfigExistingLoggers();
+        SetFileRuleEnabled(false);
     }
 
-    private static void AddFileRuleVariable()
-    {
-        NLog.LogManager.Configuration.Variables["fileLoggingEnabled"] = "false";
-        NLog.LogManager.ReconfigExistingLoggers();
-        _logger.Trace("File logging variable added.");
-    }
-
-    private static void AddFileRuleFilter()
+    private static void SetFileRuleEnabled(bool isEnabled)
     {
         var fileRule = GetLoggingRule(_fileRuleName);
         if (fileRule is null)
@@ -82,13 +69,12 @@ public static class LogManager
         fileRule.FilterDefaultAction = FilterResult.Ignore;
         var filter = new ConditionBasedFilter()
         {
-            Condition = "'${fileLoggingEnabled}' == 'true'", // Hittar inte variabeln, det blir {('' == 'true')}
-            //Condition = $"'{_fileLoggingEnabled}' == 'true'", // Kör man på denna vägen måste själva filtret uppdateras när man vill ställa loggning på/av
+            Condition = (isEnabled) ? "true" : "false",
             Action = FilterResult.Log
         };
+        fileRule.Filters.Clear();
         fileRule.Filters.Add(filter);
         NLog.LogManager.ReconfigExistingLoggers();
-        _logger.Trace("File logging filter added.");
     }
 
     private static LoggingRule? GetLoggingRule(string ruleName)
