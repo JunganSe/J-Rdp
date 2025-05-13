@@ -37,9 +37,9 @@ public static class LogManager
         _logger.Trace("Loaded embedded NLog configuration file.");
     }
 
-    public static void SetFileLogging(bool enabled)
+    public static void SetFileLogging(bool enable)
     {
-        if (enabled)
+        if (enable)
         {
             SetFileRuleEnabled(true);
             _logger.Info("Logging to file enabled.");
@@ -51,7 +51,7 @@ public static class LogManager
         }
     }
 
-    private static void SetFileRuleEnabled(bool isEnabled)
+    private static void SetFileRuleEnabled(bool enable)
     {
         var fileRule = GetLoggingRule(_fileRuleName);
         if (fileRule is null)
@@ -63,7 +63,7 @@ public static class LogManager
         fileRule.FilterDefaultAction = FilterResult.Ignore;
         var filter = new ConditionBasedFilter()
         {
-            Condition = (isEnabled) ? "true" : "false",
+            Condition = (enable) ? "true" : "false",
             Action = FilterResult.Log
         };
         fileRule.Filters.Clear();
