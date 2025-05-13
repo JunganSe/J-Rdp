@@ -1,7 +1,6 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Filters;
-using NLog.Targets;
 
 namespace Auxiliary;
 
@@ -51,6 +50,8 @@ public static class LogManager
         }
     }
 
+    // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
+    // Using a variable was originally intended, but it always came in as an empty string...
     private static void SetFileRuleEnabled(bool enable)
     {
         var fileRule = GetLoggingRule(_fileRuleName);
