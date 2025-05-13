@@ -74,7 +74,7 @@ public static class LogManager
     private static LoggingRule? GetLoggingRule(string ruleName)
     {
         var config = NLog.LogManager.Configuration;
-        var fileTarget = config.FindTargetByName(ruleName) as FileTarget;
-        return config.LoggingRules.FirstOrDefault(r => r.Targets.Contains(fileTarget));
+        var fileTarget = config.FindTargetByName(ruleName);
+        return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
     }
 }
