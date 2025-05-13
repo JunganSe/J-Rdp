@@ -40,21 +40,15 @@ public static class LogManager
     public static void SetFileLogging(bool enabled)
     {
         if (enabled)
-            EnableFileLogging();
+        {
+            SetFileRuleEnabled(true);
+            _logger.Info("Logging to file enabled.");
+        }
         else
-            DisableFileLogging();
-    }
-
-    private static void EnableFileLogging()
-    {
-        SetFileRuleEnabled(true);
-        _logger.Info("Logging to file enabled.");
-    }
-
-    private static void DisableFileLogging()
-    {
-        _logger.Info("Disabling logging to file.");
-        SetFileRuleEnabled(false);
+        {
+            _logger.Info("Disabling logging to file.");
+            SetFileRuleEnabled(false);
+        }
     }
 
     private static void SetFileRuleEnabled(bool isEnabled)
