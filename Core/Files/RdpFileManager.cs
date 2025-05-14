@@ -79,8 +79,8 @@ internal class RdpFileManager
         try
         {
             _rdpFileWorker.Delete(file, recycle);
-            string verb = recycle ? "Recycled" : "Permanently deleted";
-            _logger.Info($"{verb} file '{file.Name}' in '{file.DirectoryName}'.");
+            string recycledOrDeleted = recycle ? "Recycled" : "Permanently deleted";
+            _logger.Info($"{recycledOrDeleted} file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {
