@@ -6,6 +6,7 @@ namespace WinApp.App;
 
 internal class Controller
 {
+    private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly ConsoleManager _consoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
@@ -26,8 +27,7 @@ internal class Controller
     private void Initialize(Arguments arguments)
     {
         SetConsoleVisibility(arguments.ShowConsole);
-        if (!arguments.NoTray)
-            InitializeTray(arguments);
+        InitializeTrayIfArgumentAllows(arguments);
         InitializeCore(arguments);
     }
 
@@ -38,6 +38,14 @@ internal class Controller
         {
             _trayManager.SetMenuState_ShowConsole(false);
         });
+    }
+
+    private void InitializeTrayIfArgumentAllows(Arguments arguments)
+    {
+        if (!arguments.NoTray)
+            InitializeTray(arguments);
+        else
+            _logger.Info("Starting without tray icon and menu.");
     }
 
     private void InitializeTray(Arguments arguments)
