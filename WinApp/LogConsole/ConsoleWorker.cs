@@ -11,22 +11,22 @@ internal class ConsoleWorker
 
     #region Windows integration
 
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll")]
     private static extern bool AllocConsole();
 
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll")]
     private static extern bool FreeConsole();
 
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll")]
     private static extern nint GetConsoleWindow();
 
-    [DllImport("user32.dll", SetLastError = true)]
+    [DllImport("user32.dll")]
     private static extern nint GetSystemMenu(nint hWnd, bool bRevert);
 
-    [DllImport("user32.dll", SetLastError = true)]
+    [DllImport("user32.dll")]
     private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll")]
     private static extern bool SetConsoleCtrlHandler(CtrlTypesHandler handler, bool add);
 
     private delegate bool CtrlTypesHandler(CtrlTypes ctrlType);
