@@ -1,6 +1,6 @@
 ﻿namespace WinApp.LogConsole;
 
-/// <summary> Windows exclusive manager for opening and closing a console log window </summary>
+/// <summary> Windows exclusive manager for opening and closing a console log window. </summary>
 internal class ConsoleManager
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();

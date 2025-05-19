@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace WinApp.LogConsole;
 
+/// <summary> Windows exclusive worker for opening and closing a console log window. </summary>
 internal class ConsoleWorker
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
