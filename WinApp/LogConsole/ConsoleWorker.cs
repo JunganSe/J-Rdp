@@ -4,30 +4,34 @@ using System.Runtime.InteropServices;
 namespace WinApp.LogConsole;
 
 /// <summary> Windows exclusive worker for opening and closing a console log window. </summary>
-internal class ConsoleWorker
+internal partial class ConsoleWorker
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private Action? _callback_ConsoleClosed;
 
     #region Windows integration
 
-    [DllImport("kernel32.dll")]
-    private static extern bool AllocConsole();
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool AllocConsole();
 
-    [DllImport("kernel32.dll")]
-    private static extern bool FreeConsole();
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool FreeConsole();
 
-    [DllImport("kernel32.dll")]
-    private static extern nint GetConsoleWindow();
+    [LibraryImport("kernel32.dll")]
+    private static partial nint GetConsoleWindow();
 
-    [DllImport("user32.dll")]
-    private static extern nint GetSystemMenu(nint hWnd, bool bRevert);
+    [LibraryImport("user32.dll")]
+    private static partial nint GetSystemMenu(nint hWnd, [MarshalAs(UnmanagedType.Bool)] bool bRevert);
 
-    [DllImport("user32.dll")]
-    private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
 
-    [DllImport("kernel32.dll")]
-    private static extern bool SetConsoleCtrlHandler(CtrlTypesHandler handler, bool add);
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool SetConsoleCtrlHandler(CtrlTypesHandler handler, [MarshalAs(UnmanagedType.Bool)] bool add);
 
     private delegate bool CtrlTypesHandler(CtrlTypes ctrlType);
 
