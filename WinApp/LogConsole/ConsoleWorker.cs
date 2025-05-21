@@ -87,8 +87,10 @@ internal partial class ConsoleWorker
         {
             nint consoleWindow = GetConsoleWindow();
             nint systemMenu = GetSystemMenu(consoleWindow, false);
+            uint buttonId = 0xF060; // SC_CLOSE (Close button ID)
+            uint deletionFlags = 0x00000000; // "No special flags" (default behavior)
             if (systemMenu != nint.Zero)
-                DeleteMenu(systemMenu, 0xF060, 0x00000000);
+                DeleteMenu(systemMenu, buttonId, deletionFlags);
         }
         catch (Exception ex)
         {
