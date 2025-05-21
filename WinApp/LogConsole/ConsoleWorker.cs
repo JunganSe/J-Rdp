@@ -40,8 +40,6 @@ internal partial class ConsoleWorker
         CTRL_C_EVENT = 0,       // Event raised when the user presses Ctrl+C.
         CTRL_BREAK_EVENT = 1,   // Event raised when the user presses Ctrl+Break.
         CTRL_CLOSE_EVENT = 2,   // Event raised when the user closes the console window.
-        CTRL_LOGOFF_EVENT = 5,  // Event raised when the user logs off (only received by services).
-        CTRL_SHUTDOWN_EVENT = 6 // Event raised when the system is shutting down (only received by services).
     }
 
     #endregion
