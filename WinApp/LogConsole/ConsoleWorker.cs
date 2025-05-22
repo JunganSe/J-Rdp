@@ -1,5 +1,6 @@
 ﻿using Auxiliary;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WinApp.LogConsole;
 
@@ -56,7 +57,11 @@ internal partial class ConsoleWorker
         {
             bool isSuccess = AllocConsole();
             if (!isSuccess)
+            {
                 _logger.Error(errorMessage);
+                return;
+            }
+            Console.OutputEncoding = Encoding.UTF8;
         }
         catch (Exception ex)
         {

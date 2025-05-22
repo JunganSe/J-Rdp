@@ -2,6 +2,7 @@
 using NLog;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace Core.Configs;
@@ -17,6 +18,7 @@ internal class ConfigWorker
     {
         _jsonOptions = new JsonSerializerOptions()
         {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // Allows non-english characters to be serialized without escaping.
             PropertyNameCaseInsensitive = true,
             WriteIndented = true,
         };
