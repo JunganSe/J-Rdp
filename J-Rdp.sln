@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinApp", "WinApp\WinApp.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinAppTests", "Tests\WinAppTests\WinAppTests.csproj", "{84A82027-7BB0-4478-B358-25110C4DB15C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +45,17 @@ Global
 		{A530681A-2703-4F10-ACAC-276E299E2B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A530681A-2703-4F10-ACAC-276E299E2B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A530681A-2703-4F10-ACAC-276E299E2B28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A82027-7BB0-4478-B358-25110C4DB15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A82027-7BB0-4478-B358-25110C4DB15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A82027-7BB0-4478-B358-25110C4DB15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A82027-7BB0-4478-B358-25110C4DB15C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4C99D19A-E581-4600-8803-1BFCE79C3718} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{84A82027-7BB0-4478-B358-25110C4DB15C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A70BF1-36BF-4D60-B024-8A93464BB6E8}
