@@ -1,6 +1,6 @@
 ﻿using Core.Files;
 
-namespace Core.Tests.Files;
+namespace CoreTests.Files;
 
 [TestClass]
 public class FileHelperTests

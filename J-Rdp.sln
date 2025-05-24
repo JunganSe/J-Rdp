@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auxiliary", "Auxiliary\Auxiliary.csproj", "{F035856F-FB43-48A5-A9CC-617E4E3CA843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Tests\Core.Tests\Core.Tests.csproj", "{4C99D19A-E581-4600-8803-1BFCE79C3718}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTests", "Tests\Core.Tests\CoreTests.csproj", "{4C99D19A-E581-4600-8803-1BFCE79C3718}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8EBAA125-AE79-453D-910E-AED311B08A19}"
 EndProject
