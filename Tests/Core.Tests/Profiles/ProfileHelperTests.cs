@@ -1,6 +1,6 @@
 ﻿using Core.Profiles;
 
-namespace Core.Tests;
+namespace Core.Tests.Profiles;
 
 [TestClass()]
 public class ProfileHelperTests
