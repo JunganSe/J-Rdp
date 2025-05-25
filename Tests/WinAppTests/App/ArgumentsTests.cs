@@ -7,12 +7,15 @@ public sealed class ArgumentsTests
 {
     [TestMethod]
     [DataRow(ArgumentsExpectation.AllTrue, "-ShowConsole -LogToFile -NoTray")]
+    [DataRow(ArgumentsExpectation.AllTrue, "-ShowConsole -LogToFile aaa -NoTray bbb")]
     [DataRow(ArgumentsExpectation.AllFalse, "x-ShowConsole x-LogToFile x-NoTray")]
     [DataRow(ArgumentsExpectation.AllFalse, "ShowConsole LogToFile NoTray")]
     [DataRow(ArgumentsExpectation.AllFalse, "Lorem Ipsum Nonsense Arguments")]
     [DataRow(ArgumentsExpectation.AllFalse, "")]
     [DataRow(ArgumentsExpectation.AllFalse, "   ")]
     [DataRow(ArgumentsExpectation.ShowConsoleOnly, "-ShowConsole")]
+    [DataRow(ArgumentsExpectation.ShowConsoleOnly, "aaa -ShowConsole bbb")]
+    [DataRow(ArgumentsExpectation.ShowConsoleOnly, "aaa -ShowConsole")]
     [DataRow(ArgumentsExpectation.LogToFileOnly, "-LogToFile")]
     [DataRow(ArgumentsExpectation.NoTrayOnly, "-NoTray")]
     public void Parse_Valid(ArgumentsExpectation expectation, string args)
