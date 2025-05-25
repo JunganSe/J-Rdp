@@ -24,7 +24,7 @@ public sealed class ArgumentsTests
         var parsedArguments = Arguments.Parse(splitArgs);
 
         // Assert
-        var result = expectation switch
+        bool isAsExpected = expectation switch
         {
             ArgumentsExpectation.AllTrue         => parsedArguments is { ShowConsole: true,  LogToFile: true,  NoTray: true },
             ArgumentsExpectation.AllFalse        => parsedArguments is { ShowConsole: false, LogToFile: false, NoTray: false },
@@ -33,7 +33,7 @@ public sealed class ArgumentsTests
             ArgumentsExpectation.NoTrayOnly      => parsedArguments is { ShowConsole: false, LogToFile: false, NoTray: true },
             _ => throw new AssertFailedException("Unexpected expectation value.")
         };
-        Assert.IsTrue(result);
+        Assert.IsTrue(isAsExpected);
     }
 
     public enum ArgumentsExpectation
