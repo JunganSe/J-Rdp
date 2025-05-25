@@ -29,4 +29,22 @@ public class StopSignalListenerTests
         // Assert
         Assert.IsTrue(isCallbackInvoked, "Callback was not invoked when stop signal was sent.");
     }
+
+    [TestMethod]
+    public void Stop_CancelsListening_CallbackNotInvoked()
+    {
+        // Arrange
+        var listener = new StopSignalListener();
+        var callbackEvent = new ManualResetEventSlim(false);
+        void Callback() => callbackEvent.Set();
+
+        // Act
+        listener.Start(Callback);
+        Thread.Sleep(100);
+        listener.Stop();
+        bool isCallbackInvoked = callbackEvent.Wait(500);
+
+        // Assert
+        Assert.IsFalse(isCallbackInvoked, "Callback should not be invoked after Stop is called.");
+    }
 }
