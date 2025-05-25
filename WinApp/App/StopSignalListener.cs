@@ -5,6 +5,8 @@ namespace WinApp.App;
 
 internal class StopSignalListener
 {
+    public const string PipeName = "J-Rdp.Stop";
+
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
     private CancellationTokenSource? _stopSignalListenerCancellation;
@@ -27,7 +29,7 @@ internal class StopSignalListener
         try
         {
             _logger.Debug("Listening for stop signal...");
-            using var pipeServer = new NamedPipeServerStream("J-Rdp.Stop", PipeDirection.In);
+            using var pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.In);
             await pipeServer.WaitForConnectionAsync(cancellationToken); // Throws if canceled.
 
             _logger.Info("Stop signal received.");

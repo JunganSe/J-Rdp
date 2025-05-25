@@ -20,7 +20,8 @@ public class StopSignalListenerTests
         using var clientTask = Task.Run(async () =>
         {
             await Task.Delay(100);
-            using var client = new NamedPipeClientStream(".", "J-Rdp.Stop", PipeDirection.Out);
+            string pipeName = StopSignalListener.PipeName;
+            using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out);
             await client.ConnectAsync(1000);
         });
 
