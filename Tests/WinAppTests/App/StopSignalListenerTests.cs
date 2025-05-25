@@ -11,8 +11,8 @@ public class StopSignalListenerTests
     {
         // Arrange
         var listener = new StopSignalListener();
-        var callbackInvoked = new ManualResetEventSlim(false);
-        void Callback() => callbackInvoked.Set();
+        var callbackEvent = new ManualResetEventSlim(false);
+        void Callback() => callbackEvent.Set();
 
         // Act
         listener.Start(Callback);
@@ -20,13 +20,13 @@ public class StopSignalListenerTests
         using var clientTask = Task.Run(async () =>
         {
             await Task.Delay(100);
-            string pipeName = StopSignalListener.PipeName;
-            using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out);
-            await client.ConnectAsync(1000);
+            using var pipeClient = new NamedPipeClientStream(".", StopSignalListener.PipeName, PipeDirection.Out);
+            await pipeClient.ConnectAsync(1000);
         });
 
+        bool isCallbackInvoked = callbackEvent.Wait(2000);
+
         // Assert
-        bool signalWasSet = callbackInvoked.Wait(2000);
-        Assert.IsTrue(signalWasSet, "Callback was not invoked when stop signal was sent.");
+        Assert.IsTrue(isCallbackInvoked, "Callback was not invoked when stop signal was sent.");
     }
 }
