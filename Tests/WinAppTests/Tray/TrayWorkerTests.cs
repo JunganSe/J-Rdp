@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
+using System.Windows.Forms;
 using WinApp.Tray;
 
 namespace WinAppTests.Tray;
@@ -14,6 +15,8 @@ public class TrayWorkerTests
     {
         _worker = new TrayWorker();
     }
+
+    #region Creation
 
     [TestMethod]
     public void CreateNotifyIcon_ReturnsValid()
@@ -79,4 +82,33 @@ public class TrayWorkerTests
         menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
         menu.Dispose();
     }
+
+    #endregion
+
+    #region Menu checked state
+
+    [TestMethod]
+    [DataRow(false, false)]
+    [DataRow(false, true)]
+    [DataRow(true, true)]
+    [DataRow(true, false)]
+    public void SetMenuCheckedState_SingleItem_SetsCheckedState(bool initialState, bool targetState)
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        var item = new ToolStripMenuItem { Name = "TestItem", Checked = initialState };
+        menu.Items.Add(item);
+
+        // Act
+        _worker.SetMenuCheckedState(menu, "TestItem", targetState);
+
+        // Assert
+        Assert.AreEqual(targetState, item.Checked);
+
+        // Cleanup
+        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
+        menu.Dispose();
+    }
+
+    #endregion
 }
