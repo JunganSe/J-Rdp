@@ -60,4 +60,23 @@ public class TrayWorkerTests
         // Assert
         Assert.IsNull(result);
     }
+
+    [TestMethod]
+    public void CreateContextMenu_ValidCallbacks_ReturnsContextMenuStrip()
+    {
+        // Arrange
+        Action<bool>? callback_ToggleConsole = (bool _) => { };
+        Action? callback_OpenConfigFile = () => { };
+
+        // Act
+        var menu = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+
+        // Assert
+        Assert.IsNotNull(menu);
+        Assert.IsTrue(menu.Items.Count > 0);
+
+        // Cleanup
+        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
+        menu.Dispose();
+    }
 }
