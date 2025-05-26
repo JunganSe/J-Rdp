@@ -32,4 +32,32 @@ public class TrayWorkerTests
         // Cleanup
         _worker.DisposeTray(trayIcon);
     }
+
+    [TestMethod]
+    public void CreateContextMenu_NullToggleConsoleCallback_ReturnsNull()
+    {
+        // Arrange
+        Action<bool>? callback_ToggleConsole = null;
+        Action? callback_OpenConfigFile = () => { };
+
+        // Act
+        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void CreateContextMenu_NullOpenConfigFileCallback_ReturnsNull()
+    {
+        // Arrange
+        Action<bool>? callback_ToggleConsole = (bool _) => { };
+        Action? callback_OpenConfigFile = null;
+
+        // Act
+        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+
+        // Assert
+        Assert.IsNull(result);
+    }
 }
