@@ -143,5 +143,31 @@ public class TrayWorkerTests
         menu.Dispose();
     }
 
+    [TestMethod]
+    public void RemoveAllProfileMenuItems_RemovesOnlyProfileItems()
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        string prefix = TrayConstants.ItemNames.ProfilePrefix;
+        var profileItem1 = new ToolStripMenuItem { Name = $"{prefix}_1" };
+        var profileItem2 = new ToolStripMenuItem { Name = $"{prefix}_2" };
+        var otherItem = new ToolStripMenuItem { Name = "OtherItem" };
+        menu.Items.Add(profileItem1);
+        menu.Items.Add(profileItem2);
+        menu.Items.Add(otherItem);
+
+        // Act
+        _worker.RemoveAllProfileMenuItems(menu.Items);
+
+        // Assert
+        Assert.IsFalse(menu.Items.Contains(profileItem1));
+        Assert.IsFalse(menu.Items.Contains(profileItem2));
+        Assert.IsTrue(menu.Items.Contains(otherItem));
+
+        // Cleanup
+        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
+        menu.Dispose();
+    }
+
     #endregion
 }
