@@ -110,5 +110,38 @@ public class TrayWorkerTests
         menu.Dispose();
     }
 
+    [TestMethod]
+    [DataRow(false, false)]
+    [DataRow(false, true)]
+    [DataRow(true, true)]
+    [DataRow(true, false)]
+    public void SetMenuCheckedState_MultipleItems_SetsCheckedState(bool initialState, bool targetState)
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        var items = new ToolStripMenuItem[]
+        {
+            new() { Name = "DummyItem1", Checked = !targetState },
+            new() { Name = "TestItem1", Checked = initialState },
+            new() { Name = "DummyItem2", Checked = !targetState },
+            new() { Name = "TestItem2", Checked = initialState },
+        };
+        menu.Items.AddRange(items);
+
+        // Act
+        _worker.SetMenuCheckedState(menu, "TestItem1", targetState);
+        _worker.SetMenuCheckedState(menu, "TestItem2", targetState);
+
+        // Assert
+        Assert.AreEqual(targetState, items.First(i => i.Name == "TestItem1").Checked);
+        Assert.AreEqual(targetState, items.First(i => i.Name == "TestItem2").Checked);
+        Assert.AreNotEqual(targetState, items.First(i => i.Name == "DummyItem1").Checked);
+        Assert.AreNotEqual(targetState, items.First(i => i.Name == "DummyItem2").Checked);
+
+        // Cleanup
+        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
+        menu.Dispose();
+    }
+
     #endregion
 }
