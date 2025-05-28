@@ -143,6 +143,10 @@ public class TrayWorkerTests
         menu.Dispose();
     }
 
+    #endregion
+
+    #region Menu items
+
     [TestMethod]
     public void RemoveAllProfileMenuItems_RemovesOnlyProfileItems()
     {
