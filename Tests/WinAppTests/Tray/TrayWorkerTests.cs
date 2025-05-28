@@ -79,8 +79,7 @@ public class TrayWorkerTests
         Assert.IsTrue(menu.Items.Count > 0);
 
         // Cleanup
-        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
-        menu.Dispose();
+        DisposeMenu(menu);
     }
 
     #endregion
@@ -106,8 +105,7 @@ public class TrayWorkerTests
         Assert.AreEqual(targetState, item.Checked);
 
         // Cleanup
-        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
-        menu.Dispose();
+        DisposeMenu(menu);
     }
 
     [TestMethod]
@@ -139,8 +137,7 @@ public class TrayWorkerTests
         Assert.AreNotEqual(targetState, items.First(i => i.Name == "DummyItem2").Checked);
 
         // Cleanup
-        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
-        menu.Dispose();
+        DisposeMenu(menu);
     }
 
     #endregion
@@ -169,9 +166,14 @@ public class TrayWorkerTests
         Assert.IsTrue(menu.Items.Contains(otherItem));
 
         // Cleanup
-        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
-        menu.Dispose();
+        DisposeMenu(menu);
     }
 
     #endregion
+
+    private void DisposeMenu(ContextMenuStrip menu)
+    {
+        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
+        menu.Dispose();
+    }
 }
