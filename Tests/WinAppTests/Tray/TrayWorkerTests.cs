@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
+using Core.Profiles;
 using System.Windows.Forms;
 using WinApp.Tray;
 
@@ -164,6 +165,36 @@ public class TrayWorkerTests
         Assert.IsFalse(menu.Items.Contains(profileItem1));
         Assert.IsFalse(menu.Items.Contains(profileItem2));
         Assert.IsTrue(menu.Items.Contains(otherItem));
+
+        // Cleanup
+        DisposeMenu(menu);
+    }
+
+    [TestMethod]
+    public void InsertProfileMenuItems_InsertsItemsAtInsertPoint()
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        var dummyItem1 = new ToolStripMenuItem() { Name = "Dummy Item 1" };
+        var insertPoint = new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint };
+        var dummyItem2 = new ToolStripMenuItem() { Name = "Dummy Item 2" };
+        menu.Items.AddRange([ dummyItem1, insertPoint, dummyItem2 ]);
+
+        var profiles = new List<ProfileInfo>()
+        {
+            new() { Id = 1 },
+            new() { Id = 2 },
+        };
+
+        ProfileHandler callback = (profileInfos) => { };
+
+        // Act
+        _worker.InsertProfileMenuItems(menu.Items, profiles, callback);
+
+        // Assert
+        Assert.IsTrue(menu.Items.Count == 5);
+        Assert.IsTrue(menu.Items[2].Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false);
+        Assert.IsTrue(menu.Items[3].Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false);
 
         // Cleanup
         DisposeMenu(menu);
