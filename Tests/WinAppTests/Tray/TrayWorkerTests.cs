@@ -175,10 +175,13 @@ public class TrayWorkerTests
     {
         // Arrange
         var menu = new ContextMenuStrip();
-        var dummyItem1 = new ToolStripMenuItem() { Name = "Dummy Item 1" };
-        var insertPoint = new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint };
-        var dummyItem2 = new ToolStripMenuItem() { Name = "Dummy Item 2" };
-        menu.Items.AddRange([ dummyItem1, insertPoint, dummyItem2 ]);
+        var menuItems = new ToolStripItem[]
+        {
+            new ToolStripMenuItem() { Name = "Dummy Item 1" },
+            new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
+            new ToolStripMenuItem() { Name = "Dummy Item 2" },
+        };
+        menu.Items.AddRange(menuItems);
 
         var profiles = new List<ProfileInfo>()
         {
