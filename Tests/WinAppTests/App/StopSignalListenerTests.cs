@@ -12,10 +12,10 @@ public class StopSignalListenerTests
         // Arrange
         var listener = new StopSignalListener();
         var callbackEvent = new ManualResetEventSlim(false);
-        void Callback() => callbackEvent.Set();
+        Action callback = callbackEvent.Set;
 
         // Act
-        listener.Start(Callback);
+        listener.Start(callback);
 
         using var clientTask = Task.Run(async () =>
         {
@@ -36,10 +36,10 @@ public class StopSignalListenerTests
         // Arrange
         var listener = new StopSignalListener();
         var callbackEvent = new ManualResetEventSlim(false);
-        void Callback() => callbackEvent.Set();
+        Action callback = callbackEvent.Set;
 
         // Act
-        listener.Start(Callback);
+        listener.Start(callback);
         Thread.Sleep(100);
         listener.Stop();
         bool isCallbackInvoked = callbackEvent.Wait(500);
