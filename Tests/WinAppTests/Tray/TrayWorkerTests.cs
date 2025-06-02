@@ -1,4 +1,6 @@
 ﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+#pragma warning disable IDE0039 // Use local function
+#pragma warning disable IDE0350 // Use implicitly typed lambda
 
 using Core.Profiles;
 using System.Windows.Forms;
