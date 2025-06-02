@@ -6,6 +6,8 @@ namespace WinAppTests.App;
 [TestClass]
 public class StopSignalListenerTests
 {
+    // NOTE: This test will fail if another test method that
+    // instantiates a ContextMenuStrip is being run simultaneously.
     [TestMethod]
     public void Start_ConnectsAndInvokesCallback()
     {
