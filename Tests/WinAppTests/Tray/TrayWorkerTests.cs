@@ -205,6 +205,40 @@ public class TrayWorkerTests
         DisposeMenu(menu);
     }
 
+    [TestMethod]
+    public void PlaceholderProfileMenuItemExists_ReturnsFalseIfNotExists()
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+
+        // Act
+        var isItemFound = _worker.PlaceholderProfileMenuItemExists(menu.Items);
+
+        // Assert
+        Assert.IsFalse(isItemFound);
+
+        // Cleanup
+        menu.Dispose();
+    }
+
+    [TestMethod]
+    public void PlaceholderProfileMenuItemExists_ReturnsTrueIfExists()
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        var placeholderProfile = TrayMenuItems.PlaceholderProfile;
+        menu.Items.Add(placeholderProfile);
+
+        // Act
+        var isItemFound = _worker.PlaceholderProfileMenuItemExists(menu.Items);
+
+        // Assert
+        Assert.IsTrue(isItemFound);
+
+        // Cleanup
+        menu.Dispose();
+    }
+
     #endregion
 
     private void DisposeMenu(ContextMenuStrip menu)
