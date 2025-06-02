@@ -206,6 +206,35 @@ public class TrayWorkerTests
     }
 
     [TestMethod]
+    public void InsertPlaceholderProfileMenuItem_InsertsItemAtInsertPoint()
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        var menuItems = new ToolStripItem[]
+        {
+            new ToolStripMenuItem() { Name = "Dummy Item 1" },
+            new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
+            new ToolStripMenuItem() { Name = "Dummy Item 2" },
+        };
+        menu.Items.AddRange(menuItems);
+
+        // Act
+        _worker.InsertPlaceholderProfileMenuItem(menu.Items);
+
+        // Assert
+        int placeholderProfileCount = menu.Items
+            .Find(TrayConstants.ItemNames.PlaceholderProfile, true)
+            .OfType<ToolStripMenuItem>()
+            .Count();
+        Assert.IsTrue(placeholderProfileCount == 1);
+        Assert.IsTrue(menu.Items.Count == 4);
+        Assert.AreEqual(TrayConstants.ItemNames.PlaceholderProfile, menu.Items[2].Name);
+
+        // Cleanup
+        menu.Dispose();
+    }
+
+    [TestMethod]
     public void PlaceholderProfileMenuItemExists_ReturnsFalseIfNotExists()
     {
         // Arrange
