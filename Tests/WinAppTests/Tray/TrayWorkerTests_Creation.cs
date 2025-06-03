@@ -18,7 +18,7 @@ public class TrayWorkerTests_Creation
     }
 
     [TestMethod]
-    public void CreateNotifyIcon_ReturnsValid()
+    public void CreateNotifyIcon_ReturnsValidIcon()
     {
         // Arrange
 
@@ -64,7 +64,7 @@ public class TrayWorkerTests_Creation
     }
 
     [TestMethod]
-    public void CreateContextMenu_ValidCallbacks_ReturnsContextMenuStrip()
+    public void CreateContextMenu_ValidCallbacks_ReturnsValidMenu()
     {
         // Arrange
         Action<bool>? callback_ToggleConsole = (bool _) => { };
