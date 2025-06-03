@@ -31,8 +31,8 @@ public class TrayWorkerTests
 
         // Assert
         Assert.IsNotNull(trayIcon);
-        Assert.IsFalse(string.IsNullOrEmpty(trayIcon.Text));
         Assert.IsNotNull(trayIcon.Icon);
+        Assert.IsFalse(string.IsNullOrEmpty(trayIcon.Text));
         Assert.IsTrue(trayIcon.Visible);
 
         // Cleanup
