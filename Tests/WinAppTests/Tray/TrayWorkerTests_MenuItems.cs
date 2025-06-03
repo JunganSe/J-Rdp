@@ -8,7 +8,7 @@ using WinApp.Tray;
 namespace WinAppTests.Tray;
 
 [TestClass]
-public class TrayWorkerTests
+public class TrayWorkerTests_MenuItems
 {
     private TrayWorker _worker;
 
@@ -17,8 +17,6 @@ public class TrayWorkerTests
     {
         _worker = new TrayWorker();
     }
-
-    #region Menu items
 
     [TestMethod]
     public void RemoveAllProfileMenuItems_RemovesOnlyProfileItems()
@@ -42,7 +40,7 @@ public class TrayWorkerTests
         Assert.IsTrue(menu.Items.Contains(otherItem));
 
         // Cleanup
-        DisposeMenu(menu);
+        menu.Dispose();
     }
 
     [TestMethod]
@@ -75,7 +73,7 @@ public class TrayWorkerTests
         Assert.IsTrue(menu.Items[3].Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false);
 
         // Cleanup
-        DisposeMenu(menu);
+        menu.Dispose();
     }
 
     [TestMethod]
@@ -156,14 +154,6 @@ public class TrayWorkerTests
         Assert.IsFalse(menu.Items.Contains(placeholderProfile));
 
         // Cleanup
-        menu.Dispose();
-    }
-
-    #endregion
-
-    private void DisposeMenu(ContextMenuStrip menu)
-    {
-        menu.Items?.OfType<ToolStripItem>().ToList().ForEach(item => item.Dispose());
         menu.Dispose();
     }
 }
