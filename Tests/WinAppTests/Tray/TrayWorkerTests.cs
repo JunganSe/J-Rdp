@@ -268,6 +268,24 @@ public class TrayWorkerTests
         menu.Dispose();
     }
 
+    [TestMethod]
+    public void ClearPlaceholderProfileMenuItems_RemovesItems()
+    {
+        // Arrange
+        var menu = new ContextMenuStrip();
+        var placeholderProfile = TrayMenuItems.PlaceholderProfile;
+        menu.Items.Add(placeholderProfile);
+
+        // Act
+        _worker.ClearPlaceholderProfileMenuItems(menu.Items);
+
+        // Assert
+        Assert.IsFalse(menu.Items.Contains(placeholderProfile));
+
+        // Cleanup
+        menu.Dispose();
+    }
+
     #endregion
 
     private void DisposeMenu(ContextMenuStrip menu)
