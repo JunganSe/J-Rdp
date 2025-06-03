@@ -14,7 +14,7 @@ public class TrayWorkerTests
     private TrayWorker _worker;
 
     [TestInitialize]
-    public void Setup()
+    public void InitializeTest()
     {
         _worker = new TrayWorker();
     }
