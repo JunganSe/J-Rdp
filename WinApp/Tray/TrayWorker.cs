@@ -202,11 +202,7 @@ internal class TrayWorker
     {
         try
         {
-            notifyIcon?.ContextMenuStrip?.Items?
-                .OfType<ToolStripItem>()
-                .ToList()
-                .ForEach(item => item.Dispose());
-            notifyIcon?.ContextMenuStrip?.Dispose();
+            notifyIcon?.ContextMenuStrip?.Dispose(); // ContextMenuStrip.Items are disposed automatically when ContextMenuStrip is disposed.
             notifyIcon?.Dispose();
         }
         catch (Exception ex)
