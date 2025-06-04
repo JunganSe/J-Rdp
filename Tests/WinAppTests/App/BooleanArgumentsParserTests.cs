@@ -3,7 +3,7 @@
 namespace WinAppTests.App;
 
 [TestClass]
-public sealed class ArgumentsTests
+public sealed class BooleanArgumentsParserTests
 {
     [TestMethod]
     [DataRow(ArgumentsExpectation.AllTrue, "-ShowConsole -LogToFile -NoTray")]
@@ -24,7 +24,7 @@ public sealed class ArgumentsTests
         var splitArgs = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         // Act
-        var parsedArguments = Arguments.Parse(splitArgs);
+        var parsedArguments = BooleanArgumentsParser.Parse<Arguments>(splitArgs);
 
         // Assert
         bool isAsExpected = expectation switch
