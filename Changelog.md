@@ -4,7 +4,7 @@
 2025-06-05
 
 Changes and improvements:
-- The log now shows which settings were changed or added.
+- The log now shows which rdp settings were changed or added.
 - Improved enabling/disabling of file logging to better accommodate custom log rules.
 - Improved and optimized integration with the Windows API when handling the log console.
 - Various minor improvements and optimizations.
