@@ -1,32 +1,38 @@
 ﻿using Auxiliary;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WinApp.LogConsole;
 
-internal class ConsoleWorker
+/// <summary> Windows exclusive worker for opening and closing a console log window. </summary>
+internal partial class ConsoleWorker
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private Action? _callback_ConsoleClosed;
 
     #region Windows integration
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool AllocConsole();
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool AllocConsole();
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool FreeConsole();
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool FreeConsole();
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern nint GetConsoleWindow();
+    [LibraryImport("kernel32.dll")]
+    private static partial nint GetConsoleWindow();
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern nint GetSystemMenu(nint hWnd, bool bRevert);
+    [LibraryImport("user32.dll")]
+    private static partial nint GetSystemMenu(nint hWnd, [MarshalAs(UnmanagedType.Bool)] bool bRevert);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool DeleteMenu(nint hMenu, uint uPosition, uint uFlags);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool SetConsoleCtrlHandler(CtrlTypesHandler handler, bool add);
+    [LibraryImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool SetConsoleCtrlHandler(CtrlTypesHandler handler, [MarshalAs(UnmanagedType.Bool)] bool add);
 
     private delegate bool CtrlTypesHandler(CtrlTypes ctrlType);
 
@@ -35,8 +41,6 @@ internal class ConsoleWorker
         CTRL_C_EVENT = 0,       // Event raised when the user presses Ctrl+C.
         CTRL_BREAK_EVENT = 1,   // Event raised when the user presses Ctrl+Break.
         CTRL_CLOSE_EVENT = 2,   // Event raised when the user closes the console window.
-        CTRL_LOGOFF_EVENT = 5,  // Event raised when the user logs off (only received by services).
-        CTRL_SHUTDOWN_EVENT = 6 // Event raised when the system is shutting down (only received by services).
     }
 
     #endregion
@@ -53,7 +57,11 @@ internal class ConsoleWorker
         {
             bool isSuccess = AllocConsole();
             if (!isSuccess)
+            {
                 _logger.Error(errorMessage);
+                return;
+            }
+            Console.OutputEncoding = Encoding.UTF8;
         }
         catch (Exception ex)
         {
@@ -68,7 +76,7 @@ internal class ConsoleWorker
             var assembly = typeof(WinApp.Program).Assembly;
             string name = AssemblyHelper.GetAssemblyName(assembly);
             string version = AssemblyHelper.GetAssemblyVersion(assembly);
-            Console.Title = $"{name} {version}";
+            Console.Title = $"{name} {version} log";
         }
         catch (Exception ex)
         {
@@ -82,8 +90,10 @@ internal class ConsoleWorker
         {
             nint consoleWindow = GetConsoleWindow();
             nint systemMenu = GetSystemMenu(consoleWindow, false);
+            uint buttonId = 0xF060; // SC_CLOSE (Close button ID)
+            uint deletionFlags = 0x00000000; // "No special flags" (default behavior)
             if (systemMenu != nint.Zero)
-                DeleteMenu(systemMenu, 0xF060, 0x00000000);
+                DeleteMenu(systemMenu, buttonId, deletionFlags);
         }
         catch (Exception ex)
         {

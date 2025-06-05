@@ -2,7 +2,9 @@
 using NLog;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 namespace Core.Configs;
 
@@ -17,6 +19,7 @@ internal class ConfigWorker
     {
         _jsonOptions = new JsonSerializerOptions()
         {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement), // Latin1Supplement includes characters like 'é', 'ö', etc.
             PropertyNameCaseInsensitive = true,
             WriteIndented = true,
         };

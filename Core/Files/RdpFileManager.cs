@@ -51,8 +51,9 @@ internal class RdpFileManager
         try
         {
             _rdpFileWorker.Edit(file, settings);
-            string s = settings.Count > 1 ? "s" : "";
-            _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}'.");
+            string s = (settings.Count > 1) ? "s" : "";
+            _logger.Info($"Applied {settings.Count} setting{s} to file '{file.Name}' in '{file.DirectoryName}':"
+                + "\n  " + string.Join(",\n  ", settings.Select(setting => $"'{setting}'")));
         }
         catch (Exception ex)
         {
@@ -78,8 +79,8 @@ internal class RdpFileManager
         try
         {
             _rdpFileWorker.Delete(file, recycle);
-            string verb = recycle ? "Recycled" : "Permanently deleted";
-            _logger.Info($"{verb} file '{file.Name}' in '{file.DirectoryName}'.");
+            string recycledOrDeleted = recycle ? "Recycled" : "Permanently deleted";
+            _logger.Info($"{recycledOrDeleted} file '{file.Name}' in '{file.DirectoryName}'.");
         }
         catch (Exception ex)
         {

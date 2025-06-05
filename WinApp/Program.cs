@@ -15,7 +15,7 @@ internal static class Program
     static void Main(string[] args)
     {
         RegisterCloseEvents();
-        var arguments = Arguments.Parse(args);
+        var arguments = BooleanArgumentsParser.Parse<Arguments>(args);
         LogManager.Initialize();
         LogManager.SetFileLogging(arguments.LogToFile);
 

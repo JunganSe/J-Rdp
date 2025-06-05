@@ -23,9 +23,9 @@ internal class RdpFileWorker
         {
             int lastColonIndex = setting.LastIndexOf(':');
             if (lastColonIndex == -1)
-                throw new ArgumentException("Invalid setting, no semicolon present.");
-            var key = setting[..lastColonIndex];
-            fileLines.RemoveAll(l => l.Contains(key));
+                throw new ArgumentException($"Invalid setting: '${setting}'. No semicolon present.");
+            string key = setting[..lastColonIndex];
+            fileLines.RemoveAll(line => line.Contains(key));
         }
         fileLines.Add("");
         fileLines.AddRange(settings);
@@ -42,8 +42,10 @@ internal class RdpFileWorker
 
     public void Delete(FileInfo file, bool recycle = true)
     {
+        var recycleOption = recycle
+            ? RecycleOption.SendToRecycleBin
+            : RecycleOption.DeletePermanently;
         file.Refresh();
-        var recycleOption = recycle ? RecycleOption.SendToRecycleBin : RecycleOption.DeletePermanently;
         FileSystem.DeleteFile(file.FullName, UIOption.OnlyErrorDialogs, recycleOption);
     }
 }
