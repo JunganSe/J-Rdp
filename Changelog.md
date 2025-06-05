@@ -1,5 +1,20 @@
 # J-Rdp changelog
 
+## 0.3.1
+2025-06-05
+
+Changes and improvements:
+- The log now shows which settings were changed or added.
+- Improved enabling/disabling of file logging to better accommodate custom log rules.
+- Improved and optimized integration with the Windows API when handling the log console.
+- Various minor improvements and optimizations.
+
+Bug fixes:
+- Fixed that non-english characters were not properly written to the config file and log console.
+- Added missing log entry when launching without tray icon.
+
+
+
 ## 0.3.0
 2025-05-07
 
@@ -19,6 +34,8 @@ Changes and improvements:
 Bug fixes:
 - Fixed that changing the config file could trigger the detection event twice.
 
+
+
 ## 0.2.1
 2025-01-22
 
@@ -31,6 +48,8 @@ Changes and improvements:
 Bug fixes:
 - Potential fix for the issue where the program minimized instead of going invisible on Windows 11.
 - Fixed missing program name in task manager description.
+
+
 
 ## 0.2.0
 2024-05-21
@@ -52,6 +71,8 @@ Changes and improvements:
 
 Bug fixes:
 - Fixed a bug where changes to the config file was not detected after some time.
+
+
 
 ## 0.1.0
 2024-03-27
