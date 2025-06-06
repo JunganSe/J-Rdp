@@ -45,6 +45,9 @@ public class Controller
     public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
         _configManager.SetCallback_ConfigUpdated(callback);
 
+    public void OpenLogFolder() =>
+        throw new NotImplementedException();
+
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();
 

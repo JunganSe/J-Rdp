@@ -16,6 +16,9 @@ internal class TrayManager
     public void SetCallback_ToggleConsole(Action<bool> callback) =>
         _callback_ToggleConsole = callback;
 
+    public void SetCallback_OpenLogFolder(Action callback) =>
+        _callback_OpenLogFolder = callback;
+
     public void SetCallback_OpenConfigFile(Action callback) =>
         _callback_OpenConfigFile = callback;
 
