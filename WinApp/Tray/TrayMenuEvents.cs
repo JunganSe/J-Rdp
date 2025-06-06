@@ -23,6 +23,8 @@ internal static class TrayMenuEvents
             LogManager.SetFileLogging(menuItem.Checked);
     }
 
+    // TODO: Add OnClick_OpenLogFolder
+
     public static EventHandler OnClick_OpenConfigFile(Action callback)
     {
         return (object? sender, EventArgs e) =>
