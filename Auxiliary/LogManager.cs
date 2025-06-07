@@ -3,6 +3,7 @@ using NLog.Config;
 using NLog.Filters;
 using NLog.Targets;
 using System.Diagnostics;
+using System.IO;
 
 namespace Auxiliary;
 
@@ -94,7 +95,8 @@ public static class LogManager
             return;
         }
 
-        // TODO: Open the folder containing the log file.
+        foreach (var fileTarget in fileTargets)
+            OpenLogFolder(fileTarget);
     }
 
     private static List<FileTarget> GetFileTargets()
@@ -104,5 +106,29 @@ public static class LogManager
             .AllTargets
             .OfType<FileTarget>()
             .ToList();
+    }
+
+    private static void OpenLogFolder(FileTarget fileTarget)
+    {
+        try
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString()) ?? "";
+            string fullPath = Path.Combine(baseDirectory, logDirectory);
+
+            if (!Directory.Exists(fullPath))
+            {
+                _logger.Error($"Failed to open log folder. Directory does not exist: {logDirectory}");
+                return;
+            }
+
+            var process = new ProcessStartInfo(logDirectory) { UseShellExecute = true };
+            Process.Start(process);
+            _logger.Info($"Opened log folder: {logDirectory}");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to open log folder.");
+        }
     }
 }
