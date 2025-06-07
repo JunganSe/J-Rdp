@@ -1,6 +1,8 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Filters;
+using NLog.Targets;
+using System.Diagnostics;
 
 namespace Auxiliary;
 
@@ -85,19 +87,22 @@ public static class LogManager
 
     public static void OpenLogFolder()
     {
-        var fileRule = GetLoggingRule(_fileRuleName);
-        if (fileRule is null)
+        var fileTargets = GetFileTargets();
+        if (fileTargets.Count == 0)
         {
-            _logger.Error($"Failed to open log folder. No file log rule found in nlog config.");
-            return;
-        }
-
-        if (!IsLogFolderFound())
-        {
-            _logger.Error($"Failed to open log folder. Folder not found.");
+            _logger.Error($"Failed to open log folder. No file logging target found in nlog config.");
             return;
         }
 
         // TODO: Open the folder containing the log file.
-    }s
+    }
+
+    private static List<FileTarget> GetFileTargets()
+    {
+        return NLog.LogManager
+            .Configuration
+            .AllTargets
+            .OfType<FileTarget>()
+            .ToList();
+    }
 }
