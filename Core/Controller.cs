@@ -46,7 +46,7 @@ public class Controller
         _configManager.SetCallback_ConfigUpdated(callback);
 
     public void OpenLogFolder() =>
-        throw new NotImplementedException();
+        Auxiliary.LogManager.OpenLogFolder();
 
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();

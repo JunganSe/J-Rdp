@@ -80,4 +80,23 @@ public static class LogManager
         var fileTarget = config.FindTargetByName(ruleName);
         return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
     }
+
+
+
+    public static void OpenLogFolder()
+    {
+        if (!IsFileLogRulePresent())
+        {
+            _logger.Error($"Failed to open log folder. No file log rule found in nlog config.");
+            return;
+        }
+
+        if (!IsLogFolderFound())
+        {
+            _logger.Error($"Failed to open log folder. Folder not found.");
+            return;
+        }
+
+        // TODO: Open the folder containing the log file.
+    }
 }
