@@ -85,7 +85,8 @@ public static class LogManager
 
     public static void OpenLogFolder()
     {
-        if (!IsFileLogRulePresent())
+        var fileRule = GetLoggingRule(_fileRuleName);
+        if (fileRule is null)
         {
             _logger.Error($"Failed to open log folder. No file log rule found in nlog config.");
             return;
@@ -98,5 +99,5 @@ public static class LogManager
         }
 
         // TODO: Open the folder containing the log file.
-    }
+    }s
 }
