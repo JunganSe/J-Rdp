@@ -64,7 +64,7 @@ public static class LogManager
         var fileRules = GetFileLoggingRules();
         if (fileRules.Count == 0)
         {
-            _logger.Warn("Cannot set file logging state. No file logging rules found.");
+            _logger.Error("Cannot set file logging state. No file logging rules found.");
             return;
         }
 
