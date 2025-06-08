@@ -134,13 +134,13 @@ public static class LogManager
 
             if (!Directory.Exists(fullPath))
             {
-                _logger.Error($"Failed to open logs folder. Directory does not exist: {logDirectory}");
+                _logger.Error($"Failed to open logs folder. Directory does not exist: {fullPath}");
                 return;
             }
 
-            var process = new ProcessStartInfo(logDirectory) { UseShellExecute = true };
+            var process = new ProcessStartInfo(fullPath) { UseShellExecute = true };
             Process.Start(process);
-            _logger.Info($"Opened logs folder: {logDirectory}");
+            _logger.Info($"Opened logs folder: {fullPath}");
         }
         catch (Exception ex)
         {
