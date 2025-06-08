@@ -43,11 +43,17 @@ internal class TrayWorker
 
     public ContextMenuStrip? CreateContextMenu(
         Action<bool>? callback_ToggleConsole,
+        Action? callback_OpenLogsFolder,
         Action? callback_OpenConfigFile)
     {
         if (callback_ToggleConsole is null)
         {
             _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
+            return null;
+        }
+        if (callback_OpenLogsFolder is null)
+        {
+            _logger.Error("Can not create context menu. Callback 'OpenLogsFolder' is missing.");
             return null;
         }
         if (callback_OpenConfigFile is null)
@@ -57,17 +63,19 @@ internal class TrayWorker
         }
 
         var contextMenu = new ContextMenuStrip() { AutoClose = false };
-        var menuItems = CreateContextMenuItems(callback_ToggleConsole, callback_OpenConfigFile);
+        var menuItems = CreateContextMenuItems(callback_ToggleConsole, callback_OpenLogsFolder, callback_OpenConfigFile);
         contextMenu.Items.AddRange(menuItems);
         return contextMenu;
     }
 
     private ToolStripItem[] CreateContextMenuItems(
         Action<bool> callback_ToggleConsole,
+        Action callback_OpenLogsFolder,
         Action callback_OpenConfigFile) =>
     [
         TrayMenuItems.ToggleConsole(callback_ToggleConsole),
         TrayMenuItems.ToggleLogToFile,
+        TrayMenuItems.OpenLogsFolder(callback_OpenLogsFolder),
         TrayMenuItems.OpenConfigFile(callback_OpenConfigFile),
 
         new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },

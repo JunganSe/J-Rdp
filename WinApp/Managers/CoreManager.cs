@@ -30,6 +30,14 @@ internal class CoreManager
     }
 
     /// <summary>
+    /// Tell the core controller to open the folder containing the log files, if such a rule exists.
+    /// </summary>
+    public void OpenLogsFolder()
+    {
+        _controller?.OpenLogsFolder();
+    }
+
+    /// <summary>
     /// Tell the core controller to open the config file in the default editor.
     /// </summary>
     public void OpenConfigFile()

@@ -52,6 +52,7 @@ internal class Controller
     {
         _logger.Trace("Initializing tray...");
         _trayManager.SetCallback_ToggleConsole(_consoleManager.SetVisibility);
+        _trayManager.SetCallback_OpenLogsFolder(_coreManager.OpenLogsFolder);
         _trayManager.SetCallback_OpenConfigFile(_coreManager.OpenConfigFile);
         _trayManager.SetCallback_ProfilesActiveStateChanged(_coreManager.UpdateProfilesEnabledState);
         _trayManager.InitializeNotifyIconWithContextMenu();

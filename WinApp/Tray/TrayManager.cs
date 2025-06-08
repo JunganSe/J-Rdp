@@ -9,11 +9,15 @@ internal class TrayManager
     private readonly TrayWorker _trayWorker = new();
     private NotifyIcon? _notifyIcon;
     private Action<bool>? _callback_ToggleConsole;
+    private Action? _callback_OpenLogsFolder;
     private Action? _callback_OpenConfigFile;
     private ProfileHandler? _callback_ProfilesActiveStateChanged;
 
     public void SetCallback_ToggleConsole(Action<bool> callback) =>
         _callback_ToggleConsole = callback;
+
+    public void SetCallback_OpenLogsFolder(Action callback) =>
+        _callback_OpenLogsFolder = callback;
 
     public void SetCallback_OpenConfigFile(Action callback) =>
         _callback_OpenConfigFile = callback;
@@ -31,6 +35,7 @@ internal class TrayManager
 
         _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(
             _callback_ToggleConsole,
+            _callback_OpenLogsFolder,
             _callback_OpenConfigFile);
     }
 

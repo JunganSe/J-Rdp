@@ -1,6 +1,8 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Filters;
+using NLog.Targets;
+using System.Diagnostics;
 
 namespace Auxiliary;
 
@@ -43,7 +45,7 @@ public static class LogManager
         if (enable)
         {
             SetFileRuleEnabled(true);
-            _logger.Info("Logging to file enabled.");
+            _logger.Info("Enabled logging to file.");
         }
         else
         {
@@ -79,5 +81,53 @@ public static class LogManager
         var config = NLog.LogManager.Configuration;
         var fileTarget = config.FindTargetByName(ruleName);
         return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
+    }
+
+
+
+    public static void OpenLogsFolder()
+    {
+        var fileTargets = GetFileTargets();
+        if (fileTargets.Count == 0)
+        {
+            _logger.Error($"Failed to open logs folder. No file logging target found in nlog config.");
+            return;
+        }
+
+        foreach (var fileTarget in fileTargets)
+            OpenLogsFolder(fileTarget);
+    }
+
+    private static List<FileTarget> GetFileTargets()
+    {
+        return NLog.LogManager
+            .Configuration
+            .AllTargets
+            .OfType<FileTarget>()
+            .ToList();
+    }
+
+    private static void OpenLogsFolder(FileTarget fileTarget)
+    {
+        try
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString()) ?? "";
+            string fullPath = Path.Combine(baseDirectory, logDirectory);
+
+            if (!Directory.Exists(fullPath))
+            {
+                _logger.Error($"Failed to open logs folder. Directory does not exist: {logDirectory}");
+                return;
+            }
+
+            var process = new ProcessStartInfo(logDirectory) { UseShellExecute = true };
+            Process.Start(process);
+            _logger.Info($"Opened logs folder: {logDirectory}");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to open logs folder.");
+        }
     }
 }
