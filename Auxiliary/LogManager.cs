@@ -97,6 +97,15 @@ public static class LogManager
         rule.Filters.Add(filter);
     }
 
+    private static List<FileTarget> GetFileTargets()
+    {
+        return NLog.LogManager
+            .Configuration
+            .AllTargets
+            .OfType<FileTarget>()
+            .ToList();
+    }
+
     #endregion
 
 
@@ -113,15 +122,6 @@ public static class LogManager
 
         foreach (var fileTarget in fileTargets)
             OpenLogsFolder(fileTarget);
-    }
-
-    private static List<FileTarget> GetFileTargets()
-    {
-        return NLog.LogManager
-            .Configuration
-            .AllTargets
-            .OfType<FileTarget>()
-            .ToList();
     }
 
     private static void OpenLogsFolder(FileTarget fileTarget)
