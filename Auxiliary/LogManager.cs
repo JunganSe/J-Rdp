@@ -83,6 +83,15 @@ public static class LogManager
         return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
     }
 
+    private static List<LoggingRule> GetFileLoggingRules()
+    {
+        var loggingRules = NLog.LogManager.Configuration.LoggingRules;
+        var fileTargets = GetFileTargets();
+        return loggingRules
+            .Where(rule => rule.Targets.Any(ruleTarget => fileTargets.Contains(ruleTarget)))
+            .ToList();
+    }
+
 
 
     public static void OpenLogsFolder()
