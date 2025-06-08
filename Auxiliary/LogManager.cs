@@ -9,7 +9,6 @@ namespace Auxiliary;
 public static class LogManager
 {
     private const string _configFileName = "nlog.config";
-    private const string _fileRuleName = "file";
 
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -24,7 +23,7 @@ public static class LogManager
         else
             LoadEmbeddedConfig();
 
-        SetFileRuleEnabled(false);
+        SetFileRulesEnabled(false);
     }
 
     private static void LoadExternalConfig()
@@ -44,43 +43,29 @@ public static class LogManager
     {
         if (enable)
         {
-            SetFileRuleEnabled(true);
+            SetFileRulesEnabled(true);
             _logger.Info("Enabled logging to file.");
         }
         else
         {
             _logger.Info("Disabling logging to file.");
-            SetFileRuleEnabled(false);
+            SetFileRulesEnabled(false);
         }
     }
 
-    // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
-    // Using a filter that read a variable was originally intended, but the variable always came in as an empty string...
-    private static void SetFileRuleEnabled(bool enable)
+    private static void SetFileRulesEnabled(bool enable)
     {
-        var fileRule = GetLoggingRule(_fileRuleName);
-        if (fileRule is null)
+        var fileRules = GetFileLoggingRules();
+        if (fileRules.Count == 0)
         {
-            _logger.Warn($"Can not add file logging filter. Logging rule '{_fileRuleName}' not found.");
+            _logger.Warn("Cannot set file logging state. No file logging rules found.");
             return;
         }
 
-        fileRule.FilterDefaultAction = FilterResult.Ignore;
-        var filter = new ConditionBasedFilter()
-        {
-            Condition = (enable) ? "true" : "false",
-            Action = FilterResult.Log
-        };
-        fileRule.Filters.Clear();
-        fileRule.Filters.Add(filter);
-        NLog.LogManager.ReconfigExistingLoggers();
-    }
+        foreach (var rule in fileRules)
+            SetRuleEnabled(rule, enable);
 
-    private static LoggingRule? GetLoggingRule(string ruleName)
-    {
-        var config = NLog.LogManager.Configuration;
-        var fileTarget = config.FindTargetByName(ruleName);
-        return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
+        NLog.LogManager.ReconfigExistingLoggers();
     }
 
     private static List<LoggingRule> GetFileLoggingRules()
@@ -90,6 +75,20 @@ public static class LogManager
         return loggingRules
             .Where(rule => rule.Targets.Any(ruleTarget => fileTargets.Contains(ruleTarget)))
             .ToList();
+    }
+
+    // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
+    // Using a filter that read a variable was originally intended, but the variable always came in as an empty string...
+    private static void SetRuleEnabled(LoggingRule rule, bool enable)
+    {
+        rule.FilterDefaultAction = FilterResult.Ignore;
+        var filter = new ConditionBasedFilter()
+        {
+            Condition = (enable) ? "true" : "false",
+            Action = FilterResult.Log
+        };
+        rule.Filters.Clear();
+        rule.Filters.Add(filter);
     }
 
 
