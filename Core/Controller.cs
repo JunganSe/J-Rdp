@@ -45,8 +45,8 @@ public class Controller
     public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
         _configManager.SetCallback_ConfigUpdated(callback);
 
-    public void OpenLogFolder() =>
-        Auxiliary.LogManager.OpenLogFolder();
+    public void OpenLogsFolder() =>
+        Auxiliary.LogManager.OpenLogsFolder();
 
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();

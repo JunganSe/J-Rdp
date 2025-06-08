@@ -25,7 +25,7 @@ internal static class TrayMenuEvents
         LogManager.SetFileLogging(menuItem.Checked);
     }
 
-    public static EventHandler OnClick_OpenLogFolder(Action callback)
+    public static EventHandler OnClick_OpenLogsFolder(Action callback)
     {
         return (object? sender, EventArgs e) =>
         {

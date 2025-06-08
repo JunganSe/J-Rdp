@@ -30,11 +30,11 @@ internal class CoreManager
     }
 
     /// <summary>
-    /// Tell the core controller to open the folder containing the log file, if such a rule exists.
+    /// Tell the core controller to open the folder containing the log files, if such a rule exists.
     /// </summary>
-    public void OpenLogFolder()
+    public void OpenLogsFolder()
     {
-        _controller?.OpenLogFolder();
+        _controller?.OpenLogsFolder();
     }
 
     /// <summary>

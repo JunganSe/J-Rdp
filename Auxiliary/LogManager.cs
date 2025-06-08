@@ -86,7 +86,7 @@ public static class LogManager
 
 
 
-    public static void OpenLogFolder()
+    public static void OpenLogsFolder()
     {
         var fileTargets = GetFileTargets();
         if (fileTargets.Count == 0)
@@ -96,7 +96,7 @@ public static class LogManager
         }
 
         foreach (var fileTarget in fileTargets)
-            OpenLogFolder(fileTarget);
+            OpenLogsFolder(fileTarget);
     }
 
     private static List<FileTarget> GetFileTargets()
@@ -108,7 +108,7 @@ public static class LogManager
             .ToList();
     }
 
-    private static void OpenLogFolder(FileTarget fileTarget)
+    private static void OpenLogsFolder(FileTarget fileTarget)
     {
         try
         {

@@ -23,14 +23,14 @@ internal static class TrayMenuItems
         CheckOnClick = true,
     };
 
-    public static ToolStripMenuItem OpenLogFolder(Action callback)
+    public static ToolStripMenuItem OpenLogsFolder(Action callback)
     {
         var menuItem = new ToolStripMenuItem()
         {
-            Name = TrayConstants.ItemNames.OpenLogFolder,
-            Text = TrayConstants.ItemTexts.OpenLogFolder,
+            Name = TrayConstants.ItemNames.OpenLogsFolder,
+            Text = TrayConstants.ItemTexts.OpenLogsFolder,
         };
-        menuItem.Click += TrayMenuEvents.OnClick_OpenLogFolder(callback);
+        menuItem.Click += TrayMenuEvents.OnClick_OpenLogsFolder(callback);
         return menuItem;
     }
 
