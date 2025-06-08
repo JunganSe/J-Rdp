@@ -3,7 +3,6 @@ using NLog.Config;
 using NLog.Filters;
 using NLog.Targets;
 using System.Diagnostics;
-using System.IO;
 
 namespace Auxiliary;
 
