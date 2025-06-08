@@ -46,7 +46,7 @@ public static class LogManager
         if (enable)
         {
             SetFileRuleEnabled(true);
-            _logger.Info("Logging to file enabled.");
+            _logger.Info("Enabled logging to file.");
         }
         else
         {
@@ -91,7 +91,7 @@ public static class LogManager
         var fileTargets = GetFileTargets();
         if (fileTargets.Count == 0)
         {
-            _logger.Error($"Failed to open log folder. No file logging target found in nlog config.");
+            _logger.Error($"Failed to open logs folder. No file logging target found in nlog config.");
             return;
         }
 
@@ -118,17 +118,17 @@ public static class LogManager
 
             if (!Directory.Exists(fullPath))
             {
-                _logger.Error($"Failed to open log folder. Directory does not exist: {logDirectory}");
+                _logger.Error($"Failed to open logs folder. Directory does not exist: {logDirectory}");
                 return;
             }
 
             var process = new ProcessStartInfo(logDirectory) { UseShellExecute = true };
             Process.Start(process);
-            _logger.Info($"Opened log folder: {logDirectory}");
+            _logger.Info($"Opened logs folder: {logDirectory}");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Failed to open log folder.");
+            _logger.Error(ex, "Failed to open logs folder.");
         }
     }
 }
