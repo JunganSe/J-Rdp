@@ -12,6 +12,8 @@ public static class LogManager
 
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
+    #region Initialization
+
     public static void Initialize()
     {
         _logger.Trace("Initializing LogManager.");
@@ -38,6 +40,10 @@ public static class LogManager
         NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
         _logger.Trace("Loaded embedded NLog configuration file.");
     }
+
+    #endregion
+
+    #region File logging
 
     public static void SetFileLogging(bool enable)
     {
@@ -91,7 +97,10 @@ public static class LogManager
         rule.Filters.Add(filter);
     }
 
+    #endregion
 
+
+    #region Open logs folder
 
     public static void OpenLogsFolder()
     {
@@ -138,4 +147,6 @@ public static class LogManager
             _logger.Error(ex, "Failed to open logs folder.");
         }
     }
+
+    #endregion
 }
