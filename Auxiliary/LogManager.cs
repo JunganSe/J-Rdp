@@ -47,6 +47,7 @@ public static class LogManager
 
     public static void SetFileLogging(bool enable)
     {
+        // Seemingly unnecessary if/else block because of different logging and execution order.
         if (enable)
         {
             SetFileRulesEnabled(true);
