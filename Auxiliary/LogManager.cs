@@ -78,10 +78,10 @@ public static class LogManager
 
     private static List<LoggingRule> GetFileLoggingRules()
     {
-        var loggingRules = NLog.LogManager.Configuration.LoggingRules;
-        var fileTargets = GetFileTargets();
-        return loggingRules
-            .Where(rule => rule.Targets.Any(ruleTarget => fileTargets.Contains(ruleTarget)))
+        return NLog.LogManager
+            .Configuration
+            .LoggingRules
+            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
             .ToList();
     }
 
@@ -97,15 +97,6 @@ public static class LogManager
         };
         rule.Filters.Clear();
         rule.Filters.Add(filter);
-    }
-
-    private static List<FileTarget> GetFileTargets()
-    {
-        return NLog.LogManager
-            .Configuration
-            .AllTargets
-            .OfType<FileTarget>()
-            .ToList();
     }
 
     #endregion
