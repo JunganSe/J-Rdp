@@ -133,33 +133,35 @@ public static class LogManager
     {
         try
         {
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             foreach (var fileTarget in fileTargets)
-            {
-
-                string? logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString());
-                if (logDirectory is null)
-                {
-                     _logger.Error("Failed to open logs folder. Log directory is null.");
-                    return;
-                }
-
-                string fullPath = Path.Combine(baseDirectory, logDirectory);
-                if (!Directory.Exists(fullPath))
-                {
-                    _logger.Error($"Failed to open logs folder. Directory does not exist: {fullPath}");
-                    return;
-                }
-
-                var process = new ProcessStartInfo(fullPath) { UseShellExecute = true };
-                Process.Start(process);
-                _logger.Info($"Opened logs folder: {fullPath}");
-            }
+                OpenFileTargetFolder(fileTarget);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to open logs folder.");
         }
+    }
+
+    private static void OpenFileTargetFolder(FileTarget fileTarget)
+    {
+        string? logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString());
+        if (logDirectory is null)
+        {
+            _logger.Error("Failed to open logs folder. Logs folder path is missing.");
+            return;
+        }
+
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string fullPath = Path.Combine(baseDirectory, logDirectory);
+        if (!Directory.Exists(fullPath))
+        {
+            _logger.Error($"Failed to open logs folder. Directory does not exist: {fullPath}");
+            return;
+        }
+
+        var process = new ProcessStartInfo(fullPath) { UseShellExecute = true };
+        Process.Start(process);
+        _logger.Info($"Opened logs folder: {fullPath}");
     }
 
     #endregion
