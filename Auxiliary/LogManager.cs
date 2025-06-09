@@ -2,6 +2,7 @@
 using NLog.Config;
 using NLog.Filters;
 using NLog.Targets;
+using System.Data;
 using System.Diagnostics;
 
 namespace Auxiliary;
@@ -77,10 +78,10 @@ public static class LogManager
 
     private static List<LoggingRule> GetFileLoggingRules()
     {
-        var loggingRules = NLog.LogManager.Configuration.LoggingRules;
-        var fileTargets = GetFileTargets();
-        return loggingRules
-            .Where(rule => rule.Targets.Any(ruleTarget => fileTargets.Contains(ruleTarget)))
+        return NLog.LogManager
+            .Configuration
+            .LoggingRules
+            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
             .ToList();
     }
 
@@ -98,15 +99,6 @@ public static class LogManager
         rule.Filters.Add(filter);
     }
 
-    private static List<FileTarget> GetFileTargets()
-    {
-        return NLog.LogManager
-            .Configuration
-            .AllTargets
-            .OfType<FileTarget>()
-            .ToList();
-    }
-
     #endregion
 
 
@@ -114,39 +106,53 @@ public static class LogManager
 
     public static void OpenLogsFolder()
     {
-        var fileTargets = GetFileTargets();
-        if (fileTargets.Count == 0)
+        var fileRules = GetFileLoggingRules();
+        if (fileRules.Count == 0)
         {
-            _logger.Error($"Failed to open logs folder. No file logging target found in nlog config.");
+            _logger.Error("Cannot open logs folder. No file logging rules found.");
             return;
         }
 
-        foreach (var fileTarget in fileTargets)
-            OpenLogsFolder(fileTarget);
+        foreach (var fileRule in fileRules)
+        {
+            var fileTargets = fileRule.Targets.OfType<FileTarget>();
+            OpenFileTargetsFolders(fileTargets);
+        }
     }
 
-    private static void OpenLogsFolder(FileTarget fileTarget)
+    private static void OpenFileTargetsFolders(IEnumerable<FileTarget> fileTargets)
     {
         try
         {
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString()) ?? "";
-            string fullPath = Path.Combine(baseDirectory, logDirectory);
-
-            if (!Directory.Exists(fullPath))
-            {
-                _logger.Error($"Failed to open logs folder. Directory does not exist: {fullPath}");
-                return;
-            }
-
-            var process = new ProcessStartInfo(fullPath) { UseShellExecute = true };
-            Process.Start(process);
-            _logger.Info($"Opened logs folder: {fullPath}");
+            foreach (var fileTarget in fileTargets)
+                OpenFileTargetFolder(fileTarget);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to open logs folder.");
         }
+    }
+
+    private static void OpenFileTargetFolder(FileTarget fileTarget)
+    {
+        string? logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString());
+        if (logDirectory is null)
+        {
+            _logger.Error("Failed to open logs folder. Logs folder path is missing.");
+            return;
+        }
+
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string fullPath = Path.Combine(baseDirectory, logDirectory);
+        if (!Directory.Exists(fullPath))
+        {
+            _logger.Error($"Failed to open logs folder. Directory does not exist: {fullPath}");
+            return;
+        }
+
+        var process = new ProcessStartInfo(fullPath) { UseShellExecute = true };
+        Process.Start(process);
+        _logger.Info($"Opened logs folder: {fullPath}");
     }
 
     #endregion
