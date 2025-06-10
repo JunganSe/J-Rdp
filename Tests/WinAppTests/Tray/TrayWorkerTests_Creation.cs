@@ -40,10 +40,11 @@ public class TrayWorkerTests_Creation
     {
         // Arrange
         Action<bool>? callback_ToggleConsole = null;
+        Action? callback_OpenLogsFolder = () => { };
         Action? callback_OpenConfigFile = () => { };
 
         // Act
-        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenLogsFolder, callback_OpenConfigFile);
 
         // Assert
         Assert.IsNull(result);
@@ -54,10 +55,11 @@ public class TrayWorkerTests_Creation
     {
         // Arrange
         Action<bool>? callback_ToggleConsole = (bool _) => { };
+        Action? callback_OpenLogsFolder = null;
         Action? callback_OpenConfigFile = null;
 
         // Act
-        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenLogsFolder, callback_OpenConfigFile);
 
         // Assert
         Assert.IsNull(result);
@@ -68,10 +70,11 @@ public class TrayWorkerTests_Creation
     {
         // Arrange
         Action<bool>? callback_ToggleConsole = (bool _) => { };
+        Action? callback_OpenLogsFolder = () => { };
         Action? callback_OpenConfigFile = () => { };
 
         // Act
-        var menu = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+        var menu = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenLogsFolder, callback_OpenConfigFile);
 
         // Assert
         Assert.IsNotNull(menu);
