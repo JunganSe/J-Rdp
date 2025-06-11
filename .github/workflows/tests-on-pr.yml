@@ -19,13 +19,6 @@ jobs:
       with:
         dotnet-version: '8.0.x'
         
-    - name: Debug - List directory contents
-      run: |
-        echo "Root directory:"
-        dir
-        echo "Tests directory:"
-        dir ./Tests
-        
     - name: Restore dependencies
       run: dotnet restore
       
@@ -33,8 +26,17 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       
     - name: Run unit tests
-      run: dotnet test --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory TestResults
       
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Unit Test Results
+        path: 'TestResults/*.trx'
+        reporter: dotnet-trx
+        fail-on-error: true
+        
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
