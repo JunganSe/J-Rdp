@@ -5,7 +5,6 @@ on:
     branches: [ dev ]
   push:
     branches: [ dev ]
-  workflow_dispatch:
 
 jobs:
   test:
@@ -20,6 +19,13 @@ jobs:
       with:
         dotnet-version: '8.0.x'
         
+    - name: Debug - List directory contents
+      run: |
+        echo "Root directory:"
+        ls -la
+        echo "Tests directory:"
+        ls -la ./Tests
+        
     - name: Restore dependencies
       run: dotnet restore
       
@@ -27,7 +33,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       
     - name: Run unit tests
-      run: dotnet test ./Tests --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test ./Tests --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
       
     - name: Upload test results
       uses: actions/upload-artifact@v4
