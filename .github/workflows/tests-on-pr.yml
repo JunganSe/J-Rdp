@@ -40,20 +40,3 @@ jobs:
       with:
         files: 'TestResults/*.trx'
         check_name: 'Unit Test Results'
-        
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: test-results
-        path: |
-          **/TestResults/**/*.xml
-          **/TestResults/**/*.trx
-          
-    - name: Upload coverage reports
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: coverage-reports
-        path: |
-          **/TestResults/**/coverage.cobertura.xml
