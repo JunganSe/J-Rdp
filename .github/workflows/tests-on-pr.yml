@@ -28,12 +28,23 @@ jobs:
     - name: Build solution
       run: dotnet build --configuration Release --no-restore
       
+    - name: List test projects
+      run: |
+        echo "Looking for test projects in Tests folder:"
+        dir Tests
+        echo "Checking if project files exist:"
+        if (Test-Path "Tests/CoreTests") { echo "CoreTests folder exists" } else { echo "CoreTests folder NOT found" }
+        if (Test-Path "Tests/WinAppTests") { echo "WinAppTests folder exists" } else { echo "WinAppTests folder NOT found" }
+        
     - name: Run unit tests
       run: |
         echo "Running CoreTests..."
         dotnet test Tests/CoreTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=CoreTests.trx" --results-directory TestResults
+        echo "CoreTests exit code: $LASTEXITCODE"
+        echo ""
         echo "Running WinAppTests..."
         dotnet test Tests/WinAppTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=WinAppTests.trx" --results-directory TestResults
+        echo "WinAppTests exit code: $LASTEXITCODE"
         
     - name: Debug test results
       if: always()
@@ -41,9 +52,9 @@ jobs:
         echo "Contents of TestResults directory:"
         dir TestResults
         echo "All TRX files:"
-        dir TestResults\*.trx
-        echo "File sizes:"
-        dir TestResults\*.trx /s
+        if (Test-Path "TestResults/*.trx") { dir TestResults/*.trx } else { echo "No TRX files found" }
+        echo "Detailed file listing:"
+        Get-ChildItem TestResults -Recurse
     
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
