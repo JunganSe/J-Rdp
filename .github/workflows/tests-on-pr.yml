@@ -43,7 +43,7 @@ jobs:
         echo "CoreTests exit code: $LASTEXITCODE"
         echo ""
         echo "Running WinAppTests..."
-        dotnet test Tests/WinAppTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=WinAppTests.trx" --results-directory TestResults
+        dotnet test Tests/WinAppTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=WinAppTests.trx" --results-directory TestResults --framework net8.0-windows
         echo "WinAppTests exit code: $LASTEXITCODE"
         
     - name: Debug test results
