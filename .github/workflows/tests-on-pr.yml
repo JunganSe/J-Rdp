@@ -33,9 +33,21 @@ jobs:
       
     - name: Run unit tests
       run: |
-        dotnet test Tests/CoreTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=CoreTests.trx" --results-directory TestResults
-        dotnet test Tests/WinAppTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=WinAppTests.trx" --results-directory TestResults
-      
+        echo "Running CoreTests..."
+        dotnet test CoreTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=CoreTests.trx" --results-directory TestResults
+        echo "Running WinAppTests..."
+        dotnet test WinAppTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=WinAppTests.trx" --results-directory TestResults
+
+    - name: Debug test results
+      if: always()
+      run: |
+        echo "Contents of TestResults directory:"
+        dir TestResults
+        echo "All TRX files:"
+        dir TestResults\*.trx
+        echo "File sizes:"
+        dir TestResults\*.trx /s
+    
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
       if: always()
