@@ -34,7 +34,7 @@ jobs:
         dotnet test Tests/CoreTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=CoreTests.trx" --results-directory TestResults
         echo ""
         echo "Running WinAppTests..."
-        dotnet vstest Tests/WinAppTests/bin/Release/net8.0-windows/WinAppTests.dll --logger:"trx;LogFileName=WinAppTests.trx" --ResultsDirectory:TestResults --collect:"XPlat Code Coverage"
+        dotnet test Tests/WinAppTests --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=WinAppTests.trx" --results-directory TestResults
     
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
