@@ -84,7 +84,6 @@ public class FileHelperTests
     [DataRow(@"\Folder")]
     [DataRow(@"Folder\example.txt")]
     [DataRow(@"\Folder\example.txt")]
-    [DataRow("Folder")]
     [DataRow("Folder/")]
     [DataRow("/Folder")]
     [DataRow("Folder/example.txt")]
