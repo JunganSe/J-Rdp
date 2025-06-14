@@ -30,15 +30,7 @@ jobs:
       
     - name: Run unit tests
       run: dotnet test --maxcpucount:1 --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory TestResults
-    
-    - name: Debug - List test result files
-      run: |
-        echo "Contents of TestResults directory:"
-        dir TestResults
-        echo "Looking for .trx files specifically:"
-        dir TestResults\*.trx
-      if: always()
-    
+      
     - name: Publish test results
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
       if: always()
