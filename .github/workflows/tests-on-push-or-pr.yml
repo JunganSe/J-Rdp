@@ -1,4 +1,4 @@
-name: CI - Unit Tests
+name: CI - Unit tests on push or PR
 on:
   pull_request:
     branches: [ dev, main ]
