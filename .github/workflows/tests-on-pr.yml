@@ -32,7 +32,7 @@ jobs:
       run: dotnet test --maxcpucount:1 --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory TestResults
       
     - name: Publish test results
-      uses: EnricoMi/publish-unit-test-result-action/composite@v2
+      uses: EnricoMi/publish-unit-test-result-action/windows@v2
       if: always()
       with:
         files: 'TestResults/*.trx'
