@@ -1,9 +1,9 @@
 name: CI - Unit Tests
 on:
   pull_request:
-    branches: [ dev ]
+    branches: [ dev, main ]
   push:
-    branches: [ dev ]
+    branches: [ dev, main ]
 permissions:
   contents: read
   actions: read
