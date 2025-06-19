@@ -17,10 +17,8 @@ internal class Controller
         Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
     }
 
-    public void StopCore()
-    {
+    public void StopCore() =>
         _coreManager.Stop();
-    }
 
     public void DisposeTray() =>
         _trayManager.DisposeTray();
