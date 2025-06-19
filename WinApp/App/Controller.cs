@@ -22,6 +22,12 @@ internal class Controller
         _coreManager.Stop();
     }
 
+    public void DisposeTray() =>
+        _trayManager.DisposeTray();
+
+    public void CloseAndDisposeConsole() =>
+        _consoleManager.SetVisibility(false);
+
 
 
     private void Initialize(Arguments arguments)
@@ -67,10 +73,4 @@ internal class Controller
         if (!arguments.NoTray)
             _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
     }
-
-    public void DisposeTray() =>
-        _trayManager.DisposeTray();
-
-    public void CloseAndDisposeConsole() =>
-        _consoleManager.SetVisibility(false);
 }
