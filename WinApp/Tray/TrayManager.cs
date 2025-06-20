@@ -7,23 +7,20 @@ internal class TrayManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly TrayWorker _trayWorker = new();
+    private readonly TrayManagerCallbacks _callbacks = new();
     private NotifyIcon? _notifyIcon;
-    private Action<bool>? _callback_ToggleConsole;
-    private Action? _callback_OpenLogsFolder;
-    private Action? _callback_OpenConfigFile;
-    private ProfileHandler? _callback_ProfilesActiveStateChanged;
 
     public void SetCallback_ToggleConsole(Action<bool> callback) =>
-        _callback_ToggleConsole = callback;
+        _callbacks.ToggleConsole = callback;
 
     public void SetCallback_OpenLogsFolder(Action callback) =>
-        _callback_OpenLogsFolder = callback;
+        _callbacks.OpenLogsFolder = callback;
 
     public void SetCallback_OpenConfigFile(Action callback) =>
-        _callback_OpenConfigFile = callback;
+        _callbacks.OpenConfigFile = callback;
 
     public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
-        _callback_ProfilesActiveStateChanged = callback;
+        _callbacks.ProfilesActiveStateChanged = callback;
 
     public void InitializeNotifyIconWithContextMenu()
     {
@@ -34,9 +31,9 @@ internal class TrayManager
             return;
 
         _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(
-            _callback_ToggleConsole,
-            _callback_OpenLogsFolder,
-            _callback_OpenConfigFile);
+            _callbacks.ToggleConsole,
+            _callbacks.OpenLogsFolder,
+            _callbacks.OpenConfigFile);
     }
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
@@ -48,7 +45,7 @@ internal class TrayManager
             return;
         }
 
-        if (_callback_ProfilesActiveStateChanged is null)
+        if (_callbacks.ProfilesActiveStateChanged is null)
         {
             _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
             return;
@@ -59,7 +56,7 @@ internal class TrayManager
         if (profileInfos.Count > 0)
         {
             _trayWorker.ClearPlaceholderProfileMenuItems(menuItems);
-            _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callback_ProfilesActiveStateChanged);
+            _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callbacks.ProfilesActiveStateChanged);
         }
         else if (!_trayWorker.PlaceholderProfileMenuItemExists(menuItems))
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
