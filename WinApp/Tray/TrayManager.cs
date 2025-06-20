@@ -30,10 +30,7 @@ internal class TrayManager
         if (_notifyIcon is null)
             return;
 
-        _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(
-            _callbacks.ToggleConsole,
-            _callbacks.OpenLogsFolder,
-            _callbacks.OpenConfigFile);
+        _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(_callbacks);
     }
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)

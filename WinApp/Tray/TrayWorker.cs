@@ -41,29 +41,26 @@ internal class TrayWorker
         return new Icon(iconStream);
     }
 
-    public ContextMenuStrip? CreateContextMenu(
-        Action<bool>? callback_ToggleConsole,
-        Action? callback_OpenLogsFolder,
-        Action? callback_OpenConfigFile)
+    public ContextMenuStrip? CreateContextMenu(TrayCallbacks callbacks)
     {
-        if (callback_ToggleConsole is null)
+        if (callbacks.ToggleConsole is null)
         {
             _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
             return null;
         }
-        if (callback_OpenLogsFolder is null)
+        if (callbacks.OpenLogsFolder is null)
         {
             _logger.Error("Can not create context menu. Callback 'OpenLogsFolder' is missing.");
             return null;
         }
-        if (callback_OpenConfigFile is null)
+        if (callbacks.OpenConfigFile is null)
         {
             _logger.Error("Can not create context menu. Callback 'OpenConfigFile' is missing.");
             return null;
         }
 
         var contextMenu = new ContextMenuStrip() { AutoClose = false };
-        var menuItems = CreateContextMenuItems(callback_ToggleConsole, callback_OpenLogsFolder, callback_OpenConfigFile);
+        var menuItems = CreateContextMenuItems(callbacks.ToggleConsole, callbacks.OpenLogsFolder, callbacks.OpenConfigFile);
         contextMenu.Items.AddRange(menuItems);
         return contextMenu;
     }
