@@ -7,7 +7,7 @@ internal class TrayManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly TrayWorker _trayWorker = new();
-    private readonly TrayManagerCallbacks _callbacks = new();
+    private readonly TrayCallbacks _callbacks = new();
     private NotifyIcon? _notifyIcon;
 
     public void SetCallback_ToggleConsole(Action<bool> callback) =>

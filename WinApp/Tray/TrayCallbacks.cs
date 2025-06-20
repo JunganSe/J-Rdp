@@ -2,7 +2,7 @@
 
 namespace WinApp.Tray;
 
-internal class TrayManagerCallbacks
+internal class TrayCallbacks
 {
     public Action<bool>? ToggleConsole { get; set; }
     public Action? OpenLogsFolder { get; set; }
