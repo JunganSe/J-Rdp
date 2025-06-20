@@ -60,20 +60,17 @@ internal class TrayWorker
         }
 
         var contextMenu = new ContextMenuStrip() { AutoClose = false };
-        var menuItems = CreateContextMenuItems(callbacks.ToggleConsole, callbacks.OpenLogsFolder, callbacks.OpenConfigFile);
+        var menuItems = CreateContextMenuItems(callbacks);
         contextMenu.Items.AddRange(menuItems);
         return contextMenu;
     }
 
-    private ToolStripItem[] CreateContextMenuItems(
-        Action<bool> callback_ToggleConsole,
-        Action callback_OpenLogsFolder,
-        Action callback_OpenConfigFile) =>
+    private ToolStripItem[] CreateContextMenuItems(TrayCallbacks callbacks) =>
     [
-        TrayMenuItems.ToggleConsole(callback_ToggleConsole),
+        TrayMenuItems.ToggleConsole(callbacks.ToggleConsole),
         TrayMenuItems.ToggleLogToFile,
-        TrayMenuItems.OpenLogsFolder(callback_OpenLogsFolder),
-        TrayMenuItems.OpenConfigFile(callback_OpenConfigFile),
+        TrayMenuItems.OpenLogsFolder(callbacks.OpenLogsFolder),
+        TrayMenuItems.OpenConfigFile(callbacks.OpenConfigFile),
 
         new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
         new ToolStripSeparator(),
