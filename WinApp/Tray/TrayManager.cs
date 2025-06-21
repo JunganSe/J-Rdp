@@ -7,20 +7,11 @@ internal class TrayManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly TrayWorker _trayWorker = new();
-    private readonly TrayCallbacks _callbacks = new();
+    private TrayCallbacks _callbacks = new();
     private NotifyIcon? _notifyIcon;
 
-    public void SetCallback_ToggleConsole(Action<bool> callback) =>
-        _callbacks.ToggleConsole = callback;
-
-    public void SetCallback_OpenLogsFolder(Action callback) =>
-        _callbacks.OpenLogsFolder = callback;
-
-    public void SetCallback_OpenConfigFile(Action callback) =>
-        _callbacks.OpenConfigFile = callback;
-
-    public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
-        _callbacks.ProfilesActiveStateChanged = callback;
+    public void SetCallbacks(TrayCallbacks callbacks) =>
+        _callbacks = callbacks;
 
     public void InitializeNotifyIconWithContextMenu()
     {
