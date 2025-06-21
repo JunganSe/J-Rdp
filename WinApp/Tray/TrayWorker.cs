@@ -43,22 +43,6 @@ internal class TrayWorker
 
     public ContextMenuStrip? CreateContextMenu(TrayCallbacks callbacks)
     {
-        if (callbacks.ToggleConsole is null)
-        {
-            _logger.Error("Can not create context menu. Callback 'ToggleConsole' is missing.");
-            return null;
-        }
-        if (callbacks.OpenLogsFolder is null)
-        {
-            _logger.Error("Can not create context menu. Callback 'OpenLogsFolder' is missing.");
-            return null;
-        }
-        if (callbacks.OpenConfigFile is null)
-        {
-            _logger.Error("Can not create context menu. Callback 'OpenConfigFile' is missing.");
-            return null;
-        }
-
         var contextMenu = new ContextMenuStrip() { AutoClose = false };
         var menuItems = CreateContextMenuItems(callbacks);
         contextMenu.Items.AddRange(menuItems);
