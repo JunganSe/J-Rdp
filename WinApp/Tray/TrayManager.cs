@@ -33,12 +33,6 @@ internal class TrayManager
             return;
         }
 
-        if (_callbacks.ProfilesActiveStateChanged is null)
-        {
-            _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
-            return;
-        }
-
         _trayWorker.RemoveAllProfileMenuItems(menuItems);
 
         if (profileInfos.Count > 0)
