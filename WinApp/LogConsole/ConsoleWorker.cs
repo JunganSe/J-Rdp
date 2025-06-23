@@ -101,21 +101,6 @@ internal partial class ConsoleWorker
         }
     }
 
-    public void RedirectConsoleOutput()
-    {
-        try
-        {
-            var consoleStream = Console.OpenStandardOutput();
-            var consoleOutput = new StreamWriter(consoleStream) { AutoFlush = true };
-            Console.SetOut(consoleOutput);
-            Console.SetError(consoleOutput);
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Error redirecting log console output.");
-        }
-    }
-
     public void SetControlHandler()
     {
         try

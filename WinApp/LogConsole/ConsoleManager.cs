@@ -24,7 +24,6 @@ internal class ConsoleManager
             _worker.AllocateConsole();
             _worker.SetConsoleTitle();
             _worker.DisableConsoleCloseButton();
-            _worker.RedirectConsoleOutput();
             _worker.SetControlHandler();
             _worker.PrintInfoMessage();
             _logger.Info("Opened log console.");
