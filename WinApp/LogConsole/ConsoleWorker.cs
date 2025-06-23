@@ -52,7 +52,7 @@ internal partial class ConsoleWorker
 
     public void AllocateConsole()
     {
-        string errorMessage = "Error opening console. Allocation failed.";
+        string errorMessage = "Error opening log console. Allocation failed.";
         try
         {
             bool isSuccess = AllocConsole();
@@ -80,7 +80,7 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Warn(ex, "Error setting console title.");
+            _logger.Warn(ex, "Error setting log console title.");
         }
     }
 
@@ -97,7 +97,7 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Warn(ex, "Error disabling console close button.");
+            _logger.Warn(ex, "Error disabling log console close button.");
         }
     }
 
@@ -112,7 +112,7 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Error redirecting console output.");
+            _logger.Error(ex, "Error redirecting log console output.");
         }
     }
 
@@ -125,7 +125,7 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Error setting control handler.");
+            _logger.Error(ex, "Error setting log console control handler.");
         }
     }
 
@@ -166,7 +166,7 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Warn(ex, "Error closing console.");
+            _logger.Error(ex, "Error closing log console.");
         }
     }
 }
