@@ -19,12 +19,19 @@ internal class ConsoleManager
 
     private void OpenConsole()
     {
-        _worker.AllocateConsole();
-        _worker.SetConsoleTitle();
-        _worker.DisableConsoleCloseButton();
-        _worker.RedirectConsoleOutput();
-        _worker.SetControlHandler();
-        _worker.PrintInfoMessage();
-        _logger.Info("Opened log console.");
+        try
+        {
+            _worker.AllocateConsole();
+            _worker.SetConsoleTitle();
+            _worker.DisableConsoleCloseButton();
+            _worker.RedirectConsoleOutput();
+            _worker.SetControlHandler();
+            _worker.PrintInfoMessage();
+            _logger.Info("Opened log console.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error opening log console.");
+        }
     }
 }
