@@ -21,6 +21,7 @@ internal class ConsoleManager
     {
         try
         {
+            _logger.Trace("Opening log console...");
             bool openConsoleIsSuccess = _worker.TryAllocateConsole();
             _worker.SetConsoleTitle();
             _worker.PrintInfoMessage();
