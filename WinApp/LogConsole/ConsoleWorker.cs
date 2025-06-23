@@ -84,6 +84,17 @@ internal partial class ConsoleWorker
         }
     }
 
+    public void PrintInfoMessage()
+    {
+        Console.WriteLine("""
+            *****************************************************************
+            Use the tray menu or press ctrl+C to safely close the log window.
+            Closing it directly through Windows will also close the main app.
+            *****************************************************************
+
+            """);
+    }
+
     public void DisableConsoleCloseButton()
     {
         try
@@ -123,17 +134,6 @@ internal partial class ConsoleWorker
             CloseConsole();
         }
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
-    }
-
-    public void PrintInfoMessage()
-    {
-        Console.WriteLine("""
-            *****************************************************************
-            Use the tray menu or press ctrl+C to safely close the log window.
-            Closing it directly through Windows will also close the main app.
-            *****************************************************************
-
-            """);
     }
 
     public void CloseConsole()
