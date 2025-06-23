@@ -22,13 +22,13 @@ internal class ConsoleManager
         try
         {
             _logger.Trace("Opening log console...");
-            bool openConsoleIsSuccess = _worker.TryAllocateConsole();
+            bool isConsoleOpened = _worker.TryAllocateConsole();
             _worker.SetConsoleTitle();
             _worker.PrintInfoMessage();
             _worker.DisableConsoleCloseButton();
             _worker.SetEvent_CloseConsoleOnCommand();
 
-            if (openConsoleIsSuccess)
+            if (isConsoleOpened)
                 _logger.Info("Opened log console.");
         }
         catch (Exception ex)
