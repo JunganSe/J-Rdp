@@ -50,7 +50,7 @@ internal partial class ConsoleWorker
     public void SetCallback_ConsoleClosed(Action callback) =>
         _callback_ConsoleClosed = callback;
 
-    public void AllocateConsole()
+    public bool TryAllocateConsole()
     {
         string errorMessage = "Error opening log console. Allocation failed.";
         try
@@ -59,13 +59,15 @@ internal partial class ConsoleWorker
             if (!isSuccess)
             {
                 _logger.Error(errorMessage);
-                return;
+                return false;
             }
             Console.OutputEncoding = Encoding.UTF8;
+            return true;
         }
         catch (Exception ex)
         {
             _logger.Error(ex, errorMessage);
+            return false;
         }
     }
 
