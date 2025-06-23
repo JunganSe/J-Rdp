@@ -101,11 +101,11 @@ internal partial class ConsoleWorker
         }
     }
 
-    public void SetControlHandler()
+    public void SetEvent_CloseConsoleOnCommand()
     {
         try
         {
-            CtrlTypesHandler handler = ConsoleCtrlCheck;
+            CtrlTypesHandler handler = ConsoleCtrlHandler_CloseConsoleOnCommand;
             SetConsoleCtrlHandler(handler, true);
         }
         catch (Exception ex)
@@ -114,7 +114,7 @@ internal partial class ConsoleWorker
         }
     }
 
-    private bool ConsoleCtrlCheck(CtrlTypes ctrlType)
+    private bool ConsoleCtrlHandler_CloseConsoleOnCommand(CtrlTypes ctrlType)
     {
         if (ctrlType is CtrlTypes.CTRL_C_EVENT
                      or CtrlTypes.CTRL_BREAK_EVENT
