@@ -50,6 +50,7 @@ internal partial class ConsoleWorker
     public void SetCallback_ConsoleClosed(Action callback) =>
         _callback_ConsoleClosed = callback;
 
+    /// <summary> Attempts to open a new console window. </summary>
     public bool TryAllocateConsole()
     {
         string errorMessage = "Error opening log console. Allocation failed.";
