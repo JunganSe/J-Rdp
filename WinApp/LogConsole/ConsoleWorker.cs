@@ -50,22 +50,25 @@ internal partial class ConsoleWorker
     public void SetCallback_ConsoleClosed(Action callback) =>
         _callback_ConsoleClosed = callback;
 
-    public void AllocateConsole()
+    /// <summary> Attempts to open a new console window. </summary>
+    public bool TryAllocateConsole()
     {
-        string errorMessage = "Error opening console. Allocation failed.";
+        string errorMessage = "Error opening log console. Allocation failed.";
         try
         {
             bool isSuccess = AllocConsole();
             if (!isSuccess)
             {
                 _logger.Error(errorMessage);
-                return;
+                return false;
             }
             Console.OutputEncoding = Encoding.UTF8;
+            return true;
         }
         catch (Exception ex)
         {
             _logger.Error(ex, errorMessage);
+            return false;
         }
     }
 
@@ -80,8 +83,19 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Warn(ex, "Error setting console title.");
+            _logger.Warn(ex, "Error setting log console title.");
         }
+    }
+
+    public void PrintInfoMessage()
+    {
+        Console.WriteLine("""
+            *****************************************************************
+            Use the tray menu or press ctrl+C to safely close the log window.
+            Closing it directly through Windows will also close the main app.
+            *****************************************************************
+
+            """);
     }
 
     public void DisableConsoleCloseButton()
@@ -97,39 +111,24 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Warn(ex, "Error disabling console close button.");
+            _logger.Warn(ex, "Error disabling log console close button.");
         }
     }
 
-    public void RedirectConsoleOutput()
+    public void SetEvent_CloseConsoleOnCommand()
     {
         try
         {
-            var consoleStream = Console.OpenStandardOutput();
-            var consoleOutput = new StreamWriter(consoleStream) { AutoFlush = true };
-            Console.SetOut(consoleOutput);
-            Console.SetError(consoleOutput);
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Error redirecting console output.");
-        }
-    }
-
-    public void SetControlHandler()
-    {
-        try
-        {
-            CtrlTypesHandler handler = ConsoleCtrlCheck;
+            CtrlTypesHandler handler = ConsoleCtrlHandler_CloseConsoleOnCommand;
             SetConsoleCtrlHandler(handler, true);
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Error setting control handler.");
+            _logger.Error(ex, "Error setting log console control handler.");
         }
     }
 
-    private bool ConsoleCtrlCheck(CtrlTypes ctrlType)
+    private bool ConsoleCtrlHandler_CloseConsoleOnCommand(CtrlTypes ctrlType)
     {
         if (ctrlType is CtrlTypes.CTRL_C_EVENT
                      or CtrlTypes.CTRL_BREAK_EVENT
@@ -138,17 +137,6 @@ internal partial class ConsoleWorker
             CloseConsole();
         }
         return true; // Tell the OS that the event is handled, cancelling the default behavior (e.g. closing the window).
-    }
-
-    public void PrintInfoMessage()
-    {
-        Console.WriteLine("""
-            *****************************************************************
-            Use the tray menu or press ctrl+C to safely close the log window.
-            Closing it directly through Windows will also close the main app.
-            *****************************************************************
-
-            """);
     }
 
     public void CloseConsole()
@@ -166,7 +154,7 @@ internal partial class ConsoleWorker
         }
         catch (Exception ex)
         {
-            _logger.Warn(ex, "Error closing console.");
+            _logger.Error(ex, "Error closing log console.");
         }
     }
 }
