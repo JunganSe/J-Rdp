@@ -12,7 +12,7 @@ internal static class Program
     private static bool _isExiting;
 
     [STAThread]
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         RegisterCloseEvents();
         var arguments = BooleanArgumentsParser.Parse<Arguments>(args);
