@@ -21,7 +21,7 @@ public sealed class BooleanArgumentsParserTests
     public void Parse_Valid(ArgumentsExpectation expectation, string args)
     {
         // Arrange
-        var splitArgs = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string[] splitArgs = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         // Act
         var parsedArguments = BooleanArgumentsParser.Parse<Arguments>(splitArgs);
