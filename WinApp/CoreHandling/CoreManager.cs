@@ -1,6 +1,6 @@
 ﻿using Core.Profiles;
 
-namespace WinApp.Managers;
+namespace WinApp.CoreHandling;
 
 internal class CoreManager
 {
