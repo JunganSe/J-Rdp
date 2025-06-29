@@ -17,6 +17,7 @@ public sealed class MathExtTests
         Assert.AreEqual(0, MathExt.Median(0, 0, 0));
 
         Assert.AreEqual(-1, MathExt.Median(-1, -2, 0));
+        Assert.AreEqual(-1, MathExt.Median(-1, -2, 3));
     }
 
     [TestMethod]
@@ -28,6 +29,10 @@ public sealed class MathExtTests
         Assert.AreEqual(2.5, MathExt.Median(2.5, 1.5, 3.5));
 
         Assert.AreEqual(-1.5, MathExt.Median(-1.5, -2, 0));
+        Assert.AreEqual(-1.5, MathExt.Median(-1.5, -2, 3.0));
+
+        Assert.AreEqual(Math.PI, MathExt.Median(Math.PI, 0, 5.0));
+        Assert.AreEqual(Math.E, MathExt.Median(Math.E, Math.E, 5.0));
     }
 
     [TestMethod]
