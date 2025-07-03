@@ -1,6 +1,8 @@
 {
   "pollingInterval": 2000,
   "deleteDelay": 5000,
+  "showLogConsole":  false,
+  "logToFile":  false,
   "profiles": [
     {
       "enabled": true,
