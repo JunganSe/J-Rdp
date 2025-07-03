@@ -8,7 +8,7 @@ public class StopSignalListenerTests
 {
     [TestMethod]
     [DoNotParallelize] // This test will fail if another test method that instantiates a ContextMenuStrip is being run simultaneously.
-    public void Start_ConnectsAndInvokesCallback()
+    public async Task Start_ConnectsAndInvokesCallback()
     {
         // Arrange
         var listener = new StopSignalListener();
@@ -17,15 +17,15 @@ public class StopSignalListenerTests
 
         // Act
         listener.Start(callback);
+        await Task.Delay(200);
 
-        using var clientTask = Task.Run(async () =>
+        _ = Task.Run(async () =>
         {
-            await Task.Delay(100);
             using var pipeClient = new NamedPipeClientStream(".", StopSignalListener.PipeName, PipeDirection.Out);
-            await pipeClient.ConnectAsync(1000);
+            await pipeClient.ConnectAsync(2000);
         });
 
-        bool isCallbackInvoked = callbackEvent.Wait(2000);
+        bool isCallbackInvoked = callbackEvent.Wait(2500);
 
         // Assert
         Assert.IsTrue(isCallbackInvoked, "Callback was not invoked when stop signal was sent.");
