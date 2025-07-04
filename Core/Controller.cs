@@ -108,13 +108,6 @@ public class Controller
         }
     }
 
-    private void StopMainLoop()
-    {
-        _mainLoopCancellation?.Cancel();
-        _mainLoopCancellation?.Dispose();
-        _mainLoopCancellation = null;
-    }
-
     private void StopAndDispose()
     {
         if (_isStopping)
@@ -127,5 +120,12 @@ public class Controller
         _configWatcherManager.StopAndDisposeConfigWatcher();
         StopMainLoop();
         _logger.Debug("Cleanup complete.");
+    }
+
+    private void StopMainLoop()
+    {
+        _mainLoopCancellation?.Cancel();
+        _mainLoopCancellation?.Dispose();
+        _mainLoopCancellation = null;
     }
 }
