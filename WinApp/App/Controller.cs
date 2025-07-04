@@ -54,7 +54,6 @@ internal class Controller
         };
         _trayManager.SetCallbacks(trayCallbacks);
         _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
         _logger.Debug("Tray initialized.");
     }
 

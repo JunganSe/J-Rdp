@@ -17,7 +17,6 @@ internal static class Program
         RegisterCloseEvents();
         var arguments = BooleanArgumentsParser.Parse<Arguments>(args);
         LogManager.Initialize();
-        LogManager.SetFileLogging(arguments.LogToFile);
 
         _logger.Info("***** Starting application. *****");
 
