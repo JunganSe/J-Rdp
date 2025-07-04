@@ -30,18 +30,8 @@ internal class Controller
 
     private void Initialize(Arguments arguments)
     {
-        SetConsoleVisibility(arguments.ShowConsole);
         InitializeTrayIfArgumentAllows(arguments);
         InitializeCore(arguments);
-    }
-
-    private void SetConsoleVisibility(bool show)
-    {
-        _consoleManager.SetVisibility(show);
-        _consoleManager.SetCallback_ConsoleClosed(() =>
-        {
-            _trayManager.SetMenuState_ShowConsole(false);
-        });
     }
 
     private void InitializeTrayIfArgumentAllows(Arguments arguments)
@@ -64,7 +54,6 @@ internal class Controller
         };
         _trayManager.SetCallbacks(trayCallbacks);
         _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
         _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
         _logger.Debug("Tray initialized.");
     }
