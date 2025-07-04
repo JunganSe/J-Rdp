@@ -37,12 +37,12 @@ internal class Controller
     private void InitializeTrayIfArgumentAllows(Arguments arguments)
     {
         if (!arguments.NoTray)
-            InitializeTray(arguments);
+            InitializeTray();
         else
             _logger.Info("Starting without tray icon and menu.");
     }
 
-    private void InitializeTray(Arguments arguments)
+    private void InitializeTray()
     {
         _logger.Trace("Initializing tray...");
         var trayCallbacks = GetTrayCallbacks();
