@@ -6,7 +6,7 @@ internal class Config
 {
     public int PollingInterval { get; set; }    = ConfigConstants.PollingInterval_Default;
     public int DeleteDelay { get; set; }        = ConfigConstants.DeleteDelay_Default;
-    public bool ShowLogConsole { get; set; }    = false;
-    public bool LogToFile { get; set; }         = false;
+    public bool ShowLogConsole { get; set; }    = ConfigConstants.ShowLogConsole_Default;
+    public bool LogToFile { get; set; }         = ConfigConstants.LogToFile_Default;
     public List<Profile> Profiles { get; set; } = [];
 }
