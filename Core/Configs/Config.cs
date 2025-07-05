@@ -2,6 +2,9 @@
 
 namespace Core.Configs;
 
+/// <summary>
+/// Represents the config file.
+/// </summary>
 internal class Config
 {
     public int PollingInterval { get; set; }    = ConfigConstants.PollingInterval_Default;
