@@ -74,12 +74,12 @@ public class Controller
     {
         _configManager.UpdateConfigFromFile();
         _configManager.InvokeConfigUpdatedCallback();
-        SetPollingInterval();
+        ApplyPollingIntervalFromConfig();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
-    private void SetPollingInterval()
+    private void ApplyPollingIntervalFromConfig()
     {
         int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)
