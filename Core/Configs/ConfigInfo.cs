@@ -1,4 +1,6 @@
-﻿namespace Core.Configs;
+﻿using Core.Profiles;
+
+namespace Core.Configs;
 
 /// <summary>
 /// Used to represent config settings when communicating with the UI. <br/>
@@ -8,4 +10,5 @@ public class ConfigInfo
 {
     public bool? ShowLogConsole { get; set; }
     public bool? LogToFile { get; set; }
+    public List<ProfileInfo>? Profiles { get; set; }
 }
