@@ -93,6 +93,8 @@ internal class ConfigManager
         {
             PollingInterval = Config.PollingInterval,
             DeleteDelay = Config.DeleteDelay,
+            ShowLogConsole = Config.ShowLogConsole,
+            LogToFile = Config.LogToFile,
             Profiles = profiles
         };
         _configWorker.UpdateConfigFile(config);
