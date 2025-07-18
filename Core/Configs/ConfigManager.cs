@@ -66,12 +66,19 @@ internal class ConfigManager
         if (_callback_ConfigUpdated is null)
             return;
 
-        var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
+        var configInfo = GetConfigInfo();
         if (_syncContext is not null)
-            _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(profileInfos), state: null); // Invoke on the UI thread.
+            _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(configInfo), state: null); // Invoke on the UI thread.
         else
-            _callback_ConfigUpdated.Invoke(profileInfos); // Invoke on current thread.
+            _callback_ConfigUpdated.Invoke(configInfo); // Invoke on current thread.
     }
+
+    private ConfigInfo GetConfigInfo() => new()
+    {
+        ShowLogConsole = Config.ShowLogConsole,
+        LogToFile = Config.LogToFile,
+        Profiles = ProfileHelper.GetProfileInfos(Config.Profiles)
+    };
 
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
