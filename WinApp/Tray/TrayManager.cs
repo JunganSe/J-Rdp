@@ -37,7 +37,7 @@ internal class TrayManager
             UpdateMenuProfiles(configInfo.Profiles);
     }
 
-    public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
+    private void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
         if (menuItems is null)
@@ -57,7 +57,7 @@ internal class TrayManager
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
     }
 
-    public void SetMenuState_ShowConsole(bool showConsole)
+    private void SetMenuState_ShowConsole(bool showConsole)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
         {
@@ -68,7 +68,7 @@ internal class TrayManager
         _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
     }
 
-    public void SetMenuState_LogToFile(bool logToFile)
+    private void SetMenuState_LogToFile(bool logToFile)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
         {
