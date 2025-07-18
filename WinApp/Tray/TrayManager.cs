@@ -27,6 +27,12 @@ internal class TrayManager
 
     public void UpdateMenuState(ConfigInfo configInfo)
     {
+        if (_notifyIcon?.ContextMenuStrip is null)
+        {
+            _logger.Error("Can not update tray context menu state. Context menu is missing.");
+            return;
+        }
+
         if (configInfo.ShowLogConsole is not null)
             SetMenuState_ShowConsole(configInfo.ShowLogConsole.Value);
 
@@ -41,10 +47,7 @@ internal class TrayManager
     {
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
         if (menuItems is null)
-        {
-            _logger.Error("Can not update profile items in context menu. Context menu is missing.");
             return;
-        }
 
         _trayWorker.RemoveAllProfileMenuItems(menuItems);
 
@@ -60,10 +63,7 @@ internal class TrayManager
     private void SetMenuState_ShowConsole(bool showConsole)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
-        {
-            _logger.Error("Can not set menu checked 'show console' state. Context menu is missing.");
             return;
-        }
 
         _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
     }
@@ -71,10 +71,7 @@ internal class TrayManager
     private void SetMenuState_LogToFile(bool logToFile)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
-        {
-            _logger.Error("Can not set menu checked state 'log to file'. Context menu is missing.");
             return;
-        }
 
         _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
     }
