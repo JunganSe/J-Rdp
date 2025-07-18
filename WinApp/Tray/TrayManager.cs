@@ -1,4 +1,5 @@
-﻿using Core.Profiles;
+﻿using Core.Configs;
+using Core.Profiles;
 using NLog;
 
 namespace WinApp.Tray;
@@ -22,6 +23,13 @@ internal class TrayManager
             return;
 
         _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(_callbacks);
+    }
+
+    public void UpdateMenuState(ConfigInfo configInfo)
+    {
+        throw new NotImplementedException();
+        // TODO: - Update menu items.
+        //       - Call UpdateMenuProfiles()
     }
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)

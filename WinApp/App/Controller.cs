@@ -63,6 +63,6 @@ internal class Controller
     {
         _coreManager.Initialize();
         if (!arguments.NoTray)
-            _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
+            _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuState);
     }
 }
