@@ -27,9 +27,14 @@ internal class TrayManager
 
     public void UpdateMenuState(ConfigInfo configInfo)
     {
-        throw new NotImplementedException();
-        // TODO: - Update menu items.
-        //       - Call UpdateMenuProfiles()
+        if (configInfo.ShowLogConsole is not null)
+            SetMenuState_ShowConsole(configInfo.ShowLogConsole.Value);
+
+        if (configInfo.LogToFile is not null)
+            SetMenuState_LogToFile(configInfo.LogToFile.Value);
+
+        if (configInfo.Profiles is not null)
+            UpdateMenuProfiles(configInfo.Profiles);
     }
 
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
