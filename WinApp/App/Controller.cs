@@ -62,7 +62,15 @@ internal class Controller
     private void InitializeCore(Arguments arguments)
     {
         _coreManager.Initialize();
-        if (!arguments.NoTray)
-            _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuState);
+
+        if (arguments.NoTray)
+            return;
+
+        _coreManager.SetCallback_ConfigUpdated((configInfo) =>
+        {
+            _trayManager.UpdateMenuState(configInfo);
+            // TODO: - Open/close the console.
+            //       - Activate/deactivate file logging.
+        });
     }
 }
