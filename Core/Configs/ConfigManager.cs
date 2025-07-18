@@ -9,7 +9,7 @@ internal class ConfigManager
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly ConfigWorker _configWorker = new();
     private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
-    private ProfileHandler? _callback_ConfigUpdated;
+    private Handler_OnConfigUpdated? _callback_ConfigUpdated;
 
     public Config Config { get; private set; } = new();
 
@@ -23,7 +23,7 @@ internal class ConfigManager
                        ConfigConstants.DeleteDelay_Min,
                        ConfigConstants.DeleteDelay_Max);
 
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
         _callback_ConfigUpdated = callback;
 
     public void CreateConfigFileIfMissing()

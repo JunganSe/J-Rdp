@@ -42,7 +42,7 @@ public class Controller
         }
     }
 
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
         _configManager.SetCallback_ConfigUpdated(callback);
 
     public void OpenLogsFolder() =>

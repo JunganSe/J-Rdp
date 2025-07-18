@@ -1,4 +1,5 @@
-﻿using Core.Profiles;
+﻿using Core.Configs;
+using Core.Profiles;
 
 namespace WinApp.CoreHandling;
 
@@ -18,7 +19,7 @@ internal class CoreManager
     /// <summary>
     /// Tell the core controller which method should be called after the config (in memory) has been updated.
     /// </summary>
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
         _controller?.SetCallback_ConfigUpdated(callback);
 
     /// <summary>
