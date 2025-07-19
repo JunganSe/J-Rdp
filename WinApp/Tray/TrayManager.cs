@@ -43,7 +43,7 @@ internal class TrayManager
             UpdateMenuProfiles(configInfo.Profiles);
     }
 
-    private void SetMenuState_ShowConsole(bool showConsole)
+    public void SetMenuState_ShowConsole(bool showConsole)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
             return;
@@ -51,7 +51,7 @@ internal class TrayManager
         _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
     }
 
-    private void SetMenuState_LogToFile(bool logToFile)
+    public void SetMenuState_LogToFile(bool logToFile)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
             return;
@@ -63,7 +63,7 @@ internal class TrayManager
     /// Updates the profile menu items in the tray context menu to reflect the provided profileInfos.
     /// </summary>
     /// <remarks> If no profiles are provided, a disabled placeholder profile will be used. </remarks>
-    private void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
+    public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
         if (menuItems is null)

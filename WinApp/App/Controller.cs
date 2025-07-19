@@ -34,6 +34,7 @@ internal class Controller
     {
         InitializeTrayIfArgumentAllows(arguments);
         InitializeCore(arguments);
+        _consoleManager.SetCallback_ConsoleClosed(Callback_OnConsoleClosed);
     }
 
     private void InitializeTrayIfArgumentAllows(Arguments arguments)
@@ -69,6 +70,14 @@ internal class Controller
             return;
 
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
+    }
+
+
+
+    private void Callback_OnConsoleClosed()
+    {
+        _trayManager.SetMenuState_ShowConsole(false);
+        // TODO: Update the config file.
     }
 
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)
