@@ -65,6 +65,7 @@ internal partial class ConsoleWorker
                 _logger.Error(errorMessage);
                 return false;
             }
+
             Console.OutputEncoding = Encoding.UTF8;
             return true;
         }

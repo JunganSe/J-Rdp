@@ -24,14 +24,17 @@ internal class ConsoleManager
         try
         {
             _logger.Trace("Opening log console...");
+
             bool isConsoleOpened = _worker.TryAllocateConsole();
+            if (!isConsoleOpened)
+                return;
+
             _worker.SetConsoleTitle();
             _worker.PrintInfoMessage();
             _worker.DisableConsoleCloseButton();
             _worker.SetEvent_CloseConsoleOnCommand();
 
-            if (isConsoleOpened)
-                _logger.Info("Opened log console.");
+            _logger.Info("Opened log console.");
         }
         catch (Exception ex)
         {
