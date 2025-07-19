@@ -59,6 +59,10 @@ internal class TrayManager
         _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
     }
 
+    /// <summary>
+    /// Updates the profile menu items in the tray context menu to reflect the provided profileInfos.
+    /// </summary>
+    /// <remarks> If no profiles are provided, a disabled placeholder profile will be used. </remarks>
     private void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
