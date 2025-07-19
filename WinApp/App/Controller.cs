@@ -1,4 +1,5 @@
 ﻿using Auxiliary;
+using Core.Configs;
 using WinApp.CoreHandling;
 using WinApp.LogConsole;
 using WinApp.Tray;
@@ -67,15 +68,17 @@ internal class Controller
         if (arguments.NoTray)
             return;
 
-        _coreManager.SetCallback_ConfigUpdated((configInfo) =>
-        {
-            if (configInfo.ShowLogConsole.HasValue)
-                _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
+        _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
+    }
 
-            if (configInfo.LogToFile.HasValue)
-                LogManager.SetFileLogging(configInfo.LogToFile.Value);
+    private void Callback_OnConfigUpdated(ConfigInfo configInfo)
+    {
+        if (configInfo.ShowLogConsole.HasValue)
+            _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
 
-            _trayManager.UpdateMenuState(configInfo);
-        });
+        if (configInfo.LogToFile.HasValue)
+            LogManager.SetFileLogging(configInfo.LogToFile.Value);
+
+        _trayManager.UpdateMenuState(configInfo);
     }
 }
