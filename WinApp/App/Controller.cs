@@ -48,9 +48,11 @@ internal class Controller
     private void InitializeTray()
     {
         _logger.Trace("Initializing tray...");
+
         var trayCallbacks = GetTrayCallbacks();
         _trayManager.SetCallbacks(trayCallbacks);
         _trayManager.InitializeNotifyIconWithContextMenu();
+
         _logger.Debug("Tray initialized.");
     }
 
