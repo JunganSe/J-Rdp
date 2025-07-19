@@ -1,4 +1,5 @@
-﻿using WinApp.CoreHandling;
+﻿using Auxiliary;
+using WinApp.CoreHandling;
 using WinApp.LogConsole;
 using WinApp.Tray;
 
@@ -68,9 +69,13 @@ internal class Controller
 
         _coreManager.SetCallback_ConfigUpdated((configInfo) =>
         {
+            if (configInfo.ShowLogConsole.HasValue)
+                _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
+
+            if (configInfo.LogToFile.HasValue)
+                LogManager.SetFileLogging(configInfo.LogToFile.Value);
+
             _trayManager.UpdateMenuState(configInfo);
-            // TODO: - Open/close the console.
-            //       - Activate/deactivate file logging.
         });
     }
 }
