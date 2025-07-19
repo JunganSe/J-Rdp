@@ -11,9 +11,11 @@ internal class ConsoleManager
 
     public void SetVisibility(bool show)
     {
-        if (show)
+        bool isConsoleOpen = _worker.IsConsoleWindowOpen();
+
+        if (show && !isConsoleOpen)
             OpenConsole();
-        else
+        else if (!show && isConsoleOpen)
             _worker.CloseConsole();
     }
 
