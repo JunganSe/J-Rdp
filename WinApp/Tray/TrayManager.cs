@@ -43,6 +43,22 @@ internal class TrayManager
             UpdateMenuProfiles(configInfo.Profiles);
     }
 
+    private void SetMenuState_ShowConsole(bool showConsole)
+    {
+        if (_notifyIcon?.ContextMenuStrip is null)
+            return;
+
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
+    }
+
+    private void SetMenuState_LogToFile(bool logToFile)
+    {
+        if (_notifyIcon?.ContextMenuStrip is null)
+            return;
+
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
+    }
+
     private void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
@@ -58,22 +74,6 @@ internal class TrayManager
         }
         else if (!_trayWorker.PlaceholderProfileMenuItemExists(menuItems))
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
-    }
-
-    private void SetMenuState_ShowConsole(bool showConsole)
-    {
-        if (_notifyIcon?.ContextMenuStrip is null)
-            return;
-
-        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
-    }
-
-    private void SetMenuState_LogToFile(bool logToFile)
-    {
-        if (_notifyIcon?.ContextMenuStrip is null)
-            return;
-
-        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
     }
 
     public void DisposeTray() =>
