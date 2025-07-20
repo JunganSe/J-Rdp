@@ -75,6 +75,7 @@ internal class Controller
     private TrayCallbacks GetTrayCallbacks() => new()
     {
         ToggleConsole = Callback_ToggleConsole,
+        SetFileLogging = Callback_SetFileLogging,
         OpenLogsFolder = _coreManager.OpenLogsFolder,
         OpenConfigFile = _coreManager.OpenConfigFile,
         ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
@@ -90,6 +91,14 @@ internal class Controller
     {
         _trayManager.SetMenuState_ShowConsole(false);
         // TODO: Update the config file.
+    }
+
+    private void Callback_SetFileLogging(bool logToFile)
+    {
+        // TODO:
+        // - Call LogManager to set file logging state.
+        // - Update the tray menu state.
+        // - Update the config file.
     }
 
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)
