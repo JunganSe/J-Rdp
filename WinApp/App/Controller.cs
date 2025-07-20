@@ -1,5 +1,6 @@
 ﻿using Auxiliary;
 using Core.Configs;
+using Core.Profiles;
 using WinApp.CoreHandling;
 using WinApp.LogConsole;
 using WinApp.Tray;
@@ -78,7 +79,7 @@ internal class Controller
         ToggleFileLogging = Callback_ToggleFileLogging,
         OpenLogsFolder = _coreManager.OpenLogsFolder,
         OpenConfigFile = _coreManager.OpenConfigFile,
-        ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
+        ProfilesActiveStateChanged = Callback_ProfilesActiveStateChanged
     };
 
     private void Callback_ToggleConsole(bool showConsole)
@@ -102,6 +103,12 @@ internal class Controller
         LogManager.SetFileLogging(logToFile);
 
         var configInfo = new ConfigInfo() { LogToFile = logToFile };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    private void Callback_ProfilesActiveStateChanged(List<ProfileInfo> profileInfos)
+    {
+        var configInfo = new ConfigInfo() { Profiles = profileInfos };
         _coreManager.UpdateConfig(configInfo);
     }
 
