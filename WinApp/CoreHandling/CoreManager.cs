@@ -39,4 +39,12 @@ internal class CoreManager
     /// </summary>
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
         _coreController?.UpdateProfilesEnabledState(profileInfos);
+
+    /// <summary>
+    /// Tell the core controller to update the config (in file and memory).
+    /// </summary>
+    public void UpdateConfig(ConfigInfo configInfo)
+    {
+        _coreController?.UpdateConfig(configInfo);
+    }
 }

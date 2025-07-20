@@ -54,6 +54,11 @@ public class Controller
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
         _configManager.UpdateProfilesEnabledState(profileInfos);
 
+    public void UpdateConfig(ConfigInfo configInfo)
+    {
+        // TODO: Implement.
+    }
+
     public void Stop()
     {
         StopMainLoop();
