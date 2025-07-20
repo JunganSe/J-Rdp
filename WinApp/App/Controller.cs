@@ -30,6 +30,8 @@ internal class Controller
 
 
 
+    #region Initialization
+
     private void Initialize(Arguments arguments)
     {
         InitializeTrayIfArgumentAllows(arguments);
@@ -56,14 +58,6 @@ internal class Controller
         _logger.Debug("Tray initialized.");
     }
 
-    private TrayCallbacks GetTrayCallbacks() => new()
-    {
-        ToggleConsole = Callback_ToggleConsole,
-        OpenLogsFolder = _coreManager.OpenLogsFolder,
-        OpenConfigFile = _coreManager.OpenConfigFile,
-        ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
-    };
-
     private void InitializeCore(Arguments arguments)
     {
         _coreManager.Initialize();
@@ -74,7 +68,17 @@ internal class Controller
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
     }
 
+    #endregion
 
+    #region Callbacks
+
+    private TrayCallbacks GetTrayCallbacks() => new()
+    {
+        ToggleConsole = Callback_ToggleConsole,
+        OpenLogsFolder = _coreManager.OpenLogsFolder,
+        OpenConfigFile = _coreManager.OpenConfigFile,
+        ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
+    };
 
     private void Callback_ToggleConsole(bool showConsole)
     {
@@ -98,4 +102,6 @@ internal class Controller
 
         _trayManager.UpdateMenuState(configInfo);
     }
+
+    #endregion
 }
