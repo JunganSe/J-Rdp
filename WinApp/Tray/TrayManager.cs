@@ -56,7 +56,7 @@ internal class TrayManager
         if (_notifyIcon?.ContextMenuStrip is null)
             return;
 
-        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleFileLogging, logToFile);
     }
 
     /// <summary>

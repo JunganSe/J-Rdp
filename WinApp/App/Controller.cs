@@ -75,7 +75,7 @@ internal class Controller
     private TrayCallbacks GetTrayCallbacks() => new()
     {
         ToggleConsole = Callback_ToggleConsole,
-        SetFileLogging = Callback_SetFileLogging,
+        ToggleFileLogging = Callback_ToggleFileLogging,
         OpenLogsFolder = _coreManager.OpenLogsFolder,
         OpenConfigFile = _coreManager.OpenConfigFile,
         ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
@@ -93,7 +93,7 @@ internal class Controller
         // TODO: Update the config file.
     }
 
-    private void Callback_SetFileLogging(bool logToFile)
+    private void Callback_ToggleFileLogging(bool logToFile)
     {
         LogManager.SetFileLogging(logToFile);
         // TODO: Update the config file.

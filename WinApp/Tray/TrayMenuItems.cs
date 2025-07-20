@@ -16,12 +16,12 @@ internal static class TrayMenuItems
         return menuItem;
     }
 
-    public static ToolStripMenuItem ToggleLogToFile(Action<bool> callback)
+    public static ToolStripMenuItem ToggleFileLogging(Action<bool> callback)
     {
         var menuItem = new ToolStripMenuItem()
         {
-            Name = TrayConstants.ItemNames.ToggleLogToFile,
-            Text = TrayConstants.ItemTexts.ToggleLogToFile,
+            Name = TrayConstants.ItemNames.ToggleFileLogging,
+            Text = TrayConstants.ItemTexts.ToggleFileLogging,
             CheckOnClick = true,
         };
         menuItem.Click += TrayMenuEvents.OnClick_ToggleLogToFile(callback);
