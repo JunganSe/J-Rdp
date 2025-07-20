@@ -58,7 +58,7 @@ internal class Controller
 
     private TrayCallbacks GetTrayCallbacks() => new()
     {
-        ToggleConsole = _consoleManager.SetVisibility,
+        ToggleConsole = Callback_ToggleConsole,
         OpenLogsFolder = _coreManager.OpenLogsFolder,
         OpenConfigFile = _coreManager.OpenConfigFile,
         ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
@@ -75,6 +75,12 @@ internal class Controller
     }
 
 
+
+    private void Callback_ToggleConsole(bool showConsole)
+    {
+        _consoleManager.SetVisibility(showConsole);
+        // TODO: Update the config file.
+    }
 
     private void Callback_OnConsoleClosed()
     {
