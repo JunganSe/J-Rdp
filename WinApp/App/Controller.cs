@@ -95,10 +95,8 @@ internal class Controller
 
     private void Callback_SetFileLogging(bool logToFile)
     {
-        // TODO:
-        // - Call LogManager to set file logging state.
-        // - Update the tray menu state.
-        // - Update the config file.
+        LogManager.SetFileLogging(logToFile);
+        // TODO: Update the config file.
     }
 
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)

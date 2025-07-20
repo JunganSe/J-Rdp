@@ -52,7 +52,7 @@ internal class TrayWorker
     private ToolStripItem[] CreateContextMenuItems(TrayCallbacks callbacks) =>
     [
         TrayMenuItems.ToggleConsole(callbacks.ToggleConsole),
-        TrayMenuItems.ToggleLogToFile,
+        TrayMenuItems.ToggleLogToFile(callbacks.SetFileLogging),
         TrayMenuItems.OpenLogsFolder(callbacks.OpenLogsFolder),
         TrayMenuItems.OpenConfigFile(callbacks.OpenConfigFile),
 

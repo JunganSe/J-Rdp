@@ -1,5 +1,4 @@
-﻿using Auxiliary;
-using Core.Profiles;
+﻿using Core.Profiles;
 
 namespace WinApp.Tray;
 
@@ -17,12 +16,16 @@ internal static class TrayMenuEvents
         };
     }
 
-    public static void OnClick_ToggleLogToFile(object? sender, EventArgs e)
+    public static EventHandler OnClick_ToggleLogToFile(Action<bool> callback)
     {
-        if (sender is not ToolStripMenuItem menuItem)
-            return;
+        return (object? sender, EventArgs e) =>
+        {
+            if (sender is not ToolStripMenuItem menuItem)
+                return;
 
-        LogManager.SetFileLogging(menuItem.Checked);
+            bool logToFile = menuItem.Checked;
+            callback.Invoke(logToFile);
+        };
     }
 
     public static EventHandler OnClick_OpenLogsFolder(Action callback)

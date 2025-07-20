@@ -16,12 +16,17 @@ internal static class TrayMenuItems
         return menuItem;
     }
 
-    public static ToolStripMenuItem ToggleLogToFile = new(null, null, TrayMenuEvents.OnClick_ToggleLogToFile)
+    public static ToolStripMenuItem ToggleLogToFile(Action<bool> callback)
     {
-        Name = TrayConstants.ItemNames.ToggleLogToFile,
-        Text = TrayConstants.ItemTexts.ToggleLogToFile,
-        CheckOnClick = true,
-    };
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.ToggleLogToFile,
+            Text = TrayConstants.ItemTexts.ToggleLogToFile,
+            CheckOnClick = true,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_ToggleLogToFile(callback);
+        return menuItem;
+    }
 
     public static ToolStripMenuItem OpenLogsFolder(Action callback)
     {
