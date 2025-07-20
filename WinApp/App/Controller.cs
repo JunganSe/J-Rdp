@@ -84,19 +84,25 @@ internal class Controller
     private void Callback_ToggleConsole(bool showConsole)
     {
         _consoleManager.SetVisibility(showConsole);
-        // TODO: Update the config file.
+        
+        var configInfo = new ConfigInfo() { ShowLogConsole = showConsole };
+        _coreManager.UpdateConfig(configInfo);
     }
 
     private void Callback_OnConsoleClosed()
     {
         _trayManager.SetMenuState_ShowConsole(false);
-        // TODO: Update the config file.
+
+        var configInfo = new ConfigInfo() { ShowLogConsole = false };
+        _coreManager.UpdateConfig(configInfo);
     }
 
     private void Callback_ToggleFileLogging(bool logToFile)
     {
         LogManager.SetFileLogging(logToFile);
-        // TODO: Update the config file.
+
+        var configInfo = new ConfigInfo() { LogToFile = logToFile };
+        _coreManager.UpdateConfig(configInfo);
     }
 
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)
