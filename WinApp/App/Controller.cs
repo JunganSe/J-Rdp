@@ -112,6 +112,9 @@ internal class Controller
         _coreManager.UpdateConfig(configInfo);
     }
 
+    /// <summary>
+    /// Updates the state in WinApp when the config has been updated in Core.
+    /// </summary>
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)
     {
         if (configInfo.ShowLogConsole.HasValue)
