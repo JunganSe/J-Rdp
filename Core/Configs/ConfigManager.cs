@@ -80,6 +80,24 @@ internal class ConfigManager
         Profiles = ProfileHelper.GetProfileInfos(Config.Profiles)
     };
 
+    public void UpdateConfig(ConfigInfo configInfo)
+    {
+        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
+
+        if (configInfo.Profiles is not null)
+            ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, configInfo.Profiles);
+
+        var config = new Config()
+        {
+            PollingInterval = Config.PollingInterval,
+            DeleteDelay = Config.DeleteDelay,
+            ShowLogConsole = configInfo.ShowLogConsole ?? Config.ShowLogConsole,
+            LogToFile = configInfo.LogToFile ?? Config.LogToFile,
+            Profiles = profiles
+        };
+        _configWorker.UpdateConfigFile(config);
+    }
+
     public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
     {
         var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);

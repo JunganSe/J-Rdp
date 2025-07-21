@@ -51,16 +51,8 @@ public class Controller
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();
 
-    public void UpdateConfig(ConfigInfo configInfo)
-    {
-        // TODO: Implement.
-        // - ShowLogConsole
-        // - LogToFile
-        // x Profiles. Call: _configManager.UpdateProfilesEnabledState(profileInfos);
-
-        if (configInfo.Profiles is not null)
-            _configManager.UpdateProfilesEnabledState(configInfo.Profiles);
-    }
+    public void UpdateConfig(ConfigInfo configInfo) =>
+        _configManager.UpdateConfig(configInfo);
 
     public void Stop()
     {
