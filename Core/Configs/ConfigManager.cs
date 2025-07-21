@@ -82,20 +82,25 @@ internal class ConfigManager
 
     public void UpdateConfig(ConfigInfo configInfo)
     {
-        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
-
-        if (configInfo.Profiles is not null)
-            ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, configInfo.Profiles);
-
         var config = new Config()
         {
             PollingInterval = Config.PollingInterval,
             DeleteDelay = Config.DeleteDelay,
             ShowLogConsole = configInfo.ShowLogConsole ?? Config.ShowLogConsole,
             LogToFile = configInfo.LogToFile ?? Config.LogToFile,
-            Profiles = profiles
+            Profiles = GetProfilesForConfigUpdate(configInfo.Profiles)
         };
         _configWorker.UpdateConfigFile(config);
+    }
+
+    private List<Profile> GetProfilesForConfigUpdate(List<ProfileInfo>? profileInfos)
+    {
+        if (profileInfos is null)
+            return Config.Profiles;
+
+        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
+        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
+        return profiles;
     }
 
     public void OpenConfigFile()
