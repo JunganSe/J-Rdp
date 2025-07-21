@@ -98,26 +98,6 @@ internal class ConfigManager
         _configWorker.UpdateConfigFile(config);
     }
 
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
-    {
-        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
-        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
-        UpdateConfigFileProfiles(profiles);
-    }
-
-    private void UpdateConfigFileProfiles(List<Profile> profiles)
-    {
-        var config = new Config()
-        {
-            PollingInterval = Config.PollingInterval,
-            DeleteDelay = Config.DeleteDelay,
-            ShowLogConsole = Config.ShowLogConsole,
-            LogToFile = Config.LogToFile,
-            Profiles = profiles
-        };
-        _configWorker.UpdateConfigFile(config);
-    }
-
     public void OpenConfigFile()
     {
         if (!_configWorker.IsConfigFileFound())
