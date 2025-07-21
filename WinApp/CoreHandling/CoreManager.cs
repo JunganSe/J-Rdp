@@ -35,12 +35,6 @@ internal class CoreManager
         _coreController?.OpenConfigFile();
 
     /// <summary>
-    /// Tell the core controller to update the profiles enabled state (in config file and memory).
-    /// </summary>
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
-        _coreController?.UpdateProfilesEnabledState(profileInfos);
-
-    /// <summary>
     /// Tell the core controller to update the config (in file and memory).
     /// </summary>
     public void UpdateConfig(ConfigInfo configInfo)

@@ -51,9 +51,6 @@ public class Controller
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();
 
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
-        _configManager.UpdateProfilesEnabledState(profileInfos);
-
     public void UpdateConfig(ConfigInfo configInfo)
     {
         // TODO: Implement.
