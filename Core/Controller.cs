@@ -56,7 +56,10 @@ public class Controller
         // TODO: Implement.
         // - ShowLogConsole
         // - LogToFile
-        // - Profiles. Call: _configManager.UpdateProfilesEnabledState(profileInfos);
+        // x Profiles. Call: _configManager.UpdateProfilesEnabledState(profileInfos);
+
+        if (configInfo.Profiles is not null)
+            _configManager.UpdateProfilesEnabledState(configInfo.Profiles);
     }
 
     public void Stop()
