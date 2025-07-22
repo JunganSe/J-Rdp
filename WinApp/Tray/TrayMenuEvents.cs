@@ -50,18 +50,24 @@ internal static class TrayMenuEvents
         };
     }
 
-    public static void OnClick_Exit(object? sender, EventArgs e)
+    public static EventHandler OnClick_Exit()
     {
-        Application.Exit();
+        return (object? sender, EventArgs e) =>
+        {
+            Application.Exit();
+        };
     }
 
-    public static void OnClick_Close(object? sender, EventArgs e)
+    public static EventHandler OnClick_Close()
     {
-        if (sender is ToolStripMenuItem menuItem
-            && menuItem.Owner is ContextMenuStrip contextMenu)
+        return (object? sender, EventArgs e) =>
         {
-            contextMenu.Close();
-        }
+            if (sender is ToolStripMenuItem menuItem
+                && menuItem.Owner is ContextMenuStrip contextMenu)
+            {
+                contextMenu.Close();
+            }
+        };
     }
 
     public static EventHandler OnClick_Profile(ProfileHandler callback)

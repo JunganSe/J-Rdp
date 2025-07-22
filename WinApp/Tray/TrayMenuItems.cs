@@ -57,7 +57,7 @@ internal static class TrayMenuItems
             Name = TrayConstants.ItemNames.Exit,
             Text = TrayConstants.ItemTexts.Exit,
         };
-        menuItem.Click += TrayMenuEvents.OnClick_Exit;
+        menuItem.Click += TrayMenuEvents.OnClick_Exit();
         return menuItem;
     }
 
@@ -68,7 +68,7 @@ internal static class TrayMenuItems
             Name = TrayConstants.ItemNames.Close,
             Text = TrayConstants.ItemTexts.Close,
         };
-        menuItem.Click += TrayMenuEvents.OnClick_Close;
+        menuItem.Click += TrayMenuEvents.OnClick_Close();
         return menuItem;
     }
 
