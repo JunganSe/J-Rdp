@@ -4,9 +4,8 @@ namespace WinApp.Tray;
 
 internal static class TrayMenuEvents
 {
-    public static EventHandler OnClick_ToggleConsole(Action<bool> callback)
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_ToggleConsole(Action<bool> callback) =>
+        (object? sender, EventArgs e) =>
         {
             if (sender is not ToolStripMenuItem menuItem)
                 return;
@@ -14,11 +13,9 @@ internal static class TrayMenuEvents
             bool showConsole = menuItem.Checked;
             callback.Invoke(showConsole);
         };
-    }
 
-    public static EventHandler OnClick_ToggleLogToFile(Action<bool> callback)
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_ToggleLogToFile(Action<bool> callback) =>
+        (object? sender, EventArgs e) =>
         {
             if (sender is not ToolStripMenuItem menuItem)
                 return;
@@ -26,41 +23,33 @@ internal static class TrayMenuEvents
             bool logToFile = menuItem.Checked;
             callback.Invoke(logToFile);
         };
-    }
 
-    public static EventHandler OnClick_OpenLogsFolder(Action callback)
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_OpenLogsFolder(Action callback) =>
+        (object? sender, EventArgs e) =>
         {
             if (sender is not ToolStripMenuItem menuItem)
                 return;
 
             callback.Invoke();
         };
-    }
 
-    public static EventHandler OnClick_OpenConfigFile(Action callback)
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_OpenConfigFile(Action callback) =>
+        (object? sender, EventArgs e) =>
         {
             if (sender is not ToolStripMenuItem menuItem)
                 return;
 
             callback.Invoke();
         };
-    }
 
-    public static EventHandler OnClick_Exit()
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_Exit() =>
+        (object? sender, EventArgs e) =>
         {
             Application.Exit();
         };
-    }
 
-    public static EventHandler OnClick_Close()
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_Close() =>
+        (object? sender, EventArgs e) =>
         {
             if (sender is ToolStripMenuItem menuItem
                 && menuItem.Owner is ContextMenuStrip contextMenu)
@@ -68,11 +57,9 @@ internal static class TrayMenuEvents
                 contextMenu.Close();
             }
         };
-    }
 
-    public static EventHandler OnClick_Profile(ProfileHandler callback)
-    {
-        return (object? sender, EventArgs e) =>
+    public static EventHandler OnClick_Profile(ProfileHandler callback) =>
+        (object? sender, EventArgs e) =>
         {
             if (sender is not ToolStripMenuItem menuItem || menuItem.Tag is not ProfileInfo profileInfo)
                 return;
@@ -99,7 +86,6 @@ internal static class TrayMenuEvents
 
             callback.Invoke(profileInfos);
         };
-    }
 
     private static List<ProfileInfo> GetProfileInfosFromMenuItems(ToolStripItemCollection items) =>
         items.OfType<ToolStripMenuItem>()
