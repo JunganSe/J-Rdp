@@ -59,8 +59,8 @@ internal class TrayWorker
         new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
         new ToolStripSeparator(),
 
-        TrayMenuItems.Exit,
-        TrayMenuItems.Close,
+        TrayMenuItems.Exit(),
+        TrayMenuItems.Close(),
     ];
 
     #endregion

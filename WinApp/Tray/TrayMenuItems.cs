@@ -50,17 +50,27 @@ internal static class TrayMenuItems
         return menuItem;
     }
 
-    public static ToolStripMenuItem Exit = new(null, null, TrayMenuEvents.OnClick_Exit)
+    public static ToolStripMenuItem Exit()
     {
-        Name = TrayConstants.ItemNames.Exit,
-        Text = TrayConstants.ItemTexts.Exit,
-    };
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.Exit,
+            Text = TrayConstants.ItemTexts.Exit,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_Exit;
+        return menuItem;
+    }
 
-    public static ToolStripMenuItem Close = new(null, null, TrayMenuEvents.OnClick_Close)
+    public static ToolStripMenuItem Close()
     {
-        Name = TrayConstants.ItemNames.Close,
-        Text = TrayConstants.ItemTexts.Close,
-    };
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.Close,
+            Text = TrayConstants.ItemTexts.Close,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_Close;
+        return menuItem;
+    }
 
     public static ToolStripMenuItem Profile(ProfileInfo profileInfo, ProfileHandler callback)
     {
