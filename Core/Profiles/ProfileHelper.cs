@@ -32,7 +32,9 @@ internal static class ProfileHelper
             Name = profile.Name
         }).ToList();
 
-    /// <summary> Sets the enabled states of profiles based on the enabled states of profile infos, where their Id is matching. </summary>
+    /// <summary>
+    /// Sets the enabled states of profiles based on the enabled states of profile infos, where their Id is matching.
+    /// </summary>
     public static void SetEnabledStatesFromMatchingProfileInfos(List<Profile> profiles, List<ProfileInfo> profileInfos)
     {
         foreach (var profile in profiles)

@@ -9,7 +9,7 @@ internal class ConfigManager
     private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly ConfigWorker _configWorker = new();
     private readonly SynchronizationContext? _syncContext = SynchronizationContext.Current;
-    private ProfileHandler? _callback_ConfigUpdated;
+    private Handler_OnConfigUpdated? _callback_ConfigUpdated;
 
     public Config Config { get; private set; } = new();
 
@@ -23,7 +23,7 @@ internal class ConfigManager
                        ConfigConstants.DeleteDelay_Min,
                        ConfigConstants.DeleteDelay_Max);
 
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
         _callback_ConfigUpdated = callback;
 
     public void CreateConfigFileIfMissing()
@@ -66,29 +66,41 @@ internal class ConfigManager
         if (_callback_ConfigUpdated is null)
             return;
 
-        var profileInfos = ProfileHelper.GetProfileInfos(Config.Profiles);
+        var configInfo = GetConfigInfo();
         if (_syncContext is not null)
-            _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(profileInfos), null); // Invoke on the UI thread.
+            _syncContext.Post(_ => _callback_ConfigUpdated.Invoke(configInfo), state: null); // Invoke on the UI thread.
         else
-            _callback_ConfigUpdated.Invoke(profileInfos); // Invoke on current thread.
+            _callback_ConfigUpdated.Invoke(configInfo); // Invoke on current thread.
     }
 
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos)
+    private ConfigInfo GetConfigInfo() => new()
     {
-        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
-        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
-        UpdateConfigFileProfiles(profiles);
-    }
+        ShowLogConsole = Config.ShowLogConsole,
+        LogToFile = Config.LogToFile,
+        Profiles = ProfileHelper.GetProfileInfos(Config.Profiles)
+    };
 
-    private void UpdateConfigFileProfiles(List<Profile> profiles)
+    public void UpdateConfig(ConfigInfo configInfo)
     {
         var config = new Config()
         {
             PollingInterval = Config.PollingInterval,
             DeleteDelay = Config.DeleteDelay,
-            Profiles = profiles
+            ShowLogConsole = configInfo.ShowLogConsole ?? Config.ShowLogConsole,
+            LogToFile = configInfo.LogToFile ?? Config.LogToFile,
+            Profiles = GetProfilesForConfigUpdate(configInfo.Profiles)
         };
         _configWorker.UpdateConfigFile(config);
+    }
+
+    private List<Profile> GetProfilesForConfigUpdate(List<ProfileInfo>? profileInfos)
+    {
+        if (profileInfos is null)
+            return Config.Profiles;
+
+        var profiles = ProfileHelper.GetDeepCopies(Config.Profiles);
+        ProfileHelper.SetEnabledStatesFromMatchingProfileInfos(profiles, profileInfos);
+        return profiles;
     }
 
     public void OpenConfigFile()

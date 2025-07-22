@@ -1,4 +1,7 @@
-﻿using WinApp.CoreHandling;
+﻿using Auxiliary;
+using Core.Configs;
+using Core.Profiles;
+using WinApp.CoreHandling;
 using WinApp.LogConsole;
 using WinApp.Tray;
 
@@ -28,51 +31,100 @@ internal class Controller
 
 
 
+    #region Initialization
+
     private void Initialize(Arguments arguments)
     {
-        SetConsoleVisibility(arguments.ShowConsole);
         InitializeTrayIfArgumentAllows(arguments);
         InitializeCore(arguments);
-    }
-
-    private void SetConsoleVisibility(bool show)
-    {
-        _consoleManager.SetVisibility(show);
-        _consoleManager.SetCallback_ConsoleClosed(() =>
-        {
-            _trayManager.SetMenuState_ShowConsole(false);
-        });
+        _consoleManager.SetCallback_ConsoleClosed(Callback_OnConsoleClosed);
     }
 
     private void InitializeTrayIfArgumentAllows(Arguments arguments)
     {
         if (!arguments.NoTray)
-            InitializeTray(arguments);
+            InitializeTray();
         else
             _logger.Info("Starting without tray icon and menu.");
     }
 
-    private void InitializeTray(Arguments arguments)
+    private void InitializeTray()
     {
         _logger.Trace("Initializing tray...");
-        var trayCallbacks = new TrayCallbacks()
-        {
-            ToggleConsole = _consoleManager.SetVisibility,
-            OpenLogsFolder = _coreManager.OpenLogsFolder,
-            OpenConfigFile = _coreManager.OpenConfigFile,
-            ProfilesActiveStateChanged = _coreManager.UpdateProfilesEnabledState
-        };
+
+        var trayCallbacks = GetTrayCallbacks();
         _trayManager.SetCallbacks(trayCallbacks);
         _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
-        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
+
         _logger.Debug("Tray initialized.");
     }
 
     private void InitializeCore(Arguments arguments)
     {
         _coreManager.Initialize();
-        if (!arguments.NoTray)
-            _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
+
+        if (arguments.NoTray)
+            return;
+
+        _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
     }
+
+    #endregion
+
+    #region Callbacks
+
+    private TrayCallbacks GetTrayCallbacks() => new()
+    {
+        ToggleConsole = Callback_ToggleConsole,
+        ToggleFileLogging = Callback_ToggleFileLogging,
+        OpenLogsFolder = _coreManager.OpenLogsFolder,
+        OpenConfigFile = _coreManager.OpenConfigFile,
+        ProfilesActiveStateChanged = Callback_ProfilesActiveStateChanged
+    };
+
+    private void Callback_ToggleConsole(bool showConsole)
+    {
+        _consoleManager.SetVisibility(showConsole);
+        
+        var configInfo = new ConfigInfo() { ShowLogConsole = showConsole };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    private void Callback_OnConsoleClosed()
+    {
+        _trayManager.SetMenuState_ShowConsole(false);
+
+        var configInfo = new ConfigInfo() { ShowLogConsole = false };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    private void Callback_ToggleFileLogging(bool logToFile)
+    {
+        LogManager.SetFileLogging(logToFile);
+
+        var configInfo = new ConfigInfo() { LogToFile = logToFile };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    private void Callback_ProfilesActiveStateChanged(List<ProfileInfo> profileInfos)
+    {
+        var configInfo = new ConfigInfo() { Profiles = profileInfos };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    /// <summary>
+    /// Updates the state in WinApp when the config has been updated in Core.
+    /// </summary>
+    private void Callback_OnConfigUpdated(ConfigInfo configInfo)
+    {
+        if (configInfo.ShowLogConsole.HasValue)
+            _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
+
+        if (configInfo.LogToFile.HasValue)
+            LogManager.SetFileLogging(configInfo.LogToFile.Value);
+
+        _trayManager.UpdateMenuState(configInfo);
+    }
+
+    #endregion
 }

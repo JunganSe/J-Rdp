@@ -11,9 +11,11 @@ internal class ConsoleManager
 
     public void SetVisibility(bool show)
     {
-        if (show)
+        bool isConsoleOpen = _worker.IsConsoleWindowOpen();
+
+        if (show && !isConsoleOpen)
             OpenConsole();
-        else
+        else if (!show && isConsoleOpen)
             _worker.CloseConsole();
     }
 
@@ -22,14 +24,17 @@ internal class ConsoleManager
         try
         {
             _logger.Trace("Opening log console...");
+
             bool isConsoleOpened = _worker.TryAllocateConsole();
+            if (!isConsoleOpened)
+                return;
+
             _worker.SetConsoleTitle();
             _worker.PrintInfoMessage();
             _worker.DisableConsoleCloseButton();
             _worker.SetEvent_CloseConsoleOnCommand();
 
-            if (isConsoleOpened)
-                _logger.Info("Opened log console.");
+            _logger.Info("Opened log console.");
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
-﻿using Core.Profiles;
+﻿using Core.Configs;
+using Core.Profiles;
 using NLog;
 
 namespace WinApp.Tray;
@@ -24,14 +25,49 @@ internal class TrayManager
         _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(_callbacks);
     }
 
+    public void UpdateMenuState(ConfigInfo configInfo)
+    {
+        if (_notifyIcon?.ContextMenuStrip is null)
+        {
+            _logger.Error("Can not update tray context menu state. Context menu is missing.");
+            return;
+        }
+
+        if (configInfo.ShowLogConsole is not null)
+            SetMenuState_ShowConsole(configInfo.ShowLogConsole.Value);
+
+        if (configInfo.LogToFile is not null)
+            SetMenuState_LogToFile(configInfo.LogToFile.Value);
+
+        if (configInfo.Profiles is not null)
+            UpdateMenuProfiles(configInfo.Profiles);
+    }
+
+    public void SetMenuState_ShowConsole(bool showConsole)
+    {
+        if (_notifyIcon?.ContextMenuStrip is null)
+            return;
+
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
+    }
+
+    public void SetMenuState_LogToFile(bool logToFile)
+    {
+        if (_notifyIcon?.ContextMenuStrip is null)
+            return;
+
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleFileLogging, logToFile);
+    }
+
+    /// <summary>
+    /// Updates the profile menu items in the tray context menu to reflect the provided profileInfos.
+    /// </summary>
+    /// <remarks> If no profiles are provided, a disabled placeholder profile will be used. </remarks>
     public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
     {
         var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
         if (menuItems is null)
-        {
-            _logger.Error("Can not update profile items in context menu. Context menu is missing.");
             return;
-        }
 
         _trayWorker.RemoveAllProfileMenuItems(menuItems);
 
@@ -42,28 +78,6 @@ internal class TrayManager
         }
         else if (!_trayWorker.PlaceholderProfileMenuItemExists(menuItems))
             _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
-    }
-
-    public void SetMenuState_ShowConsole(bool showConsole)
-    {
-        if (_notifyIcon?.ContextMenuStrip is null)
-        {
-            _logger.Error("Can not set menu checked 'show console' state. Context menu is missing.");
-            return;
-        }
-
-        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
-    }
-
-    public void SetMenuState_LogToFile(bool logToFile)
-    {
-        if (_notifyIcon?.ContextMenuStrip is null)
-        {
-            _logger.Error("Can not set menu checked state 'log to file'. Context menu is missing.");
-            return;
-        }
-
-        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
     }
 
     public void DisposeTray() =>

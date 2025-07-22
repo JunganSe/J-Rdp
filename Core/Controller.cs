@@ -42,7 +42,7 @@ public class Controller
         }
     }
 
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
+    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
         _configManager.SetCallback_ConfigUpdated(callback);
 
     public void OpenLogsFolder() =>
@@ -51,8 +51,8 @@ public class Controller
     public void OpenConfigFile() =>
         _configManager.OpenConfigFile();
 
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
-        _configManager.UpdateProfilesEnabledState(profileInfos);
+    public void UpdateConfig(ConfigInfo configInfo) =>
+        _configManager.UpdateConfig(configInfo);
 
     public void Stop()
     {
@@ -74,12 +74,12 @@ public class Controller
     {
         _configManager.UpdateConfigFromFile();
         _configManager.InvokeConfigUpdatedCallback();
-        SetPollingInterval();
+        ApplyPollingIntervalFromConfig();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
-    private void SetPollingInterval()
+    private void ApplyPollingIntervalFromConfig()
     {
         int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)
@@ -108,13 +108,6 @@ public class Controller
         }
     }
 
-    private void StopMainLoop()
-    {
-        _mainLoopCancellation?.Cancel();
-        _mainLoopCancellation?.Dispose();
-        _mainLoopCancellation = null;
-    }
-
     private void StopAndDispose()
     {
         if (_isStopping)
@@ -127,5 +120,12 @@ public class Controller
         _configWatcherManager.StopAndDisposeConfigWatcher();
         StopMainLoop();
         _logger.Debug("Cleanup complete.");
+    }
+
+    private void StopMainLoop()
+    {
+        _mainLoopCancellation?.Cancel();
+        _mainLoopCancellation?.Dispose();
+        _mainLoopCancellation = null;
     }
 }
