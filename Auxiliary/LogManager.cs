@@ -56,8 +56,9 @@ public static class LogManager
         }
         else
         {
-            _logger.Info("Disabling logging to file.");
+            _logger.Info("Disabling logging to file...");
             SetFileRulesEnabled(false);
+            _logger.Info("Disabled logging to file.");
         }
     }
 
