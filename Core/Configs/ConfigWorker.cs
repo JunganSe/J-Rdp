@@ -63,7 +63,7 @@ internal class ConfigWorker
             string path = GetConfigFilePath();
             var process = new ProcessStartInfo(path) { UseShellExecute = true, };
             Process.Start(process);
-            _logger.Info("Config file opened in shell.");
+            _logger.Info($"Opened config file: '{path}'");
         }
         catch (Exception ex)
         {
