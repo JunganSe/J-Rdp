@@ -15,7 +15,7 @@ internal class Controller
     private readonly CoreManager _coreManager = new();
     private bool _isStopping = false;
 
-    public void Run(Arguments arguments)
+    public void Start(Arguments arguments)
     {
         Initialize(arguments); // Initialize on the current thread.
         Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.

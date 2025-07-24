@@ -28,7 +28,7 @@ internal static class Program
         }
 
         _stopSignalListener.Start(OnStopSignalReceived);
-        _controller.Run(arguments);
+        _controller.Start(arguments);
         Application.Run();
     }
 
