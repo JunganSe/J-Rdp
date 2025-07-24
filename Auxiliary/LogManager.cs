@@ -17,7 +17,7 @@ public static class LogManager
 
     public static void Initialize()
     {
-        _logger.Trace("Initializing LogManager.");
+        _logger.Trace("Initializing LogManager...");
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         string externalConfigPath = Path.Combine(baseDirectory, _configFileName);
 
@@ -27,19 +27,20 @@ public static class LogManager
             LoadEmbeddedConfig();
 
         SetFileRulesEnabled(false);
+        _logger.Debug("Initialized LogManager.");
     }
 
     private static void LoadExternalConfig()
     {
         NLog.LogManager.Setup().LoadConfigurationFromFile(_configFileName);
-        _logger.Trace("Loaded external NLog configuration file.");
+        _logger.Debug("Loaded external NLog configuration file.");
     }
 
     private static void LoadEmbeddedConfig()
     {
         var assembly = typeof(LogManager).Assembly;
         NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
-        _logger.Trace("Loaded embedded NLog configuration file.");
+        _logger.Debug("Loaded embedded NLog configuration file.");
     }
 
     #endregion
