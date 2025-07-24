@@ -13,7 +13,7 @@ internal class Controller
     private readonly ConsoleManager _consoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
-    private bool _isClosingApp = false;
+    private bool _isStopping = false;
 
     public void Run(Arguments arguments)
     {
@@ -21,16 +21,12 @@ internal class Controller
         Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
     }
 
-    public void StopCore() =>
-        _coreManager.Stop();
-
-    public void DisposeTray() =>
-        _trayManager.DisposeTray();
-
-    public void CloseAndDisposeConsole()
+    public void Stop()
     {
-        _isClosingApp = true;
+        _isStopping = true;
         _consoleManager.SetVisibility(false);
+        _coreManager.Stop();
+        _trayManager.DisposeTray();
     }
 
 
@@ -96,8 +92,8 @@ internal class Controller
 
     private void Callback_OnConsoleClosed()
     {
-        // Abort if the app is closing, to avoid updating the config.
-        if (_isClosingApp)
+        // Abort if stopping, to avoid updating the config when the log console closes.
+        if (_isStopping)
             return;
 
         _trayManager.SetMenuState_ShowConsole(false);

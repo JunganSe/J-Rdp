@@ -62,9 +62,7 @@ internal static class Program
     {
         _logger.Debug("Stopping and cleaning up...");
         _stopSignalListener.Stop();
-        _controller.CloseAndDisposeConsole();
-        _controller.StopCore();
-        _controller.DisposeTray();
+        _controller.Stop();
         _mutex?.Dispose();
 
         _logger.Debug("Cleanup complete.");
