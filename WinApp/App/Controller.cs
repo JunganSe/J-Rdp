@@ -13,6 +13,7 @@ internal class Controller
     private readonly ConsoleManager _consoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
+    private bool _isClosingApp = false;
 
     public void Run(Arguments arguments)
     {
@@ -26,8 +27,11 @@ internal class Controller
     public void DisposeTray() =>
         _trayManager.DisposeTray();
 
-    public void CloseAndDisposeConsole() =>
+    public void CloseAndDisposeConsole()
+    {
+        _isClosingApp = true;
         _consoleManager.SetVisibility(false);
+    }
 
 
 
@@ -92,6 +96,10 @@ internal class Controller
 
     private void Callback_OnConsoleClosed()
     {
+        // Abort if the app is closing, to avoid updating the config.
+        if (_isClosingApp)
+            return;
+
         _trayManager.SetMenuState_ShowConsole(false);
 
         var configInfo = new ConfigInfo() { ShowLogConsole = false };
