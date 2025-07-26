@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "WinApp": {
-      "commandName": "Project",
-      "commandLineArgs": "x-NoTray"
-    }
-  }
-}

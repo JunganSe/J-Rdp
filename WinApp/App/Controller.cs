@@ -15,9 +15,9 @@ internal class Controller
     private readonly CoreManager _coreManager = new();
     private bool _isStopping = false;
 
-    public void Start(Arguments arguments)
+    public void Start()
     {
-        Initialize(arguments); // Initialize on the current thread.
+        Initialize(); // Initialize on the current thread.
         Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
     }
 
@@ -33,19 +33,12 @@ internal class Controller
 
     #region Initialization
 
-    private void Initialize(Arguments arguments)
+    private void Initialize()
     {
-        InitializeTrayIfArgumentAllows(arguments);
-        InitializeCore(arguments);
+        InitializeTray();
+        _coreManager.Initialize();
+        _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
         _consoleManager.SetCallback_ConsoleClosed(Callback_OnConsoleClosed);
-    }
-
-    private void InitializeTrayIfArgumentAllows(Arguments arguments)
-    {
-        if (!arguments.NoTray)
-            InitializeTray();
-        else
-            _logger.Info("Starting without tray icon and menu.");
     }
 
     private void InitializeTray()
@@ -57,16 +50,6 @@ internal class Controller
         _trayManager.InitializeNotifyIconWithContextMenu();
 
         _logger.Debug("Tray initialized.");
-    }
-
-    private void InitializeCore(Arguments arguments)
-    {
-        _coreManager.Initialize();
-
-        if (arguments.NoTray)
-            return;
-
-        _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
     }
 
     #endregion
