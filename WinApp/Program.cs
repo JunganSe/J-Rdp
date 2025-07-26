@@ -15,7 +15,6 @@ internal static class Program
     public static void Main(string[] args)
     {
         RegisterCloseEvents();
-        var arguments = BooleanArgumentsParser.Parse<Arguments>(args);
         LogManager.Initialize();
 
         _logger.Info("***** Starting application. *****");
@@ -28,7 +27,7 @@ internal static class Program
         }
 
         _stopSignalListener.Start(OnStopSignalReceived);
-        _controller.Start(arguments);
+        _controller.Start();
         Application.Run();
     }
 
