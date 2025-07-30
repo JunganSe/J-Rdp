@@ -63,6 +63,15 @@ public static class LogManager
         }
     }
 
+    /// <summary>
+    /// Checks whether any filters in the rule are excplicitly set to "true".
+    /// </summary>
+    private static bool IsRuleEnabled(LoggingRule rule) =>
+        rule.Filters.Any(filter =>
+            filter is ConditionBasedFilter conditionBasedFilter
+            && bool.TryParse(conditionBasedFilter.Condition.ToString(), out bool isConditionTrue)
+            && isConditionTrue);
+
     private static void SetFileRulesEnabled(bool enable)
     {
         var fileRules = GetFileLoggingRules();
