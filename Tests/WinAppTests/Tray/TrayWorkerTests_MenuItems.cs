@@ -8,6 +8,7 @@ using WinApp.Tray;
 namespace WinAppTests.Tray;
 
 [TestClass]
+[DoNotParallelize] // Avoids issues where some tests randomly fail. It seems that ContextMenuStrip is sharing resources across tests when run in parallel.
 public class TrayWorkerTests_MenuItems
 {
     private TrayWorker _worker;
