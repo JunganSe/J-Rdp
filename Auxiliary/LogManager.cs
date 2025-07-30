@@ -49,19 +49,35 @@ public static class LogManager
 
     public static void SetFileLogging(bool enable)
     {
-        // Seemingly unnecessary if/else block because of different logging and execution order.
-        if (enable)
+        bool isFileLoggingEnabled = GetFileLoggingRules().Any(IsRuleEnabled);
+        if (enable && !isFileLoggingEnabled)
         {
             SetFileRulesEnabled(true);
             _logger.Info("Enabled logging to file.");
         }
-        else
+        else if (!enable && isFileLoggingEnabled)
         {
             _logger.Info("Disabling logging to file...");
             SetFileRulesEnabled(false);
             _logger.Info("Disabled logging to file.");
         }
     }
+
+    private static List<LoggingRule> GetFileLoggingRules() =>
+        NLog.LogManager
+            .Configuration
+            .LoggingRules
+            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
+            .ToList();
+
+    /// <summary>
+    /// Checks whether any filter in the rule is excplicitly set to "true".
+    /// </summary>
+    private static bool IsRuleEnabled(LoggingRule rule) =>
+        rule.Filters.Any(filter =>
+            filter is ConditionBasedFilter conditionBasedFilter
+            && bool.TryParse(conditionBasedFilter.Condition.ToString(), out bool isConditionTrue)
+            && isConditionTrue);
 
     private static void SetFileRulesEnabled(bool enable)
     {
@@ -76,15 +92,6 @@ public static class LogManager
             SetRuleEnabled(rule, enable);
 
         NLog.LogManager.ReconfigExistingLoggers();
-    }
-
-    private static List<LoggingRule> GetFileLoggingRules()
-    {
-        return NLog.LogManager
-            .Configuration
-            .LoggingRules
-            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
-            .ToList();
     }
 
     // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
