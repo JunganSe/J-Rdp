@@ -63,6 +63,15 @@ public static class LogManager
         }
     }
 
+    private static List<LoggingRule> GetFileLoggingRules()
+    {
+        return NLog.LogManager
+            .Configuration
+            .LoggingRules
+            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
+            .ToList();
+    }
+
     /// <summary>
     /// Checks whether any filters in the rule are excplicitly set to "true".
     /// </summary>
@@ -85,15 +94,6 @@ public static class LogManager
             SetRuleEnabled(rule, enable);
 
         NLog.LogManager.ReconfigExistingLoggers();
-    }
-
-    private static List<LoggingRule> GetFileLoggingRules()
-    {
-        return NLog.LogManager
-            .Configuration
-            .LoggingRules
-            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
-            .ToList();
     }
 
     // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
