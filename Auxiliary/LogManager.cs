@@ -63,17 +63,15 @@ public static class LogManager
         }
     }
 
-    private static List<LoggingRule> GetFileLoggingRules()
-    {
-        return NLog.LogManager
+    private static List<LoggingRule> GetFileLoggingRules() =>
+        NLog.LogManager
             .Configuration
             .LoggingRules
             .Where(rule => rule.Targets.OfType<FileTarget>().Any())
             .ToList();
-    }
 
     /// <summary>
-    /// Checks whether any filters in the rule are excplicitly set to "true".
+    /// Checks whether any filter in the rule is excplicitly set to "true".
     /// </summary>
     private static bool IsRuleEnabled(LoggingRule rule) =>
         rule.Filters.Any(filter =>
