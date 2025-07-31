@@ -4,9 +4,6 @@ namespace Auxiliary;
 
 public static class AssemblyHelper
 {
-    public static string GetCallingAssemblyName() =>
-        Assembly.GetCallingAssembly().GetName().Name ?? "";
-
     public static string GetAssemblyName(Assembly assembly) =>
         assembly.GetName().Name ?? "";
 

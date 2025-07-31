@@ -8,18 +8,6 @@ namespace AuxiliaryTests;
 public sealed class AssemblyHelperTests
 {
     [TestMethod]
-    public void GetCallingAssemblyName_ReturnsCorrectName()
-    {
-        // Arrange
-
-        // Act
-        string actual = AssemblyHelper.GetCallingAssemblyName();
-
-        // Assert
-        Assert.AreEqual("AuxiliaryTests", actual);
-    }
-
-    [TestMethod]
     public void GetAssemblyName_ReturnsCorrectName_UsingRealAssembly()
     {
         // Arrange
