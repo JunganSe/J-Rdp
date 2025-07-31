@@ -1,8 +1,6 @@
 ﻿using Auxiliary;
-using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Xml.Linq;
 
 namespace AuxiliaryTests;
 
@@ -36,6 +34,7 @@ public sealed class AssemblyHelperTests
 
     [TestMethod]
     [DataRow("ABC", "ABC")]
+    [DataRow("-", "-")]
     public void GetAssemblyName_ReturnsCorrectName_UsingMockAssembly(string name, string expected)
     {
         // Arrange
@@ -48,6 +47,32 @@ public sealed class AssemblyHelperTests
         Assert.AreEqual(expected, actual);
     }
 
+    [TestMethod]
+    public void GetAssemblyVersion_ReturnsCorrectVersion_UsingMockAssembly()
+    {
+        // Arrange
+        var assembly = GetMockAssembly("-", new Version(1, 2, 3, 4));
+
+        // Act
+        string actual = AssemblyHelper.GetAssemblyVersion(assembly);
+
+        // Assert
+        Assert.AreEqual("1.2.3", actual);
+    }
+
+    [TestMethod]
+    public void GetAssemblyVersion_ReturnsZeroWhenVersionIsNull()
+    {
+        // Arrange
+        var assembly = GetMockAssembly("-", null);
+
+        // Act
+        string actual = AssemblyHelper.GetAssemblyVersion(assembly);
+
+        // Assert
+        Assert.AreEqual("0.0.0", actual);
+    }
+
 
 
     // Note: AssemblyBuilder.DefineDynamicAssembly does not allow name to be null or empty.
@@ -58,7 +83,6 @@ public sealed class AssemblyHelperTests
             Name = name,
             Version = version
         };
-        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(mockAssemblyName, AssemblyBuilderAccess.Run);
-        return assemblyBuilder;
+        return AssemblyBuilder.DefineDynamicAssembly(mockAssemblyName, AssemblyBuilderAccess.RunAndCollect);
     }
 }
