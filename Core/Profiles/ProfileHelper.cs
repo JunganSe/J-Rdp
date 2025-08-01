@@ -43,4 +43,16 @@ internal static class ProfileHelper
             profile.Enabled = profileInfo?.Enabled ?? false;
         }
     }
+
+    public static bool AreProfilesEqual(Profile profileA, Profile profileB)
+    {
+        return profileA.Name == profileB.Name
+            && profileA.Enabled == profileB.Enabled
+            && profileA.WatchFolder == profileB.WatchFolder
+            && profileA.Filter == profileB.Filter
+            && profileA.MoveToFolder == profileB.MoveToFolder
+            && profileA.Launch == profileB.Launch
+            && profileA.Delete == profileB.Delete
+            && profileA.Settings.SequenceEqual(profileB.Settings);
+    }
 }
