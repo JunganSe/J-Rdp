@@ -29,9 +29,8 @@ internal class ProfileManager
     public void LogProfilesSummaryIfChanged(List<Profile> previousProfiles)
     {
         var currentProfiles = ProfileWrappers.Select(pw => pw.Profile).ToList();
-        bool currentProfilesMatchPrevious = currentProfiles.All(current => previousProfiles.Any(previous => ProfileHelper.AreProfilesEqual(previous, current)));
-        if (currentProfilesMatchPrevious
-            && currentProfiles.Count == previousProfiles.Count)
+        bool areProfilesEquivalent = AreProfilesEquivalent(currentProfiles, previousProfiles);
+        if (areProfilesEquivalent)
             return;
 
         var profileSummaries = ProfileWrappers
@@ -40,5 +39,14 @@ internal class ProfileManager
             ? string.Join("", profileSummaries)
             : "(none)";
         _logger.Info($"Current profiles: {joinedSummaries}");
+    }
+
+    private bool AreProfilesEquivalent(List<Profile> profilesA, List<Profile> profilesB)
+    {
+        if (profilesA.Count != profilesB.Count)
+            return false;
+
+        return profilesA.All(a =>
+            profilesB.Any(b => ProfileHelper.AreProfilesEqual(b, a)));
     }
 }
