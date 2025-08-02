@@ -95,7 +95,6 @@ public class Controller
         var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
         _profileManager.UpdateProfiles(enabledProfiles);
         _profileManager.UpdateFilesInProfileWrappers();
-        _profileManager.LogProfilesSummary();
         _profileManager.LogProfilesSummaryIfChanged(previousProfiles);
     }
 
