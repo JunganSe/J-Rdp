@@ -44,6 +44,15 @@ internal static class ProfileHelper
         }
     }
 
+    public static bool AreProfilesEquivalent(List<Profile> profilesA, List<Profile> profilesB)
+    {
+        if (profilesA.Count != profilesB.Count)
+            return false;
+
+        return profilesA.All(a =>
+            profilesB.Any(b => AreProfilesEqual(b, a)));
+    }
+
     public static bool AreProfilesEqual(Profile profileA, Profile profileB)
     {
         return profileA.Name == profileB.Name

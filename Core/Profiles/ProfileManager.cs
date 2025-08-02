@@ -19,20 +19,11 @@ internal class ProfileManager
     public void LogProfilesSummaryIfChanged(List<Profile> previousProfiles)
     {
         var currentProfiles = ProfileWrappers.Select(pw => pw.Profile).ToList();
-        bool areProfilesEquivalent = AreProfilesEquivalent(currentProfiles, previousProfiles);
+        bool areProfilesEquivalent = ProfileHelper.AreProfilesEquivalent(currentProfiles, previousProfiles);
         if (areProfilesEquivalent)
             return;
 
         LogProfilesSummary();
-    }
-
-    private bool AreProfilesEquivalent(List<Profile> profilesA, List<Profile> profilesB)
-    {
-        if (profilesA.Count != profilesB.Count)
-            return false;
-
-        return profilesA.All(a =>
-            profilesB.Any(b => ProfileHelper.AreProfilesEqual(b, a)));
     }
 
     private void LogProfilesSummary()
