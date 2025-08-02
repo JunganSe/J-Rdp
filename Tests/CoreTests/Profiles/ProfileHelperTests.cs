@@ -136,6 +136,52 @@ public class ProfileHelperTests
         Assert.IsTrue(areEquivalent);
     }
 
+    [TestMethod]
+    public void AreProfilesEquivalent_Different_Added()
+    {
+        // Arrange
+        var profilesA = GetMockProfiles();
+        var profilesB = GetMockProfiles();
+        profilesB.Add(new());
+
+        // Act
+        bool areEquivalent = ProfileHelper.AreProfilesEquivalent(profilesA, profilesB);
+
+        // Assert
+        Assert.IsFalse(areEquivalent);
+    }
+
+    [TestMethod]
+    public void AreProfilesEquivalent_Different_Removed()
+    {
+        // Arrange
+        var profilesA = GetMockProfiles();
+        var profilesB = GetMockProfiles();
+        profilesB.RemoveAt(0);
+
+        // Act
+        bool areEquivalent = ProfileHelper.AreProfilesEquivalent(profilesA, profilesB);
+
+        // Assert
+        Assert.IsFalse(areEquivalent);
+    }
+
+    [TestMethod]
+    public void AreProfilesEquivalent_Different_AddedAndRemoved()
+    {
+        // Arrange
+        var profilesA = GetMockProfiles();
+        var profilesB = GetMockProfiles();
+        profilesB.RemoveAt(0);
+        profilesB.Add(new());
+
+        // Act
+        bool areEquivalent = ProfileHelper.AreProfilesEquivalent(profilesA, profilesB);
+
+        // Assert
+        Assert.IsFalse(areEquivalent);
+    }
+
     #endregion
 
     #region Mocks
