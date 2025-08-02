@@ -29,9 +29,9 @@ internal class ProfileManager
     public void LogProfilesSummaryIfChanged(List<Profile> previousProfiles)
     {
         var currentProfiles = ProfileWrappers.Select(pw => pw.Profile).ToList();
-        bool currentProfilesMatch = currentProfiles.All(current => previousProfiles.Any(previous => ProfileHelper.AreProfilesEqual(previous, current)));
-        // TODO: Also check if any profile was removed.
-        if (currentProfilesMatch)
+        bool currentProfilesMatchPrevious = currentProfiles.All(current => previousProfiles.Any(previous => ProfileHelper.AreProfilesEqual(previous, current)));
+        if (currentProfilesMatchPrevious
+            && currentProfiles.Count == previousProfiles.Count)
             return;
 
         var profileSummaries = ProfileWrappers
