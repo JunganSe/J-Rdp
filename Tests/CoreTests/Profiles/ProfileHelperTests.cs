@@ -2,12 +2,12 @@
 
 namespace CoreTests.Profiles;
 
-[TestClass()]
+[TestClass]
 public class ProfileHelperTests
 {
     #region DeepCopies
 
-    [TestMethod()]
+    [TestMethod]
     public void GetDeepCopies_NoProfiles()
     {
         // Arrange
@@ -20,7 +20,7 @@ public class ProfileHelperTests
         Assert.AreEqual(0, actualProfiles.Count);
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void GetDeepCopies_Valid()
     {
         // Arrange
@@ -42,7 +42,7 @@ public class ProfileHelperTests
         }
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void GetDeepCopy_Valid()
     {
         // Arrange
@@ -80,7 +80,7 @@ public class ProfileHelperTests
 
     #region EnabledState
 
-    [TestMethod()]
+    [TestMethod]
     public void SetEnabledStatesFromMatchingProfileInfos_Enabled()
     {
         // Arrange
@@ -97,7 +97,7 @@ public class ProfileHelperTests
         Assert.IsTrue(profiles[0].Enabled);
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void SetEnabledStatesFromMatchingProfileInfos_Disabled()
     {
         // Arrange
