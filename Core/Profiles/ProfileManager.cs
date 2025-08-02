@@ -33,6 +33,6 @@ internal class ProfileManager
         string joinedSummaries = (ProfileWrappers.Count > 0)
             ? string.Join("", profileSummaries)
             : "(none)";
-        _logger.Info($"Current profiles: {joinedSummaries}");
+        _logger.Info($"Profiles were changed. Current profiles: {joinedSummaries}");
     }
 }
