@@ -120,6 +120,24 @@ public class ProfileHelperTests
 
     #endregion
 
+    #region Profile comparison
+
+    [TestMethod]
+    public void AreProfilesEquivalent_Equivalent()
+    {
+        // Arrange
+        var profilesA = GetMockProfiles();
+        var profilesB = GetMockProfiles();
+
+        // Act
+        bool areEquivalent = ProfileHelper.AreProfilesEquivalent(profilesA, profilesB);
+
+        // Assert
+        Assert.IsTrue(areEquivalent);
+    }
+
+    #endregion
+
     #region Mocks
 
     private List<Profile> GetMockProfiles() =>
