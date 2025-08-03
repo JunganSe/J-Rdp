@@ -15,12 +15,13 @@ internal class EqualityComparer_Profile_AllExceptId : IEqualityComparer<Profile>
     private static ProfileKey GetKey(Profile profile) => new(
         profile.Name,
         profile.Enabled,
-        profile.WatchFolder,
+        profile.WatchFolder.ToUpperInvariant(),
         profile.Filter,
-        profile.MoveToFolder,
+        profile.MoveToFolder.ToUpperInvariant(),
         profile.Launch,
         profile.Delete,
-        profile.Settings);
+        profile.Settings.OrderBy(s => s).ToList()
+    );
 
 
     public bool Equals(Profile? a, Profile? b)
