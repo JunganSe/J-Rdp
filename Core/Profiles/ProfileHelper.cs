@@ -26,11 +26,12 @@ internal static class ProfileHelper
 
     public static List<ProfileInfo> GetProfileInfos(List<Profile> profiles) =>
         profiles.Select(profile => new ProfileInfo()
-        {
-            Id = profile.Id,
-            Enabled = profile.Enabled,
-            Name = profile.Name
-        }).ToList();
+            {
+                Id = profile.Id,
+                Enabled = profile.Enabled,
+                Name = profile.Name
+            })
+            .ToList();
 
     /// <summary>
     /// Sets the enabled states of profiles based on the enabled states of profileInfos, where their Id is matching.
