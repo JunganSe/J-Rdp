@@ -226,51 +226,59 @@ public class ProfileHelperTests
 
     private List<Profile> GetMockProfiles() =>
     [
-        new(id: 1)
-        {
-            Enabled = true,
-            Name = "Profile 1",
-            WatchFolder = "C:\\WatchFolder1",
-            Filter = "Filter1",
-            MoveToFolder = "C:\\MoveToFolder1",
-            Launch = true,
-            Delete = true,
-            Settings = ["Setting1a", "Setting1b"],
-        },
-        new(id: 2)
-        {
-            Enabled = false,
-            Name = "Profile 2",
-            WatchFolder = "C:\\WatchFolder2",
-            Filter = "Filter2",
-            MoveToFolder = "C:\\MoveToFolder2",
-            Launch = false,
-            Delete = false,
-            Settings = ["Setting2a", "Setting2b"],
-        },
-        new(id: 3)
-        {
-            Enabled = false,
-            Name = "Profile 3",
-            WatchFolder = "C:\\WatchFolder3",
-            Filter = "Filter3",
-            MoveToFolder = "C:\\MoveToFolder3",
-            Launch = false,
-            Delete = false,
-            Settings = ["Setting3a", "Setting3b"],
-        },
-        new(id: 4)
-        {
-            Enabled = false,
-            Name = "Profile 4",
-            WatchFolder = "C:\\WatchFolder4",
-            Filter = "Filter4",
-            MoveToFolder = "C:\\MoveToFolder4",
-            Launch = false,
-            Delete = false,
-            Settings = ["Setting4a", "Setting4b"],
-        },
+        GetMockProfile1(),
+        GetMockProfile2(),
+        GetMockProfile3(),
+        GetMockProfile4(),
     ];
+
+    private Profile GetMockProfile1() => new(id: 1)
+    {
+        Enabled = true,
+        Name = "Profile 1",
+        WatchFolder = "C:\\WatchFolder1",
+        Filter = "Filter1",
+        MoveToFolder = "C:\\MoveToFolder1",
+        Launch = true,
+        Delete = true,
+        Settings = ["Setting1a", "Setting1b"],
+    };
+
+    private Profile GetMockProfile2() => new(id: 2)
+    {
+        Enabled = false,
+        Name = "Profile 2",
+        WatchFolder = "C:\\WatchFolder2",
+        Filter = "Filter2",
+        MoveToFolder = "C:\\MoveToFolder2",
+        Launch = false,
+        Delete = false,
+        Settings = ["Setting2a", "Setting2b"],
+    };
+
+    private Profile GetMockProfile3() => new(id: 3)
+    {
+        Enabled = false,
+        Name = "Profile 3",
+        WatchFolder = "C:\\WatchFolder3",
+        Filter = "Filter3",
+        MoveToFolder = "C:\\MoveToFolder3",
+        Launch = false,
+        Delete = false,
+        Settings = ["Setting3a", "Setting3b"],
+    };
+
+    private Profile GetMockProfile4() => new(id: 4)
+    {
+        Enabled = false,
+        Name = "Profile 4",
+        WatchFolder = "C:\\WatchFolder4",
+        Filter = "Filter4",
+        MoveToFolder = "C:\\MoveToFolder4",
+        Launch = false,
+        Delete = false,
+        Settings = ["Setting4a", "Setting4b"],
+    };
 
     #endregion
 }
