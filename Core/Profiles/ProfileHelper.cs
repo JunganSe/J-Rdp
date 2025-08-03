@@ -45,18 +45,19 @@ internal static class ProfileHelper
         }
     }
 
-    public static bool AreProfilesEquivalent(List<Profile> profilesA, List<Profile> profilesB)
+    public static bool AreProfilesEquivalent(List<Profile> profilesA, List<Profile> profilesB, bool compareId = false)
     {
         if (profilesA.Count != profilesB.Count)
             return false;
 
         return profilesA.All(a =>
-            profilesB.Any(b => AreProfilesEqual(b, a)));
+            profilesB.Any(b => AreProfilesEqual(b, a, compareId)));
     }
 
-    public static bool AreProfilesEqual(Profile profileA, Profile profileB)
+    public static bool AreProfilesEqual(Profile profileA, Profile profileB, bool compareId = false)
     {
-        return profileA.Name == profileB.Name
+        return (!compareId || profileA.Id == profileB.Id)
+            && profileA.Name == profileB.Name
             && profileA.Enabled == profileB.Enabled
             && profileA.WatchFolder == profileB.WatchFolder
             && profileA.Filter == profileB.Filter
