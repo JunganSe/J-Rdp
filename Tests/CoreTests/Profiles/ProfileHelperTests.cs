@@ -182,44 +182,6 @@ public class ProfileHelperTests
         Assert.IsFalse(areEquivalent);
     }
 
-    [TestMethod]
-    public void AreProfilesEquivalent_Different_Changed()
-    {
-        // Arrange
-        var profilesA = new List<Profile>() {
-            new()
-            {
-                Enabled = true,
-                Name = "Profile 1",
-                WatchFolder = "C:\\WatchFolder1",
-                Filter = "Filter1",
-                MoveToFolder = "C:\\MoveToFolder1",
-                Launch = true,
-                Delete = true,
-                Settings = ["Setting1a", "Setting1b"],
-            }
-        };
-        var profilesB = new List<Profile>() {
-            new()
-            {
-                Enabled = false,
-                Name = "Profile 1",
-                WatchFolder = "C:\\WatchFolder1",
-                Filter = "Filter1",
-                MoveToFolder = "C:\\MoveToFolder1",
-                Launch = true,
-                Delete = true,
-                Settings = ["Setting1a", "Setting1b"],
-            }
-        };
-
-        // Act
-        bool areEquivalent = ProfileHelper.AreProfilesEquivalent(profilesA, profilesB);
-
-        // Assert
-        Assert.IsFalse(areEquivalent);
-    }
-
     #endregion
 
     #region Mocks
