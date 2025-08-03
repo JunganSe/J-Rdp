@@ -51,10 +51,10 @@ internal static class ProfileHelper
             return false;
 
         return profilesA.All(a =>
-            profilesB.Any(b => AreProfilesEqual(b, a, compareId)));
+            profilesB.Any(b => AreProfilesEquivalent(b, a, compareId)));
     }
 
-    public static bool AreProfilesEqual(Profile profileA, Profile profileB, bool compareId = false)
+    public static bool AreProfilesEquivalent(Profile profileA, Profile profileB, bool compareId = false)
     {
         return (!compareId || profileA.Id == profileB.Id)
             && profileA.Name == profileB.Name
