@@ -2,28 +2,6 @@
 
 internal class EqualityComparer_Profile_AllExceptId : IEqualityComparer<Profile>
 {
-    public record ProfileKey(
-        string Name,
-        bool Enabled,
-        string WatchFolder,
-        string Filter,
-        string MoveToFolder,
-        bool Launch,
-        bool Delete,
-        List<string> Settings);
-
-    private static ProfileKey GetKey(Profile profile) => new(
-        profile.Name,
-        profile.Enabled,
-        profile.WatchFolder.ToUpperInvariant(),
-        profile.Filter,
-        profile.MoveToFolder.ToUpperInvariant(),
-        profile.Launch,
-        profile.Delete,
-        profile.Settings.OrderBy(s => s).ToList()
-    );
-
-
     public bool Equals(Profile? a, Profile? b)
     {
         if (a is null && b is null)
@@ -31,13 +9,34 @@ internal class EqualityComparer_Profile_AllExceptId : IEqualityComparer<Profile>
         if (a is null || b is null)
             return false;
 
-        var keyA = GetKey(a);
-        var keyB = GetKey(b);
-        return EqualityComparer<ProfileKey>.Default.Equals(keyA, keyB);
+        return a.Name == b.Name
+            && a.Enabled == b.Enabled
+            && a.WatchFolder.Equals(b.WatchFolder, StringComparison.OrdinalIgnoreCase)
+            && a.Filter == b.Filter
+            && a.MoveToFolder.Equals(b.MoveToFolder, StringComparison.OrdinalIgnoreCase)
+            && a.Launch == b.Launch
+            && a.Delete == b.Delete
+            && a.Settings.Order().SequenceEqual(b.Settings);
     }
 
     public int GetHashCode(Profile obj)
     {
-        return EqualityComparer<ProfileKey>.Default.GetHashCode(GetKey(obj));
+        if (obj is null)
+            return 0;
+
+        var hash = new HashCode();
+        hash.Add(obj.Name);
+        hash.Add(obj.Enabled);
+        hash.Add(obj.WatchFolder, StringComparer.OrdinalIgnoreCase);
+        hash.Add(obj.Filter);
+        hash.Add(obj.MoveToFolder, StringComparer.OrdinalIgnoreCase);
+        hash.Add(obj.Launch);
+        hash.Add(obj.Delete);
+
+        // Add settings in a order-independent way
+        foreach (string setting in obj.Settings.Order())
+            hash.Add(setting);
+
+        return hash.ToHashCode();
     }
 }
