@@ -19,7 +19,7 @@ internal class EqualityComparer_Profile_AllExceptId : IEqualityComparer<Profile>
             && a.Settings.Order().SequenceEqual(b.Settings.Order());
     }
 
-    public int GetHashCode(Profile obj)
+    public int GetHashCode(Profile? obj)
     {
         if (obj is null)
             return 0;
