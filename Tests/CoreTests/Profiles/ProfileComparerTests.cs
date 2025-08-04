@@ -8,7 +8,7 @@ public class ProfileComparerTests
     private readonly EqualityComparer_Profile_AllExceptId _comparer = new();
 
     [TestMethod]
-    public void CompareProfiles_EqualProfilesWithSameId_ReturnsTrue()
+    public void EqualProfilesWithSameId_ReturnsTrue()
     {
         // Arrange
         var profile1 = GetMockProfile(id: 1);
@@ -22,7 +22,7 @@ public class ProfileComparerTests
     }
 
     [TestMethod]
-    public void CompareProfiles_EqualProfilesWithDifferentId_ReturnsTrue()
+    public void EqualProfilesWithDifferentId_ReturnsTrue()
     {
         // Arrange
         var profile1 = GetMockProfile(id: 1);
@@ -39,7 +39,7 @@ public class ProfileComparerTests
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/FOO", "*.rdp", "C:/BAR", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting2", "Setting1", "Setting3")]
-    public void CompareProfiles_DifferentProfiles_ReturnsTrue(
+    public void DifferentProfiles_ReturnsTrue(
         string name, bool enabled, string watchFolder, string filter,
         string moveToFolder, bool launch, bool delete,
         string setting1, string setting2, string setting3)
@@ -76,7 +76,7 @@ public class ProfileComparerTests
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "SettingA", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "SettingB", "Setting3")]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "SettingC")]
-    public void CompareProfiles_DifferentProfiles_ReturnsFalse(
+    public void DifferentProfiles_ReturnsFalse(
         string name, bool enabled, string watchFolder, string filter,
         string moveToFolder, bool launch, bool delete,
         string setting1, string setting2, string setting3)
