@@ -44,26 +44,4 @@ internal static class ProfileHelper
             profile.Enabled = profileInfo?.Enabled ?? false;
         }
     }
-
-    public static bool AreProfilesEquivalent(List<Profile> profilesA, List<Profile> profilesB, bool compareId = false)
-    {
-        if (profilesA.Count != profilesB.Count)
-            return false;
-
-        return profilesA.All(a =>
-            profilesB.Any(b => AreProfilesEquivalent(b, a, compareId)));
-    }
-
-    public static bool AreProfilesEquivalent(Profile profileA, Profile profileB, bool compareId = false)
-    {
-        return (!compareId || profileA.Id == profileB.Id)
-            && profileA.Name == profileB.Name
-            && profileA.Enabled == profileB.Enabled
-            && profileA.WatchFolder == profileB.WatchFolder
-            && profileA.Filter == profileB.Filter
-            && profileA.MoveToFolder == profileB.MoveToFolder
-            && profileA.Launch == profileB.Launch
-            && profileA.Delete == profileB.Delete
-            && profileA.Settings.SequenceEqual(profileB.Settings);
-    }
 }
