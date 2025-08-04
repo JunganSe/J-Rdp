@@ -18,8 +18,9 @@ internal class ProfileManager
 
     public void LogProfilesSummaryIfChanged(List<Profile> previousProfiles)
     {
+        var comparer = new EqualityComparer_Profile_AllExceptId();
         var currentProfiles = ProfileWrappers.Select(pw => pw.Profile).ToList();
-        bool areProfilesEquivalent = ProfileHelper.AreProfilesEquivalent(currentProfiles, previousProfiles);
+        bool areProfilesEquivalent = currentProfiles.SequenceEqual(previousProfiles, comparer);
         if (areProfilesEquivalent)
             return;
 
