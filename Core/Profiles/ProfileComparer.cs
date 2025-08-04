@@ -16,7 +16,7 @@ internal class EqualityComparer_Profile_AllExceptId : IEqualityComparer<Profile>
             && a.MoveToFolder.Equals(b.MoveToFolder, StringComparison.OrdinalIgnoreCase)
             && a.Launch == b.Launch
             && a.Delete == b.Delete
-            && a.Settings.Order().SequenceEqual(b.Settings);
+            && a.Settings.Order().SequenceEqual(b.Settings.Order());
     }
 
     public int GetHashCode(Profile obj)
