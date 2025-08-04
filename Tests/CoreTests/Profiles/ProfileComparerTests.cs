@@ -46,7 +46,7 @@ public class ProfileComparerTests
         MoveToFolder = "C:\\Bar",
         Launch = true,
         Delete = false,
-        Settings = ["Setting1", "Setting2, Setting3"]
+        Settings = ["Setting1", "Setting2", "Setting3"]
     };
 
     #endregion
