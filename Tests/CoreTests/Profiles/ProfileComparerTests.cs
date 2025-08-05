@@ -36,6 +36,76 @@ public class ProfileComparerTests
     }
 
     [TestMethod]
+    public void SameReference_ReturnsTrue()
+    {
+        // Arrange
+        var profile = GetMockProfile(1);
+
+        // Act
+        bool result = _comparer.Equals(profile, profile);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void BothProfilesNull_ReturnsTrue()
+    {
+        // Arrange
+
+        // Act
+        bool result = _comparer.Equals(null, null);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void OneProfileNull_ReturnsFalse()
+    {
+        // Arrange
+        var profile = GetMockProfile(1);
+
+        // Act
+        bool result1 = _comparer.Equals(profile, null);
+        bool result2 = _comparer.Equals(null, profile);
+
+        // Assert
+        Assert.IsFalse(result1);
+        Assert.IsFalse(result2);
+    }
+
+    [TestMethod]
+    public void DifferentSettingsLength_ReturnsFalse()
+    {
+        // Arrange
+        var profile1 = GetMockProfile(1);
+        var profile2 = GetMockProfile(2);
+        profile2.Settings.Add("ExtraSetting");
+
+        // Act
+        bool result = _comparer.Equals(profile1, profile2);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public void GetHashCode_EqualProfiles_SameHash()
+    {
+        // Arrange
+        var profile1 = GetMockProfile(1);
+        var profile2 = GetMockProfile(2);
+
+        // Act
+        int hashCode1 = _comparer.GetHashCode(profile1);
+        int hashCode2 = _comparer.GetHashCode(profile2);
+
+        // Assert
+        Assert.AreEqual(hashCode1, hashCode2);
+    }
+
+    [TestMethod]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/FOO", "*.rdp", "C:/BAR", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting2", "Setting1", "Setting3")]
