@@ -7,6 +7,8 @@ public class ProfileComparerTests
 {
     private readonly EqualityComparer_Profile_AllExceptId _comparer = new();
 
+    #region Equals
+
     [TestMethod]
     public void Equals_EqualProfilesWithSameId_ReturnsTrue()
     {
@@ -157,6 +159,10 @@ public class ProfileComparerTests
         Assert.IsFalse(result);
     }
 
+#endregion
+
+    #region GetHashCode
+
     [TestMethod]
     public void GetHashCode_EqualProfiles_SameHash()
     {
@@ -171,6 +177,8 @@ public class ProfileComparerTests
         // Assert
         Assert.AreEqual(hashCode1, hashCode2);
     }
+
+    #endregion
 
     #region Mocks
 

@@ -7,6 +7,8 @@ public class FileInfoComparerTests
 {
     private readonly EqualityComparer_FileInfo_FullName _comparer = new();
 
+    #region Equals
+
     [TestMethod]
     public void Equals_SamePath_ReturnsTrue()
     {
@@ -89,6 +91,10 @@ public class FileInfoComparerTests
         Assert.IsFalse(result2);
     }
 
+    #endregion
+
+    #region GetHashCode
+
     [TestMethod]
     public void GetHashCode_SamePath_SameHash()
     {
@@ -118,4 +124,6 @@ public class FileInfoComparerTests
         // Assert
         Assert.AreNotEqual(hashCode1, hashCode2);
     }
+
+    #endregion
 }
