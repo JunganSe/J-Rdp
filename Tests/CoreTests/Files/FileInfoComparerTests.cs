@@ -22,6 +22,20 @@ public class FileInfoComparerTests
     }
 
     [TestMethod]
+    public void EquivalentPath_ReturnsTrue()
+    {
+        // Arrange
+        var fileInfo1 = new FileInfo("C:/Foo");
+        var fileInfo2 = new FileInfo("C:\\Foo");
+
+        // Act
+        bool result = _comparer.Equals(fileInfo1, fileInfo2);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
     public void DifferentPath_ReturnsFalse()
     {
         // Arrange
