@@ -91,21 +91,6 @@ public class ProfileComparerTests
     }
 
     [TestMethod]
-    public void GetHashCode_EqualProfiles_SameHash()
-    {
-        // Arrange
-        var profile1 = GetMockProfile(1);
-        var profile2 = GetMockProfile(2);
-
-        // Act
-        int hashCode1 = _comparer.GetHashCode(profile1);
-        int hashCode2 = _comparer.GetHashCode(profile2);
-
-        // Assert
-        Assert.AreEqual(hashCode1, hashCode2);
-    }
-
-    [TestMethod]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/FOO", "*.rdp", "C:/BAR", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting2", "Setting1", "Setting3")]
@@ -170,6 +155,21 @@ public class ProfileComparerTests
 
         // Assert
         Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public void GetHashCode_EqualProfiles_SameHash()
+    {
+        // Arrange
+        var profile1 = GetMockProfile(1);
+        var profile2 = GetMockProfile(2);
+
+        // Act
+        int hashCode1 = _comparer.GetHashCode(profile1);
+        int hashCode2 = _comparer.GetHashCode(profile2);
+
+        // Assert
+        Assert.AreEqual(hashCode1, hashCode2);
     }
 
     #region Mocks
