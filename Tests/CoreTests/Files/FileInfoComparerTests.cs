@@ -8,7 +8,7 @@ public class FileInfoComparerTests
     private readonly EqualityComparer_FileInfo_FullName _comparer = new();
 
     [TestMethod]
-    public void SamePath_ReturnsTrue()
+    public void Equals_SamePath_ReturnsTrue()
     {
         // Arrange
         var fileInfo1 = new FileInfo("C:/Foo");
@@ -22,7 +22,7 @@ public class FileInfoComparerTests
     }
 
     [TestMethod]
-    public void EquivalentPath_ReturnsTrue()
+    public void Equals_EquivalentPath_ReturnsTrue()
     {
         // Arrange
         var fileInfo1 = new FileInfo("C:/Foo");
@@ -36,7 +36,7 @@ public class FileInfoComparerTests
     }
 
     [TestMethod]
-    public void DifferentPath_ReturnsFalse()
+    public void Equals_DifferentPath_ReturnsFalse()
     {
         // Arrange
         var fileInfo1 = new FileInfo("C:/Foo");
@@ -50,7 +50,7 @@ public class FileInfoComparerTests
     }
 
     [TestMethod]
-    public void SameReference_ReturnsTrue()
+    public void Equals_SameReference_ReturnsTrue()
     {
         // Arrange
         var fileInfo = new FileInfo("C:/Foo");
@@ -63,7 +63,7 @@ public class FileInfoComparerTests
     }
 
     [TestMethod]
-    public void BothNull_ReturnsTrue()
+    public void Equals_BothNull_ReturnsTrue()
     {
         // Arrange
 
@@ -75,7 +75,7 @@ public class FileInfoComparerTests
     }
 
     [TestMethod]
-    public void OneNull_ReturnsFalse()
+    public void Equals_OneNull_ReturnsFalse()
     {
         // Arrange
         var fileInfo = new FileInfo("C:/Foo");
