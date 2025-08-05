@@ -179,6 +179,18 @@ public class ProfileComparerTests
     }
 
     [TestMethod]
+    public void GetHashCode_Null_ReturnsZero()
+    {
+        // Arrange
+
+        // Act
+        int hashCode = _comparer.GetHashCode(null);
+
+        // Assert
+        Assert.AreEqual(0, hashCode);
+    }
+
+    [TestMethod]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/FOO", "*.rdp", "C:/BAR", true, false, "Setting1", "Setting2", "Setting3")]
     [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting2", "Setting1", "Setting3")]

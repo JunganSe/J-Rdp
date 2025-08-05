@@ -125,5 +125,17 @@ public class FileInfoComparerTests
         Assert.AreNotEqual(hashCode1, hashCode2);
     }
 
+    [TestMethod]
+    public void GetHashCode_Null_ReturnsZero()
+    {
+        // Arrange
+
+        // Act
+        int hashCode = _comparer.GetHashCode(null);
+
+        // Assert
+        Assert.AreEqual(0, hashCode);
+    }
+
     #endregion
 }
