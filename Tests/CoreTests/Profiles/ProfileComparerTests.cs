@@ -178,6 +178,75 @@ public class ProfileComparerTests
         Assert.AreEqual(hashCode1, hashCode2);
     }
 
+    [TestMethod]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/FOO", "*.rdp", "C:/BAR", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting2", "Setting1", "Setting3")]
+    public void GetHashCode_DifferentWhereAllowed_SameHash(
+        string name, bool enabled, string watchFolder, string filter,
+        string moveToFolder, bool launch, bool delete,
+        string setting1, string setting2, string setting3)
+    {
+        // Arrange
+        var profile1 = GetMockProfile(id: 1);
+        var profile2 = new Profile()
+        {
+            Name = name,
+            Enabled = enabled,
+            WatchFolder = watchFolder,
+            Filter = filter,
+            MoveToFolder = moveToFolder,
+            Launch = launch,
+            Delete = delete,
+            Settings = [setting1, setting2, setting3]
+        };
+
+        // Act
+        int hashCode1 = _comparer.GetHashCode(profile1);
+        int hashCode2 = _comparer.GetHashCode(profile2);
+
+        // Assert
+        Assert.AreEqual(hashCode1, hashCode2);
+    }
+
+    [TestMethod]
+    [DataRow("Profile2", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", false, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/AAA", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.AAA", "C:/Bar", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/AAA", true, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", false, false, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, true, "Setting1", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "SettingA", "Setting2", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "SettingB", "Setting3")]
+    [DataRow("Profile1", true, "C:/Foo", "*.rdp", "C:/Bar", true, false, "Setting1", "Setting2", "SettingC")]
+    public void GetHashCode_DifferentWhereNotAllowed_DifferentHash(
+        string name, bool enabled, string watchFolder, string filter,
+        string moveToFolder, bool launch, bool delete,
+        string setting1, string setting2, string setting3)
+    {
+        // Arrange
+        var profile1 = GetMockProfile(id: 1);
+        var profile2 = new Profile()
+        {
+            Name = name,
+            Enabled = enabled,
+            WatchFolder = watchFolder,
+            Filter = filter,
+            MoveToFolder = moveToFolder,
+            Launch = launch,
+            Delete = delete,
+            Settings = [setting1, setting2, setting3]
+        };
+
+        // Act
+        int hashCode1 = _comparer.GetHashCode(profile1);
+        int hashCode2 = _comparer.GetHashCode(profile2);
+
+        // Assert
+        Assert.AreNotEqual(hashCode1, hashCode2);
+    }
+
     #endregion
 
     #region Mocks
