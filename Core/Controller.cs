@@ -91,10 +91,11 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
-        _profileManager.UpdateProfiles(enabledProfiles);
+        var previousProfiles = _profileManager.ProfileWrappers.Select(pw => pw.Profile).ToList();
+        var enabledProfilesInConfig = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
+        _profileManager.UpdateProfiles(enabledProfilesInConfig);
         _profileManager.UpdateFilesInProfileWrappers();
-        _profileManager.LogProfilesSummary();
+        _profileManager.LogProfilesSummaryIfChanged(previousProfiles);
     }
 
     /// <summary> Loops until canceled, where it will throw OperationCanceledException. </summary>
