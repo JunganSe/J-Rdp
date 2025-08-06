@@ -18,13 +18,17 @@ internal class ProfileManager
 
     public void LogProfilesSummaryIfChanged(List<Profile> previousProfiles)
     {
-        var comparer = new EqualityComparer_Profile_AllExceptId();
-        var currentProfiles = ProfileWrappers.Select(pw => pw.Profile).ToList();
-        bool areProfilesEquivalent = currentProfiles.SequenceEqual(previousProfiles, comparer);
-        if (areProfilesEquivalent)
+        if (AreProfilesEquivalentToCurrent(previousProfiles))
             return;
 
         LogProfilesSummary();
+    }
+
+    private bool AreProfilesEquivalentToCurrent(List<Profile> profiles)
+    {
+        var currentProfiles = ProfileWrappers.Select(pw => pw.Profile).ToList();
+        var comparer = new EqualityComparer_Profile_AllExceptId();
+        return currentProfiles.SequenceEqual(profiles, comparer);
     }
 
     private void LogProfilesSummary()
