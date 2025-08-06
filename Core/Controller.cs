@@ -92,8 +92,8 @@ public class Controller
     private void InitializeProfiles()
     {
         var previousProfiles = _profileManager.ProfileWrappers.Select(pw => pw.Profile).ToList();
-        var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
-        _profileManager.UpdateProfiles(enabledProfiles);
+        var enabledProfilesInConfig = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
+        _profileManager.UpdateProfiles(enabledProfilesInConfig);
         _profileManager.UpdateFilesInProfileWrappers();
         _profileManager.LogProfilesSummaryIfChanged(previousProfiles);
     }
