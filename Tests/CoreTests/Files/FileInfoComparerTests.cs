@@ -92,4 +92,50 @@ public class FileInfoComparerTests
     }
 
     #endregion
+
+    #region GetHashCode
+
+    [TestMethod]
+    public void GetHashCode_SamePath_SameHash()
+    {
+        // Arrange
+        var fileInfo1 = new FileInfo("C:/Foo");
+        var fileInfo2 = new FileInfo("C:/Foo");
+
+        // Act
+        int hashCode1 = _comparer.GetHashCode(fileInfo1);
+        int hashCode2 = _comparer.GetHashCode(fileInfo2);
+
+        // Assert
+        Assert.AreEqual(hashCode1, hashCode2);
+    }
+
+    [TestMethod]
+    public void GetHashCode_DifferentPath_DifferentHash()
+    {
+        // Arrange
+        var fileInfo1 = new FileInfo("C:/Foo");
+        var fileInfo2 = new FileInfo("C:/Bar");
+
+        // Act
+        int hashCode1 = _comparer.GetHashCode(fileInfo1);
+        int hashCode2 = _comparer.GetHashCode(fileInfo2);
+
+        // Assert
+        Assert.AreNotEqual(hashCode1, hashCode2);
+    }
+
+    [TestMethod]
+    public void GetHashCode_Null_ReturnsZero()
+    {
+        // Arrange
+
+        // Act
+        int hashCode = _comparer.GetHashCode(null);
+
+        // Assert
+        Assert.AreEqual(0, hashCode);
+    }
+
+    #endregion
 }
