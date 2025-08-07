@@ -11,10 +11,10 @@ public class ProfileTests
         // Arrange
 
         // Act
-        var profile1 = new Profile(id: 1);
+        var profile = new Profile(id: 1);
 
         // Assert
-        Assert.AreEqual(1, profile1.Id);
+        Assert.AreEqual(1, profile.Id);
     }
 
     [TestMethod]
@@ -23,10 +23,10 @@ public class ProfileTests
         // Arrange
 
         // Act
-        var profile2 = new Profile() { Id = 2 };
+        var profile = new Profile() { Id = 2 };
 
         // Assert
-        Assert.AreEqual(2, profile2.Id);
+        Assert.AreEqual(2, profile.Id);
     }
 
     [TestMethod]
@@ -35,10 +35,10 @@ public class ProfileTests
         // Arrange
 
         // Act
-        var profile3 = new Profile();
-        profile3.Id = 3;
+        var profile = new Profile();
+        profile.Id = 3;
 
         // Assert
-        Assert.AreEqual(3, profile3.Id);
+        Assert.AreEqual(3, profile.Id);
     }
 }
