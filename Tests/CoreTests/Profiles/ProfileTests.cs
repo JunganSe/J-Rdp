@@ -8,6 +8,8 @@ namespace CoreTests.Profiles;
 [TestClass]
 public class ProfileTests
 {
+    #region Id
+
     [TestMethod]
     public void Id_AllowSetInConstructor()
     {
@@ -87,4 +89,59 @@ public class ProfileTests
         var exception = Assert.Throws<InvalidOperationException>(operation);
         Assert.IsTrue(exception.Message.Length > 0);
     }
+
+    #endregion
+
+    #region Name
+
+    [TestMethod]
+    [DataRow("ABC 123")]
+    [DataRow("a")]
+    [DataRow("@:#!")]
+    public void Name_ValidValue_SetsNameCorrectly(string name)
+    {
+        // Arrange
+
+        // Act
+        var testObject = new Profile { Name = name };
+
+        // Assert
+        Assert.AreEqual(name, testObject.Name);
+    }
+
+    [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow(" ")]
+    [DataRow("\t")]
+    [DataRow("\r")]
+    [DataRow("\n")]
+    public void Name_InvalidValue_SetsDefaultName(string name)
+    {
+        // Arrange
+
+        // Act
+        var testObject = new Profile { Name = name };
+
+        // Assert
+        Assert.AreEqual(ProfileConstants.DefaultName, testObject.Name);
+    }
+
+    [TestMethod]
+    [DataRow("Andy", " Andy")]
+    [DataRow("Bandy", "\tBandy ")]
+    [DataRow("Candy", "Candy\n")]
+    [DataRow("Dandy", "\rDandy\n")]
+    public void Name_ValidValueWithWhitespace_TrimsValue(string expected, string name)
+    {
+        // Arrange
+
+        // Act
+        var testObject = new Profile { Name = name };
+
+        // Assert
+        Assert.AreEqual(expected, testObject.Name);
+    }
+
+    #endregion
 }
