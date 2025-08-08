@@ -18,7 +18,7 @@ internal class Profile
     public string Name
     {
         get => _name;
-        init => _name = !string.IsNullOrWhiteSpace(value) ? value : ProfileConstants.DefaultName;
+        init => _name = !string.IsNullOrWhiteSpace(value) ? value.Trim() : ProfileConstants.DefaultName;
     }
     public bool Enabled { get; set; }           = true;
     public string WatchFolder { get; init; }    = "";
