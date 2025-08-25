@@ -4,6 +4,7 @@ internal static class TrayConstants
 {
     public static class ItemNames
     {
+        public const string LoggingSubMenu = "LoggingSubMenu";
         public const string ToggleConsole = "ShowConsole";
         public const string ToggleFileLogging = "LogToFile";
         public const string OpenLogsFolder = "OpenLogsFolder";
@@ -17,6 +18,7 @@ internal static class TrayConstants
 
     public static class ItemTexts
     {
+        public const string LoggingSubMenu = "Logging";
         public const string ToggleConsole = "Show log console";
         public const string ToggleFileLogging = "Log to file";
         public const string OpenLogsFolder = "Open logs folder";
