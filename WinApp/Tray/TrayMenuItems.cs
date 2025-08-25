@@ -10,14 +10,13 @@ internal static class TrayMenuItems
         {
             Name = TrayConstants.ItemNames.LoggingSubMenu,
             Text = TrayConstants.ItemTexts.LoggingSubMenu,
+            DropDownItems =
+            {
+                ToggleConsole(callbacks.ToggleConsole),
+                ToggleFileLogging(callbacks.ToggleFileLogging),
+                OpenLogsFolder(callbacks.OpenLogsFolder),
+            },
         };
-        var subMenuItems = new ToolStripMenuItem[]
-        {
-            ToggleConsole(callbacks.ToggleConsole),
-            ToggleFileLogging(callbacks.ToggleFileLogging),
-            OpenLogsFolder(callbacks.OpenLogsFolder),
-        };
-        menuItem.DropDownItems.AddRange(subMenuItems);
         return menuItem;
     }
 
