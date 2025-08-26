@@ -17,6 +17,8 @@ internal static class TrayMenuItems
                 OpenLogsFolder(callbacks.OpenLogsFolder),
             },
         };
+        menuItem.DropDown.AutoClose = true;
+
         return menuItem;
     }
 
