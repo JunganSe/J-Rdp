@@ -12,9 +12,10 @@ internal static class TrayMenuItems
             Text = TrayConstants.ItemTexts.LoggingSubMenu,
             DropDownItems =
             {
+                OpenLogsFolder(callbacks.OpenLogsFolder),
+                new ToolStripSeparator(),
                 ToggleConsole(callbacks.ToggleConsole),
                 ToggleFileLogging(callbacks.ToggleFileLogging),
-                OpenLogsFolder(callbacks.OpenLogsFolder),
             },
         };
         menuItem.DropDown.AutoClose = true;
