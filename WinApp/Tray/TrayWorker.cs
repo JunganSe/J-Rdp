@@ -41,7 +41,7 @@ internal class TrayWorker
         return new Icon(iconStream);
     }
 
-    public ContextMenuStrip? CreateContextMenu(TrayCallbacks callbacks)
+    public ContextMenuStrip CreateContextMenu(TrayCallbacks callbacks)
     {
         var contextMenu = new ContextMenuStrip() { AutoClose = false };
         var menuItems = CreateContextMenuItems(callbacks);
@@ -55,8 +55,8 @@ internal class TrayWorker
         new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
         new ToolStripSeparator(),
         TrayMenuItems.LoggingSubMenu(callbacks),
-        TrayMenuItems.Exit(),
         TrayMenuItems.Close(),
+        TrayMenuItems.Exit(),
     ];
 
     #endregion

@@ -4,6 +4,37 @@ namespace WinApp.Tray;
 
 internal static class TrayMenuItems
 {
+    public static ToolStripMenuItem OpenConfigFile(Action callback)
+    {
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.OpenConfigFile,
+            Text = TrayConstants.ItemTexts.OpenConfigFile,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_OpenConfigFile(callback);
+        return menuItem;
+    }
+
+    public static ToolStripMenuItem Profile(ProfileInfo profileInfo, ProfileHandler callback)
+    {
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = $"{TrayConstants.ItemNames.ProfilePrefix}{profileInfo.Id}",
+            Text = profileInfo.Name,
+            Tag = profileInfo,
+            Checked = profileInfo.Enabled,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_Profile(callback);
+        return menuItem;
+    }
+
+    public static ToolStripMenuItem PlaceholderProfile = new()
+    {
+        Name = TrayConstants.ItemNames.PlaceholderProfile,
+        Text = TrayConstants.ItemTexts.PlaceholderProfile,
+        Enabled = false,
+    };
+
     public static ToolStripMenuItem LoggingSubMenu(TrayCallbacks callbacks)
     {
         var menuItem = new ToolStripMenuItem()
@@ -12,13 +43,25 @@ internal static class TrayMenuItems
             Text = TrayConstants.ItemTexts.LoggingSubMenu,
             DropDownItems =
             {
+                OpenLogsFolder(callbacks.OpenLogsFolder),
+                new ToolStripSeparator(),
                 ToggleConsole(callbacks.ToggleConsole),
                 ToggleFileLogging(callbacks.ToggleFileLogging),
-                OpenLogsFolder(callbacks.OpenLogsFolder),
             },
         };
         menuItem.DropDown.AutoClose = true;
 
+        return menuItem;
+    }
+
+    public static ToolStripMenuItem OpenLogsFolder(Action callback)
+    {
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.OpenLogsFolder,
+            Text = TrayConstants.ItemTexts.OpenLogsFolder,
+        };
+        menuItem.Click += TrayMenuEvents.OnClick_OpenLogsFolder(callback);
         return menuItem;
     }
 
@@ -46,25 +89,14 @@ internal static class TrayMenuItems
         return menuItem;
     }
 
-    public static ToolStripMenuItem OpenLogsFolder(Action callback)
+    public static ToolStripMenuItem Close()
     {
         var menuItem = new ToolStripMenuItem()
         {
-            Name = TrayConstants.ItemNames.OpenLogsFolder,
-            Text = TrayConstants.ItemTexts.OpenLogsFolder,
+            Name = TrayConstants.ItemNames.CloseMenu,
+            Text = TrayConstants.ItemTexts.CloseMenu,
         };
-        menuItem.Click += TrayMenuEvents.OnClick_OpenLogsFolder(callback);
-        return menuItem;
-    }
-
-    public static ToolStripMenuItem OpenConfigFile(Action callback)
-    {
-        var menuItem = new ToolStripMenuItem()
-        {
-            Name = TrayConstants.ItemNames.OpenConfigFile,
-            Text = TrayConstants.ItemTexts.OpenConfigFile,
-        };
-        menuItem.Click += TrayMenuEvents.OnClick_OpenConfigFile(callback);
+        menuItem.Click += TrayMenuEvents.OnClick_Close();
         return menuItem;
     }
 
@@ -78,35 +110,4 @@ internal static class TrayMenuItems
         menuItem.Click += TrayMenuEvents.OnClick_Exit();
         return menuItem;
     }
-
-    public static ToolStripMenuItem Close()
-    {
-        var menuItem = new ToolStripMenuItem()
-        {
-            Name = TrayConstants.ItemNames.Close,
-            Text = TrayConstants.ItemTexts.Close,
-        };
-        menuItem.Click += TrayMenuEvents.OnClick_Close();
-        return menuItem;
-    }
-
-    public static ToolStripMenuItem Profile(ProfileInfo profileInfo, ProfileHandler callback)
-    {
-        var menuItem = new ToolStripMenuItem()
-        {
-            Name = $"{TrayConstants.ItemNames.ProfilePrefix}{profileInfo.Id}",
-            Text = profileInfo.Name,
-            Tag = profileInfo,
-            Checked = profileInfo.Enabled,
-        };
-        menuItem.Click += TrayMenuEvents.OnClick_Profile(callback);
-        return menuItem;
-    }
-
-    public static ToolStripMenuItem PlaceholderProfile = new()
-    {
-        Name = TrayConstants.ItemNames.PlaceholderProfile,
-        Text = TrayConstants.ItemTexts.PlaceholderProfile,
-        Enabled = false,
-    };
 }
