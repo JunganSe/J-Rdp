@@ -51,14 +51,10 @@ internal class TrayWorker
 
     private ToolStripItem[] CreateContextMenuItems(TrayCallbacks callbacks) =>
     [
-        TrayMenuItems.ToggleConsole(callbacks.ToggleConsole),
-        TrayMenuItems.ToggleFileLogging(callbacks.ToggleFileLogging),
-        TrayMenuItems.OpenLogsFolder(callbacks.OpenLogsFolder),
         TrayMenuItems.OpenConfigFile(callbacks.OpenConfigFile),
-
         new ToolStripSeparator() { Name = TrayConstants.ItemNames.ProfilesInsertPoint },
         new ToolStripSeparator(),
-
+        TrayMenuItems.LoggingSubMenu(callbacks),
         TrayMenuItems.Exit(),
         TrayMenuItems.Close(),
     ];

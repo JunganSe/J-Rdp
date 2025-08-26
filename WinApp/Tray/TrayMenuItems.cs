@@ -4,6 +4,24 @@ namespace WinApp.Tray;
 
 internal static class TrayMenuItems
 {
+    public static ToolStripMenuItem LoggingSubMenu(TrayCallbacks callbacks)
+    {
+        var menuItem = new ToolStripMenuItem()
+        {
+            Name = TrayConstants.ItemNames.LoggingSubMenu,
+            Text = TrayConstants.ItemTexts.LoggingSubMenu,
+            DropDownItems =
+            {
+                ToggleConsole(callbacks.ToggleConsole),
+                ToggleFileLogging(callbacks.ToggleFileLogging),
+                OpenLogsFolder(callbacks.OpenLogsFolder),
+            },
+        };
+        menuItem.DropDown.AutoClose = true;
+
+        return menuItem;
+    }
+
     public static ToolStripMenuItem ToggleConsole(Action<bool> callback)
     {
         var menuItem = new ToolStripMenuItem()
