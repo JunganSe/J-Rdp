@@ -25,6 +25,6 @@ internal static class TrayConstants
         public const string OpenConfigFile = "Open config file";
         public const string PlaceholderProfile = "No profiles found";
         public const string Exit = "Exit";
-        public const string Close = "Close";
+        public const string Close = "Close menu";
     }
 }
