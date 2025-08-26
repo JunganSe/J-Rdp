@@ -12,7 +12,7 @@ internal static class TrayConstants
         public const string OpenLogsFolder = "OpenLogsFolder";
         public const string ToggleConsole = "ShowConsole";
         public const string ToggleFileLogging = "LogToFile";
-        public const string Close = "Close";
+        public const string CloseMenu = "CloseMenu";
         public const string Exit = "Exit";
     }
 
@@ -24,7 +24,7 @@ internal static class TrayConstants
         public const string OpenLogsFolder = "Open logs folder";
         public const string ToggleConsole = "Show log console";
         public const string ToggleFileLogging = "Log to file";
-        public const string Close = "Close menu";
+        public const string CloseMenu = "Close menu";
         public const string Exit = "Exit";
     }
 }

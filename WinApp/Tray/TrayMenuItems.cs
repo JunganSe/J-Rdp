@@ -93,8 +93,8 @@ internal static class TrayMenuItems
     {
         var menuItem = new ToolStripMenuItem()
         {
-            Name = TrayConstants.ItemNames.Close,
-            Text = TrayConstants.ItemTexts.Close,
+            Name = TrayConstants.ItemNames.CloseMenu,
+            Text = TrayConstants.ItemTexts.CloseMenu,
         };
         menuItem.Click += TrayMenuEvents.OnClick_Close();
         return menuItem;
