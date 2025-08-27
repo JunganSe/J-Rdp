@@ -25,8 +25,16 @@
      5. Apply settings from config.
      6. Apply enabled, valid profiles from config.
   2. Start main loop. (Runs until app is stopped.)
-     1. TODO
+     1. Check which files exist in watch directory for each profile.
+     2. Process each file that didn't exist on the previous check. (See below)
+     3. Wait according to the polling interval.
 
+* File processing
+  1. Check if file name matches profile filter. Aborts if not.
+  2. Move file if path is set in profile.
+  3. Apply settings if defined in profile.
+  4. Launch the file if set in profile.
+  5. Delete the file after a delay, if set in profile.
 
 
 
