@@ -52,4 +52,20 @@
 
 
 ## User clicks a menu item
-TODO
+- When "Show log console" is clicked:
+  1. GUI controller tells ConsoleManager via TrayManager to show or hide the log console.
+  2. GUI controller tells CoreManager via TrayManager to update the config.
+
+* When "Log to file" is clicked:
+  1. GUI controller tells LogManager via TrayManager to enable or disable file logging.
+  2. GUI controller tells CoreManager via TrayManager to update the config.
+
+- When "Open logs folder" is clicked:
+  1. TODO
+
+* When "Open config file" is clicked:
+  1. GUI controller tells Core controller via TrayManager and CoreManager to open the config file.
+  2. Core controller tells ConfigManager to open the config file in shell. (OS default program.) If no config file exists, one will be created before opening it.
+
+- When a profile is clicked:
+  1. TODO
