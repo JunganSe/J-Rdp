@@ -53,23 +53,31 @@
 
 ## User clicks a menu item
 - When "Show log console" is clicked:
-  1. GUI controller tells ConsoleManager via TrayManager to show or hide the log console.
-  2. GUI controller tells CoreManager via TrayManager to update the config.
+  1. Event "OnClick_ToggleConsole" is triggered.
+  1. ConsoleManager is told to show or hide the log console.
+  3. CoreManager tells Core controller to update the config.
+  4. Core controller tells ConfigManager to update the config file.
+  5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
 
 * When "Log to file" is clicked:
-  1. GUI controller tells LogManager via TrayManager to enable or disable file logging.
-  2. GUI controller tells CoreManager via TrayManager to update the config.
+  1. Event "OnClick_ToggleLogToFile" is triggered.
+  2. LogManager is told to enable or disable file logging.
+  3. CoreManager tells Core controller to update the config.
+  4. Core controller tells ConfigManager to update the config file.
+  5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
 
 - When "Open logs folder" is clicked:
-  1. GUI controller tells Core controller via TrayManager and CoreManager to open the folder where log files are stored.
-  2. Core controller tells LogManager to open the logs folder(s).
+  1. Event "OnClick_OpenLogsFolder" is triggered.
+  1. CoreManager tells Core controller to open the folder where log files are stored.
+  3. Core controller tells LogManager to open the logs folder(s).
 
 * When "Open config file" is clicked:
-  1. GUI controller tells Core controller via TrayManager and CoreManager to open the config file.
-  2. Core controller tells ConfigManager to open the config file in shell. (OS default program.) If no config file exists, one will first be created.
+  1. Event "OnClick_OpenConfigFile" is triggered.
+  2. CoreManager tells Core controller to open the config file.
+  3. Core controller tells ConfigManager to open the config file in shell. (OS default program.) If no config file exists, one will first be created.
 
 - When a profile is clicked:
   1. Event "OnClick_Profile" is triggered. ProfileInfos are collected with enabled states depending on which profile is clicked and whether the ctrl button is held.
   2. The event invokes a ProfileHandler callback, which triggers CoreManager to tell Core controller to update the config.
-  3. Core controller tells ConfigManager to update the config.
-  4. Updating the config file triggers the menu to be updated. See "When config file is updated" above.
+  3. Core controller tells ConfigManager to update the config file.
+  4. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
