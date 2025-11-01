@@ -4,26 +4,26 @@
 
 - App launch:
    1. Register cleanup actions for when the app closes.
-   2. Initialize logger, reading config from file if present.
+   2. Initialize logger, reading nlog config from file if present.
    3. Check if program is already running to prevent duplicate process.
-   4. Setup GUI. (See below)
+   4. Setup GUI. (See "Setup GUI" below)
    5. Set callbacks for Core controller, for when the config file is updated and should be updated.
-   6. Start running the Core functionality. (See below)
+   6. Start running the Core functionality. (See "Core functionality" below)
 
 * Setup GUI:
   1. Set actions (callbacks) for menu items.
   2. Create a tray icon.
   3. Construct the tray menu, using the callbacks defined above.
-  4. (Profile list in menu and menu item checked states will be set after Core reads the config file. See below.)
+  4. (Profile list in menu and menu item checked states will be set after Core reads the config file. See "When config file is updated" below.)
 
 - Core functionality:
   1. Initialization.
      1. Start watching the config file for changes.
      2. Create a config file if one does not exist.
-     3. Initialize config in memory. (See below)
+     3. Initialize config in memory. (See "Config file is updated" below)
   2. Start main loop. (Runs until app is stopped.)
      1. Check which files exist in watch directory for each profile.
-     2. Process each file that didn't exist on the previous check. (See below)
+     2. Process each file that didn't exist on the previous check. (See "File processing" below)
      3. Wait according to the polling interval.
 
 * File processing:
@@ -38,11 +38,11 @@
 - When ConfigWatcher detects that the config file is changed:
   1. Initialize config in memory.
      1. Read the config file into memory.
-     2. Invoke the callback for when the config file is updated. (See below)
+     2. Invoke the callback for when the config file is updated. (See "When config file is updated" below)
      3. Apply Core settings from config.
      4. Apply enabled, valid profiles from config.
 
-* Callback when config file is updated:
+* When config file is updated:
    1. Core sends a ConfigInfo to the GUI via callback function.
    2. GUI shows or hides the log console according to config.
    3. GUI enables or disables file logging according to config.
