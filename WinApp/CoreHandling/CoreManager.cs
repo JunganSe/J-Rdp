@@ -1,5 +1,4 @@
 ﻿using Core.Configs;
-using Core.Profiles;
 
 namespace WinApp.CoreHandling;
 
@@ -37,8 +36,6 @@ internal class CoreManager
     /// <summary>
     /// Tell the core controller to update the config (in file and memory).
     /// </summary>
-    public void UpdateConfig(ConfigInfo configInfo)
-    {
+    public void UpdateConfig(ConfigInfo configInfo) =>
         _coreController?.UpdateConfig(configInfo);
-    }
 }
