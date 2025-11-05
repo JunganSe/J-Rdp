@@ -15,12 +15,19 @@ public class Controller
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _mainLoopCancellation;
+    private bool _isRunning = false;
     private bool _isStopping = false;
 
     public async Task Run()
     {
         try
         {
+            if (_isRunning)
+            {
+                 _logger.Warn("Can not run controller, it is already running.");
+                return;
+            }
+
             _logger.Debug("Initializing...");
             Initialize();
             _mainLoopCancellation = new CancellationTokenSource();
@@ -115,6 +122,7 @@ public class Controller
             return;
 
         _logger.Debug("Cleaning up...");
+        _isRunning = false;
         _isStopping = true;
 
         // Note: _configManager, _profileManager, and _fileManager have nothing to stop or dispose.
