@@ -1,4 +1,5 @@
-﻿using Core.Configs;
+﻿using Core.Commands;
+using Core.Configs;
 using Core.Files;
 using Core.Profiles;
 using NLog;
@@ -24,7 +25,7 @@ public class Controller
         {
             if (_isRunning)
             {
-                 _logger.Warn("Can not run controller, it is already running.");
+                _logger.Warn("Can not run controller, it is already running.");
                 return;
             }
 
@@ -49,22 +50,49 @@ public class Controller
         }
     }
 
-    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
-        _configManager.SetCallback_ConfigUpdated(callback);
-
-    public void OpenLogsFolder() =>
-        Auxiliary.LogManager.OpenLogsFolder();
-
-    public void OpenConfigFile() =>
-        _configManager.OpenConfigFile();
-
-    public void UpdateConfig(ConfigInfo configInfo) =>
-        _configManager.UpdateConfig(configInfo);
-
     public void Stop()
     {
         StopMainLoop();
         StopAndDispose();
+    }
+
+    public void ExecuteCommand<T>(CoreCommand<T> command)
+    {
+        switch (command.CommandType)
+        {
+            // Temporarily commented since this is curently handled in WinApp.
+            //case CoreCommandType.SetLogConsoleVisibility:
+            //    if (command.Param is bool showConsole)
+            //        _consoleManager.SetVisibility(showConsole);
+            //    break;
+
+            case CoreCommandType.SetLogToFile:
+                if (command.Param is bool logToFile)
+                    Auxiliary.LogManager.SetFileLogging(logToFile);
+                break;
+
+            case CoreCommandType.OpenLogsFolder:
+                Auxiliary.LogManager.OpenLogsFolder();
+                break;
+
+            case CoreCommandType.OpenConfigFile:
+                _configManager.OpenConfigFile();
+                break;
+
+            case CoreCommandType.UpdateConfig:
+                if (command.Param is ConfigInfo configInfo)
+                    _configManager.UpdateConfig(configInfo);
+                break;
+
+            case CoreCommandType.SetCallback_ConfigUpdated:
+                if (command.Param is Handler_OnConfigUpdated callback)
+                    _configManager.SetCallback_ConfigUpdated(callback);
+                break;
+
+            default:
+                _logger.Error($"Invalid command type and parameter combo. Command type: {command.CommandType}. Parameter type: {command.Param?.GetType()}");
+                break;
+        }
     }
 
 
