@@ -56,8 +56,28 @@ public class Controller
         StopAndDispose();
     }
 
+    public void ExecuteCommand(CoreCommand command)
+    {
+        switch (command.CommandType)
+        {
+            case CoreCommandType.OpenLogsFolder:
+                Auxiliary.LogManager.OpenLogsFolder();
+                break;
+
+            case CoreCommandType.OpenConfigFile:
+                _configManager.OpenConfigFile();
+                break;
+
+            default:
+                _logger.Error($"Invalid command type: {command.CommandType}");
+                break;
+        }
+    }
+
     public void ExecuteCommand<T>(CoreCommand<T> command)
     {
+        // TODO: Log errors for invalid parameter types.
+
         switch (command.CommandType)
         {
             // Temporarily commented since this is curently handled in WinApp.
@@ -71,14 +91,6 @@ public class Controller
                     Auxiliary.LogManager.SetFileLogging(logToFile);
                 break;
 
-            case CoreCommandType.OpenLogsFolder:
-                Auxiliary.LogManager.OpenLogsFolder();
-                break;
-
-            case CoreCommandType.OpenConfigFile:
-                _configManager.OpenConfigFile();
-                break;
-
             case CoreCommandType.UpdateConfig:
                 if (command.Param is ConfigInfo configInfo)
                     _configManager.UpdateConfig(configInfo);
@@ -90,7 +102,7 @@ public class Controller
                 break;
 
             default:
-                _logger.Error($"Invalid command type and parameter combo. Command type: {command.CommandType}. Parameter type: {command.Param?.GetType()}");
+                _logger.Error($"Can not execute command. Invalid command type: '{command.CommandType}'");
                 break;
         }
     }
