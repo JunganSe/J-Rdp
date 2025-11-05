@@ -87,6 +87,7 @@ internal class Controller
 
     private void Callback_ToggleFileLogging(bool logToFile)
     {
+        // TODO: UseCoreManager to call Core controller to set file logging instead.
         LogManager.SetFileLogging(logToFile);
 
         var configInfo = new ConfigInfo() { LogToFile = logToFile };

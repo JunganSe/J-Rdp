@@ -32,18 +32,31 @@ internal class CoreManager
     /// <summary>
     /// Tell the core controller to open the folder containing the log files, if such a rule exists.
     /// </summary>
-    public void OpenLogsFolder() =>
-        _coreController?.OpenLogsFolder();
+    public void OpenLogsFolder()
+    {
+        var command = new CoreCommand(CoreCommandType.OpenLogsFolder);
+        _coreController?.ExecuteCommand(command);
+    }
 
     /// <summary>
     /// Tell the core controller to open the config file in the default editor.
     /// </summary>
-    public void OpenConfigFile() =>
-        _coreController?.OpenConfigFile();
+    public void OpenConfigFile()
+    {
+        var command = new CoreCommand(CoreCommandType.OpenConfigFile);
+        _coreController?.ExecuteCommand(command);
+    }
 
     /// <summary>
     /// Tell the core controller to update the config (in file and memory).
     /// </summary>
-    public void UpdateConfig(ConfigInfo configInfo) =>
-        _coreController?.UpdateConfig(configInfo);
+    public void UpdateConfig(ConfigInfo configInfo)
+    {
+        var command = new CoreCommand<ConfigInfo>
+        (
+            CommandType: CoreCommandType.UpdateConfig,
+            Param: configInfo
+        );
+        _coreController?.ExecuteCommand(command);
+    }
 }
