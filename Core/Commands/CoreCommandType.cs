@@ -2,10 +2,7 @@
 
 public enum CoreCommandType
 {
-    Initialize,
-    Run,
-    Stop,
-    SetLogConsoleVisibility,
+    //SetLogConsoleVisibility,
     SetLogToFile,
     OpenLogsFolder,
     OpenConfigFile,
