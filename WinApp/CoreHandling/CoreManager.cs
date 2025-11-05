@@ -1,4 +1,5 @@
-﻿using Core.Configs;
+﻿using Core.Commands;
+using Core.Configs;
 
 namespace WinApp.CoreHandling;
 
@@ -18,8 +19,15 @@ internal class CoreManager
     /// <summary>
     /// Tell the core controller which method should be called after the config (in memory) has been updated.
     /// </summary>
-    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
-        _coreController?.SetCallback_ConfigUpdated(callback);
+    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback)
+    {
+        var command = new CoreCommand<Handler_OnConfigUpdated>
+        (
+            CommandType: CoreCommandType.SetCallback_ConfigUpdated,
+            Param: callback
+        );
+        _coreController?.ExecuteCommand(command);
+    }
 
     /// <summary>
     /// Tell the core controller to open the folder containing the log files, if such a rule exists.
