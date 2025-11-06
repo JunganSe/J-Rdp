@@ -69,7 +69,7 @@ public class Controller
                 break;
 
             default:
-                _logger.Error($"Invalid command type: {command.CommandType}");
+                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command type.");
                 break;
         }
     }
@@ -100,7 +100,7 @@ public class Controller
                 break;
 
             default:
-                _logger.Error($"Can not execute command. Invalid command type: '{command.CommandType}'");
+                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command type.");
                 return;
         }
 
