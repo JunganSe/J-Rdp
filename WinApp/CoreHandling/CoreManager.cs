@@ -34,6 +34,12 @@ internal class CoreManager
         _coreController?.ExecuteCommand(command);
     }
 
+    public void SetLogToFile(bool logToFile)
+    {
+        var command = new CoreCommand(CoreCommandType.SetLogToFile, logToFile);
+        _coreController?.ExecuteCommand(command);
+    }
+
     /// <summary>
     /// Tell the core controller to open the config file in the default editor.
     /// </summary>
