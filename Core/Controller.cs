@@ -76,8 +76,6 @@ public class Controller
 
     public void ExecuteCommand<T>(CoreCommand<T> command)
     {
-        // TODO: Log errors for invalid parameter types.
-
         switch (command.CommandType)
         {
             // Temporarily commented since this is curently handled in WinApp.
@@ -103,8 +101,10 @@ public class Controller
 
             default:
                 _logger.Error($"Can not execute command. Invalid command type: '{command.CommandType}'");
-                break;
+                return;
         }
+
+        _logger.Error($"Can not execute command '{command.CommandType}'. Invalid parameter.");
     }
 
 
