@@ -21,11 +21,7 @@ internal class CoreManager
     /// </summary>
     public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback)
     {
-        var command = new CoreCommand<Handler_OnConfigUpdated>
-        (
-            CommandType: CoreCommandType.SetCallback_ConfigUpdated,
-            Param: callback
-        );
+        var command = new CoreCommand(CoreCommandType.SetCallback_ConfigUpdated, callback);
         _coreController?.ExecuteCommand(command);
     }
 
@@ -52,11 +48,7 @@ internal class CoreManager
     /// </summary>
     public void UpdateConfig(ConfigInfo configInfo)
     {
-        var command = new CoreCommand<ConfigInfo>
-        (
-            CommandType: CoreCommandType.UpdateConfig,
-            Param: configInfo
-        );
+        var command = new CoreCommand(CoreCommandType.UpdateConfig, configInfo);
         _coreController?.ExecuteCommand(command);
     }
 }

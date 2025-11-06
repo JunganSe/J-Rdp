@@ -58,26 +58,16 @@ public class Controller
 
     public void ExecuteCommand(CoreCommand command)
     {
-        switch (command.CommandType)
+        switch (command.CommandType, command.Param)
         {
-            case CoreCommandType.OpenLogsFolder:
+            case (CoreCommandType.OpenLogsFolder, null):
                 Auxiliary.LogManager.OpenLogsFolder();
                 break;
 
-            case CoreCommandType.OpenConfigFile:
+            case (CoreCommandType.OpenConfigFile, null):
                 _configManager.OpenConfigFile();
                 break;
 
-            default:
-                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command type.");
-                break;
-        }
-    }
-
-    public void ExecuteCommand<T>(CoreCommand<T> command)
-    {
-        switch (command.CommandType, command.Param)
-        {
             // Temporarily commented since this is curently handled in WinApp.
             //case (CoreCommandType.SetLogConsoleVisibility, bool showConsole):
             //    _consoleManager.SetVisibility(showConsole);
