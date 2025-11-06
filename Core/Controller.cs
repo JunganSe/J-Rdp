@@ -76,35 +76,29 @@ public class Controller
 
     public void ExecuteCommand<T>(CoreCommand<T> command)
     {
-        switch (command.CommandType)
+        switch (command.CommandType, command.Param)
         {
             // Temporarily commented since this is curently handled in WinApp.
-            //case CoreCommandType.SetLogConsoleVisibility:
-            //    if (command.Param is bool showConsole)
-            //        _consoleManager.SetVisibility(showConsole);
+            //case (CoreCommandType.SetLogConsoleVisibility, bool showConsole):
+            //    _consoleManager.SetVisibility(showConsole);
             //    break;
 
-            case CoreCommandType.SetLogToFile:
-                if (command.Param is bool logToFile)
-                    Auxiliary.LogManager.SetFileLogging(logToFile);
+            case (CoreCommandType.SetLogToFile, bool logToFile):
+                Auxiliary.LogManager.SetFileLogging(logToFile);
                 break;
 
-            case CoreCommandType.UpdateConfig:
-                if (command.Param is ConfigInfo configInfo)
-                    _configManager.UpdateConfig(configInfo);
+            case (CoreCommandType.UpdateConfig, ConfigInfo configInfo):
+                _configManager.UpdateConfig(configInfo);
                 break;
 
-            case CoreCommandType.SetCallback_ConfigUpdated:
-                if (command.Param is Handler_OnConfigUpdated callback)
-                    _configManager.SetCallback_ConfigUpdated(callback);
+            case (CoreCommandType.SetCallback_ConfigUpdated, Handler_OnConfigUpdated callback):
+                _configManager.SetCallback_ConfigUpdated(callback);
                 break;
 
             default:
-                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command type.");
+                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command or parameter.");
                 return;
         }
-
-        _logger.Error($"Can not execute command '{command.CommandType}'. Invalid parameter.");
     }
 
 
