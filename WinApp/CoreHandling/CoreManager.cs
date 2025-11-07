@@ -7,8 +7,11 @@ internal class CoreManager
 {
     private readonly Core.Controller _coreController = new();
 
+    /// <summary>
+    /// Runs the core controller asynchronously, in parallell on the current thread.
+    /// </summary>
     public void Run() =>
-        _coreController.Run();
+        _ = _coreController.Run();
 
     public void Stop() =>
         _coreController.Stop();
