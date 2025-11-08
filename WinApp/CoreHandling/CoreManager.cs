@@ -5,16 +5,16 @@ namespace WinApp.CoreHandling;
 
 internal class CoreManager
 {
-    private readonly Core.Controller _coreController = new();
+    private Core.Controller? _coreController;
 
-    /// <summary>
-    /// Runs the core controller asynchronously, in parallell on the current thread.
-    /// </summary>
+    public void Initialize() =>
+        _coreController = new();
+
     public void Run() =>
-        _ = _coreController.Run();
+        _coreController?.Run();
 
     public void Stop() =>
-        _coreController.Stop();
+        _coreController?.Stop();
 
     /// <summary>
     /// Tell the core controller which method should be called after the config (in memory) has been updated.
@@ -22,7 +22,7 @@ internal class CoreManager
     public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback)
     {
         var command = new CoreCommand(CoreCommandType.SetCallback_ConfigUpdated, callback);
-        _coreController.ExecuteCommand(command);
+        _coreController?.ExecuteCommand(command);
     }
 
     /// <summary>
@@ -31,13 +31,13 @@ internal class CoreManager
     public void OpenLogsFolder()
     {
         var command = new CoreCommand(CoreCommandType.OpenLogsFolder);
-        _coreController.ExecuteCommand(command);
+        _coreController?.ExecuteCommand(command);
     }
 
     public void SetLogToFile(bool logToFile)
     {
         var command = new CoreCommand(CoreCommandType.SetLogToFile, logToFile);
-        _coreController.ExecuteCommand(command);
+        _coreController?.ExecuteCommand(command);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ internal class CoreManager
     public void OpenConfigFile()
     {
         var command = new CoreCommand(CoreCommandType.OpenConfigFile);
-        _coreController.ExecuteCommand(command);
+        _coreController?.ExecuteCommand(command);
     }
 
     /// <summary>
@@ -55,6 +55,6 @@ internal class CoreManager
     public void UpdateConfig(ConfigInfo configInfo)
     {
         var command = new CoreCommand(CoreCommandType.UpdateConfig, configInfo);
-        _coreController.ExecuteCommand(command);
+        _coreController?.ExecuteCommand(command);
     }
 }

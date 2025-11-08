@@ -17,7 +17,7 @@ internal class Controller
     public void Start()
     {
         Initialize(); // Initialize on the current thread.
-        _coreManager.Run(); // Will run asynchronously, in parallell on the current thread.
+        Task.Run(_coreManager.Run); // Runs asynchronously on another thread, in the thread pool.
     }
 
     public void Stop()
@@ -35,6 +35,7 @@ internal class Controller
     private void Initialize()
     {
         InitializeTray();
+        _coreManager.Initialize();
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
         _consoleManager.SetCallback_ConsoleClosed(Callback_OnConsoleClosed);
     }
