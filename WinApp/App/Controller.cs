@@ -1,5 +1,4 @@
-﻿using Auxiliary;
-using Core.Configs;
+﻿using Core.Configs;
 using Core.Profiles;
 using WinApp.CoreHandling;
 using WinApp.LogConsole;
@@ -18,7 +17,7 @@ internal class Controller
     public void Start()
     {
         Initialize(); // Initialize on the current thread.
-        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
+        Task.Run(_coreManager.Run); // Runs asynchronously on another thread, in the thread pool.
     }
 
     public void Stop()
@@ -87,7 +86,7 @@ internal class Controller
 
     private void Callback_ToggleFileLogging(bool logToFile)
     {
-        LogManager.SetFileLogging(logToFile);
+        _coreManager.SetLogToFile(logToFile);
 
         var configInfo = new ConfigInfo() { LogToFile = logToFile };
         _coreManager.UpdateConfig(configInfo);
@@ -108,7 +107,7 @@ internal class Controller
             _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
 
         if (configInfo.LogToFile.HasValue)
-            LogManager.SetFileLogging(configInfo.LogToFile.Value);
+            _coreManager.SetLogToFile(configInfo.LogToFile.Value);
 
         _trayManager.UpdateMenuState(configInfo);
     }

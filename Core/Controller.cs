@@ -1,4 +1,5 @@
-﻿using Core.Configs;
+﻿using Core.Commands;
+using Core.Configs;
 using Core.Files;
 using Core.Profiles;
 using NLog;
@@ -15,12 +16,19 @@ public class Controller
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _mainLoopCancellation;
+    private bool _isRunning = false;
     private bool _isStopping = false;
 
     public async Task Run()
     {
         try
         {
+            if (_isRunning)
+            {
+                _logger.Warn("Can not run controller, it is already running.");
+                return;
+            }
+
             _logger.Debug("Initializing...");
             Initialize();
             _mainLoopCancellation = new CancellationTokenSource();
@@ -42,22 +50,45 @@ public class Controller
         }
     }
 
-    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback) =>
-        _configManager.SetCallback_ConfigUpdated(callback);
-
-    public void OpenLogsFolder() =>
-        Auxiliary.LogManager.OpenLogsFolder();
-
-    public void OpenConfigFile() =>
-        _configManager.OpenConfigFile();
-
-    public void UpdateConfig(ConfigInfo configInfo) =>
-        _configManager.UpdateConfig(configInfo);
-
     public void Stop()
     {
         StopMainLoop();
         StopAndDispose();
+    }
+
+    public void ExecuteCommand(CoreCommand command)
+    {
+        switch (command.CommandType, command.Param)
+        {
+            case (CoreCommandType.OpenLogsFolder, null):
+                Auxiliary.LogManager.OpenLogsFolder();
+                break;
+
+            case (CoreCommandType.OpenConfigFile, null):
+                _configManager.OpenConfigFile();
+                break;
+
+            // Temporarily commented since this is curently handled in WinApp.
+            //case (CoreCommandType.SetLogConsoleVisibility, bool showConsole):
+            //    _consoleManager.SetVisibility(showConsole);
+            //    break;
+
+            case (CoreCommandType.SetLogToFile, bool logToFile):
+                Auxiliary.LogManager.SetFileLogging(logToFile);
+                break;
+
+            case (CoreCommandType.UpdateConfig, ConfigInfo configInfo):
+                _configManager.UpdateConfig(configInfo);
+                break;
+
+            case (CoreCommandType.SetCallback_ConfigUpdated, Handler_OnConfigUpdated callback):
+                _configManager.SetCallback_ConfigUpdated(callback);
+                break;
+
+            default:
+                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command or parameter.");
+                return;
+        }
     }
 
 
@@ -115,6 +146,7 @@ public class Controller
             return;
 
         _logger.Debug("Cleaning up...");
+        _isRunning = false;
         _isStopping = true;
 
         // Note: _configManager, _profileManager, and _fileManager have nothing to stop or dispose.
