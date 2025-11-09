@@ -17,7 +17,7 @@ internal class Controller
     public void Start()
     {
         Initialize(); // Initialize on the current thread.
-        Task.Run(_coreManager.Run); // Runs asynchronously on another thread, in the thread pool.
+        Task.Factory.StartNew(_coreManager.Run, TaskCreationOptions.LongRunning); // Runs asynchronously on a separate thread, handled by the task scheduler.
     }
 
     public void Stop()
@@ -67,7 +67,7 @@ internal class Controller
     private void Callback_ToggleConsole(bool showConsole)
     {
         _consoleManager.SetVisibility(showConsole);
-        
+
         var configInfo = new ConfigInfo() { ShowLogConsole = showConsole };
         _coreManager.UpdateConfig(configInfo);
     }
