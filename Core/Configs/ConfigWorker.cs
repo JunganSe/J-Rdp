@@ -1,6 +1,6 @@
-﻿using Core.Files;
+﻿using Auxiliary;
+using Core.Files;
 using NLog;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -10,7 +10,7 @@ namespace Core.Configs;
 
 internal class ConfigWorker
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly FileReader _fileReader = new();
     private readonly FileWriter _fileWriter = new();
     private readonly JsonSerializerOptions _jsonOptions;
@@ -61,8 +61,7 @@ internal class ConfigWorker
         try
         {
             string path = GetConfigFilePath();
-            var process = new ProcessStartInfo(path) { UseShellExecute = true, };
-            Process.Start(process);
+            FileSystemOpener.OpenFile(path);
             _logger.Info($"Opened config file: '{path}'");
         }
         catch (Exception ex)
