@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System.Diagnostics;
+﻿using Auxiliary;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Core.Files;
 
@@ -36,8 +36,7 @@ internal class RdpFileWorker
     public void Launch(FileInfo file)
     {
         file.Refresh();
-        var process = new ProcessStartInfo(file.FullName) { UseShellExecute = true };
-        Process.Start(process);
+        FileSystemOpener.OpenFile(file.FullName);
     }
 
     public void Delete(FileInfo file, bool recycle = true)
