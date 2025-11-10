@@ -153,14 +153,8 @@ public static class LogManager
 
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         string fullPath = Path.Combine(baseDirectory, logDirectory);
-        if (!Directory.Exists(fullPath))
-        {
-            _logger.Error($"Failed to open logs folder. Directory does not exist: '{fullPath}'");
-            return;
-        }
+        FileSystemOpener.OpenDirectory(fullPath);
 
-        var process = new ProcessStartInfo(fullPath) { UseShellExecute = true };
-        Process.Start(process);
         _logger.Info($"Opened logs folder: '{fullPath}'");
     }
 
