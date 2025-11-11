@@ -7,8 +7,8 @@
    2. Initialize logger, reading nlog config from file if present.
    3. Check if program is already running to prevent duplicate process.
    4. Setup GUI. (See "Setup GUI" below)
-   5. Set callbacks for Core controller, for when the config file is updated and should be updated.
-   6. Start running the Core functionality. (See "Core functionality" below)
+   5. Set callbacks for Core controller, and ConsoleManager.
+   6. Start running the Core functionality on a separate thread. (See "Core functionality" below)
 
 * Setup GUI:
   1. Set actions (callbacks) for menu items.
@@ -18,9 +18,9 @@
 
 - Core functionality:
   1. Initialization.
-     1. Start watching the config file for changes.
+     1. Start watching the config file for changes. (See "Config file is updated" below)
      2. Create a config file if one does not exist.
-     3. Initialize config in memory. (See "Config file is updated" below)
+     3. Initialize config in memory.
   2. Start main loop. (Runs until app is stopped.)
      1. Check which files exist in watch directory for each profile.
      2. Process each file that didn't exist on the previous check. (See "File processing" below)
@@ -43,10 +43,9 @@
      4. Apply enabled, valid profiles from config.
 
 * When config file is updated:
-   1. Core sends a ConfigInfo to the GUI via callback function.
+   1. Core sends a ConfigInfo object to the GUI via callback function.
    2. GUI shows or hides the log console according to config.
-   3. GUI enables or disables file logging according to config.
-   4. GUI menu is updated according to config.
+   3. GUI menu is updated according to config.
       1. Update menu items checked state.
       2. Update profiles in menu according to config, or show a dummy profile if there are none.
 
@@ -55,29 +54,31 @@
 - When "Show log console" is clicked:
   1. Event "OnClick_ToggleConsole" is triggered.
   1. ConsoleManager is told to show or hide the log console.
-  3. CoreManager tells Core controller to update the config.
+  3. CoreManager tells Core controller to execute a command.
   4. Core controller tells ConfigManager to update the config file.
   5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
 
 * When "Log to file" is clicked:
   1. Event "OnClick_ToggleLogToFile" is triggered.
-  2. LogManager is told to enable or disable file logging.
-  3. CoreManager tells Core controller to update the config.
+  2. CoreManager tells Core controller to execute a command.
+  3. Core controller tells LogManager to enable or disable file logging.
   4. Core controller tells ConfigManager to update the config file.
   5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
 
 - When "Open logs folder" is clicked:
   1. Event "OnClick_OpenLogsFolder" is triggered.
-  1. CoreManager tells Core controller to open the folder where log files are stored.
+  2. CoreManager tells Core controller to execute a command.
   3. Core controller tells LogManager to open the logs folder(s).
 
 * When "Open config file" is clicked:
   1. Event "OnClick_OpenConfigFile" is triggered.
-  2. CoreManager tells Core controller to open the config file.
-  3. Core controller tells ConfigManager to open the config file in shell. (OS default program.) If no config file exists, one will first be created.
+  2. CoreManager tells Core controller to execute a command.
+  3. Core controller tells ConfigManager to open the config file in shell. (OS default program.)\
+     If no config file exists, one will first be created.
 
 - When a profile is clicked:
-  1. Event "OnClick_Profile" is triggered. ProfileInfos are collected with enabled states depending on which profile is clicked and whether the ctrl button is held.
-  2. The event invokes a ProfileHandler callback, which triggers CoreManager to tell Core controller to update the config.
-  3. Core controller tells ConfigManager to update the config file.
-  4. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
+  1. Event "OnClick_Profile" is triggered.
+  2. ProfileInfo objects are collected with enabled states depending on which profile is clicked and whether the ctrl button is held.
+  3. The event invokes a ProfileHandler callback, which triggers CoreManager to tell Core controller to execute a command.
+  4. Core controller tells ConfigManager to update the config file.
+  5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
