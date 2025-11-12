@@ -105,9 +105,16 @@ public class Controller
     {
         _configManager.UpdateConfigFromFile();
         _configManager.InvokeConfigUpdatedCallback();
+        SetFileLoggingFromConfig();
         ApplyPollingIntervalFromConfig();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
+    }
+
+    private void SetFileLoggingFromConfig()
+    {
+        bool logToFile = _configManager.Config.LogToFile;
+        Auxiliary.LogManager.SetFileLogging(logToFile);
     }
 
     private void ApplyPollingIntervalFromConfig()
