@@ -106,9 +106,6 @@ internal class Controller
         if (configInfo.ShowLogConsole.HasValue)
             _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
 
-        if (configInfo.LogToFile.HasValue)
-            _coreManager.SetLogToFile(configInfo.LogToFile.Value);
-
         _trayManager.UpdateMenuState(configInfo);
     }
 
