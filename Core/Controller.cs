@@ -1,6 +1,7 @@
 ﻿using Core.Commands;
 using Core.Configs;
 using Core.Files;
+using Core.LogDisplay;
 using Core.Profiles;
 using NLog;
 
@@ -13,6 +14,7 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
+    private ILogDisplayManager? _logDisplayManager;
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _mainLoopCancellation;
@@ -83,6 +85,10 @@ public class Controller
 
             case (CoreCommandType.SetCallback_ConfigUpdated, Handler_OnConfigUpdated callback):
                 _configManager.SetCallback_ConfigUpdated(callback);
+                break;
+
+            case (CoreCommandType.SetLogDisplayManager, ILogDisplayManager manager):
+                _logDisplayManager = manager;
                 break;
 
             default:

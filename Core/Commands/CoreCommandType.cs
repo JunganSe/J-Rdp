@@ -8,4 +8,5 @@ public enum CoreCommandType
     OpenConfigFile,
     UpdateConfig,
     SetCallback_ConfigUpdated,
+    SetLogDisplayManager,
 }
