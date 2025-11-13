@@ -5,7 +5,7 @@ using System.Text;
 namespace WinApp.LogConsole;
 
 /// <summary> Windows exclusive worker for opening and closing a console log window. </summary>
-internal partial class ConsoleWorker // The class and its methods are partial to allow auto generated implementations through "LibraryImport".
+internal partial class LogConsoleWorker // The class and its methods are partial to allow auto generated implementations through "LibraryImport".
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private Action? _callback_ConsoleClosed;
