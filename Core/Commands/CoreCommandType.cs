@@ -9,4 +9,5 @@ public enum CoreCommandType
     UpdateConfig,
     SetCallback_ConfigUpdated,
     SetLogDisplayManager,
+    SetCallback_LogClosed,
 }

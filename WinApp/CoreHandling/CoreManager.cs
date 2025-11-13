@@ -25,6 +25,12 @@ internal class CoreManager
         _coreController?.ExecuteCommand(command);
     }
 
+    public void SetCallback_LogClosed(Action callback)
+    {
+        var command = new CoreCommand(CoreCommandType.SetCallback_LogClosed, callback);
+        _coreController?.ExecuteCommand(command);
+    }
+
     /// <summary>
     /// Tell the core controller to open the folder containing the log files, if such a rule exists.
     /// </summary>

@@ -37,7 +37,7 @@ internal class Controller
         InitializeTray();
         _coreManager.Initialize();
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
-        _consoleManager.SetCallback_LogClosed(Callback_OnConsoleClosed);
+        _coreManager.SetCallback_LogClosed(Callback_OnConsoleClosed);
     }
 
     private void InitializeTray()
