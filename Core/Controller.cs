@@ -114,6 +114,7 @@ public class Controller
     {
         _configManager.UpdateConfigFromFile();
         _configManager.InvokeConfigUpdatedCallback();
+        ShowLogDisplayFromConfig();
         SetFileLoggingFromConfig();
         ApplyPollingIntervalFromConfig();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
@@ -124,6 +125,12 @@ public class Controller
     {
         bool logToFile = _configManager.Config.LogToFile;
         Auxiliary.LogManager.SetFileLogging(logToFile);
+    }
+
+    private void ShowLogDisplayFromConfig()
+    {
+        bool showLogDisplay = _configManager.Config.ShowLogConsole;
+        _logDisplayManager?.SetVisibility(showLogDisplay);
     }
 
     private void ApplyPollingIntervalFromConfig()
