@@ -9,7 +9,7 @@ namespace WinApp.App;
 internal class Controller
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private readonly LogConsoleManager _consoleManager = new();
+    private readonly LogConsoleManager _logConsoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
     private bool _isStopping = false;
@@ -23,7 +23,7 @@ internal class Controller
     public void Stop()
     {
         _isStopping = true;
-        _consoleManager.SetVisibility(false);
+        _coreManager.ShowLogDisplay(false);
         _coreManager.Stop();
         _trayManager.DisposeTray();
     }
@@ -36,6 +36,7 @@ internal class Controller
     {
         InitializeTray();
         _coreManager.Initialize();
+        _coreManager.SetLogDisplayManager(_logConsoleManager);
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
         _coreManager.SetCallback_LogClosed(Callback_OnConsoleClosed);
     }
@@ -64,11 +65,11 @@ internal class Controller
         ProfilesActiveStateChanged = Callback_ProfilesActiveStateChanged
     };
 
-    private void Callback_ToggleConsole(bool showConsole)
+    private void Callback_ToggleConsole(bool showLogConsole)
     {
-        _coreManager.ShowLogDisplay(showConsole);
+        _coreManager.ShowLogDisplay(showLogConsole);
 
-        var configInfo = new ConfigInfo() { ShowLogConsole = showConsole };
+        var configInfo = new ConfigInfo() { ShowLogConsole = showLogConsole };
         _coreManager.UpdateConfig(configInfo);
     }
 
@@ -103,9 +104,6 @@ internal class Controller
     /// </summary>
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)
     {
-        if (configInfo.ShowLogConsole.HasValue)
-            _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
-
         _trayManager.UpdateMenuState(configInfo);
     }
 

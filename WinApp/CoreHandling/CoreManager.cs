@@ -1,5 +1,6 @@
 ﻿using Core.Commands;
 using Core.Configs;
+using Core.LogDisplay;
 
 namespace WinApp.CoreHandling;
 
@@ -15,6 +16,11 @@ internal class CoreManager
 
     public void Stop() =>
         _coreController?.Stop();
+    public void SetLogDisplayManager(ILogDisplayManager manager)
+    {
+        var command = new CoreCommand(CoreCommandType.SetLogDisplayManager, manager);
+        _coreController?.ExecuteCommand(command);
+    }
 
     /// <summary>
     /// Tell the core controller which method should be called after the config (in memory) has been updated.
