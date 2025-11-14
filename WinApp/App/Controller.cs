@@ -66,7 +66,7 @@ internal class Controller
 
     private void Callback_ToggleConsole(bool showConsole)
     {
-        _consoleManager.SetVisibility(showConsole);
+        _coreManager.ShowLogDisplay(showConsole);
 
         var configInfo = new ConfigInfo() { ShowLogConsole = showConsole };
         _coreManager.UpdateConfig(configInfo);

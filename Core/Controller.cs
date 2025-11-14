@@ -70,10 +70,9 @@ public class Controller
                 _configManager.OpenConfigFile();
                 break;
 
-            // Temporarily commented since this is curently handled in WinApp.
-            //case (CoreCommandType.SetLogConsoleVisibility, bool showConsole):
-            //    _consoleManager.SetVisibility(showConsole);
-            //    break;
+            case (CoreCommandType.ShowLogDisplay, bool showLogDisplay):
+                _logDisplayManager?.SetVisibility(showLogDisplay);
+                break;
 
             case (CoreCommandType.SetLogToFile, bool logToFile):
                 Auxiliary.LogManager.SetFileLogging(logToFile);

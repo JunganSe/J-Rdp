@@ -40,6 +40,12 @@ internal class CoreManager
         _coreController?.ExecuteCommand(command);
     }
 
+    public void ShowLogDisplay(bool showLogDisplay)
+    {
+        var command = new CoreCommand(CoreCommandType.ShowLogDisplay, showLogDisplay);
+        _coreController?.ExecuteCommand(command);
+    }
+
     public void SetLogToFile(bool logToFile)
     {
         var command = new CoreCommand(CoreCommandType.SetLogToFile, logToFile);
