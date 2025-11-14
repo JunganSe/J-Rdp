@@ -9,7 +9,6 @@ namespace WinApp.App;
 internal class Controller
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private readonly LogConsoleManager _logConsoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
     private bool _isStopping = false;
@@ -36,7 +35,7 @@ internal class Controller
     {
         InitializeTray();
         _coreManager.Initialize();
-        _coreManager.SetLogDisplayManager(_logConsoleManager);
+        _coreManager.SetLogDisplayManager(new LogConsoleManager());
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
         _coreManager.SetCallback_LogClosed(Callback_OnConsoleClosed);
     }
