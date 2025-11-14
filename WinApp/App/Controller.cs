@@ -9,7 +9,6 @@ namespace WinApp.App;
 internal class Controller
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private readonly ConsoleManager _consoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
     private bool _isStopping = false;
@@ -23,7 +22,7 @@ internal class Controller
     public void Stop()
     {
         _isStopping = true;
-        _consoleManager.SetVisibility(false);
+        _coreManager.ShowLog(false);
         _coreManager.Stop();
         _trayManager.DisposeTray();
     }
@@ -36,8 +35,9 @@ internal class Controller
     {
         InitializeTray();
         _coreManager.Initialize();
+        _coreManager.SetLogDisplayManager(new LogConsoleManager());
         _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
-        _consoleManager.SetCallback_ConsoleClosed(Callback_OnConsoleClosed);
+        _coreManager.SetCallback_LogClosed(Callback_OnConsoleClosed);
     }
 
     private void InitializeTray()
@@ -57,18 +57,18 @@ internal class Controller
 
     private TrayCallbacks GetTrayCallbacks() => new()
     {
-        ToggleConsole = Callback_ToggleConsole,
+        ToggleConsole = Callback_ToggleLogDisplay,
         ToggleFileLogging = Callback_ToggleFileLogging,
         OpenLogsFolder = _coreManager.OpenLogsFolder,
         OpenConfigFile = _coreManager.OpenConfigFile,
         ProfilesActiveStateChanged = Callback_ProfilesActiveStateChanged
     };
 
-    private void Callback_ToggleConsole(bool showConsole)
+    private void Callback_ToggleLogDisplay(bool showLog)
     {
-        _consoleManager.SetVisibility(showConsole);
+        _coreManager.ShowLog(showLog);
 
-        var configInfo = new ConfigInfo() { ShowLogConsole = showConsole };
+        var configInfo = new ConfigInfo() { ShowLog = showLog };
         _coreManager.UpdateConfig(configInfo);
     }
 
@@ -80,7 +80,7 @@ internal class Controller
 
         _trayManager.SetMenuState_ShowConsole(false);
 
-        var configInfo = new ConfigInfo() { ShowLogConsole = false };
+        var configInfo = new ConfigInfo() { ShowLog = false };
         _coreManager.UpdateConfig(configInfo);
     }
 
@@ -103,9 +103,6 @@ internal class Controller
     /// </summary>
     private void Callback_OnConfigUpdated(ConfigInfo configInfo)
     {
-        if (configInfo.ShowLogConsole.HasValue)
-            _consoleManager.SetVisibility(configInfo.ShowLogConsole.Value);
-
         _trayManager.UpdateMenuState(configInfo);
     }
 

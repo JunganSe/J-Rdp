@@ -75,7 +75,7 @@ internal class ConfigManager
 
     private ConfigInfo GetConfigInfo() => new()
     {
-        ShowLogConsole = Config.ShowLogConsole,
+        ShowLog = Config.ShowLog,
         LogToFile = Config.LogToFile,
         Profiles = ProfileHelper.GetProfileInfos(Config.Profiles)
     };
@@ -86,7 +86,7 @@ internal class ConfigManager
         {
             PollingInterval = Config.PollingInterval,
             DeleteDelay = Config.DeleteDelay,
-            ShowLogConsole = configInfo.ShowLogConsole ?? Config.ShowLogConsole,
+            ShowLog = configInfo.ShowLog ?? Config.ShowLog,
             LogToFile = configInfo.LogToFile ?? Config.LogToFile,
             Profiles = GetProfilesForConfigUpdate(configInfo.Profiles)
         };

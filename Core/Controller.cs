@@ -1,6 +1,7 @@
 ﻿using Core.Commands;
 using Core.Configs;
 using Core.Files;
+using Core.LogDisplay;
 using Core.Profiles;
 using NLog;
 
@@ -13,6 +14,7 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
+    private ILogDisplayManager? _logDisplayManager;
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _mainLoopCancellation;
@@ -68,10 +70,9 @@ public class Controller
                 _configManager.OpenConfigFile();
                 break;
 
-            // Temporarily commented since this is curently handled in WinApp.
-            //case (CoreCommandType.SetLogConsoleVisibility, bool showConsole):
-            //    _consoleManager.SetVisibility(showConsole);
-            //    break;
+            case (CoreCommandType.ShowLog, bool showLog):
+                _logDisplayManager?.SetVisibility(showLog);
+                break;
 
             case (CoreCommandType.SetLogToFile, bool logToFile):
                 Auxiliary.LogManager.SetFileLogging(logToFile);
@@ -83,6 +84,14 @@ public class Controller
 
             case (CoreCommandType.SetCallback_ConfigUpdated, Handler_OnConfigUpdated callback):
                 _configManager.SetCallback_ConfigUpdated(callback);
+                break;
+
+            case (CoreCommandType.SetLogDisplayManager, ILogDisplayManager manager):
+                _logDisplayManager = manager;
+                break;
+
+            case (CoreCommandType.SetCallback_LogClosed, Action callback):
+                _logDisplayManager?.SetCallback_LogClosed(callback);
                 break;
 
             default:
@@ -105,19 +114,26 @@ public class Controller
     {
         _configManager.UpdateConfigFromFile();
         _configManager.InvokeConfigUpdatedCallback();
-        SetFileLoggingFromConfig();
-        ApplyPollingIntervalFromConfig();
+        ApplyConfigSetting_ShowLog();
+        ApplyConfigSetting_FileLogging();
+        ApplyConfigSetting_PollingInterval();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
-    private void SetFileLoggingFromConfig()
+    private void ApplyConfigSetting_FileLogging()
     {
         bool logToFile = _configManager.Config.LogToFile;
         Auxiliary.LogManager.SetFileLogging(logToFile);
     }
 
-    private void ApplyPollingIntervalFromConfig()
+    private void ApplyConfigSetting_ShowLog()
+    {
+        bool showLog = _configManager.Config.ShowLog;
+        _logDisplayManager?.SetVisibility(showLog);
+    }
+
+    private void ApplyConfigSetting_PollingInterval()
     {
         int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)

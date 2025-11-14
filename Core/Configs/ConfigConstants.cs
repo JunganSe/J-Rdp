@@ -12,6 +12,6 @@ internal static class ConfigConstants
     public const int DeleteDelay_Max = 30_000;
     public const int DeleteDelay_Default = 3000;
 
-    public const bool ShowLogConsole_Default = false;
+    public const bool ShowLog_Default = false;
     public const bool LogToFile_Default = false;
 }

@@ -1,5 +1,6 @@
 ﻿using Core.Commands;
 using Core.Configs;
+using Core.LogDisplay;
 
 namespace WinApp.CoreHandling;
 
@@ -15,6 +16,11 @@ internal class CoreManager
 
     public void Stop() =>
         _coreController?.Stop();
+    public void SetLogDisplayManager(ILogDisplayManager manager)
+    {
+        var command = new CoreCommand(CoreCommandType.SetLogDisplayManager, manager);
+        _coreController?.ExecuteCommand(command);
+    }
 
     /// <summary>
     /// Tell the core controller which method should be called after the config (in memory) has been updated.
@@ -25,12 +31,24 @@ internal class CoreManager
         _coreController?.ExecuteCommand(command);
     }
 
+    public void SetCallback_LogClosed(Action callback)
+    {
+        var command = new CoreCommand(CoreCommandType.SetCallback_LogClosed, callback);
+        _coreController?.ExecuteCommand(command);
+    }
+
     /// <summary>
     /// Tell the core controller to open the folder containing the log files, if such a rule exists.
     /// </summary>
     public void OpenLogsFolder()
     {
         var command = new CoreCommand(CoreCommandType.OpenLogsFolder);
+        _coreController?.ExecuteCommand(command);
+    }
+
+    public void ShowLog(bool showLog)
+    {
+        var command = new CoreCommand(CoreCommandType.ShowLog, showLog);
         _coreController?.ExecuteCommand(command);
     }
 

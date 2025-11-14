@@ -8,7 +8,7 @@ namespace Core.Configs;
 /// </summary>
 public class ConfigInfo
 {
-    public bool? ShowLogConsole { get; set; }
+    public bool? ShowLog { get; set; }
     public bool? LogToFile { get; set; }
     public List<ProfileInfo>? Profiles { get; set; }
 }
