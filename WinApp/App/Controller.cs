@@ -23,7 +23,7 @@ internal class Controller
     public void Stop()
     {
         _isStopping = true;
-        _coreManager.ShowLogDisplay(false);
+        _coreManager.ShowLog(false);
         _coreManager.Stop();
         _trayManager.DisposeTray();
     }
@@ -58,18 +58,18 @@ internal class Controller
 
     private TrayCallbacks GetTrayCallbacks() => new()
     {
-        ToggleConsole = Callback_ToggleConsole,
+        ToggleConsole = Callback_ToggleLogDisplay,
         ToggleFileLogging = Callback_ToggleFileLogging,
         OpenLogsFolder = _coreManager.OpenLogsFolder,
         OpenConfigFile = _coreManager.OpenConfigFile,
         ProfilesActiveStateChanged = Callback_ProfilesActiveStateChanged
     };
 
-    private void Callback_ToggleConsole(bool showLogConsole)
+    private void Callback_ToggleLogDisplay(bool showLog)
     {
-        _coreManager.ShowLogDisplay(showLogConsole);
+        _coreManager.ShowLog(showLog);
 
-        var configInfo = new ConfigInfo() { ShowLogConsole = showLogConsole };
+        var configInfo = new ConfigInfo() { ShowLog = showLog };
         _coreManager.UpdateConfig(configInfo);
     }
 
@@ -81,7 +81,7 @@ internal class Controller
 
         _trayManager.SetMenuState_ShowConsole(false);
 
-        var configInfo = new ConfigInfo() { ShowLogConsole = false };
+        var configInfo = new ConfigInfo() { ShowLog = false };
         _coreManager.UpdateConfig(configInfo);
     }
 

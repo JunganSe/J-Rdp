@@ -46,9 +46,9 @@ internal class CoreManager
         _coreController?.ExecuteCommand(command);
     }
 
-    public void ShowLogDisplay(bool showLogDisplay)
+    public void ShowLog(bool showLog)
     {
-        var command = new CoreCommand(CoreCommandType.ShowLogDisplay, showLogDisplay);
+        var command = new CoreCommand(CoreCommandType.ShowLog, showLog);
         _coreController?.ExecuteCommand(command);
     }
 

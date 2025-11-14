@@ -70,8 +70,8 @@ public class Controller
                 _configManager.OpenConfigFile();
                 break;
 
-            case (CoreCommandType.ShowLogDisplay, bool showLogDisplay):
-                _logDisplayManager?.SetVisibility(showLogDisplay);
+            case (CoreCommandType.ShowLog, bool showLog):
+                _logDisplayManager?.SetVisibility(showLog);
                 break;
 
             case (CoreCommandType.SetLogToFile, bool logToFile):
@@ -114,26 +114,26 @@ public class Controller
     {
         _configManager.UpdateConfigFromFile();
         _configManager.InvokeConfigUpdatedCallback();
-        ShowLogDisplayFromConfig();
-        SetFileLoggingFromConfig();
-        ApplyPollingIntervalFromConfig();
+        ApplyConfigSetting_ShowLog();
+        ApplyConfigSetting_FileLogging();
+        ApplyConfigSetting_PollingInterval();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
-    private void SetFileLoggingFromConfig()
+    private void ApplyConfigSetting_FileLogging()
     {
         bool logToFile = _configManager.Config.LogToFile;
         Auxiliary.LogManager.SetFileLogging(logToFile);
     }
 
-    private void ShowLogDisplayFromConfig()
+    private void ApplyConfigSetting_ShowLog()
     {
-        bool showLogDisplay = _configManager.Config.ShowLogConsole;
-        _logDisplayManager?.SetVisibility(showLogDisplay);
+        bool showLog = _configManager.Config.ShowLog;
+        _logDisplayManager?.SetVisibility(showLog);
     }
 
-    private void ApplyPollingIntervalFromConfig()
+    private void ApplyConfigSetting_PollingInterval()
     {
         int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)

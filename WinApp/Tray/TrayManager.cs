@@ -33,8 +33,8 @@ internal class TrayManager
             return;
         }
 
-        if (configInfo.ShowLogConsole is not null)
-            SetMenuState_ShowConsole(configInfo.ShowLogConsole.Value);
+        if (configInfo.ShowLog is not null)
+            SetMenuState_ShowConsole(configInfo.ShowLog.Value);
 
         if (configInfo.LogToFile is not null)
             SetMenuState_LogToFile(configInfo.LogToFile.Value);
