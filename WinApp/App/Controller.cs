@@ -34,10 +34,9 @@ internal class Controller
     private void Initialize()
     {
         InitializeTray();
-        _coreManager.Initialize();
-        _coreManager.SetLogDisplayManager(new LogConsoleManager());
-        _coreManager.SetCallback_ConfigUpdated(Callback_OnConfigUpdated);
-        _coreManager.SetCallback_LogClosed(Callback_OnConsoleClosed);
+        _coreManager.Initialize(Callback_OnConfigUpdated,
+                                new LogConsoleManager(),
+                                Callback_OnConsoleClosed);
     }
 
     private void InitializeTray()

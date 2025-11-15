@@ -8,34 +8,16 @@ internal class CoreManager
 {
     private Core.Controller? _coreController;
 
-    public void Initialize() =>
-        _coreController = new();
+    public void Initialize(Handler_OnConfigUpdated callback_ConfigUpdated,
+                           ILogDisplayManager logDisplayManager,
+                           Action callback_LogClosed) =>
+        _coreController = new(callback_ConfigUpdated, logDisplayManager, callback_LogClosed);
 
     public void Run() =>
         _coreController?.Run();
 
     public void Stop() =>
         _coreController?.Stop();
-    public void SetLogDisplayManager(ILogDisplayManager manager)
-    {
-        var command = new CoreCommand(CoreCommandType.SetLogDisplayManager, manager);
-        _coreController?.ExecuteCommand(command);
-    }
-
-    /// <summary>
-    /// Tell the core controller which method should be called after the config (in memory) has been updated.
-    /// </summary>
-    public void SetCallback_ConfigUpdated(Handler_OnConfigUpdated callback)
-    {
-        var command = new CoreCommand(CoreCommandType.SetCallback_ConfigUpdated, callback);
-        _coreController?.ExecuteCommand(command);
-    }
-
-    public void SetCallback_LogClosed(Action callback)
-    {
-        var command = new CoreCommand(CoreCommandType.SetCallback_LogClosed, callback);
-        _coreController?.ExecuteCommand(command);
-    }
 
     /// <summary>
     /// Tell the core controller to open the folder containing the log files, if such a rule exists.
