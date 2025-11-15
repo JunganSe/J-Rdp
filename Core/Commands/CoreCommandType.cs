@@ -7,7 +7,4 @@ public enum CoreCommandType
     OpenLogsFolder,
     OpenConfigFile,
     UpdateConfig,
-    //SetCallback_ConfigUpdated,
-    //SetLogDisplayManager,
-    //SetCallback_LogClosed,
 }

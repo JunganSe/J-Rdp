@@ -91,18 +91,6 @@ public class Controller
                 _configManager.UpdateConfig(configInfo);
                 break;
 
-            //case (CoreCommandType.SetCallback_ConfigUpdated, Handler_OnConfigUpdated callback):
-            //    _configManager.SetCallback_ConfigUpdated(callback);
-            //    break;
-
-            //case (CoreCommandType.SetLogDisplayManager, ILogDisplayManager manager):
-            //    _logDisplayManager = manager;
-            //    break;
-
-            //case (CoreCommandType.SetCallback_LogClosed, Action callback):
-            //    _logDisplayManager.SetCallback_LogClosed(callback);
-            //    break;
-
             default:
                 _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command or parameter.");
                 return;
