@@ -8,6 +8,9 @@ internal class CoreManager
 {
     private Core.Controller? _coreController;
 
+    /// <summary>
+    /// Initialize the core controller.
+    /// </summary>
     public void Initialize(Handler_OnConfigUpdated callback_ConfigUpdated,
                            ILogDisplayManager logDisplayManager,
                            Action callback_LogClosed) =>
@@ -28,12 +31,18 @@ internal class CoreManager
         _coreController?.ExecuteCommand(command);
     }
 
+    /// <summary>
+    /// Tell the core controller to show the log display.
+    /// </summary>
     public void ShowLog(bool showLog)
     {
         var command = new CoreCommand(CoreCommandType.ShowLog, showLog);
         _coreController?.ExecuteCommand(command);
     }
 
+    /// <summary>
+    /// Tell the core controller to enable or disable logging to file.
+    /// </summary>
     public void SetLogToFile(bool logToFile)
     {
         var command = new CoreCommand(CoreCommandType.SetLogToFile, logToFile);
