@@ -16,7 +16,8 @@ internal class Controller
 
     public void Start()
     {
-        Initialize(); // Initialize on the current thread.
+        InitializeTray();
+        InitializeCore(); // Initialize on the current thread.
         Task.Factory.StartNew(_coreManager.Run, TaskCreationOptions.LongRunning); // Runs asynchronously on a separate thread, handled by the task scheduler.
     }
 
@@ -32,16 +33,6 @@ internal class Controller
 
     #region Initialization
 
-    private void Initialize()
-    {
-        InitializeTray();
-        var coreControllerInitParams = new ControllerInitParams(
-            Callback_ConfigUpdated: Callback_OnConfigUpdated,
-            LogDisplayManager: new LogConsoleManager(),
-            Callback_LogClosed: Callback_OnConsoleClosed);
-        _coreManager.Initialize(coreControllerInitParams);
-    }
-
     private void InitializeTray()
     {
         _logger.Trace("Initializing tray...");
@@ -51,6 +42,16 @@ internal class Controller
         _trayManager.InitializeNotifyIconWithContextMenu();
 
         _logger.Debug("Tray initialized.");
+    }
+
+
+    private void InitializeCore()
+    {
+        var coreControllerInitParams = new ControllerInitParams(
+                Callback_ConfigUpdated: Callback_OnConfigUpdated,
+                LogDisplayManager: new LogConsoleManager(),
+                Callback_LogClosed: Callback_OnConsoleClosed);
+        _coreManager.Initialize(coreControllerInitParams);
     }
 
     #endregion
