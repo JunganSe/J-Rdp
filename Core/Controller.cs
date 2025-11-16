@@ -21,13 +21,11 @@ public class Controller
     private bool _isRunning = false;
     private bool _isStopping = false;
 
-    public Controller(Handler_OnConfigUpdated callback_ConfigUpdated,
-                      ILogDisplayManager logDisplayManager,
-                      Action callback_LogClosed)
+    public Controller(ControllerInitParams initParams)
     {
-        _configManager.SetCallback_ConfigUpdated(callback_ConfigUpdated);
-        _logDisplayManager = logDisplayManager;
-        _logDisplayManager.SetCallback_LogClosed(callback_LogClosed);
+        _configManager.SetCallback_ConfigUpdated(initParams.Callback_ConfigUpdated);
+        _logDisplayManager = initParams.LogDisplayManager;
+        _logDisplayManager.SetCallback_LogClosed(initParams.Callback_LogClosed);
     }
 
     public async Task Run()

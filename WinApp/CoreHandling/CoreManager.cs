@@ -1,6 +1,6 @@
-﻿using Core.Commands;
+﻿using Core;
+using Core.Commands;
 using Core.Configs;
-using Core.LogDisplay;
 
 namespace WinApp.CoreHandling;
 
@@ -11,10 +11,8 @@ internal class CoreManager
     /// <summary>
     /// Initialize the core controller.
     /// </summary>
-    public void Initialize(Handler_OnConfigUpdated callback_ConfigUpdated,
-                           ILogDisplayManager logDisplayManager,
-                           Action callback_LogClosed) =>
-        _coreController = new(callback_ConfigUpdated, logDisplayManager, callback_LogClosed);
+    public void Initialize(ControllerInitParams coreControllerInitParams) =>
+        _coreController = new(coreControllerInitParams);
 
     public void Run() =>
         _coreController?.Run();

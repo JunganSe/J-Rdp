@@ -1,4 +1,5 @@
-﻿using Core.Configs;
+﻿using Core;
+using Core.Configs;
 using Core.Profiles;
 using WinApp.CoreHandling;
 using WinApp.LogConsole;
@@ -34,9 +35,11 @@ internal class Controller
     private void Initialize()
     {
         InitializeTray();
-        _coreManager.Initialize(Callback_OnConfigUpdated,
-                                new LogConsoleManager(),
-                                Callback_OnConsoleClosed);
+        var coreControllerInitParams = new ControllerInitParams(
+            Callback_ConfigUpdated: Callback_OnConfigUpdated,
+            LogDisplayManager: new LogConsoleManager(),
+            Callback_LogClosed: Callback_OnConsoleClosed);
+        _coreManager.Initialize(coreControllerInitParams);
     }
 
     private void InitializeTray()
