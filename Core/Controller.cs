@@ -14,12 +14,19 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
-    private ILogDisplayManager? _logDisplayManager;
+    private readonly ILogDisplayManager _logDisplayManager;
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _mainLoopCancellation;
     private bool _isRunning = false;
     private bool _isStopping = false;
+
+    public Controller(ControllerInitParams initParams)
+    {
+        _configManager.SetCallback_ConfigUpdated(initParams.Callback_ConfigUpdated);
+        _logDisplayManager = initParams.LogDisplayManager;
+        _logDisplayManager.SetCallback_LogClosed(initParams.Callback_LogClosed);
+    }
 
     public async Task Run()
     {
@@ -71,7 +78,7 @@ public class Controller
                 break;
 
             case (CoreCommandType.ShowLog, bool showLog):
-                _logDisplayManager?.SetVisibility(showLog);
+                _logDisplayManager.SetVisibility(showLog);
                 break;
 
             case (CoreCommandType.SetLogToFile, bool logToFile):
@@ -80,18 +87,6 @@ public class Controller
 
             case (CoreCommandType.UpdateConfig, ConfigInfo configInfo):
                 _configManager.UpdateConfig(configInfo);
-                break;
-
-            case (CoreCommandType.SetCallback_ConfigUpdated, Handler_OnConfigUpdated callback):
-                _configManager.SetCallback_ConfigUpdated(callback);
-                break;
-
-            case (CoreCommandType.SetLogDisplayManager, ILogDisplayManager manager):
-                _logDisplayManager = manager;
-                break;
-
-            case (CoreCommandType.SetCallback_LogClosed, Action callback):
-                _logDisplayManager?.SetCallback_LogClosed(callback);
                 break;
 
             default:
@@ -130,7 +125,7 @@ public class Controller
     private void ApplyConfigSetting_ShowLog()
     {
         bool showLog = _configManager.Config.ShowLog;
-        _logDisplayManager?.SetVisibility(showLog);
+        _logDisplayManager.SetVisibility(showLog);
     }
 
     private void ApplyConfigSetting_PollingInterval()
