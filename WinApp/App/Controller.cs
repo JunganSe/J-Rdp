@@ -50,7 +50,7 @@ internal class Controller
         var coreControllerInitParams = new ControllerInitParams(
                 Callback_ConfigUpdated: Callback_OnConfigUpdated,
                 LogDisplayManager: new LogConsoleManager(),
-                Callback_LogClosed: Callback_OnConsoleClosed);
+                Callback_LogClosed: Callback_OnLogDisplayClosed);
         _coreManager.Initialize(coreControllerInitParams);
     }
 
@@ -70,12 +70,10 @@ internal class Controller
     private void Callback_ToggleLogDisplay(bool showLog)
     {
         _coreManager.ShowLog(showLog);
-
-        var configInfo = new ConfigInfo() { ShowLog = showLog };
-        _coreManager.UpdateConfig(configInfo);
+        // UpdateConfig is called from Callback_OnLogDisplayClosed, which triggers when the log window is closed.
     }
 
-    private void Callback_OnConsoleClosed()
+    private void Callback_OnLogDisplayClosed()
     {
         // Abort if stopping, to avoid updating the config when the log console closes.
         if (_isStopping)
