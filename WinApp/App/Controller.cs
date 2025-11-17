@@ -70,9 +70,7 @@ internal class Controller
     private void Callback_ToggleLogDisplay(bool showLog)
     {
         _coreManager.ShowLog(showLog);
-
-        var configInfo = new ConfigInfo() { ShowLog = showLog };
-        _coreManager.UpdateConfig(configInfo);
+        // UpdateConfig is called from Callback_OnConsoleClosed, which triggers when the log console is closed.
     }
 
     private void Callback_OnConsoleClosed()
