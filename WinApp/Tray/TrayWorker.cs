@@ -37,7 +37,7 @@ internal class TrayWorker
 
     private Icon GetTrayIcon()
     {
-        using var iconStream = new MemoryStream(Properties.Resources.J_Rdp_icon);
+        using var iconStream = new MemoryStream(Core.Properties.Resources.J_Rdp_icon);
         return new Icon(iconStream);
     }
 
