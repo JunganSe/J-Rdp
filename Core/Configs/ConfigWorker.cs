@@ -40,7 +40,7 @@ internal class ConfigWorker
         try
         {
             string path = GetConfigFilePath();
-            string json = JsonSerializer.Serialize(config, _jsonOptions);
+            string json = SerializeConfig(config);
             _fileWriter.WriteFile(path, json);
             _logger.Debug("Successfully updated config file.");
         }
@@ -105,7 +105,7 @@ internal class ConfigWorker
         try
         {
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions)
-                ?? throw new InvalidOperationException("Config is null.");
+                ?? throw new InvalidOperationException("Invalid config json.");
 
             for (int i = 0; i < config.Profiles.Count; i++)
             {
