@@ -122,4 +122,7 @@ internal class ConfigWorker
             throw;
         }
     }
+
+    public string SerializeConfig(Config config) =>
+        JsonSerializer.Serialize(config, _jsonOptions);
 }

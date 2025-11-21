@@ -108,6 +108,7 @@ public class Controller
     private void InitializeConfig()
     {
         _configManager.UpdateConfigFromFile();
+        _configManager.LogFullConfig();
         _configManager.InvokeConfigUpdatedCallback();
         ApplyConfigSetting_ShowLog();
         ApplyConfigSetting_FileLogging();
