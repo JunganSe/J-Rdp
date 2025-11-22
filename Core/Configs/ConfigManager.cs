@@ -61,6 +61,16 @@ internal class ConfigManager
         }
     }
 
+    public void LogConfigChanges(Config oldConfig)
+    {
+        List<string> changes = ConfigChangesHelper.GetChangedSettings(oldConfig, Config);
+
+        string summary = (changes.Count > 0)
+            ? $"Config updated. Changed settings:\n{string.Join("\n", changes.Select(s => $"  {s}"))}"
+            : "Config updated. No settings were changed.";
+        _logger.Info(summary);
+    }
+
     public void LogFullConfig()
     {
         string jsonConfig = _configWorker.SerializeConfig(Config);
