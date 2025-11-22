@@ -1,4 +1,6 @@
-﻿namespace Core.Configs;
+﻿using System.Runtime.CompilerServices;
+
+namespace Core.Configs;
 
 internal static class ConfigChangesHelper
 {
@@ -7,22 +9,26 @@ internal static class ConfigChangesHelper
         var changedSettings = new List<string>();
 
         if (newConfig.PollingInterval != oldConfig.PollingInterval)
-            changedSettings.Add(GetChangeSummary(nameof(Config.PollingInterval), oldConfig.PollingInterval, newConfig.PollingInterval));
+            changedSettings.Add(GetChangeSummary(oldConfig.PollingInterval, newConfig.PollingInterval));
 
         if (newConfig.DeleteDelay != oldConfig.DeleteDelay)
-            changedSettings.Add(GetChangeSummary(nameof(Config.DeleteDelay), oldConfig.DeleteDelay, newConfig.DeleteDelay));
+            changedSettings.Add(GetChangeSummary(oldConfig.DeleteDelay, newConfig.DeleteDelay));
 
         if (newConfig.ShowLog != oldConfig.ShowLog)
-            changedSettings.Add(GetChangeSummary(nameof(Config.ShowLog), oldConfig.ShowLog, newConfig.ShowLog));
+            changedSettings.Add(GetChangeSummary(oldConfig.ShowLog, newConfig.ShowLog));
 
         if (newConfig.LogToFile != oldConfig.LogToFile)
-            changedSettings.Add(GetChangeSummary(nameof(Config.LogToFile), oldConfig.LogToFile, newConfig.LogToFile));
+            changedSettings.Add(GetChangeSummary(oldConfig.LogToFile, newConfig.LogToFile));
 
         // TODO: Compare Profiles.
 
         return changedSettings;
     }
 
-    private static string GetChangeSummary<T>(string propertyName, T oldValue, T newValue) =>
-        $"{propertyName}: {oldValue} => {newValue}";
+    private static string GetChangeSummary<T>(T oldValue, T newValue,
+        [CallerArgumentExpression(nameof(newValue))] string? newValueExpression = null) // Generates a string from the argument. E.g. "newConfig.PollingInterval"
+    {
+        string propertyName = newValueExpression?.Split('.').LastOrDefault() ?? "(Unknown)";
+        return $"{propertyName}: {oldValue} => {newValue}";
+    }
 }
