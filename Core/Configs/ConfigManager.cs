@@ -64,7 +64,7 @@ internal class ConfigManager
     public void LogFullConfig()
     {
         string jsonConfig = _configWorker.SerializeConfig(Config);
-        _logger.Debug(jsonConfig);
+        _logger.Trace(jsonConfig);
     }
 
     public void InvokeConfigUpdatedCallback()
