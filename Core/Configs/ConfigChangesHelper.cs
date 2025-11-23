@@ -9,7 +9,6 @@ internal static class ConfigChangesHelper
     {
         var changedConfigSettings = GetChangedConfigSettings(oldConfig, newConfig);
         var changedProfileSettings = GetChangedProfilesSettings(oldConfig, newConfig);
-
         return [.. changedConfigSettings, .. changedProfileSettings];
     }
 
@@ -41,7 +40,16 @@ internal static class ConfigChangesHelper
 
     public static List<string> GetChangedProfilesSettings(Config oldConfig, Config newConfig)
     {
-        // TODO: Implement profile comparison logic.
-        throw new NotImplementedException();
+        var keptProfiles = newConfig.Profiles
+            .Where(np => oldConfig.Profiles.Any(op => op.Id == np.Id))
+            .ToList();
+        var removedProfiles = oldConfig.Profiles
+            .Where(op => newConfig.Profiles.All(np => np.Id != op.Id))
+            .ToList();
+        var newProfiles = newConfig.Profiles
+            .Where(np => oldConfig.Profiles.All(op => op.Id != np.Id))
+            .ToList();
+
+        var output = new List<string>();
     }
 }
