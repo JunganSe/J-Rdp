@@ -1,7 +1,7 @@
-﻿using Core.Profiles;
+﻿using Core.Configs;
 using System.Runtime.CompilerServices;
 
-namespace Core.Configs;
+namespace Core.ChangesSummarizers;
 
 internal static class ConfigChangesSummarizer
 {

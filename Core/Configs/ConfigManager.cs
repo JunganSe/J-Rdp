@@ -1,4 +1,5 @@
 ﻿using Auxiliary;
+using Core.ChangesSummarizers;
 using Core.Profiles;
 using NLog;
 
