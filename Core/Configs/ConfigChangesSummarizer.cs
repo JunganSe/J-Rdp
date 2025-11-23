@@ -3,9 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace Core.Configs;
 
-internal static class ConfigChangesHelper
+internal static class ConfigChangesSummarizer
 {
-    public static List<string> GetChangedSettings(Config oldConfig, Config newConfig)
+    public static List<string> GetChangesSummary(Config oldConfig, Config newConfig)
     {
         var changedConfigSettings = GetChangedConfigSettings(oldConfig, newConfig);
         var changedProfileSettings = GetChangedProfilesSettings(oldConfig, newConfig);

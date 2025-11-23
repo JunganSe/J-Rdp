@@ -63,7 +63,7 @@ internal class ConfigManager
 
     public void LogConfigChanges(Config oldConfig)
     {
-        List<string> changes = ConfigChangesHelper.GetChangedSettings(oldConfig, Config);
+        List<string> changes = ConfigChangesSummarizer.GetChangesSummary(oldConfig, Config);
 
         string summary = (changes.Count > 0)
             ? $"Config updated. Changed settings:\n{string.Join("\n", changes.Select(s => $"  {s}"))}"
