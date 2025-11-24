@@ -64,13 +64,32 @@ internal class ConfigManager
 
     public void LogConfigChanges(Config oldConfig)
     {
+        // TODO: Refactor this method into ConfigWorker.
         List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, Config);
-        // TODO: Get profile changes and handle them.
+        List<string> profileChanges = ProfileChangesSummarizer.GetChangedProfilesSettings(oldConfig.Profiles, Config.Profiles);
+        
+        int totalChangesCount = configChanges.Count + profileChanges.Count;
+        if (totalChangesCount == 0)
+        {
+            _logger.Info("Config updated. No settings were changed.");
+            return;
+        }
 
-        string summary = (configChanges.Count > 0)
-            ? $"Config updated. Changed settings:\n{string.Join("\n", configChanges.Select(s => $"  {s}"))}"
-            : "Config updated. No settings were changed.";
-        _logger.Info(summary);
+        var output = new List<string>();
+
+        if (configChanges.Count > 0)
+        {
+            string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
+            output.Add("Changed config settings:\n" + lines);
+        }
+
+        if (profileChanges.Count > 0)
+        {
+            string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
+            output.Add("Changed profile settings:\n" + lines);
+        }
+
+        _logger.Info(output);
     }
 
     public void LogFullConfig()
