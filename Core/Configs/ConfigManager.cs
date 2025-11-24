@@ -2,6 +2,7 @@
 using Core.ChangesSummarizers;
 using Core.Profiles;
 using NLog;
+using System.Linq;
 
 namespace Core.Configs;
 
@@ -89,7 +90,8 @@ internal class ConfigManager
             output.Add("Changed profile settings:\n" + lines);
         }
 
-        _logger.Info(output);
+        string summary = string.Join("\n", output);
+        _logger.Info(summary);
     }
 
     public void LogFullConfig()
