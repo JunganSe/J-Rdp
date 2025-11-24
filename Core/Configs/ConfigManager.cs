@@ -64,10 +64,11 @@ internal class ConfigManager
 
     public void LogConfigChanges(Config oldConfig)
     {
-        List<string> changes = ConfigChangesSummarizer.GetChangesSummary(oldConfig, Config);
+        List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, Config);
+        // TODO: Get profile changes and handle them.
 
-        string summary = (changes.Count > 0)
-            ? $"Config updated. Changed settings:\n{string.Join("\n", changes.Select(s => $"  {s}"))}"
+        string summary = (configChanges.Count > 0)
+            ? $"Config updated. Changed settings:\n{string.Join("\n", configChanges.Select(s => $"  {s}"))}"
             : "Config updated. No settings were changed.";
         _logger.Info(summary);
     }

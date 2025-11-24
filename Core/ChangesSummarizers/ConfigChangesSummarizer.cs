@@ -5,13 +5,6 @@ namespace Core.ChangesSummarizers;
 
 internal static class ConfigChangesSummarizer
 {
-    public static List<string> GetChangesSummary(Config oldConfig, Config newConfig)
-    {
-        var changedConfigSettings = GetChangedConfigSettings(oldConfig, newConfig);
-        var changedProfileSettings = GetChangedProfilesSettings(oldConfig, newConfig);
-        return [.. changedConfigSettings, .. changedProfileSettings];
-    }
-
     public static List<string> GetChangedConfigSettings(Config oldConfig, Config newConfig)
     {
         var changedSettings = new List<string>();
@@ -38,6 +31,7 @@ internal static class ConfigChangesSummarizer
         return $"{propertyName}: {oldValue} => {newValue}";
     }
 
+    // TODO: Move to separate class "ProfileChangesSummarizer" and use profiles collections as parameters.
     public static List<string> GetChangedProfilesSettings(Config oldConfig, Config newConfig)
     {
         var keptProfiles = newConfig.Profiles
