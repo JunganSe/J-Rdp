@@ -27,22 +27,21 @@ public class ProfileSettingsChangesSummarizer
         var output = new List<string>();
 
         if (addedSettings.Count > 0)
-        {
-            string settingsWord = (addedSettings.Count == 1) ? "setting" : "settings";
-            string settings = string.Join(", ", addedSettings.Select(s => $"'{s}'"));
-            output.Add($"Added {settingsWord}: {settings}");
-        }
+            output.Add("Added " + GetJoinedSettingsSummary(addedSettings));
 
         if (removedSettings.Count > 0)
-        {
-            string settingsWord = (removedSettings.Count == 1) ? "setting" : "settings";
-            string settings = string.Join(", ", removedSettings.Select(s => $"'{s}'"));
-            output.Add($"Removed {settingsWord}: {settings}");
-        }
+            output.Add("Removed " + GetJoinedSettingsSummary(removedSettings));
 
         foreach (var (oldSetting, newSetting) in changedSettings)
             output.Add($"Changed setting: '{oldSetting}' => '{newSetting}'");
 
         return output;
+    }
+
+    public static string GetJoinedSettingsSummary(List<string> settings)
+    {
+        string settingsWord = (settings.Count == 1) ? "setting" : "settings";
+        string joinedSettings = string.Join(", ", settings.Select(s => $"'{s}'"));
+        return $"{settingsWord}: {joinedSettings}";
     }
 }
