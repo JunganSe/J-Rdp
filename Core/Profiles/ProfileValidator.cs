@@ -36,7 +36,7 @@ internal static class ProfileValidator
         var parts = setting.Trim().Split(':');
 
         if (parts.Length < 2)
-            reasons.Add($"Setting '{setting}' does not contain a semicolon.");
+            reasons.Add($"Setting '{setting}' does not contain a colon.");
         else
         {
             if (parts[0].Length == 0)

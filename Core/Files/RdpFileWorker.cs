@@ -23,7 +23,7 @@ internal class RdpFileWorker
         {
             int lastColonIndex = setting.LastIndexOf(':');
             if (lastColonIndex == -1)
-                throw new ArgumentException($"Invalid setting: '${setting}'. No semicolon present.");
+                throw new ArgumentException($"Invalid setting: '{setting}' does not contain a colon.");
             string key = setting[..lastColonIndex];
             fileLines.RemoveAll(line => line.Contains(key));
         }
