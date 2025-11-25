@@ -8,6 +8,28 @@ public class ProfileSettingsChangesSummarizer
         if (areSettingsEqual)
             return [];
 
+        var output = new List<string>();
+        var (addedSettings, removedSettings, changedSettings) = GetGroupedSettings(oldSettings, newSettings);
+
+        if (addedSettings.Count > 0)
+            output.Add("Added " + GetJoinedSettingsSummary(addedSettings));
+
+        if (removedSettings.Count > 0)
+            output.Add("Removed " + GetJoinedSettingsSummary(removedSettings));
+
+        foreach (var (oldSetting, newSetting) in changedSettings)
+            output.Add($"Changed setting: '{oldSetting}' => '{newSetting}'");
+
+        return output;
+    }
+
+    /// <summary>
+    /// Compares two lists of settings and categorizes the differences into added, removed, and changed settings.
+    /// </summary>
+    /// <remarks>This method assumes that all settings are valid. This means each setting is formatted as "key:value", where
+    /// "key" is a unique identifier. The comparison is performed based on the "key" portion of each setting.</remarks>
+    public static (List<string> added, List<string> removed, List<(string oldSetting, string newSetting)> changed) GetGroupedSettings(List<string> oldSettings, List<string> newSettings)
+    {
         var oldSettingsLookup = oldSettings.ToDictionary(s => s.Split(':')[0]);
         var newSettingsLookup = newSettings.ToDictionary(s => s.Split(':')[0]);
 
@@ -24,18 +46,7 @@ public class ProfileSettingsChangesSummarizer
             .Select(key => (oldSetting: oldSettingsLookup[key], newSetting: newSettingsLookup[key]))
             .ToList();
 
-        var output = new List<string>();
-
-        if (addedSettings.Count > 0)
-            output.Add("Added " + GetJoinedSettingsSummary(addedSettings));
-
-        if (removedSettings.Count > 0)
-            output.Add("Removed " + GetJoinedSettingsSummary(removedSettings));
-
-        foreach (var (oldSetting, newSetting) in changedSettings)
-            output.Add($"Changed setting: '{oldSetting}' => '{newSetting}'");
-
-        return output;
+        return (addedSettings, removedSettings, changedSettings);
     }
 
     public static string GetJoinedSettingsSummary(List<string> settings)
