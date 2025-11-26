@@ -1,4 +1,5 @@
 ﻿using Auxiliary;
+using Core.ChangesSummarizers;
 using Core.Files;
 using NLog;
 using System.Reflection;
@@ -40,7 +41,7 @@ internal class ConfigWorker
         try
         {
             string path = GetConfigFilePath();
-            string json = JsonSerializer.Serialize(config, _jsonOptions);
+            string json = SerializeConfig(config);
             _fileWriter.WriteFile(path, json);
             _logger.Debug("Successfully updated config file.");
         }
@@ -105,7 +106,7 @@ internal class ConfigWorker
         try
         {
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions)
-                ?? throw new InvalidOperationException("Config is null.");
+                ?? throw new InvalidOperationException("Invalid config json.");
 
             for (int i = 0; i < config.Profiles.Count; i++)
             {
@@ -120,6 +121,36 @@ internal class ConfigWorker
         {
             _logger.Error(ex, $"Failed to parse config file.");
             throw;
+        }
+    }
+
+    public string SerializeConfig(Config config) =>
+        JsonSerializer.Serialize(config, _jsonOptions);
+
+    public void LogConfigChanges(Config oldConfig, Config newConfig)
+    {
+        List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+        List<string> profileChanges = ProfileChangesSummarizer.GetChangedProfilesSettings(oldConfig.Profiles, newConfig.Profiles);
+
+        int totalChangesCount = configChanges.Count + profileChanges.Count;
+        if (totalChangesCount == 0)
+        {
+            _logger.Info("No config settings were changed.");
+            return;
+        }
+
+        var output = new List<string>();
+
+        if (configChanges.Count > 0)
+        {
+            string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
+            _logger.Info("Changed config settings:\n" + lines);
+        }
+
+        if (profileChanges.Count > 0)
+        {
+            string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
+            _logger.Info("Changed profile settings:\n" + lines);
         }
     }
 }

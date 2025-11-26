@@ -107,7 +107,10 @@ public class Controller
 
     private void InitializeConfig()
     {
+        var oldConfig = _configManager.Config;
         _configManager.UpdateConfigFromFile();
+        _configManager.LogConfigChanges(oldConfig);
+        _configManager.LogFullConfig();
         _configManager.InvokeConfigUpdatedCallback();
         ApplyConfigSetting_ShowLog();
         ApplyConfigSetting_FileLogging();
