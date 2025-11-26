@@ -72,7 +72,7 @@ internal class ConfigManager
         int totalChangesCount = configChanges.Count + profileChanges.Count;
         if (totalChangesCount == 0)
         {
-            _logger.Info("Config updated. No settings were changed.");
+            _logger.Info("No config settings were changed.");
             return;
         }
 
@@ -81,17 +81,14 @@ internal class ConfigManager
         if (configChanges.Count > 0)
         {
             string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
-            output.Add("Changed config settings:\n" + lines);
+            _logger.Info("Changed config settings:\n" + lines);
         }
 
         if (profileChanges.Count > 0)
         {
             string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
-            output.Add("Changed profile settings:\n" + lines);
+            _logger.Info("Changed profile settings:\n" + lines);
         }
-
-        string summary = string.Join("\n", output);
-        _logger.Info(summary);
     }
 
     public void LogFullConfig()
