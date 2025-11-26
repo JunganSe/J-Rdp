@@ -1,8 +1,6 @@
 ﻿using Auxiliary;
-using Core.ChangesSummarizers;
 using Core.Profiles;
 using NLog;
-using System.Linq;
 
 namespace Core.Configs;
 
@@ -65,30 +63,7 @@ internal class ConfigManager
 
     public void LogConfigChanges(Config oldConfig)
     {
-        // TODO: Refactor this method into ConfigWorker.
-        List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, Config);
-        List<string> profileChanges = ProfileChangesSummarizer.GetChangedProfilesSettings(oldConfig.Profiles, Config.Profiles);
-        
-        int totalChangesCount = configChanges.Count + profileChanges.Count;
-        if (totalChangesCount == 0)
-        {
-            _logger.Info("No config settings were changed.");
-            return;
-        }
-
-        var output = new List<string>();
-
-        if (configChanges.Count > 0)
-        {
-            string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
-            _logger.Info("Changed config settings:\n" + lines);
-        }
-
-        if (profileChanges.Count > 0)
-        {
-            string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
-            _logger.Info("Changed profile settings:\n" + lines);
-        }
+        _configWorker.LogConfigChanges(oldConfig, Config);
     }
 
     public void LogFullConfig()
