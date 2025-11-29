@@ -88,4 +88,49 @@ public class ConfigChangesSummarizerTests
         Assert.IsTrue(isCorrectShowLogMessage);
         Assert.IsTrue(isCorrectLogToFileMessage);
     }
+
+    [TestMethod]
+    [DataRow(1, default, default, default)]
+    [DataRow(default, 1, default, default)]
+    [DataRow(default, default, true, default)]
+    [DataRow(default, default, default, true)]
+    public void GetChangedConfigSettings_OneValueChanged_ReturnsCorrectChange(
+        int pollingInterval, int deleteDelay, bool showLog, bool logToFile)
+    {
+        // Arrange
+        bool shouldDetectPollingIntervalChange = (pollingInterval != default);
+        bool shouldDetectDeleteDelayChange = (deleteDelay != default);
+        bool shouldDetectShowLogChange = (showLog != default);
+        bool shouldDetectLogToFileChange = (logToFile != default);
+
+        var oldConfig = new Config()
+        {
+            PollingInterval = default,
+            DeleteDelay = default,
+            ShowLog = default,
+            LogToFile = default,
+        };
+        var newConfig = new Config()
+        {
+            PollingInterval = pollingInterval,
+            DeleteDelay = deleteDelay,
+            ShowLog = showLog,
+            LogToFile = logToFile,
+        };
+
+        // Act
+        List<string> changes = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+
+        bool hasDetectedPollingIntervalChange = changes.Any(str => str.Contains(nameof(Config.PollingInterval)));
+        bool hasDetectedDeleteDelayChange = changes.Any(str => str.Contains(nameof(Config.DeleteDelay)));
+        bool hasDetectedShowLogChange = changes.Any(str => str.Contains(nameof(Config.ShowLog)));
+        bool hasDetectedLogToFileChange = changes.Any(str => str.Contains(nameof(Config.LogToFile)));
+
+        // Assert
+        Assert.AreEqual(1, changes.Count);
+        Assert.AreEqual(shouldDetectPollingIntervalChange, hasDetectedPollingIntervalChange);
+        Assert.AreEqual(shouldDetectDeleteDelayChange, hasDetectedDeleteDelayChange);
+        Assert.AreEqual(shouldDetectShowLogChange, hasDetectedShowLogChange);
+        Assert.AreEqual(shouldDetectLogToFileChange, hasDetectedLogToFileChange);
+    }
 }
