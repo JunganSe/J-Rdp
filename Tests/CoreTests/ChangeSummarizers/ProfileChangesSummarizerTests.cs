@@ -6,6 +6,21 @@ namespace CoreTests.ChangeSummarizers;
 [TestClass]
 public class ProfileChangesSummarizerTests
 {
+    #region GetChangedProfilesSettings (plural)
+    [TestMethod]
+    public void GetChangedProfilesSettings_EmptyInputs_ReturnsEmptyList()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>();
+        var newProfiles = new List<Profile>();
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        Assert.AreEqual(0, changes.Count);
+    }
+
     [TestMethod]
     public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
     {
@@ -31,6 +46,10 @@ public class ProfileChangesSummarizerTests
         // Assert
         Assert.AreEqual(0, changes.Count);
     }
+
+    #endregion
+
+    #region GetChangedProfileSettings (singular)
 
     [TestMethod]
     public void GetChangedProfileSettings_IdenticalProfiles_ReturnsEmptyList()
@@ -93,6 +112,10 @@ public class ProfileChangesSummarizerTests
         Assert.IsTrue(hasChangeMessage_Delete);
     }
 
+    #endregion
+
+    #region Helpers
+
     private bool HasChangeMessageForProperty<T>(List<string> changes, string propertyName, T oldValue, T newValue)
     {
         return changes.Any(str =>
@@ -101,7 +124,7 @@ public class ProfileChangesSummarizerTests
             && str.Contains($"{newValue}"));
     }
 
-
+    #endregion
 
     #region Mocking
 
