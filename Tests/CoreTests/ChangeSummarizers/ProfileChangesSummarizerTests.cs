@@ -7,45 +7,21 @@ namespace CoreTests.ChangeSummarizers;
 public class ProfileChangesSummarizerTests
 {
     [TestMethod]
-    [DataRow(1, "Profile 1", true, "C:/Watch", "*.txt", "C:\\Processed", true, true)]
-    [DataRow(0, "", false, "", "", "", false, false)]
-    public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList(
-        int id, string name, bool enabled, string watchFolder,
-        string filter, string moveToFolder, bool launch, bool delete)
+    public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
     {
         // Arrange
         var oldProfiles = new List<Profile>()
         {
-            new()
-            {
-                Id = id,
-                Name = name,
-                Enabled = enabled,
-                WatchFolder = watchFolder,
-                Filter = filter,
-                MoveToFolder = moveToFolder,
-                Launch = launch,
-                Delete = delete,
-                Settings = [],
-            },
-            new() { Id = 2, Name = "Profile 2" },
+            GetMockProfile1(),
+            GetMockProfile2(),
+            new() { Id = 3, Name = "Profile 3" },
             new(),
         };
         var newProfiles = new List<Profile>()
         {
-            new()
-            {
-                Id = id,
-                Name = name,
-                Enabled = enabled,
-                WatchFolder = watchFolder,
-                Filter = filter,
-                MoveToFolder = moveToFolder,
-                Launch = launch,
-                Delete = delete,
-                Settings = [],
-            },
-            new() { Id = 2, Name = "Profile 2" },
+            GetMockProfile1(),
+            GetMockProfile2(),
+            new() { Id = 3, Name = "Profile 3" },
             new(),
         };
 
@@ -60,26 +36,8 @@ public class ProfileChangesSummarizerTests
     public void GetChangedProfileSettings_IdenticalProfiles_ReturnsEmptyList()
     {
         // Arrange
-        var oldProfile = new Profile()
-        {
-            Name = "Name A",
-            Enabled = true,
-            WatchFolder = "Watch A",
-            Filter = "Filter A",
-            MoveToFolder = "Move A",
-            Launch = true,
-            Delete = true,
-        };
-        var newProfile = new Profile()
-        {
-            Name = "Name A",
-            Enabled = true,
-            WatchFolder = "Watch A",
-            Filter = "Filter A",
-            MoveToFolder = "Move A",
-            Launch = true,
-            Delete = true,
-        };
+        var oldProfile = GetMockProfile1();
+        var newProfile = GetMockProfile1();
 
         // Act
         List<string> changes = ProfileChangesSummarizer.GetChangedProfileSettings(oldProfile, newProfile);
@@ -142,4 +100,38 @@ public class ProfileChangesSummarizerTests
             && str.Contains($"{oldValue}")
             && str.Contains($"{newValue}"));
     }
+
+
+
+    #region Mocking
+
+    private Profile GetMockProfile1() =>
+        new()
+        {
+            Id = 1,
+            Name = "Profile 1",
+            Enabled = false,
+            WatchFolder = "C:/Watch1",
+            Filter = "*1.txt",
+            MoveToFolder = "C:/Processed1",
+            Launch = false,
+            Delete = false,
+            Settings = [],
+        };
+
+    private Profile GetMockProfile2() =>
+        new()
+        {
+            Id = 2,
+            Name = "Profile 2",
+            Enabled = true,
+            WatchFolder = "C:/Watch2",
+            Filter = "*2.txt",
+            MoveToFolder = "C:/Processed2",
+            Launch = true,
+            Delete = true,
+            Settings = [],
+        };
+
+    #endregion
 }
