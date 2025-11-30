@@ -41,7 +41,7 @@ public class ConfigChangesSummarizerTests
     [DataRow(0, 0, false, false, 1, 1, true, true)]
     [DataRow(1, 2, false, false, 2, 3, true, true)]
     [DataRow(-1, 0, true, false, 1, -2, false, true)]
-    public void GetChangedConfigSettings_AllValuesChanged_ReturnsCorrectChanges(
+    public void GetChangedConfigSettings_AllValuesChanged_DetailedCheck_ReturnsCorrectChanges(
         int pollingIntervalA, int deleteDelayA, bool showLogA, bool logToFileA,
         int pollingIntervalB, int deleteDelayB, bool showLogB, bool logToFileB)
     {
