@@ -133,4 +133,84 @@ public class ConfigChangesSummarizerTests
         Assert.AreEqual(shouldDetectShowLogChange, hasDetectedShowLogChange);
         Assert.AreEqual(shouldDetectLogToFileChange, hasDetectedLogToFileChange);
     }
+
+    [TestMethod]
+    [DataRow(default, 1)]
+    [DataRow(2, default)]
+    [DataRow(0, -3)]
+    [DataRow(4, 5)]
+    public void GetChangedConfigSettings_OnlyPollingIntervalChanged_ReturnsCorrectChange(
+        int oldValue, int newValue)
+    {
+        // Arrange
+        var oldConfig = new Config() { PollingInterval = oldValue, };
+        var newConfig = new Config() { PollingInterval = newValue, };
+
+        // Act
+        List<string> changes = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+        bool hasDetectedPollingIntervalChange = changes.Any(str => str.Contains(nameof(Config.PollingInterval)));
+
+        // Assert
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasDetectedPollingIntervalChange);
+    }
+
+    [TestMethod]
+    [DataRow(default, 1)]
+    [DataRow(2, default)]
+    [DataRow(0, -3)]
+    [DataRow(4, 5)]
+    public void GetChangedConfigSettings_OnlyDeleteDelayChanged_ReturnsCorrectChange(
+        int oldValue, int newValue)
+    {
+        // Arrange
+        var oldConfig = new Config() { DeleteDelay = oldValue, };
+        var newConfig = new Config() { DeleteDelay = newValue, };
+
+        // Act
+        List<string> changes = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+        bool hasDetectedDeleteDelayChange = changes.Any(str => str.Contains(nameof(Config.DeleteDelay)));
+
+        // Assert
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasDetectedDeleteDelayChange);
+    }
+
+    [TestMethod]
+    [DataRow(false, true)]
+    [DataRow(true, false)]
+    public void GetChangedConfigSettings_OnlyShowLogChanged_ReturnsCorrectChange(
+        bool oldValue, bool newValue)
+    {
+        // Arrange
+        var oldConfig = new Config() { ShowLog = oldValue, };
+        var newConfig = new Config() { ShowLog = newValue, };
+
+        // Act
+        List<string> changes = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+        bool hasDetectedShowLogChange = changes.Any(str => str.Contains(nameof(Config.ShowLog)));
+
+        // Assert
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasDetectedShowLogChange);
+    }
+
+    [TestMethod]
+    [DataRow(false, true)]
+    [DataRow(true, false)]
+    public void GetChangedConfigSettings_OnlyLogToFileChanged_ReturnsCorrectChange(
+        bool oldValue, bool newValue)
+    {
+        // Arrange
+        var oldConfig = new Config() { LogToFile = oldValue, };
+        var newConfig = new Config() { LogToFile = newValue, };
+
+        // Act
+        List<string> changes = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+        bool hasDetectedLogToFileChange = changes.Any(str => str.Contains(nameof(Config.LogToFile)));
+
+        // Assert
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasDetectedLogToFileChange);
+    }
 }
