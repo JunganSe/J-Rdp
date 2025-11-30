@@ -57,6 +57,38 @@ public class ProfileChangesSummarizerTests
     }
 
     [TestMethod]
+    public void GetChangedProfileSettings_IdenticalProfiles_ReturnsEmptyList()
+    {
+        // Arrange
+        var oldProfile = new Profile()
+        {
+            Name = "Name A",
+            Enabled = true,
+            WatchFolder = "Watch A",
+            Filter = "Filter A",
+            MoveToFolder = "Move A",
+            Launch = true,
+            Delete = true,
+        };
+        var newProfile = new Profile()
+        {
+            Name = "Name A",
+            Enabled = true,
+            WatchFolder = "Watch A",
+            Filter = "Filter A",
+            MoveToFolder = "Move A",
+            Launch = true,
+            Delete = true,
+        };
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfileSettings(oldProfile, newProfile);
+
+        // Assert
+        Assert.AreEqual(0, changes.Count);
+    }
+
+    [TestMethod]
     public void GetChangedProfileSettings_AllValuesChanged_DetailedCheck_ReturnsCorrectChanges()
     {
         // Arrange
