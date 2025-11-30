@@ -6,49 +6,6 @@ namespace CoreTests.ChangeSummarizers;
 [TestClass]
 public class ProfileChangesSummarizerTests
 {
-    #region GetChangedProfilesSettings (plural)
-    [TestMethod]
-    public void GetChangedProfilesSettings_EmptyInputs_ReturnsEmptyList()
-    {
-        // Arrange
-        var oldProfiles = new List<Profile>();
-        var newProfiles = new List<Profile>();
-
-        // Act
-        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
-
-        // Assert
-        Assert.AreEqual(0, changes.Count);
-    }
-
-    [TestMethod]
-    public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
-    {
-        // Arrange
-        var oldProfiles = new List<Profile>()
-        {
-            GetMockProfile1(),
-            GetMockProfile2(),
-            new() { Id = 3, Name = "Profile 3" },
-            new(),
-        };
-        var newProfiles = new List<Profile>()
-        {
-            GetMockProfile1(),
-            GetMockProfile2(),
-            new() { Id = 3, Name = "Profile 3" },
-            new(),
-        };
-
-        // Act
-        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
-
-        // Assert
-        Assert.AreEqual(0, changes.Count);
-    }
-
-    #endregion
-
     #region GetChangedProfileSettings (singular)
 
     [TestMethod]
@@ -114,6 +71,49 @@ public class ProfileChangesSummarizerTests
 
     #endregion
 
+    #region GetChangedProfilesSettings (plural)
+    [TestMethod]
+    public void GetChangedProfilesSettings_EmptyInputs_ReturnsEmptyList()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>();
+        var newProfiles = new List<Profile>();
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        Assert.AreEqual(0, changes.Count);
+    }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            GetMockProfile1(),
+            GetMockProfile2(),
+            new() { Id = 3, Name = "Profile 3" },
+            new(),
+        };
+        var newProfiles = new List<Profile>()
+        {
+            GetMockProfile1(),
+            GetMockProfile2(),
+            new() { Id = 3, Name = "Profile 3" },
+            new(),
+        };
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        Assert.AreEqual(0, changes.Count);
+    }
+
+    #endregion
+
     #region Helpers
 
     private bool HasChangeMessageForProperty<T>(List<string> changes, string propertyName, T oldValue, T newValue)
@@ -128,33 +128,31 @@ public class ProfileChangesSummarizerTests
 
     #region Mocking
 
-    private Profile GetMockProfile1() =>
-        new()
-        {
-            Id = 1,
-            Name = "Profile 1",
-            Enabled = false,
-            WatchFolder = "C:/Watch1",
-            Filter = "*1.txt",
-            MoveToFolder = "C:/Processed1",
-            Launch = false,
-            Delete = false,
-            Settings = [],
-        };
+    private Profile GetMockProfile1() => new()
+    {
+        Id = 1,
+        Name = "Profile 1",
+        Enabled = false,
+        WatchFolder = "C:/Watch1",
+        Filter = "*1.txt",
+        MoveToFolder = "C:/Processed1",
+        Launch = false,
+        Delete = false,
+        Settings = [],
+    };
 
-    private Profile GetMockProfile2() =>
-        new()
-        {
-            Id = 2,
-            Name = "Profile 2",
-            Enabled = true,
-            WatchFolder = "C:/Watch2",
-            Filter = "*2.txt",
-            MoveToFolder = "C:/Processed2",
-            Launch = true,
-            Delete = true,
-            Settings = [],
-        };
+    private Profile GetMockProfile2() => new()
+    {
+        Id = 2,
+        Name = "Profile 2",
+        Enabled = true,
+        WatchFolder = "C:/Watch2",
+        Filter = "*2.txt",
+        MoveToFolder = "C:/Processed2",
+        Launch = true,
+        Delete = true,
+        Settings = [],
+    };
 
     #endregion
 }
