@@ -72,6 +72,7 @@ public class ProfileChangesSummarizerTests
     #endregion
 
     #region GetChangedProfilesSettings (plural)
+
     [TestMethod]
     public void GetChangedProfilesSettings_EmptyInputs_ReturnsEmptyList()
     {
@@ -84,6 +85,38 @@ public class ProfileChangesSummarizerTests
 
         // Assert
         Assert.AreEqual(0, changes.Count);
+    }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_AddedProfile_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldProfilesA = new List<Profile>() { };
+        var newProfilesA = new List<Profile>() { new() { Id = 2, Name = "Profile2"}, };
+
+        var oldProfilesB = new List<Profile>()
+        {
+            GetMockProfile1(),
+        };
+        var newProfilesB = new List<Profile>()
+        {
+            GetMockProfile1(),
+            new() { Id = 2, Name = "Profile2"},
+        };
+
+        // Act
+        List<string> changesA = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesA, newProfilesA);
+        List<string> changesB = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesB, newProfilesB);
+
+        // Assert
+        bool hasAddedMessage_Profile2_A = changesA.Any(str => str.Contains("added") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile2_B = changesB.Any(str => str.Contains("added") && str.Contains("Profile2"));
+
+        Assert.AreEqual(1, changesA.Count);
+        Assert.IsTrue(hasAddedMessage_Profile2_A);
+
+        Assert.AreEqual(1, changesB.Count);
+        Assert.IsTrue(hasAddedMessage_Profile2_B);
     }
 
     [TestMethod]
