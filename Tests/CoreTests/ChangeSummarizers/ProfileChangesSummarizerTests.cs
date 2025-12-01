@@ -88,142 +88,194 @@ public class ProfileChangesSummarizerTests
     }
 
     [TestMethod]
-    public void GetChangedProfilesSettings_OneAddedProfile_ReturnsCorrectChanges()
+    public void GetChangedProfilesSettings_OneAddedProfileA_ReturnsCorrectChanges()
     {
         // Arrange
-        var oldProfilesA = new List<Profile>() { };
-        var newProfilesA = new List<Profile>() { new() { Id = 2, Name = "Profile2" }, };
-
-        var oldProfilesB = new List<Profile>()
+        var oldProfiles = new List<Profile>();
+        var newProfiles = new List<Profile>()
         {
-            GetMockProfile1(),
-        };
-        var newProfilesB = new List<Profile>()
-        {
-            GetMockProfile1(),
-            new() { Id = 2, Name = "Profile2"},
+            new() { Id = 1, Name = "Profile1", }
         };
 
         // Act
-        List<string> changesA = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesA, newProfilesA);
-        List<string> changesB = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesB, newProfilesB);
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
 
         // Assert
-        bool hasAddedMessage_Profile2_A = changesA.Any(str => str.Contains("added") && str.Contains("Profile2"));
-        bool hasAddedMessage_Profile2_B = changesB.Any(str => str.Contains("added") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile1 = changes.Any(str => str.Contains("added") && str.Contains("Profile1"));
 
-        Assert.AreEqual(1, changesA.Count);
-        Assert.IsTrue(hasAddedMessage_Profile2_A);
-
-        Assert.AreEqual(1, changesB.Count);
-        Assert.IsTrue(hasAddedMessage_Profile2_B);
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasAddedMessage_Profile1);
     }
 
     [TestMethod]
-    public void GetChangedProfilesSettings_TwoAddedProfiles_ReturnsCorrectChanges()
+    public void GetChangedProfilesSettings_OneAddedProfileB_ReturnsCorrectChanges()
     {
         // Arrange
-        var oldProfilesA = new List<Profile>() { };
-        var newProfilesA = new List<Profile>()
+        var oldProfiles = new List<Profile>()
         {
-            new() { Id = 2, Name = "Profile2"},
-            new() { Id = 3, Name = "Profile3"},
+            new() { Id = 1, Name = "Profile1"},
         };
-
-        var oldProfilesB = new List<Profile>()
+        var newProfiles = new List<Profile>()
         {
-            GetMockProfile1(),
-        };
-        var newProfilesB = new List<Profile>()
-        {
-            GetMockProfile1(),
+            new() { Id = 1, Name = "Profile1"},
             new() { Id = 2, Name = "Profile2"},
-            new() { Id = 3, Name = "Profile3"},
         };
 
         // Act
-        List<string> changesA = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesA, newProfilesA);
-        List<string> changesB = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesB, newProfilesB);
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
 
         // Assert
-        bool hasAddedMessage_Profile2_A = changesA.Any(str => str.Contains("added") && str.Contains("Profile2"));
-        bool hasAddedMessage_Profile2_B = changesB.Any(str => str.Contains("added") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile2 = changes.Any(str => str.Contains("added") && str.Contains("Profile2"));
 
-        Assert.AreEqual(2, changesA.Count);
-        Assert.IsTrue(hasAddedMessage_Profile2_A);
-
-        Assert.AreEqual(2, changesB.Count);
-        Assert.IsTrue(hasAddedMessage_Profile2_B);
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasAddedMessage_Profile2);
     }
 
     [TestMethod]
-    public void GetChangedProfilesSettings_OneRemovedProfile_ReturnsCorrectChanges()
+    public void GetChangedProfilesSettings_TwoAddedProfilesA_ReturnsCorrectChanges()
     {
         // Arrange
-        var oldProfilesA = new List<Profile>() { new() { Id = 2, Name = "Profile2" }, };
-        var newProfilesA = new List<Profile>() { };
-
-        var oldProfilesB = new List<Profile>()
+        var oldProfiles = new List<Profile>();
+        var newProfiles = new List<Profile>()
         {
-            GetMockProfile1(),
+            new() { Id = 1, Name = "Profile1"},
             new() { Id = 2, Name = "Profile2"},
-        };
-        var newProfilesB = new List<Profile>()
-        {
-            GetMockProfile1(),
         };
 
         // Act
-        List<string> changesA = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesA, newProfilesA);
-        List<string> changesB = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesB, newProfilesB);
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
 
         // Assert
-        bool hasRemovedMessage_Profile2_A = changesA.Any(str => str.Contains("removed") && str.Contains("Profile2"));
-        bool hasRemovedMessage_Profile2_B = changesB.Any(str => str.Contains("removed") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile1 = changes.Any(str => str.Contains("added") && str.Contains("Profile1"));
+        bool hasAddedMessage_Profile2 = changes.Any(str => str.Contains("added") && str.Contains("Profile2"));
 
-        Assert.AreEqual(1, changesA.Count);
-        Assert.IsTrue(hasRemovedMessage_Profile2_A);
-
-        Assert.AreEqual(1, changesB.Count);
-        Assert.IsTrue(hasRemovedMessage_Profile2_B);
+        Assert.AreEqual(2, changes.Count);
+        Assert.IsTrue(hasAddedMessage_Profile1);
+        Assert.IsTrue(hasAddedMessage_Profile2);
     }
 
     [TestMethod]
-    public void GetChangedProfilesSettings_TwoRemovedProfiles_ReturnsCorrectChanges()
+    public void GetChangedProfilesSettings_TwoAddedProfilesB_ReturnsCorrectChanges()
     {
         // Arrange
-        var oldProfilesA = new List<Profile>()
+        var oldProfiles = new List<Profile>()
         {
+            new() { Id = 1, Name = "Profile1"},
+        };
+        var newProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1"},
             new() { Id = 2, Name = "Profile2"},
             new() { Id = 3, Name = "Profile3"},
-        };
-        var newProfilesA = new List<Profile>() { };
-
-        var oldProfilesB = new List<Profile>()
-        {
-            GetMockProfile1(),
-            new() { Id = 2, Name = "Profile2"},
-            new() { Id = 3, Name = "Profile3"},
-        };
-        var newProfilesB = new List<Profile>()
-        {
-            GetMockProfile1(),
         };
 
         // Act
-        List<string> changesA = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesA, newProfilesA);
-        List<string> changesB = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfilesB, newProfilesB);
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
 
         // Assert
-        bool hasRemovedMessage_Profile2_A = changesA.Any(str => str.Contains("removed") && str.Contains("Profile2"));
-        bool hasRemovedMessage_Profile2_B = changesB.Any(str => str.Contains("removed") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile2 = changes.Any(str => str.Contains("added") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile3 = changes.Any(str => str.Contains("added") && str.Contains("Profile3"));
 
-        Assert.AreEqual(2, changesA.Count);
-        Assert.IsTrue(hasRemovedMessage_Profile2_A);
-
-        Assert.AreEqual(2, changesB.Count);
-        Assert.IsTrue(hasRemovedMessage_Profile2_B);
+        Assert.AreEqual(2, changes.Count);
+        Assert.IsTrue(hasAddedMessage_Profile2);
+        Assert.IsTrue(hasAddedMessage_Profile3);
     }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_OneRemovedProfileA_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1" },
+        };
+        var newProfiles = new List<Profile>();
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        bool hasRemovedMessage_Profile1 = changes.Any(str => str.Contains("removed") && str.Contains("Profile1"));
+
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasRemovedMessage_Profile1);
+    }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_OneRemovedProfileB_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1"},
+            new() { Id = 2, Name = "Profile2"},
+        };
+        var newProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1"},
+        };
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        bool hasRemovedMessage_Profile2 = changes.Any(str => str.Contains("removed") && str.Contains("Profile2"));
+
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasRemovedMessage_Profile2);
+    }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_TwoRemovedProfilesA_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1"},
+            new() { Id = 2, Name = "Profile2"},
+        };
+        var newProfiles = new List<Profile>();
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        bool hasRemovedMessage_Profile1 = changes.Any(str => str.Contains("removed") && str.Contains("Profile1"));
+        bool hasRemovedMessage_Profile2 = changes.Any(str => str.Contains("removed") && str.Contains("Profile2"));
+
+        Assert.AreEqual(2, changes.Count);
+        Assert.IsTrue(hasRemovedMessage_Profile1);
+        Assert.IsTrue(hasRemovedMessage_Profile2);
+    }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_TwoRemovedProfilesB_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1"},
+            new() { Id = 2, Name = "Profile2"},
+            new() { Id = 3, Name = "Profile3"},
+        };
+        var newProfile = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1"},
+        };
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfile);
+
+        // Assert
+        bool hasRemovedMessage_Profile2 = changes.Any(str => str.Contains("removed") && str.Contains("Profile2"));
+        bool hasRemovedMessage_Profile3 = changes.Any(str => str.Contains("removed") && str.Contains("Profile3"));
+
+        Assert.AreEqual(2, changes.Count);
+        Assert.IsTrue(hasRemovedMessage_Profile2);
+        Assert.IsTrue(hasRemovedMessage_Profile3);
+    }
+
+    // TODO: Added, removed, and changed at the same time
 
     [TestMethod]
     public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
