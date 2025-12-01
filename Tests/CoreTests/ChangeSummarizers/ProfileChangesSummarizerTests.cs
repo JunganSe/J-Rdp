@@ -275,7 +275,34 @@ public class ProfileChangesSummarizerTests
         Assert.IsTrue(hasRemovedMessage_Profile3);
     }
 
-    // TODO: Added, removed, and changed at the same time
+    [TestMethod]
+    public void GetChangedProfilesSettings_AddedRemovedAndChanged_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1", Enabled = false},
+            new() { Id = 2, Name = "Profile2"},
+        };
+        var newProfile = new List<Profile>()
+        {
+            new() { Id = 1, Name = "Profile1", Enabled = true},
+            new() { Id = 3, Name = "Profile3"},
+        };
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfile);
+
+        // Assert
+        bool hasChangedMessage_Profile1 = changes.Any(str => str.Contains("changed") && str.Contains("Profile1"));
+        bool hasRemovedMessage_Profile2 = changes.Any(str => str.Contains("removed") && str.Contains("Profile2"));
+        bool hasAddedMessage_Profile3 = changes.Any(str => str.Contains("added") && str.Contains("Profile3"));
+
+        Assert.AreEqual(3, changes.Count);
+        Assert.IsTrue(hasChangedMessage_Profile1);
+        Assert.IsTrue(hasRemovedMessage_Profile2);
+        Assert.IsTrue(hasAddedMessage_Profile3);
+    }
 
     [TestMethod]
     public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
