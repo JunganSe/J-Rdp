@@ -305,7 +305,7 @@ public class ProfileChangesSummarizerTests
     }
 
     [TestMethod]
-    public void GetChangedProfilesSettings_IdenticalProfiles_ReturnsEmptyList()
+    public void GetChangedProfilesSettings_IdenticalProfilesSameOrder_ReturnsEmptyList()
     {
         // Arrange
         var oldProfiles = new List<Profile>()
@@ -321,6 +321,32 @@ public class ProfileChangesSummarizerTests
             GetMockProfile2(),
             new() { Id = 3, Name = "Profile 3" },
             new(),
+        };
+
+        // Act
+        List<string> changes = ProfileChangesSummarizer.GetChangedProfilesSettings(oldProfiles, newProfiles);
+
+        // Assert
+        Assert.AreEqual(0, changes.Count);
+    }
+
+    [TestMethod]
+    public void GetChangedProfilesSettings_IdenticalProfilesDifferentOrder_ReturnsEmptyList()
+    {
+        // Arrange
+        var oldProfiles = new List<Profile>()
+        {
+            GetMockProfile1(),
+            GetMockProfile2(),
+            new() { Id = 3, Name = "Profile 3" },
+            new(),
+        };
+        var newProfiles = new List<Profile>()
+        {
+            GetMockProfile2(),
+            new(),
+            new() { Id = 3, Name = "Profile 3" },
+            GetMockProfile1(),
         };
 
         // Act
