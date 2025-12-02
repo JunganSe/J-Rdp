@@ -105,7 +105,26 @@ public class ProfileSettingsChangesSummarizerTests
         Assert.IsTrue(hasCorrectMessage);
     }
 
-    // TODO: AddedRemovedAndChanged settings
+    [TestMethod]
+    public void GetSettingsChanges_AddedRemovedAndChangedSettings_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:value1a", "key2:value2" };
+        var newSettings = new List<string> { "key1:value1b", "key3:value3" };
+
+        // Act
+        List<string> changes = ProfileSettingsChangesSummarizer.GetSettingsChanges(oldSettings, newSettings);
+
+        // Assert
+        bool hasAddedMessage_Setting3 = changes.Any(str => str.Contains("Added") && str.Contains("key3:value3"));
+        bool hasRemovedMessage_Setting2 = changes.Any(str => str.Contains("Removed") && str.Contains("key2:value2"));
+        bool hasChangeMdessage_Setting1 = HasChangeMessage(changes, "key1:value1a", "key1:value1b");
+
+        Assert.AreEqual(3, changes.Count);
+        Assert.IsTrue(hasAddedMessage_Setting3);
+        Assert.IsTrue(hasRemovedMessage_Setting2);
+        Assert.IsTrue(hasChangeMdessage_Setting1);
+    }
 
     #endregion
 
