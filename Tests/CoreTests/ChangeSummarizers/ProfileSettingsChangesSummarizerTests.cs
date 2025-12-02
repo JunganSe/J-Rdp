@@ -134,6 +134,34 @@ public class ProfileSettingsChangesSummarizerTests
 
     #endregion
 
+    #region ValidateSettingsFormat
+
+    [TestMethod]
+    public void ValidateSettingsFormat_ValidSettings_DoesNotThrow()
+    {
+        // Arrange
+        var settings = new List<string> { "key1:value1", "key2:value2", "key3:value3" };
+
+        // Act
+        ProfileSettingsChangesSummarizer.ThrowIfAnySettingIsInvalid(settings);
+
+        // Assert
+        // No exception thrown means the test passes.
+    }
+
+    [TestMethod]
+    public void ValidateSettingsFormat_InValidSettings_ThrowsArgumentException()
+    {
+        // Arrange
+        var settings = new List<string> { "invalidSetting" };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() =>
+            ProfileSettingsChangesSummarizer.ThrowIfAnySettingIsInvalid(settings));
+    }
+
+    #endregion
+
     #region Helpers
 
     private bool HasAddMessage(List<string> changes, string setting)
