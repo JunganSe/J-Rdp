@@ -48,14 +48,14 @@ public class ProfileSettingsChangesSummarizerTests
         List<string> changes = ProfileSettingsChangesSummarizer.GetSettingsChanges(oldSettings, newSettings);
 
         // Assert
-        bool hasCorrectAddedMessage = changes.Any(str => str.Contains("Added") && str.Contains("key3:value3"));
+        bool hasCorrectMessage = changes.Any(str => str.Contains("Added") && str.Contains("key3:value3"));
 
         Assert.AreEqual(1, changes.Count);
-        Assert.IsTrue(hasCorrectAddedMessage);
+        Assert.IsTrue(hasCorrectMessage);
     }
 
     [TestMethod]
-    public void GetSettingsChanges_TwoAddedSetting_ReturnsCorrectChanges()
+    public void GetSettingsChanges_TwoAddedSettings_ReturnsCorrectChanges()
     {
         // Arrange
         var oldSettings = new List<string> { "key1:value1" };
@@ -65,19 +65,53 @@ public class ProfileSettingsChangesSummarizerTests
         List<string> changes = ProfileSettingsChangesSummarizer.GetSettingsChanges(oldSettings, newSettings);
 
         // Assert
-        bool hasCorrectAddedMessage = changes.Any(str => str.Contains("Added") && str.Contains("key2:value2") && str.Contains("key3:value3"));
+        bool hasCorrectMessage = changes.Any(str => str.Contains("Added") && str.Contains("key2:value2") && str.Contains("key3:value3"));
 
         Assert.AreEqual(1, changes.Count);
-        Assert.IsTrue(hasCorrectAddedMessage);
+        Assert.IsTrue(hasCorrectMessage);
     }
 
-    // TODO: Removed settings, AddedRemovedAndChanged settings, throws when wrong format
+    [TestMethod]
+    public void GetSettingsChanges_OneRemovedSetting_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:value1", "key2:value2" };
+        var newSettings = new List<string> { "key1:value1" };
+
+        // Act
+        List<string> changes = ProfileSettingsChangesSummarizer.GetSettingsChanges(oldSettings, newSettings);
+
+        // Assert
+        bool hasCorrectMessage = changes.Any(str => str.Contains("Removed") && str.Contains("key2:value2"));
+
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasCorrectMessage);
+    }
+
+    [TestMethod]
+    public void GetSettingsChanges_TwoRemovedSettings_ReturnsCorrectChanges()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:value1", "key2:value2", "key3:value3" };
+        var newSettings = new List<string> { "key1:value1" };
+
+        // Act
+        List<string> changes = ProfileSettingsChangesSummarizer.GetSettingsChanges(oldSettings, newSettings);
+
+        // Assert
+        bool hasCorrectMessage = changes.Any(str => str.Contains("Removed") && str.Contains("key2:value2") && str.Contains("key3:value3"));
+
+        Assert.AreEqual(1, changes.Count);
+        Assert.IsTrue(hasCorrectMessage);
+    }
+
+    // TODO: AddedRemovedAndChanged settings
 
     #endregion
 
     #region GetGroupedSettings
 
-    // TODO
+    // TODO: returns correct lists, throws when wrong format
 
     #endregion
 
