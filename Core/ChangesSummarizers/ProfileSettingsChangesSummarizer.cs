@@ -30,6 +30,8 @@ public class ProfileSettingsChangesSummarizer
     /// where "key" is a unique identifier. The comparison is performed based on the "key" portion of each setting.</remarks>
     public static (List<string> added, List<string> removed, List<(string oldSetting, string newSetting)> changed) GetGroupedSettings(List<string> oldSettings, List<string> newSettings)
     {
+        ThrowIfAnySettingIsInvalid([.. oldSettings, .. newSettings]);
+
         var oldSettingsLookup = oldSettings.ToDictionary(s => s.Split(':')[0]);
         var newSettingsLookup = newSettings.ToDictionary(s => s.Split(':')[0]);
 
@@ -47,6 +49,17 @@ public class ProfileSettingsChangesSummarizer
             .ToList();
 
         return (addedSettings, removedSettings, changedSettings);
+    }
+
+    public static void ThrowIfAnySettingIsInvalid(List<string> settings)
+    {
+        var invalidSettings = settings
+            .Where(s => !s.Contains(':') || s.Split(':').Length != 2)
+            .ToList();
+
+        if (invalidSettings.Count > 0)
+            throw new ArgumentException("All settings must be in the format 'key:value'. Invalid settings: "
+                + string.Join(", ", invalidSettings));
     }
 
     public static string GetJoinedSettingsSummary(List<string> settings)
