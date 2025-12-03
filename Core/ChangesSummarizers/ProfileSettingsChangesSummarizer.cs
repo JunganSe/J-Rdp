@@ -53,8 +53,11 @@ public class ProfileSettingsChangesSummarizer
 
     public static void ThrowIfAnySettingIsInvalid(List<string> settings)
     {
+        var splitOptions = StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;
         var invalidSettings = settings
-            .Where(s => !s.Contains(':') || s.Split(':').Length != 2)
+            .Where(s =>
+                !s.Contains(':')
+                || s.Split(':', splitOptions).Length != 2)
             .ToList();
 
         if (invalidSettings.Count > 0)
