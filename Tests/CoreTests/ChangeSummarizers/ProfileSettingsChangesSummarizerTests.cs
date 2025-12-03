@@ -6,6 +6,7 @@ namespace CoreTests.ChangeSummarizers;
 public class ProfileSettingsChangesSummarizerTests
 {
     #region GetSettingsChanges
+
     [TestMethod]
     public void GetSettingsChanges_IdenticalSettings_ReturnsEmptyList()
     {
@@ -207,10 +208,10 @@ public class ProfileSettingsChangesSummarizerTests
 
     #endregion
 
-    #region ValidateSettingsFormat
+    #region ThrowIfAnySettingIsInvalid
 
     [TestMethod]
-    public void ValidateSettingsFormat_ValidSettings_DoesNotThrow()
+    public void ThrowIfAnySettingIsInvalid_ValidSettings_DoesNotThrow()
     {
         // Arrange
         var settings = new List<string> { "key1:value1", "key2:value2", "key3:value3" };
@@ -223,14 +224,18 @@ public class ProfileSettingsChangesSummarizerTests
     }
 
     [TestMethod]
-    public void ValidateSettingsFormat_InValidSettings_ThrowsArgumentException()
+    [DataRow("foo")]
+    [DataRow(":foo")]
+    [DataRow(" :foo")]
+    [DataRow("foo:")]
+    [DataRow("foo: ")]
+    public void ThrowIfAnySettingIsInvalid_InvalidSettings_ThrowsArgumentException(string setting)
     {
         // Arrange
-        var settings = new List<string> { "invalidSetting" };
+        void Action() => ProfileSettingsChangesSummarizer.ThrowIfAnySettingIsInvalid([setting]);
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
-            ProfileSettingsChangesSummarizer.ThrowIfAnySettingIsInvalid(settings));
+        Assert.Throws<ArgumentException>(Action);
     }
 
     #endregion
