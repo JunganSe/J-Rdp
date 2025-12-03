@@ -129,28 +129,33 @@ internal class ConfigWorker
 
     public void LogConfigChanges(Config oldConfig, Config newConfig)
     {
-        List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
-        List<string> profileChanges = ProfileChangesSummarizer.GetChangedProfilesSettings(oldConfig.Profiles, newConfig.Profiles);
-
-        int totalChangesCount = configChanges.Count + profileChanges.Count;
-        if (totalChangesCount == 0)
+        try
         {
-            _logger.Info("No config settings were changed.");
-            return;
+            List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+            List<string> profileChanges = ProfileChangesSummarizer.GetChangedProfilesSettings(oldConfig.Profiles, newConfig.Profiles);
+
+            int totalChangesCount = configChanges.Count + profileChanges.Count;
+            if (totalChangesCount == 0)
+            {
+                _logger.Info("No config settings were changed.");
+                return;
+            }
+
+            if (configChanges.Count > 0)
+            {
+                string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
+                _logger.Info("Changed config settings:\n" + lines);
+            }
+
+            if (profileChanges.Count > 0)
+            {
+                string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
+                _logger.Info("Changed profile settings:\n" + lines);
+            }
         }
-
-        var output = new List<string>();
-
-        if (configChanges.Count > 0)
+        catch (Exception ex)
         {
-            string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
-            _logger.Info("Changed config settings:\n" + lines);
-        }
-
-        if (profileChanges.Count > 0)
-        {
-            string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
-            _logger.Info("Changed profile settings:\n" + lines);
+            _logger.Error(ex, "Failed to log config changes.");
         }
     }
 }
