@@ -166,6 +166,45 @@ public class ProfileSettingsChangesSummarizerTests
         Assert.AreEqual("key3:RemovedValue", removed[1]);
     }
 
+    [TestMethod]
+    public void GetGroupedSettings_Changed_ReturnsCorrectGroups()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:KeptValue", "key2:RemovedValueA", "key3:RemovedValueA", "key4:KeptValue" };
+        var newSettings = new List<string> { "key1:KeptValue", "key2:ChangedValueB", "key3:ChangedValueB", "key4:KeptValue" };
+
+        // Act
+        var (added, removed, changed) = ProfileSettingsChangesSummarizer.GetGroupedSettings(oldSettings, newSettings);
+
+        // Assert
+        Assert.AreEqual(0, added.Count);
+        Assert.AreEqual(0, removed.Count);
+        Assert.AreEqual(2, changed.Count);
+        Assert.AreEqual(("key2:RemovedValueA", "key2:ChangedValueB"), changed[0]);
+        Assert.AreEqual(("key3:RemovedValueA", "key3:ChangedValueB"), changed[1]);
+    }
+
+    [TestMethod]
+    public void GetGroupedSettings_MixedChanges_ReturnsCorrectGroups()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:ChangedValueA", "key2:KeptValue", "key3:RemovedValue" };
+        var newSettings = new List<string> { "key1:ChangedValueB", "key2:KeptValue", "key4:AddedValue" };
+
+        // Act
+        var (added, removed, changed) = ProfileSettingsChangesSummarizer.GetGroupedSettings(oldSettings, newSettings);
+
+        // Assert
+        Assert.AreEqual(1, added.Count);
+        Assert.AreEqual("key4:AddedValue", added[0]);
+
+        Assert.AreEqual(1, removed.Count);
+        Assert.AreEqual("key3:RemovedValue", removed[0]);
+
+        Assert.AreEqual(1, changed.Count);
+        Assert.AreEqual(("key1:ChangedValueA", "key1:ChangedValueB"), changed[0]);
+    }
+
     #endregion
 
     #region ValidateSettingsFormat
@@ -197,18 +236,6 @@ public class ProfileSettingsChangesSummarizerTests
     #endregion
 
     #region Helpers
-
-    private bool HasAddMessage(List<string> changes, string setting)
-    {
-        return changes.Any(str => str.Contains("Added") && str.Contains(setting));
-    }
-
-    private bool HasRemoveMessage(List<string> changes, string setting)
-    {
-        return changes.Any(str =>
-            str.Contains("Removed")
-            && str.Contains(setting));
-    }
 
     private bool HasChangeMessage(List<string> changes, string oldSetting, string newSetting)
     {
