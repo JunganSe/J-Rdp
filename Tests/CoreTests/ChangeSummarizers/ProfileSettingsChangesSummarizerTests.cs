@@ -208,38 +208,6 @@ public class ProfileSettingsChangesSummarizerTests
 
     #endregion
 
-    #region ThrowIfAnySettingIsInvalid
-
-    [TestMethod]
-    public void ThrowIfAnySettingIsInvalid_ValidSettings_DoesNotThrow()
-    {
-        // Arrange
-        var settings = new List<string> { "key1:value1", "key2:value2", "key3:value3" };
-
-        // Act
-        ProfileSettingsChangesSummarizer.ThrowIfAnySettingIsInvalid(settings);
-
-        // Assert
-        // No exception thrown means the test passes.
-    }
-
-    [TestMethod]
-    [DataRow("foo")]
-    [DataRow(":foo")]
-    [DataRow(" :foo")]
-    [DataRow("foo:")]
-    [DataRow("foo: ")]
-    public void ThrowIfAnySettingIsInvalid_InvalidSettings_ThrowsArgumentException(string setting)
-    {
-        // Arrange
-        void Action() => ProfileSettingsChangesSummarizer.ThrowIfAnySettingIsInvalid([setting]);
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(Action);
-    }
-
-    #endregion
-
     #region Helpers
 
     private bool HasChangeMessage(List<string> changes, string oldSetting, string newSetting)

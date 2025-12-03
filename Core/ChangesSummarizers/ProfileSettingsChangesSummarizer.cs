@@ -26,12 +26,10 @@ public class ProfileSettingsChangesSummarizer
     /// <summary>
     /// Compares two lists of settings and categorizes the differences into added, removed, and changed settings.
     /// </summary>
-    /// <remarks>This method assumes that all settings are valid. This means each setting is formatted as "key:value",
-    /// where "key" is a unique identifier. The comparison is performed based on the "key" portion of each setting.</remarks>
+    /// <remarks> This method assumes that all settings are valid. This means each setting is formatted as "key:value",
+    /// where "key" is a unique identifier. The comparison is performed based on the "key" portion of each setting. </remarks>
     public static (List<string> added, List<string> removed, List<(string oldSetting, string newSetting)> changed) GetGroupedSettings(List<string> oldSettings, List<string> newSettings)
     {
-        ThrowIfAnySettingIsInvalid([.. oldSettings, .. newSettings]);
-
         var oldSettingsLookup = oldSettings.ToDictionary(s => s.Split(':')[0]);
         var newSettingsLookup = newSettings.ToDictionary(s => s.Split(':')[0]);
 
@@ -49,23 +47,6 @@ public class ProfileSettingsChangesSummarizer
             .ToList();
 
         return (addedSettings, removedSettings, changedSettings);
-    }
-
-    public static void ThrowIfAnySettingIsInvalid(List<string> settings)
-    {
-        var splitOptions = StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;
-        var invalidSettings = settings
-            .Where(s =>
-                !s.Contains(':')
-                || s.Split(':', splitOptions).Length != 2)
-            .ToList();
-
-        if (invalidSettings.Count > 0)
-        {
-            string message = "All settings must be in the format 'key:value'. Invalid settings: "
-                + string.Join(", ", invalidSettings.Select(s => $"'{s}'"));
-            throw new ArgumentException(message);
-        }
     }
 
     public static string GetJoinedSettingsSummary(List<string> settings)
