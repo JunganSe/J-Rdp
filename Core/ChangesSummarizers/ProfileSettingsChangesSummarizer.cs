@@ -61,8 +61,11 @@ public class ProfileSettingsChangesSummarizer
             .ToList();
 
         if (invalidSettings.Count > 0)
-            throw new ArgumentException("All settings must be in the format 'key:value'. Invalid settings: "
-                + string.Join(", ", invalidSettings));
+        {
+            string message = "All settings must be in the format 'key:value'. Invalid settings: "
+                + string.Join(", ", invalidSettings.Select(s => $"'{s}'"));
+            throw new ArgumentException(message);
+        }
     }
 
     public static string GetJoinedSettingsSummary(List<string> settings)
