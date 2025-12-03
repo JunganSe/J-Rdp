@@ -130,7 +130,41 @@ public class ProfileSettingsChangesSummarizerTests
 
     #region GetGroupedSettings
 
-    // TODO: returns correct lists, throws when wrong format
+    [TestMethod]
+    public void GetGroupedSettings_Added_ReturnsCorrectGroups()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:KeptValue", "key2:KeptValue" };
+        var newSettings = new List<string> { "key1:KeptValue", "key3:AddedValue", "key4:AddedValue", "key2:KeptValue" };
+
+        // Act
+        var (added, removed, changed) = ProfileSettingsChangesSummarizer.GetGroupedSettings(oldSettings, newSettings);
+
+        // Assert
+        Assert.AreEqual(2, added.Count);
+        Assert.AreEqual(0, removed.Count);
+        Assert.AreEqual(0, changed.Count);
+        Assert.AreEqual("key3:AddedValue", added[0]);
+        Assert.AreEqual("key4:AddedValue", added[1]);
+    }
+
+    [TestMethod]
+    public void GetGroupedSettings_Removed_ReturnsCorrectGroups()
+    {
+        // Arrange
+        var oldSettings = new List<string> { "key1:KeptValue", "key2:RemovedValue", "key3:RemovedValue", "key4:KeptValue" };
+        var newSettings = new List<string> { "key1:KeptValue", "key4:KeptValue" };
+
+        // Act
+        var (added, removed, changed) = ProfileSettingsChangesSummarizer.GetGroupedSettings(oldSettings, newSettings);
+
+        // Assert
+        Assert.AreEqual(0, added.Count);
+        Assert.AreEqual(2, removed.Count);
+        Assert.AreEqual(0, changed.Count);
+        Assert.AreEqual("key2:RemovedValue", removed[0]);
+        Assert.AreEqual("key3:RemovedValue", removed[1]);
+    }
 
     #endregion
 
