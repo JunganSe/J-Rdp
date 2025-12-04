@@ -49,7 +49,7 @@ public class ProfileSettingsChangesSummarizer
         return (addedSettings, removedSettings, changedSettings);
     }
 
-    public static string GetJoinedSettingsSummary(List<string> settings)
+    private static string GetJoinedSettingsSummary(List<string> settings)
     {
         string settingsWord = (settings.Count == 1) ? "setting" : "settings";
         string joinedSettings = string.Join(", ", settings.Select(s => $"'{s}'"));
