@@ -26,8 +26,8 @@ public class ProfileSettingsChangesSummarizer
     /// <summary>
     /// Compares two lists of settings and categorizes the differences into added, removed, and changed settings.
     /// </summary>
-    /// <remarks>This method assumes that all settings are valid. This means each setting is formatted as "key:value",
-    /// where "key" is a unique identifier. The comparison is performed based on the "key" portion of each setting.</remarks>
+    /// <remarks> This method assumes that all settings are valid. This means each setting is formatted as "key:value",
+    /// where "key" is a unique identifier. The comparison is performed based on the "key" portion of each setting. </remarks>
     public static (List<string> added, List<string> removed, List<(string oldSetting, string newSetting)> changed) GetGroupedSettings(List<string> oldSettings, List<string> newSettings)
     {
         var oldSettingsLookup = oldSettings.ToDictionary(s => s.Split(':')[0]);
@@ -49,7 +49,7 @@ public class ProfileSettingsChangesSummarizer
         return (addedSettings, removedSettings, changedSettings);
     }
 
-    public static string GetJoinedSettingsSummary(List<string> settings)
+    private static string GetJoinedSettingsSummary(List<string> settings)
     {
         string settingsWord = (settings.Count == 1) ? "setting" : "settings";
         string joinedSettings = string.Join(", ", settings.Select(s => $"'{s}'"));
