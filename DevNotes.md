@@ -51,6 +51,8 @@
 
 
 ## User clicks a menu item
+* Callbacks for menu item events are initially set in WinApp "Controller.GetTrayCallbacks()".
+
 - When "Show log console" is clicked:
   1. Event "OnClick_ToggleConsole" is triggered.
   2. CoreManager tells Core controller to execute a command.
