@@ -51,12 +51,15 @@
 
 
 ## User clicks a menu item
+* Callbacks for menu item events are initially set in WinApp "Controller.GetTrayCallbacks()".
+
 - When "Show log console" is clicked:
   1. Event "OnClick_ToggleConsole" is triggered.
-  1. ConsoleManager is told to show or hide the log console.
-  3. CoreManager tells Core controller to execute a command.
-  4. Core controller tells ConfigManager to update the config file.
-  5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
+  2. CoreManager tells Core controller to execute a command.
+  3. Core controller tells an ILogDisplayManager to set console visibility
+  4. ILogDisplayManager's callback triggers:
+     - GUI is updated.
+     - Core controller is told to update the config.
 
 * When "Log to file" is clicked:
   1. Event "OnClick_ToggleLogToFile" is triggered.
