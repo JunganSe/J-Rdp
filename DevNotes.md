@@ -111,11 +111,11 @@ In Visual studio:
 3. Click "Publish".\
    When complete, click "Navigate" to open the containing folder.
 4. Delete all `.pdb` files.
-5. Add the files to a zip named " J-Rdp_0.0.0_win-x86.zip", where "0.0.0" is replaced with the current version number.
+5. Add the files to a zip named "J-Rdp_0.0.0_win-x86.zip", where "0.0.0" is replaced with the current version number.
 
 ## Create a release on GitHub
 1. On the GitHub code page, click "Create a new release".
-2. Create and select a new tag matching the current version number with a prefix of "v". E.G. "v1.2.3"
+2. Create and select a new tag matching the current version number with a prefix of "v". E.g. "v1.2.3"
 3. Select target "main".
 4. Set title to "Prerelease v0.0.0", where "0.0.0" is replaced with the current version number.
 5. Add the boilerplate part of the description:
@@ -128,6 +128,6 @@ In Visual studio:
    ---
    ```
 6. After the horizontal rule, add a copy of this version's release notes into the description.
-7. Upload the zipped files.
-8. Check "Set as a pre-release".
+7. Check "Set as a pre-release".
+8. Upload the zipped files.
 9. Click "Publish release".
