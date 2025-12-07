@@ -85,3 +85,49 @@
   3. The event invokes a ProfileHandler callback, which triggers CoreManager to tell Core controller to execute a command.
   4. Core controller tells ConfigManager to update the config file.
   5. (Menu state is updated when the config file is updated. See "When config file is updated" above.)
+
+
+
+<br/><br/>
+# Release procedure
+
+Ensure that the release notes are up to date,\
+and that all changes are merged into the `main` branch.
+
+## Create executable files
+In Visual studio:
+1. When in the `main` branch, right click `WinApp` in solution explorer and select "Publish...".
+2. If a publish profile does not exist:
+   1. Click "Add a publish profile".
+   2. Select "Folder", then click next (twice).
+   3. Select export folder location, or leave it at `bin\Release\net8.0-windows\publish\`.\
+      Click "Finish", then "Close" when complete.
+   4. Click "Show all settings", ensure the following:
+      Configuration: Release\
+      Target framework: .net8\
+      Deployment mode: Framework-dependent\
+      Target runtime: win-x86\
+      File publish options: "Produce single file" is checked. "ReadyToRun" is unchecked.
+3. Click "Publish".\
+   When complete, click "Navigate" to open the containing folder.
+4. Delete all `.pdb` files.
+5. Add the files to a zip named " J-Rdp_0.0.0_win-x86.zip", where "0.0.0" is replaced with the current version number.
+
+## Create a release on GitHub
+1. On the GitHub code page, click "Create a new release".
+2. Create and select a new tag matching the current version number with a prefix of "v". E.G. "v1.2.3"
+3. Select target "main".
+4. Set title to "Prerelease v0.0.0", where "0.0.0" is replaced with the current version number.
+5. Add the boilerplate part of the description:
+   ```
+   No installation is needed, unzip and run the exe file.
+   See the readme file for more info.
+
+   Requires .NET 8.0 x86 desktop runtime, get it [here](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) ([direct link](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.15-windows-x86-installer)).
+
+   ---
+   ```
+6. After the horizontal rule, add a copy of this version's release notes into the description.
+7. Upload the zipped files.
+8. Check "Set as a pre-release".
+9. Click "Publish release".
