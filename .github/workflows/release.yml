@@ -2,20 +2,35 @@ name: Create Release
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - 'v*'  # Triggers on version tags like v1.0.0
+      - 'v*'  # Triggers on version tags like v1.2.3
 
 jobs:
   build-and-release:
     runs-on: windows-latest
     
     steps:
+
+    # Ensure the version tag is formatted like "v1.2.3".
+    - name: Validate version tag
+      run: |
+        if ("${{ github.ref_name }}" -notmatch '^v\d+\.\d+\.\d+') {
+          Write-Error "Invalid version tag format"
+          exit 1
+        }
+    
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        ref: main # Use code in main branch
+        fetch-depth: 0  # Fetch all history to check branch ancestry, needed for branch validation.
+
+    - name: Verify tag is on main branch
+      run: |
+        $branches = git branch -r --contains ${{ github.sha }}
+        if ($branches -notmatch 'origin/main') {
+          Write-Error "Tag must point to a commit on the main branch"
+          exit 1
+        }
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
