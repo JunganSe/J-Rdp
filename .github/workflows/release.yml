@@ -1,36 +1,53 @@
 name: Create Release
 
 on:
-  push:
-    tags:
-      - 'v*'  # Triggers on version tags like v1.2.3
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g. "1.2.3" - without the v prefix)'
+        required: true
+        type: string
 
 jobs:
   build-and-release:
     runs-on: windows-latest
     
     steps:
-
-    # Ensure the version tag is formatted like "v1.2.3".
-    - name: Validate version tag
-      run: |
-        if ("${{ github.ref_name }}" -notmatch '^v\d+\.\d+\.\d+') {
-          Write-Error "Invalid version tag format"
-          exit 1
-        }
     
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Fetch all history to check branch ancestry, needed for branch validation.
+        ref: main
+        fetch-depth: 0
 
-    - name: Verify tag is on main branch
+    # Ensure the version is formatted like "1.2.3".
+    - name: Validate version format
       run: |
-        $branches = git branch -r --contains ${{ github.sha }}
-        if ($branches -notmatch 'origin/main') {
-          Write-Error "Tag must point to a commit on the main branch"
+        if ("${{ inputs.version }}" -notmatch '^\d+\.\d+\.\d+$') {
+          Write-Error "Invalid version format. Use format: 1.2.3"
           exit 1
         }
+
+    # Check if tag already exists
+    - name: Check if tag exists
+      run: |
+        git fetch --tags
+        if (git tag -l "v${{ inputs.version }}") {
+          Write-Error "Tag v${{ inputs.version }} already exists"
+          exit 1
+        }
+
+    # Configure git for tagging
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    # Create and push the tag
+    - name: Create and push tag
+      run: |
+        git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+        git push origin "v${{ inputs.version }}"
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -48,8 +65,7 @@ jobs:
     
     - name: Zip Release
       run: |
-        $version = "${{ github.ref_name }}" -replace '^v', ''
-        Compress-Archive -Path ./publish/* -DestinationPath ./J-Rdp_${version}_win-x86.zip
+        Compress-Archive -Path ./publish/* -DestinationPath ./J-Rdp_${{ inputs.version }}_win-x86.zip
     
     - name: Read release notes template
       id: release_notes
@@ -62,6 +78,7 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: v${{ inputs.version }}
         files: ./J-Rdp_*_win-x86.zip
         body: ${{ steps.release_notes.outputs.release_notes_template }}
         draft: true
