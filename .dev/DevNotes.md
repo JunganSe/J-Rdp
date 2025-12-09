@@ -91,10 +91,21 @@
 <br/><br/>
 # Release procedure
 
-Ensure that the release notes are up to date,\
+First ensure that the release notes are up to date,\
 and that all changes are merged into the `main` branch.
 
-## Create executable files
+## Automatic release with Github actions
+
+In the Github repository:
+1. Run the `Create Release` workflow from the main branch.
+2. When prompted, enter a version number. Use a "1.2.3" format without a "v" prefix.
+3. A release tag and draft release is created.\
+   Navigate to it and enter the release notes below the template text.
+4. Publish the release.
+
+## Manual release
+
+### Create executable files
 In Visual studio:
 1. When in the `main` branch, right click `WinApp` in solution explorer and select "Publish...".
 2. If a publish profile does not exist:
@@ -113,7 +124,7 @@ In Visual studio:
 4. Delete all `.pdb` files.
 5. Add the files to a zip named "J-Rdp_0.0.0_win-x86.zip", where "0.0.0" is replaced with the current version number.
 
-## Create a release on GitHub
+### Create a release on GitHub
 1. On the GitHub code page, click "Create a new release".
 2. Create and select a new tag matching the current version number with a prefix of "v". E.g. "v1.2.3"
 3. Select target "main".
