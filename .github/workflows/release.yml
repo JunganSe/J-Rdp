@@ -1,0 +1,55 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: main # Use code in main branch
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build WinApp/WinApp.csproj --configuration Release --no-restore
+    
+    - name: Publish
+      run: dotnet publish WinApp/WinApp.csproj --configuration Release --runtime win-x86 --self-contained false -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --output ./publish --no-build
+    
+    - name: Zip Release
+      run: |
+        $version = "${{ github.ref_name }}" -replace '^v', ''
+        Compress-Archive -Path ./publish/* -DestinationPath ./J-Rdp_${version}_win-x86.zip
+    
+    - name: Read release notes template
+      id: release_notes
+      run: |
+        $content = Get-Content -Path ./.dev/ReleaseTemplate.md -Raw
+        "release_notes_template<<EOF" >> $env:GITHUB_OUTPUT
+        $content >> $env:GITHUB_OUTPUT
+        "EOF" >> $env:GITHUB_OUTPUT
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./J-Rdp_*_win-x86.zip
+        body: ${{ steps.release_notes.outputs.release_notes_template }}
+        draft: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
