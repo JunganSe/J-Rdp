@@ -17,12 +17,6 @@ jobs:
     
     steps:
     
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        #ref: main # Target the main branch.
-        fetch-depth: 0 # Fetch all commit history, to be able to check existing tags.
-
     # Ensure the version is formatted like "1.2.3".
     - name: Validate version format
       run: |
@@ -30,6 +24,12 @@ jobs:
           Write-Error "Invalid version format. Use format: 1.2.3"
           exit 1
         }
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: main # Target the main branch.
+        fetch-depth: 0 # Fetch all commit history, to be able to check existing tags later.
 
     - name: Check if tag exists
       run: |
