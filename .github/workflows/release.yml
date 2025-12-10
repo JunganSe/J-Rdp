@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number (e.g. "1.2.3" - without the v prefix)'
+        description: 'Version number (e.g. "1.2.3")'
         required: true
         type: string
 
@@ -20,8 +20,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        ref: main
-        fetch-depth: 0
+        #ref: main # Target the main branch.
+        fetch-depth: 0 # Fetch all commit history, to be able to check existing tags.
 
     # Ensure the version is formatted like "1.2.3".
     - name: Validate version format
@@ -31,7 +31,6 @@ jobs:
           exit 1
         }
 
-    # Check if tag already exists
     - name: Check if tag exists
       run: |
         git fetch --tags
@@ -40,13 +39,11 @@ jobs:
           exit 1
         }
 
-    # Configure git for tagging
-    - name: Configure Git
+    - name: Configure Git # Configure git for tagging
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    # Create and push the tag
     - name: Create and push tag
       run: |
         git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
