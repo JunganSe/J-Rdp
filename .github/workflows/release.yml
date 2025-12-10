@@ -57,14 +57,8 @@ jobs:
       with:
         dotnet-version: '8.0.x'
     
-    - name: Restore dependencies
-      run: dotnet restore
-    
-    - name: Build
-      run: dotnet build WinApp/WinApp.csproj --configuration Release --no-restore
-    
-    - name: Publish
-      run: dotnet publish WinApp/WinApp.csproj --configuration Release --runtime win-x86 --self-contained false -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --output ./publish --no-build
+    - name: Build & publish
+      run: dotnet publish WinApp/WinApp.csproj --configuration Release --runtime win-x86 --self-contained false -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false --output ./publish
     
     - name: Zip Release
       run: |
