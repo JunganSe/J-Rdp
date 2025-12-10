@@ -97,10 +97,10 @@ and that all changes are merged into the `main` branch.
 ## Automatic release with Github actions
 
 In the Github repository:
-1. Run the `Create Release` workflow from the main branch.
-2. When prompted, enter a version number. Use a "1.2.3" format without a "v" prefix.
-3. A release tag and draft release is created.\
-   Navigate to it and enter the release notes below the template text.
+1. Run the `Create Release` workflow.
+2. Enter a version number. Use a "1.2.3" format without a "v" prefix.
+3. A tag is added to the main branch and a release draft is created.\
+   Navigate to it in Github and enter the release notes for the version below the template text.
 4. Publish the release.
 
 ## Manual release
