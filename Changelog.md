@@ -1,5 +1,21 @@
 # J-Rdp changelog
 
+## 0.4.0
+2025-12-12
+
+Changes and improvements:
+- Command line arguments have been removed.
+  - Logging settings "-LogToFile" and "-ShowConsole" have been moved to the config.
+  - "-NoTray" (run without a tray icon and menu) has been removed.
+- The ability to stop the app via shell command has been removed.
+- The menu has been reorganized.
+- Logging has been improved.
+- Detected changes in the config are now logged in detail.
+- The logs folder can now be opened from the menu.
+- Many internal optimizations and restructurings.
+
+
+
 ## 0.3.1
 2025-06-05
 
