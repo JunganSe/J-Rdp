@@ -1,19 +1,23 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Filters;
+using NLog.Targets;
+using System.Data;
+using System.Diagnostics;
 
 namespace Auxiliary;
 
 public static class LogManager
 {
     private const string _configFileName = "nlog.config";
-    private const string _fileRuleName = "file";
 
     private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
+    #region Initialization
+
     public static void Initialize()
     {
-        _logger.Trace("Initializing LogManager.");
+        _logger.Trace("Initializing LogManager...");
         string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         string externalConfigPath = Path.Combine(baseDirectory, _configFileName);
 
@@ -22,62 +26,137 @@ public static class LogManager
         else
             LoadEmbeddedConfig();
 
-        SetFileRuleEnabled(false);
+        SetFileRulesEnabled(false);
+        _logger.Debug("Initialized LogManager.");
     }
 
     private static void LoadExternalConfig()
     {
         NLog.LogManager.Setup().LoadConfigurationFromFile(_configFileName);
-        _logger.Trace("Loaded external NLog configuration file.");
+        _logger.Debug("Loaded external NLog configuration file.");
     }
 
     private static void LoadEmbeddedConfig()
     {
         var assembly = typeof(LogManager).Assembly;
         NLog.LogManager.Setup().LoadConfigurationFromAssemblyResource(assembly, _configFileName);
-        _logger.Trace("Loaded embedded NLog configuration file.");
+        _logger.Debug("Loaded embedded NLog configuration file.");
     }
+
+    #endregion
+
+    #region File logging
 
     public static void SetFileLogging(bool enable)
     {
-        if (enable)
+        bool isFileLoggingEnabled = GetFileLoggingRules().Any(IsRuleEnabled);
+        if (enable && !isFileLoggingEnabled)
         {
-            SetFileRuleEnabled(true);
-            _logger.Info("Logging to file enabled.");
+            SetFileRulesEnabled(true);
+            _logger.Info("Enabled logging to file.");
         }
-        else
+        else if (!enable && isFileLoggingEnabled)
         {
-            _logger.Info("Disabling logging to file.");
-            SetFileRuleEnabled(false);
+            _logger.Info("Disabling logging to file...");
+            SetFileRulesEnabled(false);
+            _logger.Info("Disabled logging to file.");
         }
+    }
+
+    private static List<LoggingRule> GetFileLoggingRules() =>
+        NLog.LogManager
+            .Configuration
+            .LoggingRules
+            .Where(rule => rule.Targets.OfType<FileTarget>().Any())
+            .ToList();
+
+    /// <summary>
+    /// Checks whether any filter in the rule is excplicitly set to "true".
+    /// </summary>
+    private static bool IsRuleEnabled(LoggingRule rule) =>
+        rule.Filters.Any(filter =>
+            filter is ConditionBasedFilter conditionBasedFilter
+            && bool.TryParse(conditionBasedFilter.Condition.ToString(), out bool isConditionTrue)
+            && isConditionTrue);
+
+    private static void SetFileRulesEnabled(bool enable)
+    {
+        var fileRules = GetFileLoggingRules();
+        if (fileRules.Count == 0)
+        {
+            _logger.Error("Cannot set file logging state. No file logging rules found.");
+            return;
+        }
+
+        foreach (var rule in fileRules)
+            SetRuleEnabled(rule, enable);
+
+        NLog.LogManager.ReconfigExistingLoggers();
     }
 
     // Enables or disables the file rule by clearing the filters and adding a new filter. A bit of a hack.
     // Using a filter that read a variable was originally intended, but the variable always came in as an empty string...
-    private static void SetFileRuleEnabled(bool enable)
+    private static void SetRuleEnabled(LoggingRule rule, bool enable)
     {
-        var fileRule = GetLoggingRule(_fileRuleName);
-        if (fileRule is null)
-        {
-            _logger.Warn($"Can not add file logging filter. Logging rule '{_fileRuleName}' not found.");
-            return;
-        }
-
-        fileRule.FilterDefaultAction = FilterResult.Ignore;
+        rule.FilterDefaultAction = FilterResult.Ignore;
         var filter = new ConditionBasedFilter()
         {
             Condition = (enable) ? "true" : "false",
             Action = FilterResult.Log
         };
-        fileRule.Filters.Clear();
-        fileRule.Filters.Add(filter);
-        NLog.LogManager.ReconfigExistingLoggers();
+        rule.Filters.Clear();
+        rule.Filters.Add(filter);
     }
 
-    private static LoggingRule? GetLoggingRule(string ruleName)
+    #endregion
+
+
+    #region Open logs folder
+
+    public static void OpenLogsFolder()
     {
-        var config = NLog.LogManager.Configuration;
-        var fileTarget = config.FindTargetByName(ruleName);
-        return config.LoggingRules.FirstOrDefault(rule => rule.Targets.Contains(fileTarget));
+        var fileRules = GetFileLoggingRules();
+        if (fileRules.Count == 0)
+        {
+            _logger.Error("Cannot open logs folder. No file logging rules found.");
+            return;
+        }
+
+        foreach (var fileRule in fileRules)
+        {
+            var fileTargets = fileRule.Targets.OfType<FileTarget>();
+            OpenFileTargetsFolders(fileTargets);
+        }
     }
+
+    private static void OpenFileTargetsFolders(IEnumerable<FileTarget> fileTargets)
+    {
+        try
+        {
+            foreach (var fileTarget in fileTargets)
+                OpenFileTargetFolder(fileTarget);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to open logs folder.");
+        }
+    }
+
+    private static void OpenFileTargetFolder(FileTarget fileTarget)
+    {
+        string? logDirectory = Path.GetDirectoryName(fileTarget.FileName.ToString());
+        if (logDirectory is null)
+        {
+            _logger.Error("Failed to open logs folder. Logs folder path is missing.");
+            return;
+        }
+
+        string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string fullPath = Path.Combine(baseDirectory, logDirectory);
+        FileSystemOpener.OpenDirectory(fullPath);
+
+        _logger.Info($"Opened logs folder: '{fullPath}'");
+    }
+
+    #endregion
 }

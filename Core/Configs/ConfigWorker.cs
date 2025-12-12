@@ -1,6 +1,7 @@
-﻿using Core.Files;
+﻿using Auxiliary;
+using Core.ChangesSummarizers;
+using Core.Files;
 using NLog;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -10,7 +11,7 @@ namespace Core.Configs;
 
 internal class ConfigWorker
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly FileReader _fileReader = new();
     private readonly FileWriter _fileWriter = new();
     private readonly JsonSerializerOptions _jsonOptions;
@@ -20,6 +21,7 @@ internal class ConfigWorker
         _jsonOptions = new JsonSerializerOptions()
         {
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement), // Latin1Supplement includes characters like 'é', 'ö', etc.
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true,
             WriteIndented = true,
         };
@@ -39,7 +41,7 @@ internal class ConfigWorker
         try
         {
             string path = GetConfigFilePath();
-            string json = JsonSerializer.Serialize(config, _jsonOptions);
+            string json = SerializeConfig(config);
             _fileWriter.WriteFile(path, json);
             _logger.Debug("Successfully updated config file.");
         }
@@ -60,9 +62,8 @@ internal class ConfigWorker
         try
         {
             string path = GetConfigFilePath();
-            var process = new ProcessStartInfo(path) { UseShellExecute = true, };
-            Process.Start(process);
-            _logger.Info("Config file opened in shell.");
+            FileSystemOpener.OpenFile(path);
+            _logger.Info($"Opened config file: '{path}'");
         }
         catch (Exception ex)
         {
@@ -105,7 +106,7 @@ internal class ConfigWorker
         try
         {
             var config = JsonSerializer.Deserialize<Config>(json, _jsonOptions)
-                ?? throw new InvalidOperationException("Config is null.");
+                ?? throw new InvalidOperationException("Invalid config json.");
 
             for (int i = 0; i < config.Profiles.Count; i++)
             {
@@ -120,6 +121,41 @@ internal class ConfigWorker
         {
             _logger.Error(ex, $"Failed to parse config file.");
             throw;
+        }
+    }
+
+    public string SerializeConfig(Config config) =>
+        JsonSerializer.Serialize(config, _jsonOptions);
+
+    public void LogConfigChanges(Config oldConfig, Config newConfig)
+    {
+        try
+        {
+            List<string> configChanges = ConfigChangesSummarizer.GetChangedConfigSettings(oldConfig, newConfig);
+            List<string> profileChanges = ProfileChangesSummarizer.GetChangedProfilesSettings(oldConfig.Profiles, newConfig.Profiles);
+
+            int totalChangesCount = configChanges.Count + profileChanges.Count;
+            if (totalChangesCount == 0)
+            {
+                _logger.Info("No config settings were changed.");
+                return;
+            }
+
+            if (configChanges.Count > 0)
+            {
+                string lines = string.Join("\n", configChanges.Select(s => $"  {s}"));
+                _logger.Info("Changed config settings:\n" + lines);
+            }
+
+            if (profileChanges.Count > 0)
+            {
+                string lines = string.Join("\n", profileChanges.Select(s => $"  {s}"));
+                _logger.Info("Changed profile settings:\n" + lines);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to log config changes.");
         }
     }
 }

@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Changelog.md = Changelog.md
+		DevNotes.md = DevNotes.md
 		License.txt = License.txt
 		Readme.md = Readme.md
 	EndProjectSection
@@ -22,6 +23,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinAppTests", "Tests\WinAppTests\WinAppTests.csproj", "{84A82027-7BB0-4478-B358-25110C4DB15C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuxiliaryTests", "Tests\AuxiliaryTests\AuxiliaryTests.csproj", "{9531DA63-DD84-423E-BA62-03F91526CCC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +52,10 @@ Global
 		{84A82027-7BB0-4478-B358-25110C4DB15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84A82027-7BB0-4478-B358-25110C4DB15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A82027-7BB0-4478-B358-25110C4DB15C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9531DA63-DD84-423E-BA62-03F91526CCC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9531DA63-DD84-423E-BA62-03F91526CCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9531DA63-DD84-423E-BA62-03F91526CCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9531DA63-DD84-423E-BA62-03F91526CCC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +63,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4C99D19A-E581-4600-8803-1BFCE79C3718} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{84A82027-7BB0-4478-B358-25110C4DB15C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{9531DA63-DD84-423E-BA62-03F91526CCC3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A70BF1-36BF-4D60-B024-8A93464BB6E8}

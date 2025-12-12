@@ -45,7 +45,7 @@ internal class FileManager
     {
         string s = (newFiles.Count > 1) ? "s" : "";
         string fileNames = string.Join("", newFiles.Select(f => $"\n  {f.Name}"));
-        _logger.Debug($"Profile '{profile.Name}' found {newFiles.Count} new file{s} in '{profile.WatchFolder}': {fileNames}");
+        _logger.Debug($"Profile '{profile.Name}' found {newFiles.Count} new file{s} in '{profile.WatchFolder}':{fileNames}");
     }
 
     private void ProcessFileOnFilterMatch(FileInfo file, Profile profile)

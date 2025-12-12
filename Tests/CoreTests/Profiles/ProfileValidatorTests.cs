@@ -15,7 +15,7 @@ public class ProfileValidatorTests
         var profiles = GetValidMockProfiles();
 
         // Act
-        var actual = ProfileValidator.IsProfileValid(profiles[index], out _);
+        bool actual = ProfileValidator.IsProfileValid(profiles[index], out _);
 
         // Assert
         Assert.IsTrue(actual);
@@ -32,7 +32,7 @@ public class ProfileValidatorTests
         var profiles = GetInvalidMockProfiles();
 
         // Act
-        var actual = ProfileValidator.IsProfileValid(profiles[index], out _);
+        bool actual = ProfileValidator.IsProfileValid(profiles[index], out _);
 
         // Assert
         Assert.IsFalse(actual);
@@ -49,7 +49,7 @@ public class ProfileValidatorTests
         // Arrange
 
         // Act
-        var actual = ProfileValidator.IsProfileSettingValid(setting, out _);
+        bool actual = ProfileValidator.IsProfileSettingValid(setting, out _);
 
         // Assert
         Assert.IsTrue(actual);
@@ -66,7 +66,7 @@ public class ProfileValidatorTests
         // Arrange
 
         // Act
-        var actual = ProfileValidator.IsProfileSettingValid(setting, out _);
+        bool actual = ProfileValidator.IsProfileSettingValid(setting, out _);
 
         // Assert
         Assert.IsFalse(actual);

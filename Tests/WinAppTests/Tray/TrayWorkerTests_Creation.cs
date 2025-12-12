@@ -1,6 +1,4 @@
 ﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-#pragma warning disable IDE0039 // Use local function
-#pragma warning disable IDE0350 // Use implicitly typed lambda
 
 using WinApp.Tray;
 
@@ -36,42 +34,13 @@ public class TrayWorkerTests_Creation
     }
 
     [TestMethod]
-    public void CreateContextMenu_NullToggleConsoleCallback_ReturnsNull()
-    {
-        // Arrange
-        Action<bool>? callback_ToggleConsole = null;
-        Action? callback_OpenConfigFile = () => { };
-
-        // Act
-        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
-
-        // Assert
-        Assert.IsNull(result);
-    }
-
-    [TestMethod]
-    public void CreateContextMenu_NullOpenConfigFileCallback_ReturnsNull()
-    {
-        // Arrange
-        Action<bool>? callback_ToggleConsole = (bool _) => { };
-        Action? callback_OpenConfigFile = null;
-
-        // Act
-        var result = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
-
-        // Assert
-        Assert.IsNull(result);
-    }
-
-    [TestMethod]
     public void CreateContextMenu_ValidCallbacks_ReturnsValidMenu()
     {
         // Arrange
-        Action<bool>? callback_ToggleConsole = (bool _) => { };
-        Action? callback_OpenConfigFile = () => { };
+        var callbacks = new TrayCallbacks();
 
         // Act
-        var menu = _worker.CreateContextMenu(callback_ToggleConsole, callback_OpenConfigFile);
+        var menu = _worker.CreateContextMenu(callbacks);
 
         // Assert
         Assert.IsNotNull(menu);

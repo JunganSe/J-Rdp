@@ -7,17 +7,14 @@ internal static class Program
 {
     private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
     private static readonly Controller _controller = new();
-    private static readonly StopSignalListener _stopSignalListener = new();
     private static Mutex? _mutex;
     private static bool _isExiting;
 
     [STAThread]
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         RegisterCloseEvents();
-        var arguments = BooleanArgumentsParser.Parse<Arguments>(args);
         LogManager.Initialize();
-        LogManager.SetFileLogging(arguments.LogToFile);
 
         _logger.Info("***** Starting application. *****");
 
@@ -28,8 +25,7 @@ internal static class Program
             return;
         }
 
-        _stopSignalListener.Start(OnStopSignalReceived);
-        _controller.Run(arguments);
+        _controller.Start();
         Application.Run();
     }
 
@@ -46,9 +42,6 @@ internal static class Program
         return !isNewInstance;
     }
 
-    private static void OnStopSignalReceived() => 
-        Application.Exit();
-
     private static void OnExit(object? sender, EventArgs eventArgs)
     {
         if (_isExiting)
@@ -62,10 +55,7 @@ internal static class Program
     private static void StopAndCleanup()
     {
         _logger.Debug("Stopping and cleaning up...");
-        _stopSignalListener.Stop();
-        _controller.CloseAndDisposeConsole();
-        _controller.StopCore();
-        _controller.DisposeTray();
+        _controller.Stop();
         _mutex?.Dispose();
 
         _logger.Debug("Cleanup complete.");

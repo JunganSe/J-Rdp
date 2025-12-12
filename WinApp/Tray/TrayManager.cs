@@ -1,4 +1,5 @@
-﻿using Core.Profiles;
+﻿using Core.Configs;
+using Core.Profiles;
 using NLog;
 
 namespace WinApp.Tray;
@@ -7,19 +8,11 @@ internal class TrayManager
 {
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly TrayWorker _trayWorker = new();
+    private TrayCallbacks _callbacks = new();
     private NotifyIcon? _notifyIcon;
-    private Action<bool>? _callback_ToggleConsole;
-    private Action? _callback_OpenConfigFile;
-    private ProfileHandler? _callback_ProfilesActiveStateChanged;
 
-    public void SetCallback_ToggleConsole(Action<bool> callback) =>
-        _callback_ToggleConsole = callback;
-
-    public void SetCallback_OpenConfigFile(Action callback) =>
-        _callback_OpenConfigFile = callback;
-
-    public void SetCallback_ProfilesActiveStateChanged(ProfileHandler callback) =>
-        _callback_ProfilesActiveStateChanged = callback;
+    public void SetCallbacks(TrayCallbacks callbacks) =>
+        _callbacks = callbacks;
 
     public void InitializeNotifyIconWithContextMenu()
     {
@@ -29,44 +22,31 @@ internal class TrayManager
         if (_notifyIcon is null)
             return;
 
-        _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(
-            _callback_ToggleConsole,
-            _callback_OpenConfigFile);
+        _notifyIcon.ContextMenuStrip = _trayWorker.CreateContextMenu(_callbacks);
     }
 
-    public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
+    public void UpdateMenuState(ConfigInfo configInfo)
     {
-        var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
-        if (menuItems is null)
+        if (_notifyIcon?.ContextMenuStrip is null)
         {
-            _logger.Error("Can not update profile items in context menu. Context menu is missing.");
+            _logger.Error("Can not update tray context menu state. Context menu is missing.");
             return;
         }
 
-        if (_callback_ProfilesActiveStateChanged is null)
-        {
-            _logger.Error("Can not insert profile menu items into context menu. Callback is missing.");
-            return;
-        }
+        if (configInfo.ShowLog is not null)
+            SetMenuState_ShowConsole(configInfo.ShowLog.Value);
 
-        _trayWorker.RemoveAllProfileMenuItems(menuItems);
+        if (configInfo.LogToFile is not null)
+            SetMenuState_LogToFile(configInfo.LogToFile.Value);
 
-        if (profileInfos.Count > 0)
-        {
-            _trayWorker.ClearPlaceholderProfileMenuItems(menuItems);
-            _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callback_ProfilesActiveStateChanged);
-        }
-        else if (!_trayWorker.PlaceholderProfileMenuItemExists(menuItems))
-            _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
+        if (configInfo.Profiles is not null)
+            UpdateMenuProfiles(configInfo.Profiles);
     }
 
     public void SetMenuState_ShowConsole(bool showConsole)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
-        {
-            _logger.Error("Can not set menu checked 'show console' state. Context menu is missing.");
             return;
-        }
 
         _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleConsole, showConsole);
     }
@@ -74,12 +54,30 @@ internal class TrayManager
     public void SetMenuState_LogToFile(bool logToFile)
     {
         if (_notifyIcon?.ContextMenuStrip is null)
-        {
-            _logger.Error("Can not set menu checked state 'log to file'. Context menu is missing.");
             return;
-        }
 
-        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleLogToFile, logToFile);
+        _trayWorker.SetMenuCheckedState(_notifyIcon.ContextMenuStrip, TrayConstants.ItemNames.ToggleFileLogging, logToFile);
+    }
+
+    /// <summary>
+    /// Updates the profile menu items in the tray context menu to reflect the provided profileInfos.
+    /// </summary>
+    /// <remarks> If no profiles are provided, a disabled placeholder profile will be used. </remarks>
+    public void UpdateMenuProfiles(List<ProfileInfo> profileInfos)
+    {
+        var menuItems = _notifyIcon?.ContextMenuStrip?.Items;
+        if (menuItems is null)
+            return;
+
+        _trayWorker.RemoveAllProfileMenuItems(menuItems);
+
+        if (profileInfos.Count > 0)
+        {
+            _trayWorker.ClearPlaceholderProfileMenuItems(menuItems);
+            _trayWorker.InsertProfileMenuItems(menuItems, profileInfos, _callbacks.ProfilesActiveStateChanged);
+        }
+        else if (!_trayWorker.PlaceholderProfileMenuItemExists(menuItems))
+            _trayWorker.InsertPlaceholderProfileMenuItem(menuItems);
     }
 
     public void DisposeTray() =>

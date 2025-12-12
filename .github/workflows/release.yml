@@ -1,0 +1,81 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g. "1.2.3")'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tag-build-and-release:
+    runs-on: windows-latest
+    
+    steps:
+    
+    # Ensure the version is formatted like "1.2.3".
+    - name: Validate version format
+      run: |
+        if ("${{ inputs.version }}" -notmatch '^\d+\.\d+\.\d+$') {
+          Write-Error "Invalid version format. Use format: 1.2.3"
+          exit 1
+        }
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: main # Target the main branch.
+        fetch-depth: 0 # Fetch all commit history, to be able to check existing tags later.
+
+    - name: Check if tag exists
+      run: |
+        git fetch --tags
+        if (git tag -l "v${{ inputs.version }}") {
+          Write-Error "Tag v${{ inputs.version }} already exists"
+          exit 1
+        }
+
+    - name: Configure Git # Configure git for tagging
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Create and push tag
+      run: |
+        git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+        git push origin "v${{ inputs.version }}"
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Build & publish
+      run: dotnet publish WinApp/WinApp.csproj --configuration Release --runtime win-x86 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:DebugType=None -p:DebugSymbols=false --output ./publish
+    
+    - name: Zip Release
+      run: |
+        Compress-Archive -Path ./publish/* -DestinationPath ./J-Rdp_${{ inputs.version }}_win-x86.zip
+    
+    - name: Read release notes template
+      id: release_notes
+      run: |
+        $content = Get-Content -Path ./.dev/ReleaseTemplate.md -Raw
+        "release_notes_template<<EOF" >> $env:GITHUB_OUTPUT
+        $content >> $env:GITHUB_OUTPUT
+        "EOF" >> $env:GITHUB_OUTPUT
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ inputs.version }}
+        files: ./J-Rdp_*_win-x86.zip
+        body: ${{ steps.release_notes.outputs.release_notes_template }}
+        draft: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

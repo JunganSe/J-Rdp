@@ -1,0 +1,46 @@
+﻿using Core.LogDisplay;
+
+namespace WinApp.LogConsole;
+
+/// <summary> Windows exclusive manager for opening and closing a console log window. </summary>
+internal class LogConsoleManager : ILogDisplayManager
+{
+    private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+    private readonly LogConsoleWorker _worker = new();
+
+    public void SetCallback_LogClosed(Action callback) =>
+        _worker.SetCallback_ConsoleClosed(callback);
+
+    public void SetVisibility(bool show)
+    {
+        bool isConsoleOpen = _worker.IsConsoleWindowOpen();
+
+        if (show && !isConsoleOpen)
+            OpenConsole();
+        else if (!show && isConsoleOpen)
+            _worker.CloseConsole();
+    }
+
+    private void OpenConsole()
+    {
+        try
+        {
+            _logger.Trace("Opening log console...");
+
+            bool isConsoleOpened = _worker.TryAllocateConsole();
+            if (!isConsoleOpened)
+                return;
+
+            _worker.SetConsoleTitle();
+            _worker.PrintInfoMessage();
+            _worker.DisableConsoleCloseButton();
+            _worker.SetEvent_CloseConsoleOnCommand();
+
+            _logger.Info("Opened log console.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error opening log console.");
+        }
+    }
+}

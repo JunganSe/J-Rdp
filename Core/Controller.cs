@@ -1,5 +1,7 @@
-﻿using Core.Configs;
+﻿using Core.Commands;
+using Core.Configs;
 using Core.Files;
+using Core.LogDisplay;
 using Core.Profiles;
 using NLog;
 
@@ -12,15 +14,30 @@ public class Controller
     private readonly ConfigManager _configManager = new();
     private readonly ProfileManager _profileManager = new();
     private readonly FileManager _fileManager = new();
+    private readonly ILogDisplayManager _logDisplayManager;
 
     private int _pollingInterval = ConfigConstants.PollingInterval_Default;
     private CancellationTokenSource? _mainLoopCancellation;
+    private bool _isRunning = false;
     private bool _isStopping = false;
+
+    public Controller(ControllerInitParams initParams)
+    {
+        _configManager.SetCallback_ConfigUpdated(initParams.Callback_ConfigUpdated);
+        _logDisplayManager = initParams.LogDisplayManager;
+        _logDisplayManager.SetCallback_LogClosed(initParams.Callback_LogClosed);
+    }
 
     public async Task Run()
     {
         try
         {
+            if (_isRunning)
+            {
+                _logger.Warn("Can not run controller, it is already running.");
+                return;
+            }
+
             _logger.Debug("Initializing...");
             Initialize();
             _mainLoopCancellation = new CancellationTokenSource();
@@ -42,19 +59,40 @@ public class Controller
         }
     }
 
-    public void SetCallback_ConfigUpdated(ProfileHandler callback) =>
-        _configManager.SetCallback_ConfigUpdated(callback);
-
-    public void OpenConfigFile() =>
-        _configManager.OpenConfigFile();
-
-    public void UpdateProfilesEnabledState(List<ProfileInfo> profileInfos) =>
-        _configManager.UpdateProfilesEnabledState(profileInfos);
-
     public void Stop()
     {
         StopMainLoop();
         StopAndDispose();
+    }
+
+    public void ExecuteCommand(CoreCommand command)
+    {
+        switch (command.CommandType, command.Param)
+        {
+            case (CoreCommandType.OpenLogsFolder, null):
+                Auxiliary.LogManager.OpenLogsFolder();
+                break;
+
+            case (CoreCommandType.OpenConfigFile, null):
+                _configManager.OpenConfigFile();
+                break;
+
+            case (CoreCommandType.ShowLog, bool showLog):
+                _logDisplayManager.SetVisibility(showLog);
+                break;
+
+            case (CoreCommandType.SetLogToFile, bool logToFile):
+                Auxiliary.LogManager.SetFileLogging(logToFile);
+                break;
+
+            case (CoreCommandType.UpdateConfig, ConfigInfo configInfo):
+                _configManager.UpdateConfig(configInfo);
+                break;
+
+            default:
+                _logger.Error($"Can not execute command '{command.CommandType}'. Invalid command or parameter.");
+                return;
+        }
     }
 
 
@@ -69,14 +107,31 @@ public class Controller
 
     private void InitializeConfig()
     {
+        var oldConfig = _configManager.Config;
         _configManager.UpdateConfigFromFile();
+        _configManager.LogConfigChanges(oldConfig);
+        _configManager.LogFullConfig();
         _configManager.InvokeConfigUpdatedCallback();
-        SetPollingInterval();
+        ApplyConfigSetting_ShowLog();
+        ApplyConfigSetting_FileLogging();
+        ApplyConfigSetting_PollingInterval();
         _fileManager.SetDeleteDelay(_configManager.GetDeleteDelay());
         InitializeProfiles();
     }
 
-    private void SetPollingInterval()
+    private void ApplyConfigSetting_FileLogging()
+    {
+        bool logToFile = _configManager.Config.LogToFile;
+        Auxiliary.LogManager.SetFileLogging(logToFile);
+    }
+
+    private void ApplyConfigSetting_ShowLog()
+    {
+        bool showLog = _configManager.Config.ShowLog;
+        _logDisplayManager.SetVisibility(showLog);
+    }
+
+    private void ApplyConfigSetting_PollingInterval()
     {
         int newPollingInterval = _configManager.GetPollingInterval();
         if (newPollingInterval == _pollingInterval)
@@ -88,10 +143,11 @@ public class Controller
 
     private void InitializeProfiles()
     {
-        var enabledProfiles = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
-        _profileManager.UpdateProfiles(enabledProfiles);
+        var previousProfiles = _profileManager.ProfileWrappers.Select(pw => pw.Profile).ToList();
+        var enabledProfilesInConfig = _configManager.Config.Profiles.Where(p => p.Enabled).ToList();
+        _profileManager.UpdateProfiles(enabledProfilesInConfig);
         _profileManager.UpdateFilesInProfileWrappers();
-        _profileManager.LogProfilesSummary();
+        _profileManager.LogProfilesSummaryIfChanged(previousProfiles);
     }
 
     /// <summary> Loops until canceled, where it will throw OperationCanceledException. </summary>
@@ -105,24 +161,25 @@ public class Controller
         }
     }
 
-    private void StopMainLoop()
-    {
-        _mainLoopCancellation?.Cancel();
-        _mainLoopCancellation?.Dispose();
-        _mainLoopCancellation = null;
-    }
-
     private void StopAndDispose()
     {
         if (_isStopping)
             return;
 
         _logger.Debug("Cleaning up...");
+        _isRunning = false;
         _isStopping = true;
 
         // Note: _configManager, _profileManager, and _fileManager have nothing to stop or dispose.
         _configWatcherManager.StopAndDisposeConfigWatcher();
         StopMainLoop();
         _logger.Debug("Cleanup complete.");
+    }
+
+    private void StopMainLoop()
+    {
+        _mainLoopCancellation?.Cancel();
+        _mainLoopCancellation?.Dispose();
+        _mainLoopCancellation = null;
     }
 }

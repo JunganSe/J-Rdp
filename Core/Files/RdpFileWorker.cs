@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System.Diagnostics;
+﻿using Auxiliary;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Core.Files;
 
@@ -23,7 +23,7 @@ internal class RdpFileWorker
         {
             int lastColonIndex = setting.LastIndexOf(':');
             if (lastColonIndex == -1)
-                throw new ArgumentException($"Invalid setting: '${setting}'. No semicolon present.");
+                throw new ArgumentException($"Invalid setting: '{setting}' does not contain a colon.");
             string key = setting[..lastColonIndex];
             fileLines.RemoveAll(line => line.Contains(key));
         }
@@ -36,8 +36,7 @@ internal class RdpFileWorker
     public void Launch(FileInfo file)
     {
         file.Refresh();
-        var process = new ProcessStartInfo(file.FullName) { UseShellExecute = true };
-        Process.Start(process);
+        FileSystemOpener.OpenFile(file.FullName);
     }
 
     public void Delete(FileInfo file, bool recycle = true)

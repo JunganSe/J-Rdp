@@ -8,6 +8,7 @@ using WinApp.Tray;
 namespace WinAppTests.Tray;
 
 [TestClass]
+[DoNotParallelize] // Avoids issues where some tests randomly fail. It seems that ContextMenuStrip is sharing resources across tests when run in parallel.
 public class TrayWorkerTests_MenuItems
 {
     private TrayWorker _worker;
@@ -68,7 +69,7 @@ public class TrayWorkerTests_MenuItems
         _worker.InsertProfileMenuItems(menu.Items, profiles, callback);
 
         // Assert
-        Assert.IsTrue(menu.Items.Count == 5);
+        Assert.AreEqual(5, menu.Items.Count);
         Assert.IsTrue(menu.Items[2].Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false);
         Assert.IsTrue(menu.Items[3].Name?.StartsWith(TrayConstants.ItemNames.ProfilePrefix) ?? false);
 
@@ -97,8 +98,8 @@ public class TrayWorkerTests_MenuItems
             .Find(TrayConstants.ItemNames.PlaceholderProfile, true)
             .OfType<ToolStripMenuItem>()
             .Count();
-        Assert.IsTrue(placeholderProfileCount == 1);
-        Assert.IsTrue(menu.Items.Count == 4);
+        Assert.AreEqual(1, placeholderProfileCount);
+        Assert.AreEqual(4, menu.Items.Count);
         Assert.AreEqual(TrayConstants.ItemNames.PlaceholderProfile, menu.Items[2].Name);
 
         // Cleanup
@@ -112,7 +113,7 @@ public class TrayWorkerTests_MenuItems
         var menu = new ContextMenuStrip();
 
         // Act
-        var isItemFound = _worker.PlaceholderProfileMenuItemExists(menu.Items);
+        bool isItemFound = _worker.PlaceholderProfileMenuItemExists(menu.Items);
 
         // Assert
         Assert.IsFalse(isItemFound);
@@ -130,7 +131,7 @@ public class TrayWorkerTests_MenuItems
         menu.Items.Add(placeholderProfile);
 
         // Act
-        var isItemFound = _worker.PlaceholderProfileMenuItemExists(menu.Items);
+        bool isItemFound = _worker.PlaceholderProfileMenuItemExists(menu.Items);
 
         // Assert
         Assert.IsTrue(isItemFound);

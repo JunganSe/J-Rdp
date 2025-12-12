@@ -1,5 +1,8 @@
-﻿using WinApp.LogConsole;
-using WinApp.Managers;
+﻿using Core;
+using Core.Configs;
+using Core.Profiles;
+using WinApp.CoreHandling;
+using WinApp.LogConsole;
 using WinApp.Tray;
 
 namespace WinApp.App;
@@ -7,69 +10,102 @@ namespace WinApp.App;
 internal class Controller
 {
     private readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-    private readonly ConsoleManager _consoleManager = new();
     private readonly TrayManager _trayManager = new();
     private readonly CoreManager _coreManager = new();
+    private bool _isStopping = false;
 
-    public void Run(Arguments arguments)
+    public void Start()
     {
-        Initialize(arguments); // Initialize on the current thread.
-        Task.Run(_coreManager.Run); // Run CoreManager asynchronously, running in parallell on the same thread.
+        InitializeTray();
+        InitializeCore(); // Initialize on the current thread.
+        Task.Factory.StartNew(_coreManager.Run, TaskCreationOptions.LongRunning); // Runs asynchronously on a separate thread, handled by the task scheduler.
     }
 
-    public void StopCore()
+    public void Stop()
     {
+        _isStopping = true;
+        _coreManager.ShowLog(false);
         _coreManager.Stop();
+        _trayManager.DisposeTray();
     }
 
 
 
-    private void Initialize(Arguments arguments)
-    {
-        SetConsoleVisibility(arguments.ShowConsole);
-        InitializeTrayIfArgumentAllows(arguments);
-        InitializeCore(arguments);
-    }
+    #region Initialization
 
-    private void SetConsoleVisibility(bool show)
-    {
-        _consoleManager.SetVisibility(show);
-        _consoleManager.SetCallback_ConsoleClosed(() =>
-        {
-            _trayManager.SetMenuState_ShowConsole(false);
-        });
-    }
-
-    private void InitializeTrayIfArgumentAllows(Arguments arguments)
-    {
-        if (!arguments.NoTray)
-            InitializeTray(arguments);
-        else
-            _logger.Info("Starting without tray icon and menu.");
-    }
-
-    private void InitializeTray(Arguments arguments)
+    private void InitializeTray()
     {
         _logger.Trace("Initializing tray...");
-        _trayManager.SetCallback_ToggleConsole(_consoleManager.SetVisibility);
-        _trayManager.SetCallback_OpenConfigFile(_coreManager.OpenConfigFile);
-        _trayManager.SetCallback_ProfilesActiveStateChanged(_coreManager.UpdateProfilesEnabledState);
+
+        var trayCallbacks = GetTrayCallbacks();
+        _trayManager.SetCallbacks(trayCallbacks);
         _trayManager.InitializeNotifyIconWithContextMenu();
-        _trayManager.SetMenuState_ShowConsole(arguments.ShowConsole);
-        _trayManager.SetMenuState_LogToFile(arguments.LogToFile);
+
         _logger.Debug("Tray initialized.");
     }
 
-    private void InitializeCore(Arguments arguments)
+
+    private void InitializeCore()
     {
-        _coreManager.Initialize();
-        if (!arguments.NoTray)
-            _coreManager.SetCallback_ConfigUpdated(_trayManager.UpdateMenuProfiles);
+        var coreControllerInitParams = new ControllerInitParams(
+                Callback_ConfigUpdated: Callback_OnConfigUpdated,
+                LogDisplayManager: new LogConsoleManager(),
+                Callback_LogClosed: Callback_OnLogDisplayClosed);
+        _coreManager.Initialize(coreControllerInitParams);
     }
 
-    public void DisposeTray() =>
-        _trayManager.DisposeTray();
+    #endregion
 
-    public void CloseAndDisposeConsole() =>
-        _consoleManager.SetVisibility(false);
+    #region Callbacks
+
+    private TrayCallbacks GetTrayCallbacks() => new()
+    {
+        ToggleConsole = Callback_ToggleLogDisplay,
+        ToggleFileLogging = Callback_ToggleFileLogging,
+        OpenLogsFolder = _coreManager.OpenLogsFolder,
+        OpenConfigFile = _coreManager.OpenConfigFile,
+        ProfilesActiveStateChanged = Callback_ProfilesActiveStateChanged
+    };
+
+    private void Callback_ToggleLogDisplay(bool showLog)
+    {
+        _coreManager.ShowLog(showLog);
+        // UpdateConfig is called from Callback_OnLogDisplayClosed, which triggers when the log window is closed.
+    }
+
+    private void Callback_OnLogDisplayClosed()
+    {
+        // Abort if stopping, to avoid updating the config when the log console closes.
+        if (_isStopping)
+            return;
+
+        _trayManager.SetMenuState_ShowConsole(false);
+
+        var configInfo = new ConfigInfo() { ShowLog = false };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    private void Callback_ToggleFileLogging(bool logToFile)
+    {
+        _coreManager.SetLogToFile(logToFile);
+
+        var configInfo = new ConfigInfo() { LogToFile = logToFile };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    private void Callback_ProfilesActiveStateChanged(List<ProfileInfo> profileInfos)
+    {
+        var configInfo = new ConfigInfo() { Profiles = profileInfos };
+        _coreManager.UpdateConfig(configInfo);
+    }
+
+    /// <summary>
+    /// Updates the state in WinApp when the config has been updated in Core.
+    /// </summary>
+    private void Callback_OnConfigUpdated(ConfigInfo configInfo)
+    {
+        _trayManager.UpdateMenuState(configInfo);
+    }
+
+    #endregion
 }
